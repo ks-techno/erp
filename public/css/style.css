@@ -1,0 +1,5 @@
+#toast-container {
+    position: fixed;
+    z-index: 999999;
+    pointer-events: none;
+}
