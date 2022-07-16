@@ -1,5 +1,6 @@
 <!-- BEGIN: Main Menu-->
 @php
+    $prefix = Request::route()->getprefix();
     $route = \Illuminate\Support\Facades\Route::current()->getName();
 @endphp
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
@@ -42,6 +43,19 @@
                     <i data-feather="home"></i>
                     <span class="menu-title text-truncate" data-i18n="Dashboards">Home</span>
                 </a>
+            </li>
+            <li class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
+                <a class="d-flex align-items-center" href="#">
+                    <i data-feather="settings"></i>
+                    <span class="menu-title text-truncate">Setting</span>
+                </a>
+                <ul class="menu-content">
+                    <li class="{{ ($route == 'setting.country.list')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.country.list') }}">
+                            <span class="menu-item text-truncate">Country</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>

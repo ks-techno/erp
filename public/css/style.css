@@ -3,3 +3,6 @@
     z-index: 999999;
     pointer-events: none;
 }
+.card-left-side > * {
+    display: inline-block;
+}

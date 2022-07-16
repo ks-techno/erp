@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Webpatser\Uuid\Uuid;
 
 class Controller extends BaseController
 {
@@ -31,4 +32,16 @@ class Controller extends BaseController
         return ['status'=>'error', 'data'=>$data, 'message'=>$message];
     }
 
+    protected function getStatusTitle(){
+        return [
+            ['title'=> 'De Active', 'class' => 'badge-light-warning'],
+            ['title'=> 'Active', 'class' => 'badge-light-success']
+        ];
+    }
+    protected function strUCWord($str){
+        return ucwords(strtolower(strtoupper(trim($str))));
+    }
+    protected function uuid(){
+        return Uuid::generate()->string;
+    }
 }
