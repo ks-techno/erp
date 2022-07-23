@@ -55,6 +55,11 @@
                             <span class="menu-item text-truncate">Country</span>
                         </a>
                     </li>
+                    <li class="{{ ($route == 'setting.region.list')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.region.list') }}">
+                            <span class="menu-item text-truncate">Region</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>

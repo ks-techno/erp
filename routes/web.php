@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Setting\CountryController;
+use App\Http\Controllers\Setting\RegionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::prefix('setting')->name('setting.')->group(function () {
         Route::prefix('country')->name('country.')->controller(CountryController::class)->group(function () {
+            Route::get('list', 'index')->name('list');
+            Route::get('create', 'create')->name('create');
+            Route::post('store', 'store')->name('store');
+            Route::get('edit/{id}', 'edit')->name('edit');
+            Route::post('update/{id}', 'update')->name('update');
+            Route::post('delete/{id}', 'destroy')->name('destroy');
+        });
+        Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function () {
             Route::get('list', 'index')->name('list');
             Route::get('create', 'create')->name('create');
             Route::post('store', 'store')->name('store');

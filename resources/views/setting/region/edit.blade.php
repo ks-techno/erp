@@ -4,7 +4,10 @@
 @endsection
 
 @section('content')
-    <form id="country_create" class="country_create" action="{{route('setting.country.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    @php
+        $current = $data['current'];
+    @endphp
+    <form id="region_edit" class="region_edit" action="{{route('setting.region.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-12">
@@ -23,20 +26,27 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
+                                        <label class="col-form-label">Country <span class="required">*</span></label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="select2 form-select" id="country_id" name="country_id">
+                                            <option value="0" selected>Select</option>
+                                            @foreach($data['countries'] as $country)
+                                                <option value="{{$country->id}}" {{$country->id == $current->country_id?"selected":""}}> {{$country->name}} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
                                         <label class="col-form-label">Name <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="" id="name" name="name" />
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Status</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="country_status" name="country_status" checked>
-                                        </div>
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->name}}" id="name" name="name" />
                                     </div>
                                 </div>
                             </div>
@@ -49,7 +59,7 @@
 @endsection
 
 @section('pageJs')
-    <script src="{{ asset('/pages/setting/country/create.js') }}"></script>
+    <script src="{{ asset('/pages/setting/region/edit.js') }}"></script>
 @endsection
 
 @section('script')
