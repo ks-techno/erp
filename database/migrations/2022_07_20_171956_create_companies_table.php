@@ -13,25 +13,29 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_defi_country', function (Blueprint $table) {
-
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('uuid');
-            $table->string('name')->unique();
-            $table->boolean('default_country')->default(0);
-            $table->boolean('country_status')->default(0);
+            $table->string('name');
+            $table->string('contact_no')->nullable();
+            $table->unsignedBigInteger('country_id');
+            $table->string('address')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+
+            $table->foreign('country_id')->references('id')->on('countries')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
-    /** TblDefiCountry
+    /**
      * Reverse the migrations.
      *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_defi_country');
+        Schema::dropIfExists('companies');
     }
 };

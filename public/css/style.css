@@ -6,3 +6,6 @@
 .card-left-side > * {
     display: inline-block;
 }
+.required{
+    color:red;
+}

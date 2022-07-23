@@ -1,7 +1,7 @@
 $(function () {
     'use strict';
 
-    var pageLoginForm = $('#country_form');
+    var pageLoginForm = $('#department_edit');
 
     // jQuery Validation
     // --------------------------------------------------------------------

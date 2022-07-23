@@ -5,6 +5,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Setting\CountryController;
+use App\Http\Controllers\Setting\RegionController;
+use App\Http\Controllers\Setting\CityController;
+use App\Http\Controllers\Setting\CompanyController;
+use App\Http\Controllers\Setting\ProjectController;
+use App\Http\Controllers\Setting\DepartmentController;
+use App\Http\Controllers\Setting\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,12 +40,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('setting')->name('setting.')->group(function () {
-        Route::prefix('country')->name('country.')->controller(CountryController::class)->group(function () {
-            Route::get('list', 'index')->name('list');
-            Route::get('form/{id?}', 'create')->name('create');
-            Route::post('form/{id?}', 'store')->name('store');
-            Route::post('delete/{id}', 'destroy')->name('delete');
-        });
+        Route::prefix('country')->resource('country', CountryController::class);
+        Route::prefix('region')->resource('region', RegionController::class);
+        Route::prefix('city')->resource('city', CityController::class);
+        Route::prefix('company')->resource('company', CompanyController::class);
+        Route::prefix('project')->resource('project', ProjectController::class);
+        Route::prefix('department')->resource('department', DepartmentController::class);
+        Route::prefix('staff')->resource('staff', StaffController::class);
     });
 
 });
