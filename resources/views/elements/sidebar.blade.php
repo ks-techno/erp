@@ -60,6 +60,11 @@
                             <span class="menu-item text-truncate">Region</span>
                         </a>
                     </li>
+                    <li class="{{ ($route == 'setting.city.list')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.city.list') }}">
+                            <span class="menu-item text-truncate">City</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>

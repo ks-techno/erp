@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\Setting;
 
+use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Country;
 use App\Models\Region;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Validator;
 
-class RegionController extends Controller
+class CityController extends Controller
 {
 
     private static function Constants()
     {
         return [
-            'title' => 'Region',
-            'list_url' => route('setting.region.list'),
+            'title' => 'City',
+            'list_url' => route('setting.city.list'),
         ];
     }
 
@@ -34,7 +34,7 @@ class RegionController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Region::with('country')->where('id','<>',0)->orderByName();
+            $dataSql = City::with('country','region')->where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
 
@@ -43,8 +43,8 @@ class RegionController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.region.edit',$row->uuid);
-                $urlDel = route('setting.region.destroy',$row->uuid);
+                $urlEdit = route('setting.city.edit',$row->uuid);
+                $urlDel = route('setting.city.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 $actions .= '<div class="d-inline-flex">';
@@ -58,6 +58,7 @@ class RegionController extends Controller
 
                 $entries[] = [
                     $row->country->name,
+                    $row->region->name,
                     $row->name,
                     $actions,
                 ];
@@ -71,7 +72,7 @@ class RegionController extends Controller
             return response()->json($result);
         }
 
-        return view('setting.region.list', compact('data'));
+        return view('setting.city.list', compact('data'));
     }
 
     /**
@@ -84,8 +85,9 @@ class RegionController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::OrderByName()->get();
-        return view('setting.region.create', compact('data'));
+        $data['countries'] = Country::with('regions')->OrderByName()->get();
+       // dd($data['countries']->toArray());
+        return view('setting.city.create', compact('data'));
     }
 
 
@@ -100,7 +102,7 @@ class RegionController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'country_id' => 'required'
+            'region_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -116,10 +118,13 @@ class RegionController extends Controller
         DB::beginTransaction();
         try {
 
-            Region::create([
+            $region = Region::where('id',$request->region_id)->first();
+
+            City::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
-                'country_id' => $request->country_id,
+                'country_id' => $region->country_id,
+                'region_id' => $request->region_id,
             ]);
 
         }catch (Exception $e) {
@@ -154,16 +159,16 @@ class RegionController extends Controller
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::OrderByName()->get();
-        if(Region::where('uuid',$id)->exists()){
+        $data['countries'] = Country::with('regions')->OrderByName()->get();
+        if(City::where('uuid',$id)->exists()){
 
-            $data['current'] = Region::where('uuid',$id)->first();
+            $data['current'] = City::where('uuid',$id)->first();
 
         }else{
             abort('404');
         }
 
-        return view('setting.region.edit', compact('data'));
+        return view('setting.city.edit', compact('data'));
     }
 
     /**
@@ -179,7 +184,7 @@ class RegionController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'country_id' => 'required'
+            'region_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -194,12 +199,14 @@ class RegionController extends Controller
 
         DB::beginTransaction();
         try {
+            $region = Region::where('id',$request->region_id)->first();
 
-            Region::where('uuid',$id)
+            City::where('uuid',$id)
                 ->update([
-                    'name' => self::strUCWord($request->name),
-                    'country_id' => $request->country_id,
-                ]);
+                'name' => self::strUCWord($request->name),
+                'country_id' => $region->country_id,
+                'region_id' => $request->region_id,
+            ]);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -223,7 +230,7 @@ class RegionController extends Controller
         DB::beginTransaction();
         try{
 
-            Region::where('uuid',$id)->delete();
+            City::where('uuid',$id)->delete();
 
         }catch (Exception $e) {
             DB::rollback();
