@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/extensions/toastr.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/extensions/sweetalert2.min.css')}}">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -33,6 +34,7 @@
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/plugins/extensions/ext-component-toastr.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/plugins/extensions/ext-component-sweet-alerts.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/core/menu/menu-types/vertical-menu.css')}}">
 
     <!-- END: Page CSS-->
@@ -42,6 +44,13 @@
     <!-- END: Custom CSS-->
 
     @yield('style')
+
+    <script>
+        let cd = console.log;
+        let spinner = '<div class="spinner-border text-primary" role="status">\n' +
+            '                    <span class="visually-hidden">Loading...</span>\n' +
+            '                </div>';
+    </script>
 </head>
 <!-- END: Head-->
 
@@ -61,9 +70,11 @@
 </div>
 <!-- END: Content-->
 
+@include('elements.popup')
 
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('assets/vendors/js/vendors.min.js')}}"></script>
+<script src="{{asset('assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
@@ -77,10 +88,12 @@
 <!-- BEGIN: Theme JS-->
 <script src="{{asset('assets/js/core/app-menu.js')}}"></script>
 <script src="{{asset('assets/js/core/app.js')}}"></script>
+<script src="{{asset('assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script>
 <!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->
 <script src="{{ asset('/pages/datatable/list.js?v=1') }}"></script>
+<script src="{{ asset('/pages/datatable/data-delete.js?v=1') }}"></script>
 @yield('pageJs')
 <!-- END: Page JS-->
 
@@ -95,6 +108,12 @@
             });
         }
     })
+    $(function () {
+        $("#modal_md").on("hidden.bs.modal", function (e) {
+            console.log("Modal hidden");
+            $('#modal_md').find('.modal-content').html(spinner);
+        });
+    });
 </script>
 </body>
 <!-- END: Body-->

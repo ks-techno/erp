@@ -36,9 +36,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('setting')->name('setting.')->group(function () {
         Route::prefix('country')->name('country.')->controller(CountryController::class)->group(function () {
             Route::get('list', 'index')->name('list');
-            Route::get('form/{id?}', 'create')->name('create');
-            Route::post('form/{id?}', 'store')->name('store');
-            Route::post('delete/{id}', 'destroy')->name('delete');
+            Route::get('create', 'create')->name('create');
+            Route::post('store', 'store')->name('store');
+            Route::get('edit/{id}', 'edit')->name('edit');
+            Route::post('update/{id}', 'update')->name('update');
+            Route::post('delete/{id}', 'destroy')->name('destroy');
         });
     });
 

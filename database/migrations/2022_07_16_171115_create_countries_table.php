@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_defi_country', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
 
             $table->id();
             $table->string('uuid');

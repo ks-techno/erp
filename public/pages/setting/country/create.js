@@ -1,7 +1,7 @@
 $(function () {
     'use strict';
 
-    var pageLoginForm = $('#country_form');
+    var pageLoginForm = $('#country_create');
 
     // jQuery Validation
     // --------------------------------------------------------------------
@@ -44,7 +44,7 @@ $(function () {
                             setTimeout(function () {
                                 $("form").find(":submit").prop('disabled', false);
                             }, 2000);
-                            window.location.href = response['data']['redirect'];
+                            location.reload();
                         }else{
                             ntoastr.error(response.message);
                             setTimeout(function () {
