@@ -50,19 +50,39 @@
                     <span class="menu-title text-truncate">Setting</span>
                 </a>
                 <ul class="menu-content">
-                    <li class="{{ ($route == 'setting.country.list')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.country.list') }}">
+                    <li class="{{ ($route == 'setting.country.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.country.index') }}">
                             <span class="menu-item text-truncate">Country</span>
                         </a>
                     </li>
-                    <li class="{{ ($route == 'setting.region.list')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.region.list') }}">
+                    <li class="{{ ($route == 'setting.region.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.region.index') }}">
                             <span class="menu-item text-truncate">Region</span>
                         </a>
                     </li>
-                    <li class="{{ ($route == 'setting.city.list')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.city.list') }}">
+                    <li class="{{ ($route == 'setting.city.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.city.index') }}">
                             <span class="menu-item text-truncate">City</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'setting.company.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.company.index') }}">
+                            <span class="menu-item text-truncate">Company</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'setting.project.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.project.index') }}">
+                            <span class="menu-item text-truncate">Project</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'setting.department.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.department.index') }}">
+                            <span class="menu-item text-truncate">Department</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'setting.staff.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.staff.index') }}">
+                            <span class="menu-item text-truncate">Staff</span>
                         </a>
                     </li>
                 </ul>

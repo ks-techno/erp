@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Region extends Model
+class Company extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
         'uuid',
         'name',
+        'contact_no',
+        'address',
         'country_id',
     ];
 
@@ -21,8 +23,5 @@ class Region extends Model
     }
     public function country(){
         return $this->belongsTo(Country::class);
-    }
-    public function cities(){
-        return $this->hasMany(City::class)->OrderByName();
     }
 }

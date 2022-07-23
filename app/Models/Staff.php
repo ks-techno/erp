@@ -6,23 +6,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Region extends Model
+class Staff extends Model
 {
     use SoftDeletes;
-
+    protected $table = 'staffs';
     protected $fillable = [
         'uuid',
         'name',
-        'country_id',
+        'contact_no',
+        'address',
+        'project_id',
+        'department_id',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }
-    public function country(){
-        return $this->belongsTo(Country::class);
+
+    public function project(){
+        return $this->belongsTo(Project::class);
     }
-    public function cities(){
-        return $this->hasMany(City::class)->OrderByName();
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 }

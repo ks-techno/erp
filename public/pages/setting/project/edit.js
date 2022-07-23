@@ -1,7 +1,7 @@
 $(function () {
     'use strict';
 
-    var pageLoginForm = $('#region_create');
+    var pageLoginForm = $('#project_edit');
 
     // jQuery Validation
     // --------------------------------------------------------------------
@@ -21,7 +21,10 @@ $(function () {
                 name: {
                     required: true,
                 },
-                country_id: {
+                company_id: {
+                    required: true,
+                },
+                city_id: {
                     required: true,
                 },
             },
@@ -47,7 +50,7 @@ $(function () {
                             setTimeout(function () {
                                 $("form").find(":submit").prop('disabled', false);
                             }, 2000);
-                            location.reload();
+                            window.location.href = response['data']['redirect'];
                         }else{
                             ntoastr.error(response.message);
                             setTimeout(function () {

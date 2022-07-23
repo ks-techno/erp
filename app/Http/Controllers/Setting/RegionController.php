@@ -18,7 +18,7 @@ class RegionController extends Controller
     {
         return [
             'title' => 'Region',
-            'list_url' => route('setting.region.list'),
+            'list_url' => route('setting.region.index'),
         ];
     }
 

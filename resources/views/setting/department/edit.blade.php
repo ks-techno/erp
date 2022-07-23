@@ -7,7 +7,7 @@
     @php
         $current = $data['current'];
     @endphp
-    <form id="country_edit" class="country_edit" action="{{route('setting.country.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="department_edit" class="department_edit" action="{{route('setting.department.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         @method('patch')
         <div class="row">
@@ -33,17 +33,6 @@
                                         <input type="text" class="form-control form-control-sm" value="{{$current->name}}" id="name" name="name" />
                                     </div>
                                 </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Status</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="country_status" name="country_status"
-                                                   {{$current->country_status == 1?"checked":""}}>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,7 +43,7 @@
 @endsection
 
 @section('pageJs')
-    <script src="{{ asset('/pages/setting/country/edit.js') }}"></script>
+    <script src="{{ asset('/pages/setting/department/edit.js') }}"></script>
 @endsection
 
 @section('script')

@@ -16,7 +16,7 @@ class CountryController extends Controller
     {
         return [
             'title' => 'Country',
-            'list_url' => route('setting.country.list'),
+            'list_url' => route('setting.country.index'),
         ];
     }
 

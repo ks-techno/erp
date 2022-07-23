@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Http\Controllers\Controller;
-use App\Models\City;
+use App\Models\Company;
 use App\Models\Country;
-use App\Models\Region;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Validator;
 
-class CityController extends Controller
+class CompanyController extends Controller
 {
 
     private static function Constants()
     {
         return [
-            'title' => 'City',
-            'list_url' => route('setting.city.index'),
+            'title' => 'Company',
+            'list_url' => route('setting.company.index'),
         ];
     }
 
@@ -34,7 +34,7 @@ class CityController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = City::with('country','region')->where('id','<>',0)->orderByName();
+            $dataSql = Company::with('country')->where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
 
@@ -43,8 +43,8 @@ class CityController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.city.edit',$row->uuid);
-                $urlDel = route('setting.city.destroy',$row->uuid);
+                $urlEdit = route('setting.company.edit',$row->uuid);
+                $urlDel = route('setting.company.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 $actions .= '<div class="d-inline-flex">';
@@ -57,9 +57,10 @@ class CityController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
-                    $row->country->name,
-                    $row->region->name,
                     $row->name,
+                    $row->contact_no,
+                    $row->country->name,
+                    $row->address,
                     $actions,
                 ];
             }
@@ -72,7 +73,7 @@ class CityController extends Controller
             return response()->json($result);
         }
 
-        return view('setting.city.list', compact('data'));
+        return view('setting.company.list', compact('data'));
     }
 
     /**
@@ -85,9 +86,8 @@ class CityController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::with('regions')->OrderByName()->get();
-       // dd($data['countries']->toArray());
-        return view('setting.city.create', compact('data'));
+        $data['countries'] = Country::OrderByName()->get();
+        return view('setting.company.create', compact('data'));
     }
 
 
@@ -102,7 +102,7 @@ class CityController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'region_id' => 'required'
+            'country_id' => ['required',Rule::notIn([0,'0'])]
         ]);
 
         if ($validator->fails()) {
@@ -118,13 +118,12 @@ class CityController extends Controller
         DB::beginTransaction();
         try {
 
-            $region = Region::where('id',$request->region_id)->first();
-
-            City::create([
+            Company::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
-                'country_id' => $region->country_id,
-                'region_id' => $request->region_id,
+                'contact_no' => $request->contact_no,
+                'address' => $request->address,
+                'country_id' => $request->country_id,
             ]);
 
         }catch (Exception $e) {
@@ -159,16 +158,16 @@ class CityController extends Controller
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::with('regions')->OrderByName()->get();
-        if(City::where('uuid',$id)->exists()){
+        $data['countries'] = Country::OrderByName()->get();
+        if(Company::where('uuid',$id)->exists()){
 
-            $data['current'] = City::where('uuid',$id)->first();
+            $data['current'] = Company::where('uuid',$id)->first();
 
         }else{
             abort('404');
         }
 
-        return view('setting.city.edit', compact('data'));
+        return view('setting.company.edit', compact('data'));
     }
 
     /**
@@ -184,7 +183,7 @@ class CityController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'region_id' => 'required'
+            'country_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -199,14 +198,14 @@ class CityController extends Controller
 
         DB::beginTransaction();
         try {
-            $region = Region::where('id',$request->region_id)->first();
 
-            City::where('uuid',$id)
+            Company::where('uuid',$id)
                 ->update([
-                'name' => self::strUCWord($request->name),
-                'country_id' => $region->country_id,
-                'region_id' => $request->region_id,
-            ]);
+                    'name' => self::strUCWord($request->name),
+                    'contact_no' => $request->contact_no,
+                    'address' => $request->address,
+                    'country_id' => $request->country_id,
+                ]);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -230,7 +229,7 @@ class CityController extends Controller
         DB::beginTransaction();
         try{
 
-            City::where('uuid',$id)->delete();
+            Company::where('uuid',$id)->delete();
 
         }catch (Exception $e) {
             DB::rollback();

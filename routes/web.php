@@ -7,6 +7,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Setting\CountryController;
 use App\Http\Controllers\Setting\RegionController;
 use App\Http\Controllers\Setting\CityController;
+use App\Http\Controllers\Setting\CompanyController;
+use App\Http\Controllers\Setting\ProjectController;
+use App\Http\Controllers\Setting\DepartmentController;
+use App\Http\Controllers\Setting\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,30 +40,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('setting')->name('setting.')->group(function () {
-        Route::prefix('country')->name('country.')->controller(CountryController::class)->group(function () {
-            Route::get('list', 'index')->name('list');
-            Route::get('create', 'create')->name('create');
-            Route::post('store', 'store')->name('store');
-            Route::get('edit/{id}', 'edit')->name('edit');
-            Route::post('update/{id}', 'update')->name('update');
-            Route::post('delete/{id}', 'destroy')->name('destroy');
-        });
-        Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function () {
-            Route::get('list', 'index')->name('list');
-            Route::get('create', 'create')->name('create');
-            Route::post('store', 'store')->name('store');
-            Route::get('edit/{id}', 'edit')->name('edit');
-            Route::post('update/{id}', 'update')->name('update');
-            Route::post('delete/{id}', 'destroy')->name('destroy');
-        });
-        Route::prefix('city')->name('city.')->controller(CityController::class)->group(function () {
-            Route::get('list', 'index')->name('list');
-            Route::get('create', 'create')->name('create');
-            Route::post('store', 'store')->name('store');
-            Route::get('edit/{id}', 'edit')->name('edit');
-            Route::post('update/{id}', 'update')->name('update');
-            Route::post('delete/{id}', 'destroy')->name('destroy');
-        });
+        Route::prefix('country')->resource('country', CountryController::class);
+        Route::prefix('region')->resource('region', RegionController::class);
+        Route::prefix('city')->resource('city', CityController::class);
+        Route::prefix('company')->resource('company', CompanyController::class);
+        Route::prefix('project')->resource('project', ProjectController::class);
+        Route::prefix('department')->resource('department', DepartmentController::class);
+        Route::prefix('staff')->resource('staff', StaffController::class);
     });
 
 });

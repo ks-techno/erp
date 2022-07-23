@@ -1,7 +1,7 @@
 $(function () {
     'use strict';
 
-    var pageLoginForm = $('#region_create');
+    var pageLoginForm = $('#project_create');
 
     // jQuery Validation
     // --------------------------------------------------------------------
@@ -21,7 +21,10 @@ $(function () {
                 name: {
                     required: true,
                 },
-                country_id: {
+                company_id: {
+                    required: true,
+                },
+                city_id: {
                     required: true,
                 },
             },

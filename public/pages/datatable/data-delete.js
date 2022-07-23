@@ -10,7 +10,7 @@ $('.datatables-ajax').on('click', '.delete-record', function (e) {
         if (result.value) {
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
-                type: 'POST',
+                type: 'DELETE',
                 url:url,
                 data:{_token: CSRF_TOKEN},
                 success: function(response, status){

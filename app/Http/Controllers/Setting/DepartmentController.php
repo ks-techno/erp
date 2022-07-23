@@ -3,22 +3,21 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
-use App\Models\City;
 use App\Models\Country;
-use App\Models\Region;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Validator;
 
-class CityController extends Controller
+class DepartmentController extends Controller
 {
 
     private static function Constants()
     {
         return [
-            'title' => 'City',
-            'list_url' => route('setting.city.index'),
+            'title' => 'Department',
+            'list_url' => route('setting.department.index'),
         ];
     }
 
@@ -34,7 +33,7 @@ class CityController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = City::with('country','region')->where('id','<>',0)->orderByName();
+            $dataSql = Department::where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
 
@@ -43,8 +42,8 @@ class CityController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.city.edit',$row->uuid);
-                $urlDel = route('setting.city.destroy',$row->uuid);
+                $urlEdit = route('setting.department.edit',$row->uuid);
+                $urlDel = route('setting.department.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 $actions .= '<div class="d-inline-flex">';
@@ -57,8 +56,6 @@ class CityController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
-                    $row->country->name,
-                    $row->region->name,
                     $row->name,
                     $actions,
                 ];
@@ -72,7 +69,7 @@ class CityController extends Controller
             return response()->json($result);
         }
 
-        return view('setting.city.list', compact('data'));
+        return view('setting.department.list', compact('data'));
     }
 
     /**
@@ -85,11 +82,9 @@ class CityController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::with('regions')->OrderByName()->get();
-       // dd($data['countries']->toArray());
-        return view('setting.city.create', compact('data'));
-    }
 
+        return view('setting.department.create', compact('data'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -101,8 +96,7 @@ class CityController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'region_id' => 'required'
+            'name' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -118,13 +112,9 @@ class CityController extends Controller
         DB::beginTransaction();
         try {
 
-            $region = Region::where('id',$request->region_id)->first();
-
-            City::create([
+            Department::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
-                'country_id' => $region->country_id,
-                'region_id' => $request->region_id,
             ]);
 
         }catch (Exception $e) {
@@ -159,16 +149,15 @@ class CityController extends Controller
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::with('regions')->OrderByName()->get();
-        if(City::where('uuid',$id)->exists()){
+        if(Department::where('uuid',$id)->exists()){
 
-            $data['current'] = City::where('uuid',$id)->first();
+            $data['current'] = Department::where('uuid',$id)->first();
 
         }else{
             abort('404');
         }
 
-        return view('setting.city.edit', compact('data'));
+        return view('setting.department.edit', compact('data'));
     }
 
     /**
@@ -178,13 +167,11 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
     public function update(Request $request, $id)
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'region_id' => 'required'
+            'name' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -199,14 +186,11 @@ class CityController extends Controller
 
         DB::beginTransaction();
         try {
-            $region = Region::where('id',$request->region_id)->first();
 
-            City::where('uuid',$id)
+            Department::where('uuid',$id)
                 ->update([
-                'name' => self::strUCWord($request->name),
-                'country_id' => $region->country_id,
-                'region_id' => $request->region_id,
-            ]);
+                    'name' => self::strUCWord($request->name),
+                ]);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -230,7 +214,7 @@ class CityController extends Controller
         DB::beginTransaction();
         try{
 
-            City::where('uuid',$id)->delete();
+            Department::where('uuid',$id)->delete();
 
         }catch (Exception $e) {
             DB::rollback();
@@ -239,5 +223,4 @@ class CityController extends Controller
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
-
 }

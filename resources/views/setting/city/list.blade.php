@@ -20,7 +20,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-datatable">
-                            <table class="datatables-ajax table table-responsive" data-url="{{route('setting.city.list')}}">
+                            <table class="datatables-ajax table table-responsive" data-url="{{route('setting.city.index')}}">
                                 <thead>
                                 <tr>
                                     <th class="cell-fit">Country</th>

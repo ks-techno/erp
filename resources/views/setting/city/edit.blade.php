@@ -9,6 +9,7 @@
     @endphp
     <form id="city_edit" class="city_edit" action="{{route('setting.city.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
+        @method('patch')
         <div class="row">
             <div class="col-12">
                 <div class="card">

@@ -7,7 +7,7 @@
     @php
         $current = $data['current'];
     @endphp
-    <form id="region_edit" class="region_edit" action="{{route('setting.region.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="region_edit" class="region_edit" action="{{route('setting.company.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         @method('patch')
         <div class="row">
@@ -23,6 +23,30 @@
                         </div>
                     </div>
                     <div class="card-body mt-2">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Name <span class="required">*</span></label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->name}}" id="name" name="name" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Contact No# </label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->contact_no}}" id="contact_no" name="contact_no" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
@@ -44,10 +68,10 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label">Name <span class="required">*</span></label>
+                                        <label class="col-form-label">Address </label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->name}}" id="name" name="name" />
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->address}}" id="address" name="address" />
                                     </div>
                                 </div>
                             </div>
