@@ -42,7 +42,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('setting')->name('setting.')->group(function () {
         Route::prefix('country')->resource('country', CountryController::class);
         Route::prefix('region')->resource('region', RegionController::class);
+        Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){
+            Route::post('get-regions-by-country', 'getRegionsByCountry')->name('getRegionsByCountry');
+        });
         Route::prefix('city')->resource('city', CityController::class);
+        Route::prefix('city')->name('city.')->controller(CityController::class)->group(function(){
+            Route::post('get-city-by-region', 'getCityByRegion')->name('getCityByRegion');
+        });
         Route::prefix('company')->resource('company', CompanyController::class);
         Route::prefix('project')->resource('project', ProjectController::class);
         Route::prefix('department')->resource('department', DepartmentController::class);

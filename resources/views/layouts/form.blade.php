@@ -104,6 +104,94 @@
             });
         }
     })
+    function valueEmpty(val){
+        if(val == 0 || val == undefined || val == "" || val == null || val == NaN || val == 'NaN' || !val){
+            return true;
+        }
+        return false;
+    }
+
+    $(document).on('change','.countryList',function(){
+        var validate = true;
+        var thix = $(this);
+        var val = thix.find('option:selected').val();
+        if(validate){
+            var formData = {
+                country_id : val
+            };
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('setting.region.getRegionsByCountry') }}',
+                dataType	: 'json',
+                data        : formData,
+                success: function(response,data) {
+                    if(response.status == 'success'){
+                        var regions = response.data['regions'];
+                        var length = regions.length;
+                        var options = "<option value='0' selected>Select</option>";
+                        for(var i=0;i<length;i++){
+                            if(regions[i]['name']){
+                                options += '<option value="'+regions[i]['id']+'">'+regions[i]['name']+'</option>';
+                            }
+                        }
+                        $('form').find('.regionList').html(options);
+                    }else{
+                        ntoastr.error(response.message);
+                    }
+                },
+                error: function(response,status) {
+                    ntoastr.error('server error..404');
+                }
+            });
+        }
+    });
+    $(document).on('change','.regionList',function(){
+        var validate = true;
+        var thix = $(this);
+        var val = thix.find('option:selected').val();
+        var country_id = $('form').find('.countryList option:selected').val();
+        if(valueEmpty(country_id)){
+            ntoastr.error("Select country");
+            validate = false;
+            return false;
+        }
+        if(validate){
+            var formData = {
+                country_id : country_id,
+                region_id : val
+            };
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('setting.city.getCityByRegion') }}',
+                dataType	: 'json',
+                data        : formData,
+                success: function(response,data) {
+                    if(response.status == 'success'){
+                        var cities = response.data['cities'];
+                        var length = cities.length;
+                        var options = "<option value='0' selected>Select</option>";
+                        for(var i=0;i<length;i++){
+                            if(cities[i]['name']){
+                                options += '<option value="'+cities[i]['id']+'">'+cities[i]['name']+'</option>';
+                            }
+                        }
+                        $('form').find('.cityList').html(options);
+                    }else{
+                        ntoastr.error(response.message);
+                    }
+                },
+                error: function(response,status) {
+                    ntoastr.error('server error..404');
+                }
+            });
+        }
+    });
 </script>
 </body>
 <!-- END: Body-->

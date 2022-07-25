@@ -14,9 +14,9 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                         </div>
-                        <div class="card-link">
+                        {{--<div class="card-link">
                             <a href="{{route('setting.company.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
-                        </div>
+                        </div>--}}
                     </div>
                     <div class="card-body">
                         <div class="card-datatable">

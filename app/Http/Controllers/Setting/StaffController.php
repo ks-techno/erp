@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\City;
 use App\Models\Company;
 use App\Models\Country;
@@ -64,7 +65,6 @@ class StaffController extends Controller
                 $entries[] = [
                     $row->name,
                     $row->contact_no,
-                    $row->address,
                     $row->project->name,
                     $row->department->name,
                     $actions,
@@ -94,6 +94,7 @@ class StaffController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         $data['projects'] = Project::OrderByName()->get();
         $data['departments'] = Department::OrderByName()->get();
+        $data['countries'] = Country::OrderByName()->get();
         return view('setting.staff.create', compact('data'));
     }
 
@@ -109,7 +110,10 @@ class StaffController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'project_id' => ['required',Rule::notIn([0,'0'])],
-            'department_id' => ['required',Rule::notIn([0,'0'])]
+            'department_id' => ['required',Rule::notIn([0,'0'])],
+            'country_id' => ['required',Rule::notIn([0,'0'])],
+            'region_id' => ['required',Rule::notIn([0,'0'])],
+            'city_id' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -125,14 +129,22 @@ class StaffController extends Controller
         DB::beginTransaction();
         try {
 
-            Staff::create([
+            $staff = Staff::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'contact_no' => $request->contact_no,
-                'address' => $request->address,
+                /*'address' => $request->address,*/
                 'project_id' => $request->project_id,
                 'department_id' => $request->department_id,
             ]);
+
+            $address = new Address();
+            $address->country_id = $request->country_id;
+            $address->region_id = $request->region_id;
+            $address->city_id = $request->city_id;
+            $address->address = $request->address;
+
+            $staff->addresses()->save($address);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -168,9 +180,11 @@ class StaffController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         $data['projects'] = Project::OrderByName()->get();
         $data['departments'] = Department::OrderByName()->get();;
+        $data['countries'] = Country::OrderByName()->get();
         if(Staff::where('uuid',$id)->exists()){
 
-            $data['current'] = Staff::where('uuid',$id)->first();
+            $data['current'] = Staff::with('addresses')->where('uuid',$id)->first();
+
 
         }else{
             abort('404');
@@ -216,6 +230,14 @@ class StaffController extends Controller
                     'project_id' => $request->project_id,
                     'department_id' => $request->department_id,
                 ]);
+            $staff = Staff::where('uuid',$id)->first();
+            $address = new Address();
+            $address->country_id = $request->country_id;
+            $address->region_id = $request->region_id;
+            $address->city_id = $request->city_id;
+            $address->address = $request->address;
+
+            $staff->addresses()->update($address->toArray());
 
         }catch (Exception $e) {
             DB::rollback();

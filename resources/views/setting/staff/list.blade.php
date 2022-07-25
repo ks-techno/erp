@@ -25,7 +25,6 @@
                                 <tr>
                                     <th class="cell-fit">Name</th>
                                     <th class="cell-fit">Contact No</th>
-                                    <th class="cell-fit">address</th>
                                     <th class="cell-fit">Project</th>
                                     <th class="cell-fit">Department</th>
                                     <th class="cell-fit"></th>

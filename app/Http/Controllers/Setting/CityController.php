@@ -240,4 +240,19 @@ class CityController extends Controller
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
 
+    public function getCityByRegion(Request $request)
+    {
+        $data = [];
+        DB::beginTransaction();
+        try{
+
+            $data['cities'] = City::where(['region_id'=>$request->region_id,'country_id'=>$request->country_id])->get();
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, '', 200);
+    }
 }

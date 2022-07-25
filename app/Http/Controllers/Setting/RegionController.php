@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Setting;
 
+use App\Models\City;
 use App\Models\Country;
 use App\Models\Region;
 use Illuminate\Http\Request;
@@ -231,6 +232,22 @@ class RegionController extends Controller
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
+    }
+
+    public function getRegionsByCountry(Request $request)
+    {
+        $data = [];
+        DB::beginTransaction();
+        try{
+
+            $data['regions'] = Region::where('country_id',$request->country_id)->get();
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, '', 200);
     }
 
 }

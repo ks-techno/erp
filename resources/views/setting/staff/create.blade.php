@@ -20,71 +20,122 @@
                     </div>
                     <div class="card-body mt-2">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Name <span class="required">*</span></label>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Name <span class="required">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control form-control-sm" value="" id="name" name="name" />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="" id="name" name="name" />
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Contact No# </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control form-control-sm" value="" id="contact_no" name="contact_no" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Project <span class="required">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select class="select2 form-select" id="project_id" name="project_id">
+                                                    <option value="0" selected>Select</option>
+                                                    @foreach($data['projects'] as $project)
+                                                        <option value="{{$project->id}}"> {{$project->name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Department <span class="required">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select class="select2 form-select" id="department_id" name="department_id">
+                                                    <option value="0" selected>Select</option>
+                                                    @foreach($data['departments'] as $department)
+                                                        <option value="{{$department->id}}"> {{$department->name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Contact No# </label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="" id="contact_no" name="contact_no" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Project <span class="required">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select class="select2 form-select" id="project_id" name="project_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['projects'] as $project)
-                                                <option value="{{$project->id}}"> {{$project->name}} </option>
-                                            @endforeach
-                                        </select>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Country <span class="required">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select class="select2 form-select countryList" id="country_id" name="country_id">
+                                                    <option value="0" selected>Select</option>
+                                                    @foreach($data['countries'] as $country)
+                                                        <option value="{{$country->id}}"> {{$country->name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Department <span class="required">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select class="select2 form-select" id="department_id" name="department_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['departments'] as $department)
-                                                <option value="{{$department->id}}"> {{$department->name}} </option>
-                                            @endforeach
-                                        </select>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Region <span class="required">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select class="select2 form-select regionList" id="region_id" name="region_id">
+                                                    <option value="0" selected>Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Address </label>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">City <span class="required">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select class="select2 form-select cityList" id="city_id" name="city_id">
+                                                    <option value="0" selected>Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="" id="address" name="address" />
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Address </label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control form-control-sm" id="address" name="address">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
