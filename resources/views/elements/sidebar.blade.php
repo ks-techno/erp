@@ -44,6 +44,36 @@
                     <span class="menu-title text-truncate" data-i18n="Dashboards">Home</span>
                 </a>
             </li>
+            <li class="nav-item {{ ($route == 'setting.company.index')?'active':'' }}">
+                <a class="d-flex align-items-center" href="{{ route('setting.company.index') }}">
+                    <i data-feather='briefcase'></i>
+                    <span class="menu-item text-truncate">Company</span>
+                </a>
+            </li>
+            <li class="nav-item {{ ($route == 'setting.project.index')?'active':'' }}">
+                <a class="d-flex align-items-center" href="{{ route('setting.project.index') }}">
+                    <i data-feather='book-open'></i>
+                    <span class="menu-item text-truncate">Project</span>
+                </a>
+            </li>
+            <li class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
+                <a class="d-flex align-items-center" href="#">
+                    <i data-feather='users'></i>
+                    <span class="menu-title text-truncate">HR</span>
+                </a>
+                <ul class="menu-content">
+                    <li class="{{ ($route == 'setting.department.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.department.index') }}">
+                            <span class="menu-item text-truncate">Department</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'setting.staff.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.staff.index') }}">
+                            <span class="menu-item text-truncate">Staff</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>
@@ -63,26 +93,6 @@
                     <li class="{{ ($route == 'setting.city.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.city.index') }}">
                             <span class="menu-item text-truncate">City</span>
-                        </a>
-                    </li>
-                    <li class="{{ ($route == 'setting.company.index')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.company.index') }}">
-                            <span class="menu-item text-truncate">Company</span>
-                        </a>
-                    </li>
-                    <li class="{{ ($route == 'setting.project.index')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.project.index') }}">
-                            <span class="menu-item text-truncate">Project</span>
-                        </a>
-                    </li>
-                    <li class="{{ ($route == 'setting.department.index')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.department.index') }}">
-                            <span class="menu-item text-truncate">Department</span>
-                        </a>
-                    </li>
-                    <li class="{{ ($route == 'setting.staff.index')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.staff.index') }}">
-                            <span class="menu-item text-truncate">Staff</span>
                         </a>
                     </li>
                 </ul>
