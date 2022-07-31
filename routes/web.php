@@ -4,6 +4,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Setting\CountryController;
 use App\Http\Controllers\Setting\RegionController;
 use App\Http\Controllers\Setting\CityController;
@@ -35,8 +37,14 @@ Route::get('/', function () {
 });*/
 
 Auth::routes();
-Route::group(['middleware' => 'auth'], function () {
+Route::prefix('password')->name('password.')->group(function () {
+    Route::get('request-email', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('show_form');
+    Route::post('email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('email');
+    Route::get('reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('forgetPassword');
+    Route::post('reset', [ResetPasswordController::class, 'reset'])->name('update');
 
+});
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('setting')->name('setting.')->group(function () {

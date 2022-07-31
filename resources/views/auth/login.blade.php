@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Login')
 @section('style')
 
 @endsection
@@ -57,7 +57,7 @@
                                 <div class="mb-1">
                                     <div class="d-flex justify-content-between">
                                         <label class="form-label" for="login-password">Password</label>
-                                        {{--<a href="javascript:;"><small>Forgot Password?</small></a>--}}
+                                        <a href="{{route('password.show_form')}}"><small>Forgot Password?</small></a>
                                     </div>
                                     <div class="input-group input-group-merge form-password-toggle">
                                         <input class="form-control form-control-merge" id="password" type="password" name="password" aria-describedby="password" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
