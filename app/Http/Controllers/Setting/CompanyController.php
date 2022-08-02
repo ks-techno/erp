@@ -86,7 +86,6 @@ class CompanyController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::OrderByName()->get();
         return view('setting.company.create', compact('data'));
     }
 
@@ -118,13 +117,15 @@ class CompanyController extends Controller
         DB::beginTransaction();
         try {
 
-            Company::create([
+            $company = Company::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'contact_no' => $request->contact_no,
                 'address' => $request->address,
                 'country_id' => $request->country_id,
             ]);
+
+            self::insertAddress($request,$company);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -158,7 +159,7 @@ class CompanyController extends Controller
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::OrderByName()->get();
+
         if(Company::where('uuid',$id)->exists()){
 
             $data['current'] = Company::where('uuid',$id)->first();
@@ -206,6 +207,9 @@ class CompanyController extends Controller
                     'address' => $request->address,
                     'country_id' => $request->country_id,
                 ]);
+            $company = Company::where('uuid',$id)->first();
+
+            self::insertAddress($request,$company);
 
         }catch (Exception $e) {
             DB::rollback();

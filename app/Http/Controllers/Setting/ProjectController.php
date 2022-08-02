@@ -122,7 +122,7 @@ class ProjectController extends Controller
         DB::beginTransaction();
         try {
             $city = City::where('id',$request->city_id)->first();
-            Project::create([
+            $project = Project::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'contact_no' => $request->contact_no,
@@ -132,6 +132,8 @@ class ProjectController extends Controller
                 'city_id' => $request->city_id,
                 'address' => $request->address,
             ]);
+
+            self::insertAddress($request,$project);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -212,12 +214,11 @@ class ProjectController extends Controller
                 ->update([
                 'name' => self::strUCWord($request->name),
                 'contact_no' => $request->contact_no,
-                'company_id' => $request->company_id,
-                'country_id' => $city->country_id,
-                'region_id' => $city->region_id,
-                'city_id' => $request->city_id,
-                'address' => $request->address,
+                'company_id' => $request->company_id
             ]);
+            $project = Project::where('uuid',$id)->first();
+
+            self::insertAddress($request,$project);
 
         }catch (Exception $e) {
             DB::rollback();

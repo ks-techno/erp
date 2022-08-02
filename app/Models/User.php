@@ -47,4 +47,7 @@ class User extends Authenticatable
         return $q->where('user_status',1);
     }
 
+    public function addresses(){
+        return $this->morphOne(Address::class, 'addressable');
+    }
 }

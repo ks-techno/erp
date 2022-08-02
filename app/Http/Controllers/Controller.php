@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -43,5 +44,19 @@ class Controller extends BaseController
     }
     protected function uuid(){
         return Uuid::generate()->string;
+    }
+
+    public static function insertAddress($request,$modal){
+        $address = new Address();
+        $address->country_id = $request->country_id;
+        $address->region_id = $request->region_id;
+        $address->city_id = $request->city_id;
+        $address->address = $request->address;
+
+        if(empty($modal->addresses)){
+            $modal->addresses()->save($address);
+        }else{
+            $modal->addresses()->update($address->toArray());
+        }
     }
 }

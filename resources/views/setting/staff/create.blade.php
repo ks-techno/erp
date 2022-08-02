@@ -80,65 +80,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="mb-1 row">
-                                            <div class="col-sm-3">
-                                                <label class="col-form-label">Country <span class="required">*</span></label>
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <select class="select2 form-select countryList" id="country_id" name="country_id">
-                                                    <option value="0" selected>Select</option>
-                                                    @foreach($data['countries'] as $country)
-                                                        <option value="{{$country->id}}"> {{$country->name}} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="mb-1 row">
-                                            <div class="col-sm-3">
-                                                <label class="col-form-label">Region <span class="required">*</span></label>
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <select class="select2 form-select regionList" id="region_id" name="region_id">
-                                                    <option value="0" selected>Select</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="mb-1 row">
-                                            <div class="col-sm-3">
-                                                <label class="col-form-label">City <span class="required">*</span></label>
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <select class="select2 form-select cityList" id="city_id" name="city_id">
-                                                    <option value="0" selected>Select</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="mb-1 row">
-                                            <div class="col-sm-3">
-                                                <label class="col-form-label">Address </label>
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control form-control-sm" id="address" name="address">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @include('partials.address')
                         </div>
                     </div>
                 </div>

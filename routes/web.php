@@ -13,6 +13,7 @@ use App\Http\Controllers\Setting\CompanyController;
 use App\Http\Controllers\Setting\ProjectController;
 use App\Http\Controllers\Setting\DepartmentController;
 use App\Http\Controllers\Setting\StaffController;
+use App\Http\Controllers\Setting\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,10 @@ Route::prefix('password')->name('password.')->group(function () {
 });
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+    Route::prefix('profile')->name('profile.')->controller(ProfileController::class)->group(function () {
+        Route::get('edit', 'edit')->name('edit');
+        Route::post('update','update')->name('update');
+    });
     Route::prefix('setting')->name('setting.')->group(function () {
         Route::prefix('country')->resource('country', CountryController::class);
         Route::prefix('region')->resource('region', RegionController::class);

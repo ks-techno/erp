@@ -94,7 +94,6 @@ class StaffController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         $data['projects'] = Project::OrderByName()->get();
         $data['departments'] = Department::OrderByName()->get();
-        $data['countries'] = Country::OrderByName()->get();
         return view('setting.staff.create', compact('data'));
     }
 
@@ -138,13 +137,7 @@ class StaffController extends Controller
                 'department_id' => $request->department_id,
             ]);
 
-            $address = new Address();
-            $address->country_id = $request->country_id;
-            $address->region_id = $request->region_id;
-            $address->city_id = $request->city_id;
-            $address->address = $request->address;
-
-            $staff->addresses()->save($address);
+            self::insertAddress($request,$staff);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -179,8 +172,8 @@ class StaffController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['projects'] = Project::OrderByName()->get();
-        $data['departments'] = Department::OrderByName()->get();;
-        $data['countries'] = Country::OrderByName()->get();
+        $data['departments'] = Department::OrderByName()->get();
+
         if(Staff::where('uuid',$id)->exists()){
 
             $data['current'] = Staff::with('addresses')->where('uuid',$id)->first();
@@ -231,13 +224,8 @@ class StaffController extends Controller
                     'department_id' => $request->department_id,
                 ]);
             $staff = Staff::where('uuid',$id)->first();
-            $address = new Address();
-            $address->country_id = $request->country_id;
-            $address->region_id = $request->region_id;
-            $address->city_id = $request->city_id;
-            $address->address = $request->address;
 
-            $staff->addresses()->update($address->toArray());
+            self::insertAddress($request,$staff);
 
         }catch (Exception $e) {
             DB::rollback();

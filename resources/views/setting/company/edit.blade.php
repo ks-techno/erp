@@ -48,33 +48,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Country <span class="required">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select class="select2 form-select" id="country_id" name="country_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['countries'] as $country)
-                                                <option value="{{$country->id}}" {{$country->id == $current->country_id?"selected":""}}> {{$country->name}} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Address </label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->address}}" id="address" name="address" />
-                                    </div>
-                                </div>
-                            </div>
+                            @include('partials.address')
                         </div>
                     </div>
                 </div>

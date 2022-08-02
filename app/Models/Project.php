@@ -21,6 +21,10 @@ class Project extends Model
         'address',
     ];
 
+    public function addresses(){
+        return $this->morphOne(Address::class, 'addressable');
+    }
+
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }
