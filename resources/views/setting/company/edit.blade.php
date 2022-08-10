@@ -48,7 +48,9 @@
                             </div>
                         </div>
                         <div class="row">
-                            @include('partials.address')
+                            <div class="col-md-6">
+                                @include('partials.address')
+                            </div>
                         </div>
                     </div>
                 </div>

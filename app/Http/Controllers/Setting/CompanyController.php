@@ -125,7 +125,11 @@ class CompanyController extends Controller
                 'country_id' => $request->country_id,
             ]);
 
-            self::insertAddress($request,$company);
+            $r = self::insertAddress($request,$company);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
         }catch (Exception $e) {
             DB::rollback();
@@ -209,7 +213,11 @@ class CompanyController extends Controller
                 ]);
             $company = Company::where('uuid',$id)->first();
 
-            self::insertAddress($request,$company);
+            $r = self::insertAddress($request,$company);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
         }catch (Exception $e) {
             DB::rollback();

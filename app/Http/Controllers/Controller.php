@@ -7,7 +7,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Validation\Rule;
 use Webpatser\Uuid\Uuid;
+use Validator;
 
 class Controller extends BaseController
 {
@@ -47,6 +49,24 @@ class Controller extends BaseController
     }
 
     public static function insertAddress($request,$modal){
+
+        $validator = Validator::make($request->all(), [
+            'country_id' => ['required',Rule::notIn([0,'0'])],
+            'region_id' => ['required',Rule::notIn([0,'0'])],
+            'city_id' => ['required',Rule::notIn([0,'0'])],
+            'address' => ['required',Rule::notIn([0,'0'])],
+        ]);
+
+        if ($validator->fails()) {
+            $data['validator_errors'] = $validator->errors();
+            $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
+            $err = 'Fields are required';
+            foreach ($validator_errors as $key=>$valid_error){
+                $err = $valid_error[0];
+            }
+            return ['status'=>'error', 'message'=>$err];
+        }
+
         $address = new Address();
         $address->country_id = $request->country_id;
         $address->region_id = $request->region_id;

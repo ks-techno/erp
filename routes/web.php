@@ -14,6 +14,11 @@ use App\Http\Controllers\Setting\ProjectController;
 use App\Http\Controllers\Setting\DepartmentController;
 use App\Http\Controllers\Setting\StaffController;
 use App\Http\Controllers\Setting\ProfileController;
+use App\Http\Controllers\Purchase\CategoryTypeController;
+use App\Http\Controllers\Purchase\CategoryController;
+use App\Http\Controllers\Purchase\BrandController;
+use App\Http\Controllers\Purchase\ManufacturerController;
+use App\Http\Controllers\Purchase\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +70,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('project')->resource('project', ProjectController::class);
         Route::prefix('department')->resource('department', DepartmentController::class);
         Route::prefix('staff')->resource('staff', StaffController::class);
+    });
+
+    Route::prefix('purchase')->name('purchase.')->group(function () {
+        Route::prefix('category_types')->resource('category_types', CategoryTypeController::class);
+        Route::prefix('category')->resource('category', CategoryController::class);
+        Route::prefix('brand')->resource('brand', BrandController::class);
+        Route::prefix('manufacturer')->resource('manufacturer', ManufacturerController::class);
+        Route::prefix('supplier')->resource('supplier', SupplierController::class);
     });
 
 });

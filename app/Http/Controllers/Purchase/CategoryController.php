@@ -1,33 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Setting;
+namespace App\Http\Controllers\Purchase;
 
 use App\Http\Controllers\Controller;
-use App\Models\Address;
-use App\Models\City;
-use App\Models\Company;
-use App\Models\Country;
+use App\Models\Category;
+use App\Models\CategoryType;
 use App\Models\Department;
-use App\Models\Project;
-use App\Models\Region;
-use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Exception;
 use Illuminate\Validation\Rule;
+use Exception;
 use Validator;
 
-class StaffController extends Controller
+class CategoryController extends Controller
 {
-
     private static function Constants()
     {
         return [
-            'title' => 'Staff',
-            'list_url' => route('setting.staff.index'),
+            'title' => 'Category',
+            'list_url' => route('purchase.category.index'),
         ];
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +33,7 @@ class StaffController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Staff::with('project','department')->where('id','<>',0)->orderByName();
+            $dataSql = Category::with('category_type','parent')->where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
 
@@ -49,8 +42,8 @@ class StaffController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.staff.edit',$row->uuid);
-                $urlDel = route('setting.staff.destroy',$row->uuid);
+                $urlEdit = route('purchase.category.edit',$row->uuid);
+                $urlDel = route('purchase.category.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 $actions .= '<div class="d-inline-flex">';
@@ -63,10 +56,9 @@ class StaffController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
+                    $row->category_type->name,
                     $row->name,
-                    $row->contact_no,
-                    $row->project->name,
-                    $row->department->name,
+                    isset($row->parent->name)?$row->parent->name:"",
                     $actions,
                 ];
             }
@@ -79,7 +71,7 @@ class StaffController extends Controller
             return response()->json($result);
         }
 
-        return view('setting.staff.list', compact('data'));
+        return view('purchase.category.list', compact('data'));
     }
 
     /**
@@ -92,9 +84,9 @@ class StaffController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['projects'] = Project::OrderByName()->get();
-        $data['departments'] = Department::OrderByName()->get();
-        return view('setting.staff.create', compact('data'));
+        $data['parent_category'] = Category::ParentCategory()->OrderByName()->get();
+        $data['category_types'] = CategoryType::OrderByName()->get();
+        return view('purchase.category.create', compact('data'));
     }
 
     /**
@@ -108,11 +100,7 @@ class StaffController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'project_id' => ['required',Rule::notIn([0,'0'])],
-            'department_id' => ['required',Rule::notIn([0,'0'])],
-            'country_id' => ['required',Rule::notIn([0,'0'])],
-            'region_id' => ['required',Rule::notIn([0,'0'])],
-            'city_id' => ['required',Rule::notIn([0,'0'])],
+            'category_type_id' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -128,20 +116,13 @@ class StaffController extends Controller
         DB::beginTransaction();
         try {
 
-            $staff = Staff::create([
+            $category = Category::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
-                'contact_no' => $request->contact_no,
-                /*'address' => $request->address,*/
-                'project_id' => $request->project_id,
-                'department_id' => $request->department_id,
+                'category_type_id' => $request->category_type_id,
+                'parent_id' => !empty($request->parent_id)?$request->parent_id:null,
             ]);
 
-            $r = self::insertAddress($request,$staff);
-
-            if(isset($r['status']) && $r['status'] == 'error'){
-                return $this->jsonErrorResponse($data, $r['message']);
-            }
 
         }catch (Exception $e) {
             DB::rollback();
@@ -175,19 +156,19 @@ class StaffController extends Controller
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['projects'] = Project::OrderByName()->get();
-        $data['departments'] = Department::OrderByName()->get();
+        $data['parent_category'] = Category::ParentCategory()->OrderByName()->get();
+        $data['category_types'] = CategoryType::OrderByName()->get();
 
-        if(Staff::where('uuid',$id)->exists()){
+        if(Category::where('uuid',$id)->exists()){
 
-            $data['current'] = Staff::with('addresses')->where('uuid',$id)->first();
+            $data['current'] = Category::where('uuid',$id)->first();
 
 
         }else{
             abort('404');
         }
 
-        return view('setting.staff.edit', compact('data'));
+        return view('purchase.category.edit', compact('data'));
     }
 
     /**
@@ -197,14 +178,12 @@ class StaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
     public function update(Request $request, $id)
     {
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'project_id' => ['required',Rule::notIn([0,'0'])],
-            'department_id' => ['required',Rule::notIn([0,'0'])]
+            'category_type_id' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -219,21 +198,13 @@ class StaffController extends Controller
 
         DB::beginTransaction();
         try {
-            Staff::where('uuid',$id)
+
+            Category::where('uuid',$id)
                 ->update([
-                    'name' => self::strUCWord($request->name),
-                    'contact_no' => $request->contact_no,
-                    'address' => $request->address,
-                    'project_id' => $request->project_id,
-                    'department_id' => $request->department_id,
-                ]);
-            $staff = Staff::where('uuid',$id)->first();
-
-            $r = self::insertAddress($request,$staff);
-
-            if(isset($r['status']) && $r['status'] == 'error'){
-                return $this->jsonErrorResponse($data, $r['message']);
-            }
+                'name' => self::strUCWord($request->name),
+                'category_type_id' => $request->category_type_id,
+                'parent_id' => !empty($request->parent_id)?$request->parent_id:null,
+            ]);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -257,7 +228,7 @@ class StaffController extends Controller
         DB::beginTransaction();
         try{
 
-            Staff::where('uuid',$id)->delete();
+            Category::where('uuid',$id)->delete();
 
         }catch (Exception $e) {
             DB::rollback();
@@ -266,5 +237,4 @@ class StaffController extends Controller
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
-
 }

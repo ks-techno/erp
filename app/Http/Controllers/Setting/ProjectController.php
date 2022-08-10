@@ -133,7 +133,11 @@ class ProjectController extends Controller
                 'address' => $request->address,
             ]);
 
-            self::insertAddress($request,$project);
+            $r = self::insertAddress($request,$project);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
         }catch (Exception $e) {
             DB::rollback();
@@ -218,7 +222,11 @@ class ProjectController extends Controller
             ]);
             $project = Project::where('uuid',$id)->first();
 
-            self::insertAddress($request,$project);
+            $r = self::insertAddress($request,$project);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
         }catch (Exception $e) {
             DB::rollback();

@@ -114,7 +114,11 @@ class ProfileController extends Controller
 
             $user = User::where('id',auth()->user()->id)->first();
 
-            self::insertAddress($request,$user);
+            $r = self::insertAddress($request,$user);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
         }catch (Exception $e) {
             DB::rollback();

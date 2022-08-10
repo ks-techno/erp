@@ -56,6 +56,39 @@
                     <span class="menu-item text-truncate">Project</span>
                 </a>
             </li>
+            <li class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
+                <a class="d-flex align-items-center" href="#">
+                    <i data-feather='shopping-cart'></i>
+                    <span class="menu-title text-truncate">Purchase</span>
+                </a>
+                <ul class="menu-content">
+                    <li class="{{ ($route == 'purchase.category_types.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.category_types.index') }}">
+                            <span class="menu-item text-truncate">Category Type</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'purchase.category.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.category.index') }}">
+                            <span class="menu-item text-truncate">Category</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'purchase.brand.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.brand.index') }}">
+                            <span class="menu-item text-truncate">Brand</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'purchase.supplier.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.supplier.index') }}">
+                            <span class="menu-item text-truncate">Supplier</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'purchase.manufacturer.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.manufacturer.index') }}">
+                            <span class="menu-item text-truncate">Manufacturer</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='users'></i>
