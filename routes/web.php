@@ -19,6 +19,7 @@ use App\Http\Controllers\Purchase\CategoryController;
 use App\Http\Controllers\Purchase\BrandController;
 use App\Http\Controllers\Purchase\ManufacturerController;
 use App\Http\Controllers\Purchase\SupplierController;
+use App\Http\Controllers\Purchase\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('brand')->resource('brand', BrandController::class);
         Route::prefix('manufacturer')->resource('manufacturer', ManufacturerController::class);
         Route::prefix('supplier')->resource('supplier', SupplierController::class);
+        Route::prefix('product')->resource('product', ProductController::class);
     });
 
 });

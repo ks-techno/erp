@@ -62,6 +62,11 @@
                     <span class="menu-title text-truncate">Purchase</span>
                 </a>
                 <ul class="menu-content">
+                    <li class="{{ ($route == 'purchase.product.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.product.index') }}">
+                            <span class="menu-item text-truncate">Product</span>
+                        </a>
+                    </li>
                     <li class="{{ ($route == 'purchase.category_types.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.category_types.index') }}">
                             <span class="menu-item text-truncate">Category Type</span>
