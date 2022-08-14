@@ -19,6 +19,8 @@ class Product extends Model
         'supplier_id',
         'manufacturer_id',
         'brand_id',
+        'parent_category',
+        'category_id',
         'default_sale_price',
         'default_purchase_price',
         'stock_on_hand_units',

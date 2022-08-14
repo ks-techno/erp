@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Purchase;
 use App\Http\Controllers\Controller;
 use App\Library\Utilities;
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Manufacturer;
 use App\Models\Product;
 use App\Models\Supplier;
@@ -95,6 +96,7 @@ class ProductController extends Controller
         $data['suppliers'] = Supplier::where('status',1)->OrderByName()->get();
         $data['manufacturers'] = Manufacturer::where('status',1)->OrderByName()->get();
         $data['brands'] = Brand::where('status',1)->OrderByName()->get();
+        $data['categories'] = Category::where('parent_id',null)->OrderByName()->get();
 
         return view('purchase.product.create', compact('data'));
     }
@@ -113,6 +115,8 @@ class ProductController extends Controller
             'supplier_id' => ['required',Rule::notIn([0,'0'])],
             'manufacturer_id' => ['required',Rule::notIn([0,'0'])],
             'brand_id' => ['required',Rule::notIn([0,'0'])],
+            'parent_category' => ['required',Rule::notIn([0,'0'])],
+            'category_id' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -144,6 +148,8 @@ class ProductController extends Controller
                 'supplier_id' => $request->supplier_id,
                 'manufacturer_id' => $request->manufacturer_id,
                 'brand_id' => $request->brand_id,
+                'parent_category' => $request->parent_category,
+                'category_id' => $request->category_id,
                 'default_sale_price' => $request->default_sale_price,
                 'default_purchase_price' => $request->default_purchase_price,
                 'stock_on_hand_units' => $request->stock_on_hand_units,
@@ -196,6 +202,7 @@ class ProductController extends Controller
         $data['suppliers'] = Supplier::where('status',1)->OrderByName()->get();
         $data['manufacturers'] = Manufacturer::where('status',1)->OrderByName()->get();
         $data['brands'] = Brand::where('status',1)->OrderByName()->get();
+        $data['categories'] = Category::where('parent_id',null)->OrderByName()->get();
 
         return view('purchase.product.edit', compact('data'));
     }
@@ -212,6 +219,11 @@ class ProductController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'supplier_id' => ['required',Rule::notIn([0,'0'])],
+            'manufacturer_id' => ['required',Rule::notIn([0,'0'])],
+            'brand_id' => ['required',Rule::notIn([0,'0'])],
+            'parent_category' => ['required',Rule::notIn([0,'0'])],
+            'category_id' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -235,6 +247,8 @@ class ProductController extends Controller
                     'supplier_id' => $request->supplier_id,
                     'manufacturer_id' => $request->manufacturer_id,
                     'brand_id' => $request->brand_id,
+                    'parent_category' => $request->parent_category,
+                    'category_id' => $request->category_id,
                     'default_sale_price' => $request->default_sale_price,
                     'default_purchase_price' => $request->default_purchase_price,
                     'stock_on_hand_units' => $request->stock_on_hand_units,

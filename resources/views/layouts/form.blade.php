@@ -192,6 +192,48 @@
             });
         }
     });
+    $(document).on('change','.parentCategoryList',function(){
+        var validate = true;
+        var thix = $(this);
+        var val = thix.find('option:selected').val();
+        if(valueEmpty(val)){
+            ntoastr.error("Select country");
+            validate = false;
+            return false;
+        }
+        if(validate){
+            var formData = {
+                parent_id : val
+            };
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('purchase.category.getChildByParentCategory') }}',
+                dataType	: 'json',
+                data        : formData,
+                success: function(response,data) {
+                    if(response.status == 'success'){
+                        var child = response.data['child'];
+                        var length = child.length;
+                        var options = "<option value='0' selected>Select</option>";
+                        for(var i=0;i<length;i++){
+                            if(child[i]['name']){
+                                options += '<option value="'+child[i]['id']+'">'+child[i]['name']+'</option>';
+                            }
+                        }
+                        $('form').find('.childCategoryList').html(options);
+                    }else{
+                        ntoastr.error(response.message);
+                    }
+                },
+                error: function(response,status) {
+                    ntoastr.error('server error..404');
+                }
+            });
+        }
+    });
 </script>
 </body>
 <!-- END: Body-->

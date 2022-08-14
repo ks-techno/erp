@@ -237,4 +237,21 @@ class CategoryController extends Controller
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
+
+
+    public function getChildByParentCategory(Request $request)
+    {
+        $data = [];
+        DB::beginTransaction();
+        try{
+
+            $data['child'] = Category::where(['parent_id'=>$request->parent_id])->get();
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, '', 200);
+    }
 }

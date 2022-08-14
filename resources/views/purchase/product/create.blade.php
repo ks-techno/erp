@@ -75,18 +75,25 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Sale Price</label>
+                                        <label class="col-form-label">Parent Category <span class="required">*</span> </label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="default_sale_price" name="default_sale_price" />
+                                        <select class="select2 form-select parentCategoryList" id="parent_category" name="parent_category">
+                                            <option value="0" selected>Select</option>
+                                            @foreach($data['categories'] as $parent_category)
+                                                <option value="{{$parent_category->id}}"> {{$parent_category->name}} </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Purchase Price </label>
+                                        <label class="col-form-label">Child Category <span class="required">*</span> </label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="default_purchase_price" name="default_purchase_price" />
+                                        <select class="select2 form-select childCategoryList" id="category_id" name="category_id">
+                                            <option value="0" selected>Select</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -119,6 +126,22 @@
                                         <div class="form-check form-check-primary form-switch">
                                             <input type="checkbox" class="form-check-input" id="is_taxable" name="is_taxable">
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-4">
+                                        <label class="col-form-label">Sale Price</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" value="" id="default_sale_price" name="default_sale_price" />
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-4">
+                                        <label class="col-form-label">Purchase Price </label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" value="" id="default_purchase_price" name="default_purchase_price" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">

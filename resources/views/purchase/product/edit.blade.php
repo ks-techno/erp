@@ -79,18 +79,31 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Sale Price</label>
+                                        <label class="col-form-label">Parent Category <span class="required">*</span> </label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->default_sale_price}}" id="default_sale_price" name="default_sale_price" />
+                                        <select class="select2 form-select parentCategoryList" id="parent_category" name="parent_category">
+                                            <option value="0" selected>Select</option>
+                                            @foreach($data['categories'] as $parent_category)
+                                                <option value="{{$parent_category->id}}" {{$parent_category->id == $current->parent_category ?"selected":""}}> {{$parent_category->name}} </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Purchase Price </label>
+                                        <label class="col-form-label">Child Category <span class="required">*</span> </label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->default_purchase_price}}" id="default_purchase_price" name="default_purchase_price" />
+                                        @php
+                                            $childes = \App\Models\Category::where(['parent_id'=>$current->parent_category])->get()
+                                        @endphp
+                                        <select class="select2 form-select childCategoryList" id="category_id" name="category_id">
+                                            <option value="0" selected>Select</option>
+                                            @foreach($childes as $child)
+                                                <option value="{{$child->id}}" {{$child->id == $current->category_id ?"selected":""}}> {{$child->name}} </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -123,6 +136,22 @@
                                         <div class="form-check form-check-primary form-switch">
                                             <input type="checkbox" class="form-check-input" id="is_taxable" name="is_taxable" {{$current->is_taxable == 1?"checked":""}}>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-4">
+                                        <label class="col-form-label">Sale Price</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->default_sale_price}}" id="default_sale_price" name="default_sale_price" />
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-4">
+                                        <label class="col-form-label">Purchase Price </label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->default_purchase_price}}" id="default_purchase_price" name="default_purchase_price" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
