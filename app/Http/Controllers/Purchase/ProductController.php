@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Purchase;
 
 use App\Http\Controllers\Controller;
 use App\Library\Utilities;
+use App\Models\Brand;
+use App\Models\Manufacturer;
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -89,6 +92,10 @@ class ProductController extends Controller
             'code_prefix'       => strtoupper('p')
         ];
         $data['code'] = Utilities::documentCode($doc_data);
+        $data['suppliers'] = Supplier::where('status',1)->OrderByName()->get();
+        $data['manufacturers'] = Manufacturer::where('status',1)->OrderByName()->get();
+        $data['brands'] = Brand::where('status',1)->OrderByName()->get();
+
         return view('purchase.product.create', compact('data'));
     }
 
@@ -103,6 +110,9 @@ class ProductController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'supplier_id' => ['required',Rule::notIn([0,'0'])],
+            'manufacturer_id' => ['required',Rule::notIn([0,'0'])],
+            'brand_id' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -128,7 +138,18 @@ class ProductController extends Controller
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'code' => $data['code'],
+                'is_purchase_able' => isset($request->is_purchase_able) ? "1" : "0",
+                'is_taxable' => isset($request->is_taxable) ? "1" : "0",
                 'status' => isset($request->status) ? "1" : "0",
+                'supplier_id' => $request->supplier_id,
+                'manufacturer_id' => $request->manufacturer_id,
+                'brand_id' => $request->brand_id,
+                'default_sale_price' => $request->default_sale_price,
+                'default_purchase_price' => $request->default_purchase_price,
+                'stock_on_hand_units' => $request->stock_on_hand_units,
+                'stock_on_hand_packages' => $request->stock_on_hand_packages,
+                'sold_in_quantity' => $request->sold_in_quantity,
+                'sell_by_package_only' => $request->sell_by_package_only,
             ]);
 
         }catch (Exception $e) {
@@ -172,6 +193,9 @@ class ProductController extends Controller
         }else{
             abort('404');
         }
+        $data['suppliers'] = Supplier::where('status',1)->OrderByName()->get();
+        $data['manufacturers'] = Manufacturer::where('status',1)->OrderByName()->get();
+        $data['brands'] = Brand::where('status',1)->OrderByName()->get();
 
         return view('purchase.product.edit', compact('data'));
     }
@@ -205,7 +229,18 @@ class ProductController extends Controller
             Product::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
+                    'is_purchase_able' => isset($request->is_purchase_able) ? "1" : "0",
+                    'is_taxable' => isset($request->is_taxable) ? "1" : "0",
                     'status' => isset($request->status) ? "1" : "0",
+                    'supplier_id' => $request->supplier_id,
+                    'manufacturer_id' => $request->manufacturer_id,
+                    'brand_id' => $request->brand_id,
+                    'default_sale_price' => $request->default_sale_price,
+                    'default_purchase_price' => $request->default_purchase_price,
+                    'stock_on_hand_units' => $request->stock_on_hand_units,
+                    'stock_on_hand_packages' => $request->stock_on_hand_packages,
+                    'sold_in_quantity' => $request->sold_in_quantity,
+                    'sell_by_package_only' => $request->sell_by_package_only,
                 ]);
 
         }catch (Exception $e) {

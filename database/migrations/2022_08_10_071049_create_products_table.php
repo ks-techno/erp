@@ -18,18 +18,18 @@ return new class extends Migration
             $table->string('uuid');
             $table->string('name');
             $table->string('code');
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('manufacturer_id');
-            $table->unsignedBigInteger('brand_id');
-            $table->boolean('is_purchase_able')->default(0);
-            $table->boolean('is_taxable')->default(0);
-            $table->boolean('status')->default(0);
-            $table->bigInteger('default_sale_price')->default(0);
-            $table->bigInteger('default_purchase_price')->default(0);
-            $table->bigInteger('stock_on_hand_units')->default(0);
-            $table->bigInteger('stock_on_hand_packages')->default(0);
-            $table->bigInteger('sold_in_quantity')->default(0);
-            $table->bigInteger('sell_by_package_only')->default(0);
+            $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('manufacturer_id')->nullable();
+            $table->unsignedBigInteger('brand_id')->nullable();
+            $table->boolean('is_purchase_able')->nullable()->default(0);
+            $table->boolean('is_taxable')->nullable()->default(0);
+            $table->boolean('status')->nullable()->default(0);
+            $table->bigInteger('default_sale_price')->nullable()->default(0);
+            $table->bigInteger('default_purchase_price')->nullable()->default(0);
+            $table->bigInteger('stock_on_hand_units')->nullable()->default(0);
+            $table->bigInteger('stock_on_hand_packages')->nullable()->default(0);
+            $table->bigInteger('sold_in_quantity')->nullable()->default(0);
+            $table->bigInteger('sell_by_package_only')->nullable()->default(0);
 
             $table->foreign('supplier_id')->references('id')->on('suppliers')
                 ->onUpdate('cascade')->onDelete('cascade');
