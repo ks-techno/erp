@@ -20,6 +20,8 @@ use App\Http\Controllers\Purchase\BrandController;
 use App\Http\Controllers\Purchase\ManufacturerController;
 use App\Http\Controllers\Purchase\SupplierController;
 use App\Http\Controllers\Purchase\ProductController;
+use App\Http\Controllers\Purchase\BuyableTypeController;
+use App\Http\Controllers\Purchase\ProductVariationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +85,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('manufacturer')->resource('manufacturer', ManufacturerController::class);
         Route::prefix('supplier')->resource('supplier', SupplierController::class);
         Route::prefix('product')->resource('product', ProductController::class);
+        Route::prefix('buyable-type')->resource('buyable-type', BuyableTypeController::class);
+        Route::prefix('product-variation')->resource('product-variation', ProductVariationController::class);
     });
 
 });

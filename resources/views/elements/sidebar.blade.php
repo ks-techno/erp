@@ -92,6 +92,16 @@
                             <span class="menu-item text-truncate">Manufacturer</span>
                         </a>
                     </li>
+                    <li class="{{ ($route == 'purchase.buyable-type.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.buyable-type.index') }}">
+                            <span class="menu-item text-truncate">Buyable Type</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'purchase.product-variation.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.product-variation.index') }}">
+                            <span class="menu-item text-truncate">Product Variation</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
