@@ -81,16 +81,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('category')->name('category.')->controller(CategoryController::class)->group(function(){
             Route::post('get-child-by-parent', 'getChildByParentCategory')->name('getChildByParentCategory');
         });
-        Route::prefix('product-variation')->name('product-variation.')->controller(ProductVariationController::class)->group(function(){
-            Route::post('get-product-variation-by-buyable-type', 'getProductVariations')->name('getProductVariations');
-        });
         Route::prefix('brand')->resource('brand', BrandController::class);
         Route::prefix('manufacturer')->resource('manufacturer', ManufacturerController::class);
         Route::prefix('supplier')->resource('supplier', SupplierController::class);
         Route::prefix('product')->resource('product', ProductController::class);
         Route::prefix('buyable-type')->resource('buyable-type', BuyableTypeController::class);
         Route::prefix('product-variation')->resource('product-variation', ProductVariationController::class);
-
+        Route::prefix('product-variation')->name('product-variation.')->controller(ProductVariationController::class)->group(function(){
+            Route::post('get-product-variation-by-buyable-type', 'getProductVariations')->name('getProductVariations');
+        });
 
     });
 

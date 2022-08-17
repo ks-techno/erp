@@ -111,7 +111,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->toArray());
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
