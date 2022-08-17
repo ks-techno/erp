@@ -317,5 +317,28 @@ class ProductVariationController extends Controller{
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
+
+    public function getProductVariations(Request $request)
+    {
+        $data = [];
+
+
+        DB::beginTransaction();
+        try{
+
+            $id = $request->buyable_type_id;
+            $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$id)->get()->toArray();
+            $data['prod_var'] = [];
+            foreach ($pvdtls as $pvdtl ){
+                $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
+            }
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, 'Successfully get variation by buyable type', 200);
+    }
 }
 

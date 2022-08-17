@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('uuid');
             $table->string('display_title');
             $table->string('key_name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('value_type');
 
             $table->timestamps();

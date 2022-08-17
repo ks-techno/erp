@@ -22,4 +22,7 @@ class ProductVariationDtl extends Model
     public function buyable_type(){
         return $this->belongsTo(BuyableType::class,'buyable_type_id','id');
     }
+    public function product_variation(){
+        return $this->belongsTo(ProductVariation::class,'product_variation_id','id');
+    }
 }

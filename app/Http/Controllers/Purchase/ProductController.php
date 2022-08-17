@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Purchase;
 use App\Http\Controllers\Controller;
 use App\Library\Utilities;
 use App\Models\Brand;
+use App\Models\BuyableType;
 use App\Models\Category;
 use App\Models\Manufacturer;
 use App\Models\Product;
@@ -97,6 +98,7 @@ class ProductController extends Controller
         $data['manufacturers'] = Manufacturer::where('status',1)->OrderByName()->get();
         $data['brands'] = Brand::where('status',1)->OrderByName()->get();
         $data['categories'] = Category::where('parent_id',null)->OrderByName()->get();
+        $data['buyable'] = BuyableType::OrderByName()->get();
 
         return view('purchase.product.create', compact('data'));
     }
@@ -109,6 +111,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->toArray());
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
