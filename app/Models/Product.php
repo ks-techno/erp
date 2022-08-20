@@ -27,9 +27,16 @@ class Product extends Model
         'stock_on_hand_packages',
         'sold_in_quantity',
         'sell_by_package_only',
+        'external_item_id',
+        'product_form_type',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
+    }
+
+
+    public function property_variation(){
+        return $this->hasMany(PropertyVariation::class,'product_id','id')->orderby('sr_no');
     }
 }

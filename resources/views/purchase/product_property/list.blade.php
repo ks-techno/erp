@@ -15,12 +15,12 @@
                                 <h4 class="card-title">{{$data['title']}}</h4>
                             </div>
                             <div class="card-link">
-                                <a href="{{route('purchase.property-type.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
+                                <a href="{{route('purchase.product-property.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="card-datatable">
-                                <table class="datatables-ajax table table-responsive" data-url="{{route('purchase.property-type.index')}}">
+                                <table class="datatables-ajax table table-responsive" data-url="{{route('purchase.product-property.index')}}">
                                     <thead>
                                     <tr>
                                         <th class="cell-fit">Name</th>

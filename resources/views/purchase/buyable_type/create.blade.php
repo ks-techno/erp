@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-    <form id="buyable_type_create" class="buyable_type_create" action="{{route('purchase.buyable-type.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="buyable_type_create" class="buyable_type_create" action="{{route('purchase.property-type.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-12">

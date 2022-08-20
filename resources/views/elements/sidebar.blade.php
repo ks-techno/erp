@@ -64,7 +64,12 @@
                 <ul class="menu-content">
                     <li class="{{ ($route == 'purchase.product.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product.index') }}">
-                            <span class="menu-item text-truncate">Product</span>
+                            <span class="menu-item text-truncate">Product Inventory</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($route == 'purchase.product-property.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.product-property.index') }}">
+                            <span class="menu-item text-truncate">Product Property</span>
                         </a>
                     </li>
                     <li class="{{ ($route == 'purchase.category_types.index')?'active':'' }}">
@@ -92,9 +97,9 @@
                             <span class="menu-item text-truncate">Manufacturer</span>
                         </a>
                     </li>
-                    <li class="{{ ($route == 'purchase.buyable-type.index')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('purchase.buyable-type.index') }}">
-                            <span class="menu-item text-truncate">Buyable Type</span>
+                    <li class="{{ ($route == 'purchase.property-type.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.property-type.index') }}">
+                            <span class="menu-item text-truncate">Property Type</span>
                         </a>
                     </li>
                     <li class="{{ ($route == 'purchase.product-variation.index')?'active':'' }}">

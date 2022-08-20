@@ -7,9 +7,16 @@ class Utilities
         $model = $doc_data['model'];
         $code_field = $doc_data['code_field'];
         $code_prefix = $doc_data['code_prefix'];
+        $form_type_field = isset($doc_data['form_type_field'])?$doc_data['form_type_field']:"";
+        $form_type_value = isset($doc_data['form_type_value'])?$doc_data['form_type_value']:"";
 
         $modelN = 'App\Models\\'.$model;
-        $max = $modelN::max($code_field);
+        if(!empty($form_type_field) && !empty($form_type_value)){
+            $modelN::where($form_type_field,$form_type_value)->max($code_field);
+        }else{
+            $max = $modelN::max($code_field);
+        }
+
         // max = "SP-0000000", type = "SP"
         if(!empty($max)){
             $max = explode('-',$max);

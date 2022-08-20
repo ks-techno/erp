@@ -7,7 +7,7 @@
     @php
         $current = $data['current'];
     @endphp
-    <form id="buyable_type_edit" class="buyable_type_edit" action="{{route('purchase.buyable-type.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="buyable_type_edit" class="buyable_type_edit" action="{{route('purchase.property-type.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         @method('patch')
         <div class="row">

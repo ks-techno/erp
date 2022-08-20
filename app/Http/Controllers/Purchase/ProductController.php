@@ -21,7 +21,7 @@ class ProductController extends Controller
     private static function Constants()
     {
         return [
-            'title' => 'Product',
+            'title' => 'Product Inventory',
             'list_url' => route('purchase.product.index'),
         ];
     }
@@ -37,7 +37,7 @@ class ProductController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Product::where('id','<>',0)->orderByName();
+            $dataSql = Product::where('product_form_type','inventory')->orderByName();
 
             $allData = $dataSql->get();
 
@@ -91,7 +91,9 @@ class ProductController extends Controller
         $doc_data = [
             'model'             => 'Product',
             'code_field'        => 'code',
-            'code_prefix'       => strtoupper('p')
+            'code_prefix'       => strtoupper('p'),
+            'form_type_field'        => 'product_form_type',
+            'form_type_value'       => 'property',
         ];
         $data['code'] = Utilities::documentCode($doc_data);
         $data['suppliers'] = Supplier::where('status',1)->OrderByName()->get();
@@ -136,7 +138,9 @@ class ProductController extends Controller
             $doc_data = [
                 'model'             => 'Product',
                 'code_field'        => 'code',
-                'code_prefix'       => strtoupper('p')
+                'code_prefix'       => strtoupper('p'),
+                'form_type_field'        => 'product_form_type',
+                'form_type_value'       => 'property',
             ];
             $data['code'] = Utilities::documentCode($doc_data);
 
@@ -144,7 +148,7 @@ class ProductController extends Controller
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'code' => $data['code'],
-                'is_purchase_able' => isset($request->is_purchase_able) ? "1" : "0",
+                'external_item_id' => $request->external_item_id,
                 'is_taxable' => isset($request->is_taxable) ? "1" : "0",
                 'status' => isset($request->status) ? "1" : "0",
                 'supplier_id' => $request->supplier_id,
@@ -152,12 +156,10 @@ class ProductController extends Controller
                 'brand_id' => $request->brand_id,
                 'parent_category' => $request->parent_category,
                 'category_id' => $request->category_id,
-                'default_sale_price' => $request->default_sale_price,
                 'default_purchase_price' => $request->default_purchase_price,
                 'stock_on_hand_units' => $request->stock_on_hand_units,
                 'stock_on_hand_packages' => $request->stock_on_hand_packages,
-                'sold_in_quantity' => $request->sold_in_quantity,
-                'sell_by_package_only' => $request->sell_by_package_only,
+                'product_form_type' => 'inventory',
             ]);
 
         }catch (Exception $e) {
@@ -243,7 +245,7 @@ class ProductController extends Controller
             Product::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
-                    'is_purchase_able' => isset($request->is_purchase_able) ? "1" : "0",
+                    'external_item_id' => $request->external_item_id,
                     'is_taxable' => isset($request->is_taxable) ? "1" : "0",
                     'status' => isset($request->status) ? "1" : "0",
                     'supplier_id' => $request->supplier_id,
@@ -251,12 +253,10 @@ class ProductController extends Controller
                     'brand_id' => $request->brand_id,
                     'parent_category' => $request->parent_category,
                     'category_id' => $request->category_id,
-                    'default_sale_price' => $request->default_sale_price,
                     'default_purchase_price' => $request->default_purchase_price,
                     'stock_on_hand_units' => $request->stock_on_hand_units,
                     'stock_on_hand_packages' => $request->stock_on_hand_packages,
-                    'sold_in_quantity' => $request->sold_in_quantity,
-                    'sell_by_package_only' => $request->sell_by_package_only,
+                    'product_form_type' => 'inventory',
                 ]);
 
         }catch (Exception $e) {

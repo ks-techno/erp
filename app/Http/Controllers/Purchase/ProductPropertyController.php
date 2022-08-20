@@ -3,20 +3,29 @@
 namespace App\Http\Controllers\Purchase;
 
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
+use App\Models\Brand;
 use App\Models\BuyableType;
+use App\Models\Category;
+use App\Models\Manufacturer;
+use App\Models\Product;
+use App\Models\ProductVariationDtl;
+use App\Models\Project;
+use App\Models\PropertyVariation;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Exception;
 use Validator;
 
-class BuyableTypeController extends Controller{
-
+class ProductPropertyController extends Controller
+{
     private static function Constants()
     {
         return [
-            'title' => 'Property Type',
-            'list_url' => route('purchase.property-type.index'),
+            'title' => 'Product Property',
+            'list_url' => route('purchase.product-property.index'),
         ];
     }
     /**
@@ -31,7 +40,7 @@ class BuyableTypeController extends Controller{
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = BuyableType::where('id','<>',0)->orderByName();
+            $dataSql = Product::where('product_form_type','property')->orderByName();
 
             $allData = $dataSql->get();
 
@@ -41,8 +50,8 @@ class BuyableTypeController extends Controller{
             $entries = [];
             foreach ($allData as $row) {
                 $entry_status = $this->getStatusTitle()[$row->status];
-                $urlEdit = route('purchase.property-type.edit',$row->uuid);
-                $urlDel = route('purchase.property-type.destroy',$row->uuid);
+                $urlEdit = route('purchase.product-property.edit',$row->uuid);
+                $urlDel = route('purchase.product-property.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 $actions .= '<div class="d-inline-flex">';
@@ -69,7 +78,7 @@ class BuyableTypeController extends Controller{
             return response()->json($result);
         }
 
-        return view('purchase.buyable_type.list', compact('data'));
+        return view('purchase.product_property.list', compact('data'));
     }
 
     /**
@@ -82,7 +91,18 @@ class BuyableTypeController extends Controller{
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        return view('purchase.buyable_type.create', compact('data'));
+        $doc_data = [
+            'model'             => 'Product',
+            'code_field'        => 'code',
+            'code_prefix'       => strtoupper('p'),
+            'form_type_field'        => 'product_form_type',
+            'form_type_value'       => 'property',
+        ];
+        $data['code'] = Utilities::documentCode($doc_data);
+        $data['project'] = Project::OrderByName()->get();
+        $data['buyable'] = BuyableType::OrderByName()->get();
+
+        return view('purchase.product_property.create', compact('data'));
     }
 
     /**
@@ -96,6 +116,7 @@ class BuyableTypeController extends Controller{
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'project_id' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -110,13 +131,38 @@ class BuyableTypeController extends Controller{
 
         DB::beginTransaction();
         try {
+            $doc_data = [
+                'model'             => 'Product',
+                'code_field'        => 'code',
+                'code_prefix'       => strtoupper('p'),
+                'form_type_field'        => 'product_form_type',
+                'form_type_value'       => 'property',
+            ];
+            $data['code'] = Utilities::documentCode($doc_data);
 
-            $brand = BuyableType::create([
+            $product = Product::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
+                'code' => $data['code'],
+                'external_item_id' => $request->external_item_id,
                 'status' => isset($request->status) ? "1" : "0",
+                'project_id' => $request->project_id,
+                'default_sale_price' => $request->default_sale_price,
+                'product_form_type' => 'property',
             ]);
-
+            if(isset($request->pv)){
+                $k = 1;
+                foreach ($request->pv as $pvId=>$pvVal){
+                    PropertyVariation::create([
+                        'sr_no' => $k,
+                        'product_id' => $product->id,
+                        'buyable_id' => $request->buyable_type_id,
+                        'product_variation_id' => $pvId,
+                        'value' => $pvVal,
+                    ]);
+                    $k = $k + 1;
+                }
+            }
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
@@ -150,16 +196,30 @@ class BuyableTypeController extends Controller{
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
 
-        if(BuyableType::where('uuid',$id)->exists()){
+        if(Product::where('uuid',$id)->exists()){
 
-            $data['current'] = BuyableType::where('uuid',$id)->first();
-
-
+            $data['current'] = Product::with('property_variation')->where('uuid',$id)->first();
+            $data['buyable_type_id'] = "";
+            $data['property_values'] = [];
+            if(!empty($data['current']->property_variation)){
+                foreach ($data['current']->property_variation as $property_variation){
+                    $data['buyable_type_id'] = $property_variation->buyable_id;
+                    $data['property_values'][$property_variation->product_variation_id] = $property_variation->value;
+                }
+                $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['buyable_type_id'])->get()->toArray();
+                $data['prod_var'] = [];
+                foreach ($pvdtls as $pvdtl ){
+                    $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
+                }
+            }
+          // dd($data['property_values']);
         }else{
             abort('404');
         }
+        $data['project'] = Project::OrderByName()->get();
+        $data['buyable'] = BuyableType::OrderByName()->get();
 
-        return view('purchase.buyable_type.edit', compact('data'));
+        return view('purchase.product_property.edit', compact('data'));
     }
 
     /**
@@ -174,6 +234,7 @@ class BuyableTypeController extends Controller{
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'project_id' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -188,11 +249,32 @@ class BuyableTypeController extends Controller{
 
         DB::beginTransaction();
         try {
-            BuyableType::where('uuid',$id)
+            Product::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
+                    'external_item_id' => $request->external_item_id,
                     'status' => isset($request->status) ? "1" : "0",
+                    'project_id' => $request->project_id,
+                    'default_sale_price' => $request->default_sale_price,
+                    'product_form_type' => 'property',
                 ]);
+
+            $product = Product::where('uuid',$id)->first();
+
+            if(isset($request->pv)){
+                PropertyVariation::where('product_id',$product->id)->delete();
+                $k = 1;
+                foreach ($request->pv as $pvId=>$pvVal){
+                    PropertyVariation::create([
+                        'sr_no' => $k,
+                        'product_id' => $product->id,
+                        'buyable_id' => $request->buyable_type_id,
+                        'product_variation_id' => $pvId,
+                        'value' => $pvVal,
+                    ]);
+                    $k = $k + 1;
+                }
+            }
 
         }catch (Exception $e) {
             DB::rollback();
@@ -216,7 +298,7 @@ class BuyableTypeController extends Controller{
         DB::beginTransaction();
         try{
 
-            BuyableType::where('uuid',$id)->delete();
+            Product::where('uuid',$id)->delete();
 
         }catch (Exception $e) {
             DB::rollback();

@@ -16,7 +16,7 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
+                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                         </div>
                         <div class="card-link">
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -110,21 +110,19 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
+                                        <label class="col-form-label">External Item ID</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->external_item_id}}" id="external_item_id" name="external_item_id" />
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-4">
                                         <label class="col-form-label">Status</label>
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="form-check form-check-primary form-switch">
                                             <input type="checkbox" class="form-check-input" id="status" name="status" {{$current->status == 1?"checked":""}}>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Is Purchase  able</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="is_purchase_able" name="is_purchase_able" {{$current->is_purchase_able == 1?"checked":""}}>
                                         </div>
                                     </div>
                                 </div>
@@ -136,14 +134,6 @@
                                         <div class="form-check form-check-primary form-switch">
                                             <input type="checkbox" class="form-check-input" id="is_taxable" name="is_taxable" {{$current->is_taxable == 1?"checked":""}}>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Sale Price</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->default_sale_price}}" id="default_sale_price" name="default_sale_price" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -164,29 +154,12 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Stock Hand Packages</label>
+                                        <label class="col-form-label p-0">Stock on Hand Packages</label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->stock_on_hand_packages}}" id="stock_on_hand_packages" name="stock_on_hand_packages" />
                                     </div>
                                 </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Sold Quantity</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->sold_in_quantity}}" id="sold_in_quantity" name="sold_in_quantity" />
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Sell Package</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->sell_by_package_only}}" id="sell_by_package_only" name="sell_by_package_only" />
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>

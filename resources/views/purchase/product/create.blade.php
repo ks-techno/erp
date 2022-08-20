@@ -96,16 +96,16 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Sell Package</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="sell_by_package_only" name="sell_by_package_only" />
-                                    </div>
-                                </div>
                             </div>
                             <div class="col-sm-6">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-4">
+                                        <label class="col-form-label">External Item ID</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" value="" id="external_item_id" name="external_item_id" />
+                                    </div>
+                                </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
                                         <label class="col-form-label">Status</label>
@@ -118,30 +118,12 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Is Purchase  able</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="is_purchase_able" name="is_purchase_able" checked>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
                                         <label class="col-form-label">Is Taxable</label>
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="form-check form-check-primary form-switch">
                                             <input type="checkbox" class="form-check-input" id="is_taxable" name="is_taxable">
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Sale Price</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="default_sale_price" name="default_sale_price" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -162,18 +144,10 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">S.Hand Packages</label>
+                                        <label class="col-form-label p-0">Stock on Hand Packages</label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="" id="stock_on_hand_packages" name="stock_on_hand_packages" />
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Sold Quantity</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="sold_in_quantity" name="sold_in_quantity" />
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +156,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Buyable Type </label>
+                                        <label class="col-form-label">Property Type </label>
                                     </div>
                                     <div class="col-sm-8">
                                         <select class="select2 form-select" id="buyable_type_id" name="buyable_type_id">
@@ -207,147 +181,6 @@
 
 @section('pageJs')
     <script src="{{ asset('/pages/purchase/product/create.js') }}"></script>
-    <script>
-        $(document).on('change','#buyable_type_id',function(){
-            var validate = true;
-            var thix = $(this);
-            var val = thix.find('option:selected').val();
-            if(valueEmpty(val)){
-                ntoastr.error("Select Buyable Type");
-                validate = false;
-                return false;
-            }
-            if(validate){
-                var formData = {
-                    buyable_type_id : val
-                };
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: '{{ route('purchase.product-variation.getProductVariations') }}',
-                    dataType	: 'json',
-                    data        : formData,
-                    success: function(response,data) {
-                        if(response.status == 'success'){
-                            var prod_var = response.data['prod_var'];
-                            var variations_list = "";
-
-                            var input_variations = prod_var['input'];
-                            for (const input_item in input_variations) {
-                                var thix_item = input_variations[input_item][0];
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '  <div class="col-sm-4">\n' +
-                                    '  <label class="col-form-label">'+thix_item['product_variation']['display_title']+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +
-                                    '  <input type="text" class="form-control form-control-sm" value="" id="'+thix_item['product_variation']['key_name']+'" name="pv['+thix_item['product_variation']['key_name']+']" />\n' +
-                                    '  </div>\n' +
-                                    '</div>';
-                            }
-
-                            var yes_no_variations = prod_var['yes_no'];
-                            for (const yes_no_item in yes_no_variations) {
-                                var thix_item = yes_no_variations[yes_no_item][0];
-                                var key_name = thix_item['product_variation']['key_name'];
-                                var value = thix_item['value'];
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '    <div class="col-sm-4">\n' +
-                                    '    <label class="col-form-label">'+thix_item['product_variation']['display_title']+'</label>\n' +
-                                    '   </div>\n' +
-                                    '   <div class="col-sm-8">\n' +
-                                    '     <div class="form-check form-check-warning form-switch">\n' +
-                                    '        <input type="checkbox" class="form-check-input" id="'+key_name+'"  value="'+value+'" name="pv['+key_name+']">\n' +
-                                    '        <label class="form-check-label mb-50" for="'+key_name+'" >'+value+'</label>' +
-                                    '     </div>'+
-                                    '   </div>\n' +
-                                    '</div>';
-                            }
-
-                            var radio_variations = prod_var['radio'];
-                            for (const radio_item in radio_variations) {
-                                var thix_item = radio_variations[radio_item];
-                                var thix_length = thix_item.length;
-                                console.log(thix_item.length);
-                                var radio_opt = "";
-                                for(var i=0;i<thix_length;i++){
-                                    var title = thix_item[i]['product_variation']['display_title'];
-                                    var key_name = thix_item[i]['product_variation']['key_name'];
-                                    radio_opt += '<div class="form-check form-check-inline">\n' +
-                                        ' <input class="form-check-input" type="radio" name="pv['+key_name+']" id="'+key_name+(i+1)+'" value="'+thix_item[i]['value']+'">\n' +
-                                        ' <label class="form-check-label" for="'+key_name+(i+1)+'">'+thix_item[i]['value']+'</label>\n' +
-                                        '</div>';
-                                }
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '   <div class="col-sm-4">\n' +
-                                    '   <label class="col-form-label">'+title+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +radio_opt +
-                                    ' </div>\n' +
-                                    ' </div>';
-                            }
-
-                            var select_variations = prod_var['select'];
-                            for (const select_item in select_variations) {
-                                var thix_item = select_variations[select_item];
-                                var thix_length = thix_item.length;
-                                console.log(thix_item.length);
-                                var select_opt = "";
-                                for(var i=0;i<thix_length;i++){
-                                    var title = thix_item[i]['product_variation']['display_title'];
-                                    var key_name = thix_item[i]['product_variation']['key_name'];
-                                    var value = thix_item[i]['value'];
-                                    select_opt += '<option value="'+value+'">'+value+'</option>';
-                                }
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '  <div class="col-sm-4">\n' +
-                                    '  <label class="col-form-label">'+title+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +
-                                    '  <select class="select2 form-select" id="'+key_name+'" name="pv['+key_name+']">\n' +
-                                    '  <option value="0" selected>Select</option>\n' + select_opt +
-                                    '  </select>\n' +
-                                    '  </div>\n' +
-                                    ' </div>';
-                            }
-
-                            var checkbox_variations = prod_var['checkbox'];
-                            for (const checkbox_item in checkbox_variations) {
-                                var thix_item = checkbox_variations[checkbox_item];
-                                var thix_length = thix_item.length;
-                                console.log(thix_item.length);
-                                var checkbox_opt = "";
-                                for(var i=0;i<thix_length;i++){
-                                    var title = thix_item[i]['product_variation']['display_title'];
-                                    var key_name = thix_item[i]['product_variation']['key_name'];
-                                    var value = thix_item[i]['value'];
-                                    checkbox_opt += '<div class="form-check form-check-inline">\n' +
-                                        ' <input class="form-check-input" type="checkbox" name="pv['+key_name+'][]" id="'+value+(i+1)+'" value="'+value+'">\n' +
-                                        '   <label class="form-check-label" for="'+value+(i+1)+'">'+value+'</label>\n' +
-                                        '  </div>';
-                                }
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '   <div class="col-sm-4">\n' +
-                                    '  <label class="col-form-label">'+title+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' + checkbox_opt+
-                                    '  </div>\n' +
-                                    '</div>';
-                            }
-
-                            $('form').find('#variations_list').html(variations_list);
-                        }else{
-                            ntoastr.error(response.message);
-                        }
-                    },
-                    error: function(response,status) {
-                        ntoastr.error('server error..404');
-                    }
-                });
-            }
-        });
-    </script>
 @endsection
 
 @section('script')
