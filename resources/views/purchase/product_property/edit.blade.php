@@ -87,31 +87,35 @@
                                         <select class="select2 form-select" id="buyable_type_id" name="buyable_type_id">
                                             <option value="0" selected>Select</option>
                                             @foreach($data['buyable'] as $buyable)
-                                            <option value="{{$buyable->id}}" {{$buyable->id == $data['buyable_type_id'] ?"selected":""}} > {{$buyable->name}} </option>
+                                            <option value="{{$buyable->id}}" {{$buyable->id == $current->buyable_type_id ?"selected":""}} > {{$buyable->name}} </option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div id="variations_list">
+
                                     @if(count($data['prod_var']) != 0)
                                         @php
                                             $prod_var = $data['prod_var'];
                                         @endphp
-                                        @foreach($prod_var['input'] as $input_name=>$input_list)
-                                            @php
-                                                $thix_list = $input_list[0];
-                                                $product_variation = $thix_list['product_variation'];
-                                            @endphp
-                                            <div class="mb-1 row">
-                                                <div class="col-sm-4">
-                                                    <label class="col-form-label">{{$product_variation['display_title']}}</label>
+                                        @if(isset($prod_var['input']))
+                                            @foreach($prod_var['input'] as $input_name=>$input_list)
+                                                @php
+                                                    $thix_list = $input_list[0];
+                                                    $product_variation = $thix_list['product_variation'];
+                                                @endphp
+                                                <div class="mb-1 row">
+                                                    <div class="col-sm-4">
+                                                        <label class="col-form-label">{{$product_variation['display_title']}}</label>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control form-control-sm" value="{{isset($data['property_values'][$input_name])?current($data['property_values'][$input_name]):""}}" id="{{$product_variation['key_name']}}" name="pv[{{$input_name}}]">
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control form-control-sm" value="{{$data['property_values'][$input_name]}}" id="{{$product_variation['key_name']}}" name="pv[{{$input_name}}]">
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                        @foreach($prod_var['yes_no'] as $yes_no_name=>$yes_no_list)
+                                            @endforeach
+                                        @endif
+                                        @if(isset($prod_var['yes_no']))
+                                            @foreach($prod_var['yes_no'] as $yes_no_name=>$yes_no_list)
                                             @php
                                                 $thix_list = $yes_no_list[0];
                                                 $product_variation = $thix_list['product_variation'];
@@ -128,20 +132,78 @@
                                                 </div>
                                             </div>
                                         @endforeach
-                                        @foreach($prod_var['radio'] as $radio_name=>$radio_lists)
+                                        @endif
+                                        @if(isset($prod_var['radio']))
+                                            @foreach($prod_var['radio'] as $radio_name=>$radio_lists)
+                                        @php
+                                            $radio_list_html = "";
+                                        @endphp
+                                        @foreach($radio_lists as $k=>$radio_list)
                                             @php
-                                                $radio_list_html = "";
+                                                $product_variation = $radio_list['product_variation'];
+                                                $title = $product_variation['display_title'];
+                                                $key_name = $product_variation['key_name'].$k;
+                                                $checked = (isset($data['property_values'][$radio_name]) && current($data['property_values'][$radio_name]) == $radio_list['value'])?"checked":"";
+                                                $radio_list_html .= '<div class="form-check form-check-inline">';
+                                                $radio_list_html .= '<input class="form-check-input" type="radio" name="pv['.$radio_name.']" id="'.$key_name.'" value="'.$radio_list['value'].'" '.$checked.'>';
+                                                $radio_list_html .= '<label class="form-check-label" for="'.$key_name.'">'.$radio_list['value'].'</label>';
+                                                $radio_list_html .= '</div>';
                                             @endphp
-                                            @foreach($radio_lists as $k=>$radio_list)
+                                        @endforeach
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-4">
+                                                <label class="col-form-label">{{$title}}</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                {!! $radio_list_html !!}
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                        @endif
+                                        @if(isset($prod_var['select']))
+                                            @foreach($prod_var['select'] as $select_name=>$select_lists)
                                                 @php
-                                                    $product_variation = $radio_list['product_variation'];
+                                                    $select_list_html = "";
+                                                @endphp
+                                                @foreach($select_lists as $k=>$select_list)
+                                                    @php
+                                                        $product_variation = $select_list['product_variation'];
+                                                        $title = $product_variation['display_title'];
+                                                        $key_name = $product_variation['key_name'];
+                                                        $value = $select_list['value'];
+                                                        $selected = (isset($data['property_values'][$select_name]) && current($data['property_values'][$select_name]) == $value)?"selected":"";
+                                                        $select_list_html .= '<option value="'.$value.'" '.$selected.'>'.$value.'</option>';
+                                                    @endphp
+                                                @endforeach
+                                                <div class="mb-1 row">
+                                                    <div class="col-sm-4">
+                                                        <label class="col-form-label">{{$title}}</label>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <select class="select2 form-select" id="{{$key_name}}" name="pv[{{$select_name}}]">
+                                                            <option value="0" selected>Select</option>
+                                                            {!! $select_list_html !!}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                        @if(isset($prod_var['checkbox']))
+                                            @foreach($prod_var['checkbox'] as $checkbox_name=>$checkbox_lists)
+                                            @php
+                                                $checkbox_list_html = "";
+                                            @endphp
+                                            @foreach($checkbox_lists as $k=>$checkbox_list)
+                                                @php
+                                                    $product_variation = $checkbox_list['product_variation'];
                                                     $title = $product_variation['display_title'];
                                                     $key_name = $product_variation['key_name'].$k;
-                                                    $checked = (isset($data['property_values'][$radio_name]) && $data['property_values'][$radio_name] == $radio_list['value'])?"checked":"";
-                                                    $radio_list_html .= '<div class="form-check form-check-inline">';
-                                                    $radio_list_html .= '<input class="form-check-input" type="radio" name="pv['.$radio_name.']" id="'.$key_name.'" value="'.$radio_list['value'].'" '.$checked.'>';
-                                                    $radio_list_html .= '<label class="form-check-label" for="'.$key_name.'">'.$radio_list['value'].'</label>';
-                                                    $radio_list_html .= '</div>';
+                                                    $value = $checkbox_list['value'];
+                                                    $checked = (isset($data['property_values'][$checkbox_name]) && in_array($value,$data['property_values'][$checkbox_name]))?"checked":"";
+                                                    $checkbox_list_html .= '<div class="form-check form-check-inline">';
+                                                    $checkbox_list_html .= '<input class="form-check-input" type="checkbox" name="pv['.$checkbox_name.'][]" id="'.$key_name.'" value="'.$checkbox_list['value'].'" '.$checked.'>';
+                                                    $checkbox_list_html .= '<label class="form-check-label" for="'.$key_name.'">'.$checkbox_list['value'].'</label>';
+                                                    $checkbox_list_html .= '</div>';
                                                 @endphp
                                             @endforeach
                                             <div class="mb-1 row">
@@ -149,36 +211,11 @@
                                                     <label class="col-form-label">{{$title}}</label>
                                                 </div>
                                                 <div class="col-sm-8">
-                                                    {!! $radio_list_html !!}
+                                                    {!! $checkbox_list_html !!}
                                                 </div>
                                             </div>
                                         @endforeach
-                                        @foreach($prod_var['select'] as $select_name=>$select_lists)
-                                            @php
-                                                $select_list_html = "";
-                                            @endphp
-                                            @foreach($select_lists as $k=>$select_list)
-                                                @php
-                                                    $product_variation = $select_list['product_variation'];
-                                                    $title = $product_variation['display_title'];
-                                                    $key_name = $product_variation['key_name'];
-                                                    $value = $select_list['value'];
-                                                    $selected = (isset($data['property_values'][$select_name]) && $data['property_values'][$select_name] == $value)?"selected":"";
-                                                    $select_list_html .= '<option value="'.$value.'" '.$selected.'>'.$value.'</option>';
-                                                @endphp
-                                            @endforeach
-                                            <div class="mb-1 row">
-                                                <div class="col-sm-4">
-                                                    <label class="col-form-label">{{$title}}</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <select class="select2 form-select" id="{{$key_name}}" name="pv[{{$select_name}}]">
-                                                        <option value="0" selected>Select</option>
-                                                        {!! $select_list_html !!}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        @endforeach
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -198,9 +235,9 @@
             var thix = $(this);
             var val = thix.find('option:selected').val();
             if(valueEmpty(val)){
-                ntoastr.error("Select Buyable Type");
+               // ntoastr.error("Select Buyable Type");
                 validate = false;
-                return false;
+               // return false;
             }
             if(validate){
                 var formData = {

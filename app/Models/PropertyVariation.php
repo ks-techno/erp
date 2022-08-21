@@ -14,7 +14,6 @@ class PropertyVariation extends Model
     protected $fillable = [
         'sr_no',
         'product_id',
-        'buyable_id',
         'product_variation_id',
         'value',
     ];

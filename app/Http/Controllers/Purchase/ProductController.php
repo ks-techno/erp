@@ -61,6 +61,7 @@ class ProductController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
+                    $row->code,
                     $row->name,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
@@ -91,9 +92,9 @@ class ProductController extends Controller
         $doc_data = [
             'model'             => 'Product',
             'code_field'        => 'code',
-            'code_prefix'       => strtoupper('p'),
+            'code_prefix'       => strtoupper('pi'),
             'form_type_field'        => 'product_form_type',
-            'form_type_value'       => 'property',
+            'form_type_value'       => 'inventory',
         ];
         $data['code'] = Utilities::documentCode($doc_data);
         $data['suppliers'] = Supplier::where('status',1)->OrderByName()->get();
@@ -138,9 +139,9 @@ class ProductController extends Controller
             $doc_data = [
                 'model'             => 'Product',
                 'code_field'        => 'code',
-                'code_prefix'       => strtoupper('p'),
+                'code_prefix'       => strtoupper('pi'),
                 'form_type_field'        => 'product_form_type',
-                'form_type_value'       => 'property',
+                'form_type_value'       => 'inventory',
             ];
             $data['code'] = Utilities::documentCode($doc_data);
 

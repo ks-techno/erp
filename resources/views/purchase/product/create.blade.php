@@ -152,26 +152,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Property Type </label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <select class="select2 form-select" id="buyable_type_id" name="buyable_type_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['buyable'] as $buyable)
-                                                <option value="{{$buyable->id}}"> {{$buyable->name}} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div id="variations_list">
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

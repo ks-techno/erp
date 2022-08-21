@@ -9,6 +9,7 @@ use App\Models\BuyableType;
 use App\Models\Category;
 use App\Models\Manufacturer;
 use App\Models\Product;
+use App\Models\ProductVariation;
 use App\Models\ProductVariationDtl;
 use App\Models\Project;
 use App\Models\PropertyVariation;
@@ -64,6 +65,7 @@ class ProductPropertyController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
+                    $row->code,
                     $row->name,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
@@ -94,7 +96,7 @@ class ProductPropertyController extends Controller
         $doc_data = [
             'model'             => 'Product',
             'code_field'        => 'code',
-            'code_prefix'       => strtoupper('p'),
+            'code_prefix'       => strtoupper('pp'),
             'form_type_field'        => 'product_form_type',
             'form_type_value'       => 'property',
         ];
@@ -134,13 +136,12 @@ class ProductPropertyController extends Controller
             $doc_data = [
                 'model'             => 'Product',
                 'code_field'        => 'code',
-                'code_prefix'       => strtoupper('p'),
+                'code_prefix'       => strtoupper('pp'),
                 'form_type_field'        => 'product_form_type',
                 'form_type_value'       => 'property',
             ];
             $data['code'] = Utilities::documentCode($doc_data);
-
-            $product = Product::create([
+            $p_data = [
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'code' => $data['code'],
@@ -149,18 +150,40 @@ class ProductPropertyController extends Controller
                 'project_id' => $request->project_id,
                 'default_sale_price' => $request->default_sale_price,
                 'product_form_type' => 'property',
-            ]);
-            if(isset($request->pv)){
-                $k = 1;
+            ];
+            if(isset($request->buyable_type_id) && !empty($request->buyable_type_id)){
+                $p_data['buyable_type_id'] = $request->buyable_type_id;
+            }else{
+                $p_data['buyable_type_id'] = NULL;
+            }
+            $product = Product::create($p_data);
+
+
+            if(isset($request->pv) && !empty($request->pv)){
                 foreach ($request->pv as $pvId=>$pvVal){
-                    PropertyVariation::create([
-                        'sr_no' => $k,
-                        'product_id' => $product->id,
-                        'buyable_id' => $request->buyable_type_id,
-                        'product_variation_id' => $pvId,
-                        'value' => $pvVal,
-                    ]);
-                    $k = $k + 1;
+                    if(is_array($pvVal)){
+                        $k = 1;
+                        foreach ($pvVal as $checkboxList){
+                            if(!empty($checkboxList)){
+                                PropertyVariation::create([
+                                    'sr_no' => $k,
+                                    'product_id' => $product->id,
+                                    'product_variation_id' => $pvId,
+                                    'value' => $checkboxList,
+                                ]);
+                                $k = $k + 1;
+                            }
+                        }
+                    }else{
+                        if(!empty($pvVal)){
+                            PropertyVariation::create([
+                                'sr_no' => 1,
+                                'product_id' => $product->id,
+                                'product_variation_id' => $pvId,
+                                'value' => $pvVal,
+                            ]);
+                        }
+                    }
                 }
             }
         }catch (Exception $e) {
@@ -199,14 +222,12 @@ class ProductPropertyController extends Controller
         if(Product::where('uuid',$id)->exists()){
 
             $data['current'] = Product::with('property_variation')->where('uuid',$id)->first();
-            $data['buyable_type_id'] = "";
             $data['property_values'] = [];
             if(!empty($data['current']->property_variation)){
                 foreach ($data['current']->property_variation as $property_variation){
-                    $data['buyable_type_id'] = $property_variation->buyable_id;
-                    $data['property_values'][$property_variation->product_variation_id] = $property_variation->value;
+                    $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;
                 }
-                $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['buyable_type_id'])->get()->toArray();
+                $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
                 $data['prod_var'] = [];
                 foreach ($pvdtls as $pvdtl ){
                     $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
@@ -249,33 +270,57 @@ class ProductPropertyController extends Controller
 
         DB::beginTransaction();
         try {
+            $p_data = [
+                'name' => self::strUCWord($request->name),
+                'external_item_id' => $request->external_item_id,
+                'status' => isset($request->status) ? "1" : "0",
+                'project_id' => $request->project_id,
+                'default_sale_price' => $request->default_sale_price,
+                'buyable_type_id' => $request->buyable_type_id,
+                'product_form_type' => 'property',
+            ];
+            if(isset($request->buyable_type_id) && !empty($request->buyable_type_id)){
+                $p_data['buyable_type_id'] = $request->buyable_type_id;
+            }else{
+                $p_data['buyable_type_id'] = NULL;
+            }
+
             Product::where('uuid',$id)
-                ->update([
-                    'name' => self::strUCWord($request->name),
-                    'external_item_id' => $request->external_item_id,
-                    'status' => isset($request->status) ? "1" : "0",
-                    'project_id' => $request->project_id,
-                    'default_sale_price' => $request->default_sale_price,
-                    'product_form_type' => 'property',
-                ]);
+                ->update($p_data);
 
             $product = Product::where('uuid',$id)->first();
 
-            if(isset($request->pv)){
+            if($product->buyable_type_id != $request->buyable_type_id){
                 PropertyVariation::where('product_id',$product->id)->delete();
-                $k = 1;
+            }
+            if(isset($request->pv) && !empty($request->pv)){
+                PropertyVariation::where('product_id',$product->id)->delete();
                 foreach ($request->pv as $pvId=>$pvVal){
-                    PropertyVariation::create([
-                        'sr_no' => $k,
-                        'product_id' => $product->id,
-                        'buyable_id' => $request->buyable_type_id,
-                        'product_variation_id' => $pvId,
-                        'value' => $pvVal,
-                    ]);
-                    $k = $k + 1;
+                    if(is_array($pvVal)){
+                        $k = 1;
+                        foreach ($pvVal as $checkboxList){
+                            if(!empty($checkboxList)){
+                                PropertyVariation::create([
+                                    'sr_no' => $k,
+                                    'product_id' => $product->id,
+                                    'product_variation_id' => $pvId,
+                                    'value' => $checkboxList,
+                                ]);
+                                $k = $k + 1;
+                            }
+                        }
+                    }else{
+                        if(!empty($pvVal)){
+                            PropertyVariation::create([
+                                'sr_no' => 1,
+                                'product_id' => $product->id,
+                                'product_variation_id' => $pvId,
+                                'value' => $pvVal,
+                            ]);
+                        }
+                    }
                 }
             }
-
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());

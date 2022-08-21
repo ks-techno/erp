@@ -21,6 +21,9 @@ $(function () {
                 name: {
                     required: true,
                 },
+                project_id: {
+                    required: true,
+                },
             },
             submitHandler: function (form) {
                 pageLoginForm.find(":submit").prop('disabled', true);

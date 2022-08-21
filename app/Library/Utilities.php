@@ -12,7 +12,7 @@ class Utilities
 
         $modelN = 'App\Models\\'.$model;
         if(!empty($form_type_field) && !empty($form_type_value)){
-            $modelN::where($form_type_field,$form_type_value)->max($code_field);
+            $max = $modelN::where($form_type_field,$form_type_value)->max($code_field);
         }else{
             $max = $modelN::max($code_field);
         }

@@ -29,6 +29,8 @@ class Product extends Model
         'sell_by_package_only',
         'external_item_id',
         'product_form_type',
+        'project_id',
+        'buyable_type_id',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){
