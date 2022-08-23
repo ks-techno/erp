@@ -4,6 +4,7 @@
 @endsection
 
 @section('content')
+    @permission($data['permission'])
     @php
         $current = $data['current'];
     @endphp
@@ -61,6 +62,7 @@
             </div>
         </div>
     </form>
+    @endpermission
 @endsection
 
 @section('pageJs')

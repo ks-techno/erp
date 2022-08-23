@@ -1,0 +1,314 @@
+<?php
+
+namespace App\Http\Controllers\Setting;
+
+use App\Http\Controllers\Controller;
+use App\Library\Utilities;
+use App\Models\Defi\TblDefiArea;
+use App\Models\Permission;
+use App\Models\PermissionUser;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+// db and Validator
+use Illuminate\Validation\Rule;
+use Validator;
+use Illuminate\Support\Facades\DB;
+use Exception;
+use Illuminate\Database\QueryException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Session;
+
+class UserManagementSystemController extends Controller
+{
+
+    private static function Constants()
+    {
+        return [
+            'title' => 'User Management',
+            'create_url' => route('setting.user-management.create'),
+        ];
+    }
+
+    public static function adminMenuList(){
+        $data = [];
+        $smenu = 'sidebar-menu';
+        $list = 'list';
+        $create = 'create';
+        $edit = 'edit';
+        $view = 'view';
+        $delete = 'delete';
+        $print = 'print';
+        $data['module_act'] = [$smenu,$list,$create,$edit,$view,$delete,$print];
+
+        $data['admin_menu'] = [
+            [
+                'name' => 'Common',
+                'icon' => '',
+                'child' => [
+                    ['dname'=>'Home', 'name' => 'home', 'action' => [ $smenu,$view ] ],
+                    ['dname'=>'Company', 'name' => 'company', 'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ] ],
+                    ['dname'=>'Project', 'name' => 'project','action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ] ],
+                ],
+            ],
+            // Purchase
+            [
+                'name' => 'Purchase',
+                'icon' => 'icon-xl la la-shopping-cart',
+                'child' => [
+                    [
+                        'dname' => 'Product Inventory',
+                        'name' => 'product-inventory',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Product Property',
+                        'name' => 'product-property',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Category Type',
+                        'name' => 'category-type',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Category',
+                        'name' => 'category',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Brand',
+                        'name' => 'brand',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Supplier',
+                        'name' => 'supplier',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Manufacturer',
+                        'name' => 'manufacturer',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Property Type',
+                        'name' => 'property-type',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Product Variation',
+                        'name' => 'product-variation',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                ]
+            ],
+            // HR
+            [
+                'name' => 'HR',
+                'icon' => 'icon-xl la la-cog',
+                'child' => [
+                    [
+                        'dname' => 'Department',
+                        'name' => 'department',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Staff',
+                        'name' => 'staff',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                ]
+            ],
+            // setting
+            [
+                'name' => 'Setting',
+                'icon' => 'icon-xl la la-cog',
+                'child' => [
+                    [
+                        'dname' => 'Country',
+                        'name' => 'country',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Region',
+                        'name' => 'region',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'City',
+                        'name' => 'city',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'User Management',
+                        'name' => 'user-management',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                ]
+            ],
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create($id = null)
+    { // for admin
+
+        // DB::table('users')->delete();
+        $data = self::adminMenuList();
+
+        foreach ($data['admin_menu'] as $admin_menus) {
+            // dd($admin_menus);
+            foreach ($admin_menus['child'] as $child){
+                //  dd($child);
+                if($child['dname'] != ""){
+                    foreach ($child['action'] as $module_act){
+                        $name = $child['name'].'-'.$module_act;
+                        if(!Permission::where('name',$name)->exists()){
+                            $createPermission =  new Permission();
+                            $createPermission->name = $name;
+                            $createPermission->display_name = $child['dname'];
+                            $createPermission->description = ucfirst($module_act);
+                            $createPermission->save();
+                        }
+                    }
+                }else{
+                    //  dd($child);
+                    foreach ($child['sub_child'] as $subchild){
+                        foreach ($subchild['action'] as $module_act) {
+                            $name = $subchild['name'].'-'.$module_act;
+                            if(!Permission::where('name',$name)->exists()){
+                                $createPermission =  new Permission();
+                                $createPermission->name = $name;
+                                $createPermission->display_name = $subchild['dname'];
+                                $createPermission->description = ucfirst($module_act);
+                                $createPermission->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $data['title'] = self::Constants()['title'];
+        $data['create_url'] = self::Constants()['create_url'];
+        if (isset($id)) {
+            if (User::where('id','LIKE',$id)->exists()) {
+                $user = User::where('id','LIKE',$id)->first();
+                $data['user_per_list'] = PermissionUser::where('user_id',$user->id)->pluck('permission_id')->toArray();
+                $data['id'] = $id;
+            } else {
+                abort('404');
+            }
+        }
+        $data['users'] = User::get();
+        $data['permission_list'] = Permission::pluck('id','name')->toArray();
+        $data['menus'] = self::adminMenuList();
+
+      //  dd($data['permission_list']);
+        return view('setting.user_management.form',compact('data'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request, $id = null)
+    {
+
+        $data = [];
+        /*if(!auth()->user()->isAbleTo(self::$permission_name.'-edit') && auth()->user()->super_admin == 0){
+            session()->flash('status', 'error');
+            session()->flash('message','You have no permission');
+            return redirect()->back();
+        }*/
+        DB::beginTransaction();
+        try{
+            $perAll = Permission::pluck('id')->toArray();
+            $user = User::where('id',$request->user_id)->first();
+            if(!empty($user)){
+                $permissions = ($request->has('permissions') && $request->filled('permissions'))?$request->permissions:[];
+                $permissions = array_filter($permissions);
+                $permissions = array_slice($permissions,0);
+                $user->detachPermissions($perAll);
+                $user->attachPermissions($permissions);
+            }
+
+        } catch (Exception $e) {
+            DB::rollback();
+            session()->flash('status', 'error');
+            session()->flash('message', $e->getMessage());
+            return redirect()->back();
+        }
+        DB::commit();
+
+        session()->flash('status', 'success');
+        session()->flash('message', 'User permission updated');
+        return redirect()->back();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}

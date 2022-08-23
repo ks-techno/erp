@@ -36,121 +36,187 @@
         </ul>
     </div>
     <div class="shadow-bottom"></div>
+    @php
+        $sidebar_menu = '-sidebar-menu';
+    @endphp
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+            @permission('home'.$sidebar_menu)
             <li class="nav-item {{ ($route == 'home')?'active':''}} ">
                 <a class="d-flex align-items-center" href="{{ route('home') }}">
                     <i data-feather="home"></i>
                     <span class="menu-title text-truncate" data-i18n="Dashboards">Home</span>
                 </a>
             </li>
+            @endpermission
+            @permission('company'.$sidebar_menu)
             <li class="nav-item {{ ($route == 'setting.company.index')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('setting.company.index') }}">
                     <i data-feather='briefcase'></i>
                     <span class="menu-item text-truncate">Company</span>
                 </a>
             </li>
+            @endpermission
+            @permission('project'.$sidebar_menu)
             <li class="nav-item {{ ($route == 'setting.project.index')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('setting.project.index') }}">
                     <i data-feather='book-open'></i>
                     <span class="menu-item text-truncate">Project</span>
                 </a>
             </li>
-            <li class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
+            @endpermission
+            <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='shopping-cart'></i>
                     <span class="menu-title text-truncate">Purchase</span>
                 </a>
-                <ul class="menu-content">
+                <ul class="menu-content" id="purchase_nav_ul">
+                    @permission('product-inventory'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.product.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product.index') }}">
                             <span class="menu-item text-truncate">Product Inventory</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('product-property'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.product-property.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product-property.index') }}">
                             <span class="menu-item text-truncate">Product Property</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('category-types'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.category_types.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.category_types.index') }}">
                             <span class="menu-item text-truncate">Category Type</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('category'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.category.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.category.index') }}">
                             <span class="menu-item text-truncate">Category</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('brand'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.brand.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.brand.index') }}">
                             <span class="menu-item text-truncate">Brand</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('supplier'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.supplier.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.supplier.index') }}">
                             <span class="menu-item text-truncate">Supplier</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('manufacturer'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.manufacturer.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.manufacturer.index') }}">
                             <span class="menu-item text-truncate">Manufacturer</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('property-type'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.property-type.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.property-type.index') }}">
                             <span class="menu-item text-truncate">Property Type</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('product-variation'.$sidebar_menu)
                     <li class="{{ ($route == 'purchase.product-variation.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product-variation.index') }}">
                             <span class="menu-item text-truncate">Product Variation</span>
                         </a>
                     </li>
+                    @endpermission
                 </ul>
             </li>
-            <li class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
+            <li id="hr_nav" class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='users'></i>
                     <span class="menu-title text-truncate">HR</span>
                 </a>
-                <ul class="menu-content">
+                <ul class="menu-content" id="hr_nav_ul">
+                    @permission('department'.$sidebar_menu)
                     <li class="{{ ($route == 'setting.department.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.department.index') }}">
                             <span class="menu-item text-truncate">Department</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('staff'.$sidebar_menu)
                     <li class="{{ ($route == 'setting.staff.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.staff.index') }}">
                             <span class="menu-item text-truncate">Staff</span>
                         </a>
                     </li>
+                    @endpermission
                 </ul>
             </li>
-            <li class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
+            <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>
                     <span class="menu-title text-truncate">Setting</span>
                 </a>
-                <ul class="menu-content">
+                <ul class="menu-content" id="setting_nav_ul">
+                    @permission('country'.$sidebar_menu)
                     <li class="{{ ($route == 'setting.country.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.country.index') }}">
                             <span class="menu-item text-truncate">Country</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('region'.$sidebar_menu)
                     <li class="{{ ($route == 'setting.region.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.region.index') }}">
                             <span class="menu-item text-truncate">Region</span>
                         </a>
                     </li>
+                    @endpermission
+                    @permission('city'.$sidebar_menu)
                     <li class="{{ ($route == 'setting.city.index')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.city.index') }}">
                             <span class="menu-item text-truncate">City</span>
+                        </a>
+                    </li>
+                    @endpermission
+                    <li class="{{ ($route == 'setting.user-management.create')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.user-management.create') }}">
+                            <span class="menu-item text-truncate">User Permission</span>
                         </a>
                     </li>
                 </ul>
             </li>
         </ul>
     </div>
+    <script>
+        var main_nav_ids = [
+            {
+                'id':'purchase_nav',
+                'nav_ul':'purchase_nav_ul',
+            },
+            {
+                'id':'setting_nav',
+                'nav_ul':'setting_nav_ul',
+            },
+            {
+                'id':'hr_nav',
+                'nav_ul':'hr_nav_ul',
+            }
+        ];
+        main_nav_ids.forEach(function(item){
+            var d = document.getElementById(item['nav_ul']).getElementsByTagName("li").length
+            if(d == 0){
+                document.getElementById(item['id']).remove()
+            }else{
+                document.getElementById(item['id']).style.display = "block";
+            }
+        })
+    </script>
 </div>
 <!-- END: Main Menu-->

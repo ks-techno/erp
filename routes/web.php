@@ -14,6 +14,7 @@ use App\Http\Controllers\Setting\ProjectController;
 use App\Http\Controllers\Setting\DepartmentController;
 use App\Http\Controllers\Setting\StaffController;
 use App\Http\Controllers\Setting\ProfileController;
+use App\Http\Controllers\Setting\UserManagementSystemController;
 use App\Http\Controllers\Purchase\CategoryTypeController;
 use App\Http\Controllers\Purchase\CategoryController;
 use App\Http\Controllers\Purchase\BrandController;
@@ -74,6 +75,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('project')->resource('project', ProjectController::class);
         Route::prefix('department')->resource('department', DepartmentController::class);
         Route::prefix('staff')->resource('staff', StaffController::class);
+
+        Route::prefix('user-management')->name('user-management.')->group(function () {
+            Route::get('form/{id?}', [UserManagementSystemController::class, 'create'])->name('create');
+            Route::post('form/{id?}', [UserManagementSystemController::class, 'store'])->name('store');
+        });
     });
 
     Route::prefix('purchase')->name('purchase.')->group(function () {
