@@ -225,6 +225,7 @@
             </div>
         </div>
     </form>
+    @endpermission
 @endsection
 
 @section('pageJs')

@@ -4,6 +4,7 @@
 @endsection
 
 @section('content')
+    @permission($data['permission'])
     <form id="category_types_create" class="category_types_create" action="{{route('purchase.category_types.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
@@ -46,6 +47,7 @@
             </div>
         </div>
     </form>
+    @endpermission
 @endsection
 
 @section('pageJs')
