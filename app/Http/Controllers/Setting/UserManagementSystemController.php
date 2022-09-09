@@ -105,6 +105,23 @@ class UserManagementSystemController extends Controller
                     ],
                 ]
             ],
+            // Sale
+            [
+                'name' => 'Sale',
+                'icon' => 'icon-xl la la-shopping-cart',
+                'child' => [
+                    [
+                        'dname' => 'Dealer',
+                        'name' => 'dealer',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Customer',
+                        'name' => 'customer',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                ]
+            ],
             // HR
             [
                 'name' => 'HR',

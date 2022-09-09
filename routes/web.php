@@ -24,6 +24,8 @@ use App\Http\Controllers\Purchase\ProductController;
 use App\Http\Controllers\Purchase\ProductPropertyController;
 use App\Http\Controllers\Purchase\BuyableTypeController;
 use App\Http\Controllers\Purchase\ProductVariationController;
+use App\Http\Controllers\Sale\DealerController;
+use App\Http\Controllers\Sale\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +101,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('get-product-variation-by-buyable-type', 'getProductVariations')->name('getProductVariations');
         });
 
+    });
+    Route::prefix('sale')->name('sale.')->group(function () {
+        Route::prefix('dealer')->resource('dealer', DealerController::class);
+        Route::prefix('customer')->resource('customer', CustomerController::class);
     });
 
 });

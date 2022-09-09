@@ -67,7 +67,7 @@
             @endpermission
             <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
-                    <i data-feather='shopping-cart'></i>
+                    <i data-feather='shopping-bag'></i>
                     <span class="menu-title text-truncate">Purchase</span>
                 </a>
                 <ul class="menu-content" id="purchase_nav_ul">
@@ -136,6 +136,28 @@
                     @endpermission
                 </ul>
             </li>
+            <li id="sale_nav" class="nav-item has-sub {{ ($prefix == '/sale')?'open':'' }}">
+                <a class="d-flex align-items-center" href="#">
+                    <i data-feather='shopping-cart'></i>
+                    <span class="menu-title text-truncate">Sale</span>
+                </a>
+                <ul class="menu-content" id="sale_nav_ul">
+                    @permission('dealer'.$sidebar_menu)
+                    <li class="{{ ($route == 'sale.dealer.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.dealer.index') }}">
+                            <span class="menu-item text-truncate">Dealer</span>
+                        </a>
+                    </li>
+                    @endpermission
+                    @permission('customer'.$sidebar_menu)
+                    <li class="{{ ($route == 'sale.customer.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.customer.index') }}">
+                            <span class="menu-item text-truncate">Customer</span>
+                        </a>
+                    </li>
+                    @endpermission
+                </ul>
+            </li>
             <li id="hr_nav" class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='users'></i>
@@ -199,6 +221,10 @@
             {
                 'id':'purchase_nav',
                 'nav_ul':'purchase_nav_ul',
+            },
+            {
+                'id':'sale_nav',
+                'nav_ul':'sale_nav_ul',
             },
             {
                 'id':'setting_nav',

@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sale', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string('uuid');
-            $table->bigInteger('customer_id');
+            $table->unsignedBigInteger('customer_id');
             $table->boolean('sale_by_staff');
             $table->morphs('seller');
             $table->bigInteger('project_id');
@@ -29,7 +29,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customer')
+            $table->foreign('customer_id')->references('id')->on('customers')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }
