@@ -120,6 +120,11 @@ class UserManagementSystemController extends Controller
                         'name' => 'customer',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
+                    [
+                        'dname' => 'Sale Invoice',
+                        'name' => 'sale-invoice',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
                 ]
             ],
             // HR

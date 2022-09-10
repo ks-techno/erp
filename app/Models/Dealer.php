@@ -23,6 +23,10 @@ class Dealer extends Model
         return $this->morphOne(Address::class, 'addressable');
     }
 
+    public function sale_seller(){
+        return $this->morphOne(SaleSeller::class, 'sale_sellersable');
+    }
+
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }

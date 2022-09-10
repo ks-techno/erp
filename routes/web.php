@@ -26,6 +26,7 @@ use App\Http\Controllers\Purchase\BuyableTypeController;
 use App\Http\Controllers\Purchase\ProductVariationController;
 use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
+use App\Http\Controllers\Sale\SaleInvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,6 +106,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('sale')->name('sale.')->group(function () {
         Route::prefix('dealer')->resource('dealer', DealerController::class);
         Route::prefix('customer')->resource('customer', CustomerController::class);
+        Route::prefix('sale-invoice')->resource('sale-invoice', SaleInvoiceController::class);
+        Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
+            Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+        });
     });
 
 });

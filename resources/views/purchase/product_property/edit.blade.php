@@ -7,6 +7,7 @@
     @php
         $current = $data['current'];
     @endphp
+    @permission($data['permission'])
     <form id="product_edit" class="product_edit" action="{{route('purchase.product-property.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         @method('patch')

@@ -37,6 +37,13 @@ class Product extends Model
         return $qry->orderby('name',$dir);
     }
 
+    protected function scopeProductProperty($qry){
+        return $qry->where('product_form_type','property');
+    }
+
+    protected function scopeProductInventory($qry){
+        return $qry->where('product_form_type','inventory');
+    }
 
     public function property_variation(){
         return $this->hasMany(PropertyVariation::class,'product_id','id')->orderby('sr_no');

@@ -156,6 +156,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('sale-invoice'.$sidebar_menu)
+                    <li class="{{ ($route == 'sale.sale-invoice.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.sale-invoice.index') }}">
+                            <span class="menu-item text-truncate">Sale Invoice</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
             <li id="hr_nav" class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
