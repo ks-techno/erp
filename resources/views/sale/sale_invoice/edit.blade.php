@@ -8,15 +8,16 @@
         $current = $data['current'];
     @endphp
     @permission($data['permission'])
-    <form id="sale_invoice_edit" class="sale_invoice_edit" action="{{route('sale.dealer.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="sale_invoice_edit" class="sale_invoice_edit" action="{{route('sale.sale-invoice.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
+        @method('patch')
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
+                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                         </div>
                         <div class="card-link">
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -85,8 +86,24 @@
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Seller <span class="required">*</span></label>
                                     </div>
+                                    @php
+                                        $sellers = [];
+                                        $selected_seller = [];
+                                        if($current->sale_by_staff == 1){
+                                            $sellers = App\Models\Staff::OrderByName()->get();
+                                            $selected_seller = isset($current->staff->sale_sellerable_id)?$current->staff->sale_sellerable_id:"";
+                                        }
+                                        if($current->sale_by_staff == 0){
+                                            $sellers = App\Models\Dealer::OrderByName()->get();
+                                            $selected_seller = isset($current->dealer->sale_sellerable_id)?$current->dealer->sale_sellerable_id:"";
+                                        }
+                                    @endphp
                                     <div class="col-sm-9">
                                         <select class="select2 form-select sellerList" id="seller_id" name="seller_id">
+                                            <option value='0' selected>Select</option>
+                                            @foreach($sellers as $seller)
+                                                <option value="{{$seller->id}}" {{$selected_seller == $seller->id?"selected":""}}>{{$seller->name}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>

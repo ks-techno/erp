@@ -242,7 +242,65 @@ class SaleInvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = [];
+        $validator = Validator::make($request->all(), [
+            'project_id' => ['required',Rule::notIn([0,'0'])],
+            'product_id' => ['required',Rule::notIn([0,'0'])],
+            'customer_id' => ['required',Rule::notIn([0,'0'])],
+            'seller_type' => ['required',Rule::in(['dealer','staff'])],
+            'seller_id' => ['required',Rule::notIn([0,'0'])],
+        ]);
+
+        if ($validator->fails()) {
+            $data['validator_errors'] = $validator->errors();
+            $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
+            $err = 'Fields are required';
+            foreach ($validator_errors as $key=>$valid_error){
+                $err = $valid_error[0];
+            }
+            return $this->jsonErrorResponse($data, $err);
+        }
+
+        DB::beginTransaction();
+        try{
+            Sale::where('uuid',$id)
+                ->update([
+                'customer_id' => $request->customer_id,
+                'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
+                'project_id' => $request->project_id,
+                'product_id' => $request->product_id,
+                'is_installment' => isset($request->is_installment)?1:0,
+                'is_booked' => isset($request->is_booked)?1:0,
+                'is_purchased' => isset($request->is_purchased)?1:0,
+                'sale_price' => $request->sale_price,
+                'booked_price' => $request->booked_price,
+            ]);
+
+            $sale = Sale::where('uuid',$id)->first();
+
+            $saleSeller = new SaleSeller();
+            $saleSeller->sale_sellerable_id = $request->seller_id;
+
+
+            if($request->seller_type == 'staff'){
+                $saleSeller->sale_sellerable_type = 'App\Models\Staff';
+               // dd($saleSeller->toArray());
+                $sale->dealer()->update($saleSeller->toArray());
+            }
+            if($request->seller_type == 'dealer'){
+                $saleSeller->sale_sellerable_type = 'App\Models\Dealer';
+                $sale->dealer()->update($saleSeller->toArray());
+            }
+
+
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage());
+        }
+        DB::commit();
+
+        return $this->jsonSuccessResponse($data, 'Successfully updated');
     }
 
     /**
