@@ -53,6 +53,18 @@ class UserManagementSystemController extends Controller
                     ['dname'=>'Project', 'name' => 'project','action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ] ],
                 ],
             ],
+            // Accounts
+            [
+                'name' => 'Accounts',
+                'icon' => 'icon-xl la la-cog',
+                'child' => [
+                    [
+                        'dname' => 'Chart of Account',
+                        'name' => 'chart-of-account',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                ]
+            ],
             // Purchase
             [
                 'name' => 'Purchase',

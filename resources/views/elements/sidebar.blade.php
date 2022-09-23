@@ -65,6 +65,21 @@
                 </a>
             </li>
             @endpermission
+            <li id="accounts_nav" class="nav-item has-sub {{ ($prefix == '/accounts')?'open':'' }}">
+                <a class="d-flex align-items-center" href="#">
+                    <i data-feather='users'></i>
+                    <span class="menu-title text-truncate">Accounts</span>
+                </a>
+                <ul class="menu-content" id="accounts_nav_ul">
+                    @permission('chart-of-account'.$sidebar_menu)
+                    <li class="{{ ($route == 'accounts.chart-of-account.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.chart-of-account.index') }}">
+                            <span class="menu-item text-truncate">Chart of Account</span>
+                        </a>
+                    </li>
+                    @endpermission
+                </ul>
+            </li>
             <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='shopping-bag'></i>

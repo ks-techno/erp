@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Setting\CountryController;
 use App\Http\Controllers\Setting\RegionController;
 use App\Http\Controllers\Setting\CityController;
@@ -64,6 +65,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('edit', 'edit')->name('edit');
         Route::post('update','update')->name('update');
     });
+
+    Route::prefix('accounts')->name('accounts.')->group(function () {
+        Route::prefix('chart-of-account')->resource('chart-of-account', ChartOfAccountController::class);
+        Route::prefix('chart-of-account')->name('chart-of-account.')->controller(ChartOfAccountController::class)->group(function(){
+            Route::post('get-parent-coa', 'getParentCoaList')->name('getParentCoaList');
+            Route::post('get-code-by-parent-account', 'getChildCodeByParentAccount')->name('getChildCodeByParentAccount');
+        });
+    });
+
     Route::prefix('setting')->name('setting.')->group(function () {
         Route::prefix('country')->resource('country', CountryController::class);
         Route::prefix('region')->resource('region', RegionController::class);
