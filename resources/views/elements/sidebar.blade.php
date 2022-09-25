@@ -78,6 +78,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('bank-payment'.$sidebar_menu)
+                    <li class="{{ ($route == 'accounts.bank-payment.index')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.bank-payment.index') }}">
+                            <span class="menu-item text-truncate">Bank Payment</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
             <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">

@@ -20,3 +20,6 @@
 .position-relative .select2-selection__arrow>b{
     top:28% !important;
 }
+.NumberValidate{
+    text-align: right;
+}

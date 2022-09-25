@@ -90,6 +90,10 @@
 <!-- BEGIN: Page JS-->
 <script src="{{asset('assets/js/scripts/forms/form-validation.js')}}"></script>
 <script src="{{asset('assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+
+
+@include('layouts.pageSetting')
+
 @yield('pageJs')
 <!-- END: Page JS-->
 
@@ -235,6 +239,8 @@
         }
     });
 </script>
+
+<script src="{{asset('/pages/common/validateInputFields.js')}}"></script>
 </body>
 <!-- END: Body-->
 

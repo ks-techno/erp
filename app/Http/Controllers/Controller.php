@@ -79,4 +79,26 @@ class Controller extends BaseController
             $modal->addresses()->update($address->toArray());
         }
     }
+
+    public static function documentCode($type,$max){
+        if(empty($type)){
+            return 0;
+        }
+        $num = sprintf("%'05d", 0);
+        $prefix = strtoupper($type);
+        $currentYear = date('y');
+        $codeYear = $currentYear;
+        if(!empty($max)){
+            $max = explode('-',$max);
+            $max = end($max);
+            $codeYear = substr($max,0,2);
+            $num = (int)$max + 1;
+        }
+        if($codeYear != $currentYear || empty($max)){
+            $max = 1;
+            $max = sprintf("%'05d", $max);
+            $num = $currentYear.$max;
+        }
+        return $prefix.'-'.$num;
+    }
 }

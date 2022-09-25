@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\PaymentMode;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Webpatser\Uuid\Uuid;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +22,23 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $data_payment_modes = [
+            ['name'=>'Cash','default'=>1],
+            ['name'=>'Bank','default'=>0],
+        ];
+        foreach ($data_payment_modes as $payment_mode){
+            if(!PaymentMode::where('name',$payment_mode['name'])->exists()){
+                PaymentMode::create([
+                    'uuid' => Uuid::generate()->string,
+                    'name' => $payment_mode['name'],
+                    'default' => $payment_mode['default'],
+                    'status' => 1,
+                ]);
+            }
+        }
+
+
+
     }
 }

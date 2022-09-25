@@ -63,6 +63,11 @@ class UserManagementSystemController extends Controller
                         'name' => 'chart-of-account',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
+                    [
+                        'dname' => 'Bank Payment',
+                        'name' => 'bank-payment',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
                 ]
             ],
             // Purchase
