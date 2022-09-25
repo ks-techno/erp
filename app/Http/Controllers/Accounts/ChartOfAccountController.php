@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Accounts;
 
 use App\Http\Controllers\Controller;
 use App\Models\ChartOfAccount;
-use App\Models\Country;
-use App\Models\Department;
-use App\Models\TblAccoChartAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -107,7 +104,7 @@ class ChartOfAccountController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['create'];
-        $data['code'] = self::coaDisplayMaxCode(1,"");
+        $data['code'] = self::coaDisplayMaxCode(1,0);
         return view('accounts.chart_of_account.create', compact('data'));
     }
 
@@ -139,17 +136,20 @@ class ChartOfAccountController extends Controller
             return $this->jsonErrorResponse($data, 'Level is required');
         }
         if($request->level != 1 && empty($request->parent_account)){
-            return $this->jsonErrorResponse($data, 'Parent Account is required');
+            return $this->jsonErrorResponse($data, 'Parent account is required');
         }
         DB::beginTransaction();
         try {
             $code = self::coaDisplayMaxCode($request->level,$request->parent_account);
 
             if($request->level == 1){
-                $parent_account_id = "";
-                $parent_account_code = "";
+                $parent_account_id = NULL;
+                $parent_account_code = NULL;
             }else{
                 $chart = ChartOfAccount::where('code',$request->parent_account)->first();
+                if(empty($chart)){
+                    return $this->jsonErrorResponse($data, 'Parent account not correct');
+                }
                 $parent_account_id = $chart->id;
                 $parent_account_code = $request->parent_account;
             }
@@ -198,9 +198,9 @@ class ChartOfAccountController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
-        if(Department::where('uuid',$id)->exists()){
+        if(ChartOfAccount::where('uuid',$id)->exists()){
 
-            $data['current'] = Department::where('uuid',$id)->first();
+            $data['current'] = ChartOfAccount::where('uuid',$id)->first();
 
         }else{
             abort('404');
@@ -221,7 +221,6 @@ class ChartOfAccountController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'code' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -240,6 +239,7 @@ class ChartOfAccountController extends Controller
             ChartOfAccount::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
+                    'status' => isset($request->status) ? "1" : "0",
                 ]);
 
         }catch (Exception $e) {
@@ -308,7 +308,8 @@ class ChartOfAccountController extends Controller
 
     public static function coaDisplayMaxCode($radioValue,$parent_account_code)
     {
-        $code = ChartOfAccount::where('parent_account_code','=', $parent_account_code)->max('code');
+        $parent_account_code = empty($parent_account_code)?NULL:$parent_account_code;
+        $code = ChartOfAccount::where('parent_account_code',$parent_account_code)->max('code');
 
         if(empty($code)){
             $code = empty($parent_account_code)?NULL:$parent_account_code;
