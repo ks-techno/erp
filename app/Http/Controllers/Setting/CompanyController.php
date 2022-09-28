@@ -41,7 +41,7 @@ class CompanyController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Company::with('country')->where('id','<>',0)->orderByName();
+            $dataSql = Company::with('addresses')->where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
 
@@ -78,8 +78,8 @@ class CompanyController extends Controller
                 $entries[] = [
                     $row->name,
                     $row->contact_no,
-                    $row->country->name,
-                    $row->address,
+                    isset($row->addresses->country->name)?$row->addresses->country->name:"",
+                    $row->addresses->address,
                     $actions,
                 ];
             }

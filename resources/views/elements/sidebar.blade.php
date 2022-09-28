@@ -236,11 +236,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('user-management'.$sidebar_menu)
                     <li class="{{ ($route == 'setting.user-management.create')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user-management.create') }}">
                             <span class="menu-item text-truncate">User Permission</span>
                         </a>
                     </li>
+                    @endpermission
                 </ul>
             </li>
         </ul>

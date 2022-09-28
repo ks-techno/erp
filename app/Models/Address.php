@@ -22,5 +22,7 @@ class Address extends Model
         return $this->morphTo();
     }
 
-
+    public function country(){
+        return $this->belongsTo(Country::class,'country_id','id');
+    }
 }

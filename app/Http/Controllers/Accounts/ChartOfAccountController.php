@@ -336,14 +336,14 @@ class ChartOfAccountController extends Controller
             $max_code = substr_replace($chart_code,$max,3,2);
         }
         if($radioValue == 3){
-            $code = substr($chart_code,6,2);
-            $max =  sprintf("%'02d", (int)$code+1);
-            $max_code = substr_replace($chart_code,$max,6,2);
+            $code = substr($chart_code,6,4);
+            $max =  sprintf("%'04d", (int)$code+1);
+            $max_code = substr_replace($chart_code,$max,6,4);
         }
         if($radioValue == 4){
-            $code = substr($chart_code,9,4);
+            $code = substr($chart_code,11,4);
             $max =  sprintf("%'04d", (int)$code+1);
-            $max_code = substr_replace($chart_code,$max,9,4);
+            $max_code = substr_replace($chart_code,$max,11,4);
         }
         return $max_code;
     }

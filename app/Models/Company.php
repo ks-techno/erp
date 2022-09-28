@@ -25,7 +25,4 @@ class Company extends Model
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }
-    public function country(){
-        return $this->belongsTo(Country::class);
-    }
 }

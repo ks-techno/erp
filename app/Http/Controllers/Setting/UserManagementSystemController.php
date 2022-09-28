@@ -211,42 +211,6 @@ class UserManagementSystemController extends Controller
     public function create($id = null)
     { // for admin
 
-        // DB::table('users')->delete();
-        $data = self::adminMenuList();
-
-        foreach ($data['admin_menu'] as $admin_menus) {
-            // dd($admin_menus);
-            foreach ($admin_menus['child'] as $child){
-                //  dd($child);
-                if($child['dname'] != ""){
-                    foreach ($child['action'] as $module_act){
-                        $name = $child['name'].'-'.$module_act;
-                        if(!Permission::where('name',$name)->exists()){
-                            $createPermission =  new Permission();
-                            $createPermission->name = $name;
-                            $createPermission->display_name = $child['dname'];
-                            $createPermission->description = ucfirst($module_act);
-                            $createPermission->save();
-                        }
-                    }
-                }else{
-                    //  dd($child);
-                    foreach ($child['sub_child'] as $subchild){
-                        foreach ($subchild['action'] as $module_act) {
-                            $name = $subchild['name'].'-'.$module_act;
-                            if(!Permission::where('name',$name)->exists()){
-                                $createPermission =  new Permission();
-                                $createPermission->name = $name;
-                                $createPermission->display_name = $subchild['dname'];
-                                $createPermission->description = ucfirst($module_act);
-                                $createPermission->save();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         $data['title'] = self::Constants()['title'];
         $data['create_url'] = self::Constants()['create_url'];
         if (isset($id)) {
