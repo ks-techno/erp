@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label">CNIC No#</label>
+                                        <label class="col-form-label">CNIC No# <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->cnic_no}}" id="cnic_no" name="cnic_no" />

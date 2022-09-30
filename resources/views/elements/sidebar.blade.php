@@ -1,7 +1,14 @@
 <!-- BEGIN: Main Menu-->
 @php
-    $prefix = Request::route()->getprefix();
-    $route = \Illuminate\Support\Facades\Route::current()->getName();
+        $prefix = Request::route()->getprefix();
+        $route = \Illuminate\Support\Facades\Route::current()->getName();
+
+        $path =  \Illuminate\Support\Facades\Request::path();
+        $path =  explode("/",$path);
+        $path1 = isset($path[0])?$path[0]:"";
+        $path2 = isset($path[1])?$path[1]:"";
+        $path = $path1.'/'.$path2;
+
 @endphp
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="navbar-header">
@@ -50,7 +57,7 @@
             </li>
             @endpermission
             @permission('company'.$sidebar_menu)
-            <li class="nav-item {{ ($route == 'setting.company.index')?'active':'' }}">
+            <li class="nav-item {{ ($path == 'setting/company')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('setting.company.index') }}">
                     <i data-feather='briefcase'></i>
                     <span class="menu-item text-truncate">Company</span>
@@ -58,7 +65,7 @@
             </li>
             @endpermission
             @permission('project'.$sidebar_menu)
-            <li class="nav-item {{ ($route == 'setting.project.index')?'active':'' }}">
+            <li class="nav-item {{ ($path == 'setting/project')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('setting.project.index') }}">
                     <i data-feather='book-open'></i>
                     <span class="menu-item text-truncate">Project</span>
@@ -72,14 +79,14 @@
                 </a>
                 <ul class="menu-content" id="accounts_nav_ul">
                     @permission('chart-of-account'.$sidebar_menu)
-                    <li class="{{ ($route == 'accounts.chart-of-account.index')?'active':'' }}">
+                    <li class="{{ ($path == 'accounts/chart-of-account')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('accounts.chart-of-account.index') }}">
                             <span class="menu-item text-truncate">Chart of Account</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('bank-payment'.$sidebar_menu)
-                    <li class="{{ ($route == 'accounts.bank-payment.index')?'active':'' }}">
+                    <li class="{{ ($path == 'accounts/bank-payment')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('accounts.bank-payment.index') }}">
                             <span class="menu-item text-truncate">Bank Payment</span>
                         </a>
@@ -94,63 +101,63 @@
                 </a>
                 <ul class="menu-content" id="purchase_nav_ul">
                     @permission('product-inventory'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.product.index')?'active':'' }}">
+                    <li class="{{ ($path == 'purchase/product')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product.index') }}">
                             <span class="menu-item text-truncate">Product Inventory</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('product-property'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.product-property.index')?'active':'' }}">
+                    <li class="{{ ($path == 'purchase/product-property')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product-property.index') }}">
                             <span class="menu-item text-truncate">Product Property</span>
                         </a>
                     </li>
                     @endpermission
-                    @permission('category-types'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.category_types.index')?'active':'' }}">
+                    @permission('category-type'.$sidebar_menu)
+                    <li class="{{ ($path == 'purchase/category_types')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.category_types.index') }}">
                             <span class="menu-item text-truncate">Category Type</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('category'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.category.index')?'active':'' }}">
+                    <li class="{{ ($path == 'purchase/category')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.category.index') }}">
                             <span class="menu-item text-truncate">Category</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('brand'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.brand.index')?'active':'' }}">
+                    <li class="{{ ($path == 'purchase/brand')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.brand.index') }}">
                             <span class="menu-item text-truncate">Brand</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('supplier'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.supplier.index')?'active':'' }}">
+                    <li class="{{ ($path == 'purchase/supplier')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.supplier.index') }}">
                             <span class="menu-item text-truncate">Supplier</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('manufacturer'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.manufacturer.index')?'active':'' }}">
+                    <li class="{{ ($path == 'purchase/manufacturer')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.manufacturer.index') }}">
                             <span class="menu-item text-truncate">Manufacturer</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('property-type'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.property-type.index')?'active':'' }}">
+                    <li class="{{ ($path == 'purchase/property-type')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.property-type.index') }}">
                             <span class="menu-item text-truncate">Property Type</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('product-variation'.$sidebar_menu)
-                    <li class="{{ ($route == 'purchase.product-variation.index')?'active':'' }}">
+                    <li class="{{ ($path == 'purchase/product-variation')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product-variation.index') }}">
                             <span class="menu-item text-truncate">Product Variation</span>
                         </a>
@@ -165,21 +172,21 @@
                 </a>
                 <ul class="menu-content" id="sale_nav_ul">
                     @permission('dealer'.$sidebar_menu)
-                    <li class="{{ ($route == 'sale.dealer.index')?'active':'' }}">
+                    <li class="{{ ($path == 'sale/dealer')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.dealer.index') }}">
                             <span class="menu-item text-truncate">Dealer</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('customer'.$sidebar_menu)
-                    <li class="{{ ($route == 'sale.customer.index')?'active':'' }}">
+                    <li class="{{ ($path == 'sale/customer')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.customer.index') }}">
                             <span class="menu-item text-truncate">Customer</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('sale-invoice'.$sidebar_menu)
-                    <li class="{{ ($route == 'sale.sale-invoice.index')?'active':'' }}">
+                    <li class="{{ ($path == 'sale/sale-invoice')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.sale-invoice.index') }}">
                             <span class="menu-item text-truncate">Sale Invoice</span>
                         </a>
@@ -194,14 +201,14 @@
                 </a>
                 <ul class="menu-content" id="hr_nav_ul">
                     @permission('department'.$sidebar_menu)
-                    <li class="{{ ($route == 'setting.department.index')?'active':'' }}">
+                    <li class="{{ ($path == 'setting/department')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.department.index') }}">
                             <span class="menu-item text-truncate">Department</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('staff'.$sidebar_menu)
-                    <li class="{{ ($route == 'setting.staff.index')?'active':'' }}">
+                    <li class="{{ ($path == 'setting/staff')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.staff.index') }}">
                             <span class="menu-item text-truncate">Staff</span>
                         </a>
@@ -216,28 +223,28 @@
                 </a>
                 <ul class="menu-content" id="setting_nav_ul">
                     @permission('country'.$sidebar_menu)
-                    <li class="{{ ($route == 'setting.country.index')?'active':'' }}">
+                    <li class="{{ ($path == 'setting/country')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.country.index') }}">
                             <span class="menu-item text-truncate">Country</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('region'.$sidebar_menu)
-                    <li class="{{ ($route == 'setting.region.index')?'active':'' }}">
+                    <li class="{{ ($path == 'setting/region')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.region.index') }}">
                             <span class="menu-item text-truncate">Region</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('city'.$sidebar_menu)
-                    <li class="{{ ($route == 'setting.city.index')?'active':'' }}">
+                    <li class="{{ ($path == 'setting/city')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.city.index') }}">
                             <span class="menu-item text-truncate">City</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('user-management'.$sidebar_menu)
-                    <li class="{{ ($route == 'setting.user-management.create')?'active':'' }}">
+                    <li class="{{ ($path == 'setting/user-management')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user-management.create') }}">
                             <span class="menu-item text-truncate">User Permission</span>
                         </a>

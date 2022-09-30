@@ -100,7 +100,7 @@
                                                         <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left">
+                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>

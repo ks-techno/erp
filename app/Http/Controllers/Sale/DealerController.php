@@ -123,6 +123,7 @@ class DealerController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'cnic_no' => 'required',
             'email' => 'nullable|email',
         ]);
 
@@ -210,6 +211,7 @@ class DealerController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'cnic_no' => 'required',
             'email' => 'nullable|email',
         ]);
 
