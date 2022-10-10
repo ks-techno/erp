@@ -5,12 +5,8 @@
 
 @section('content')
     @permission($data['permission'])
-    @php
-        $current = $data['current'];
-    @endphp
-    <form id="cash_payment_edit" class="cash_payment_edit" action="{{route('accounts.cash-payment.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="journal_create" class="journal_create" action="{{route('accounts.journal.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
-        @method('patch')
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -26,7 +22,7 @@
                     <div class="card-body mt-2">
                         <div class="mb-1 row">
                             <div class="col-sm-12">
-                                <h6>{{$current->voucher_no}}</h6>
+                                <h6>{{$data['voucher_no']}}</h6>
                             </div>
                         </div>
                         <div class="row">
@@ -41,6 +37,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-4">
+
                             </div>
                         </div>
                         <div class="row">
@@ -110,38 +107,6 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody class="egt_form_body">
-                                                @if(isset( $data['dtl']) && count( $data['dtl']) > 0)
-                                                    @foreach($data['dtl'] as $dtl)
-                                                        <tr>
-                                                            <td class="handle"><i data-feather="move" class="handle egt_handle"></i>
-                                                                <input type="text" data-id="egt_sr_no" name="pd[{{$loop->iteration}}][egt_sr_no]"  value="{{$loop->iteration}}" class="form-control form-control-sm" readonly>
-                                                                <input type="hidden" data-id="chart_id" name="pd[{{$loop->iteration}}][chart_id]" value="{{$dtl->chart_account_id}}" class="chart_id form-control form-control-sm">
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" data-id="egt_chart_code" name="pd[{{$loop->iteration}}][egt_chart_code]" value="{{$dtl->chart_account_code}}" class=" chart_code form-control form-control-sm text-left" readonly>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" data-id="egt_chart_name" name="pd[{{$loop->iteration}}][egt_chart_name]" value="{{$dtl->chart_account_name}}" class="chart_name form-control form-control-sm" readonly>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" data-id="egt_description" name="pd[{{$loop->iteration}}][egt_description]" value="{{$dtl->description}}"  class="form-control form-control-sm">
-                                                            </td>
-                                                            <td>
-                                                                <input data-id="egt_debit" type="text" name="pd[{{$loop->iteration}}][egt_debit]" value="{{number_format($dtl->debit,3)}}" class="FloatValidate debit form-control form-control-sm">
-                                                            </td>
-                                                            <td>
-                                                                <input data-id="egt_credit" type="text" name="pd[{{$loop->iteration}}][egt_credit]" value="{{number_format($dtl->credit,3)}}" class="FloatValidate credit form-control form-control-sm">
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <div class="egt_btn-group">
-                                                                    <button type="button" class="btn btn-danger btn-sm egt_del">
-                                                                        <i data-feather="trash-2"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endif
                                                 </tbody>
                                                 <tfoot class="egt_form_footer">
                                                 <tr class="egt_form_footer_total">
@@ -171,7 +136,7 @@
                                 <div class="row">
                                     <label class="col-form-label col-lg-2">Remarks:</label>
                                     <div class="col-lg-10">
-                                        <textarea class="form-control form-control-sm" rows="3" name="remarks" id="remarks">{{$current->remarks}}</textarea>
+                                        <textarea class="form-control form-control-sm" rows="3" name="remarks" id="remarks"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +149,7 @@
     @endpermission
 @endsection
 @section('pageJs')
-    <script src="{{ asset('/pages/accounts/cash_payment/edit.js') }}"></script>
+    <script src="{{ asset('/pages/accounts/journal/create.js') }}"></script>
 @endsection
 
 @section('script')

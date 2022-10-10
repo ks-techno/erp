@@ -113,6 +113,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('journal'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/journal')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.journal.index') }}">
+                            <span class="menu-item text-truncate">Journal</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
             <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">

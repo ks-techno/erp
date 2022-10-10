@@ -8,7 +8,7 @@
     @php
         $current = $data['current'];
     @endphp
-    <form id="cash_payment_edit" class="cash_payment_edit" action="{{route('accounts.cash-payment.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="journal_edit" class="journal_edit" action="{{route('accounts.journal.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         @method('patch')
         <div class="row">
@@ -184,7 +184,7 @@
     @endpermission
 @endsection
 @section('pageJs')
-    <script src="{{ asset('/pages/accounts/cash_payment/edit.js') }}"></script>
+    <script src="{{ asset('/pages/accounts/journal/edit.js') }}"></script>
 @endsection
 
 @section('script')
