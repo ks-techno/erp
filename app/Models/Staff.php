@@ -15,8 +15,10 @@ class Staff extends Model
         'name',
         'contact_no',
         'address',
-        'project_id',
         'department_id',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     public function addresses(){

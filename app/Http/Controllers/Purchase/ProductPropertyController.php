@@ -170,6 +170,8 @@ class ProductPropertyController extends Controller
                 'project_id' => $request->project_id,
                 'default_sale_price' => $request->default_sale_price,
                 'product_form_type' => 'property',
+                'company_id' => auth()->user()->company_id,
+                'user_id' => auth()->user()->id,
             ];
             if(isset($request->buyable_type_id) && !empty($request->buyable_type_id)){
                 $p_data['buyable_type_id'] = $request->buyable_type_id;
@@ -190,6 +192,9 @@ class ProductPropertyController extends Controller
                                     'product_id' => $product->id,
                                     'product_variation_id' => $pvId,
                                     'value' => $checkboxList,
+                                    'company_id' => auth()->user()->company_id,
+                                    'project_id' => auth()->user()->project_id,
+                                    'user_id' => auth()->user()->id,
                                 ]);
                                 $k = $k + 1;
                             }
@@ -201,6 +206,9 @@ class ProductPropertyController extends Controller
                                 'product_id' => $product->id,
                                 'product_variation_id' => $pvId,
                                 'value' => $pvVal,
+                                'company_id' => auth()->user()->company_id,
+                                'project_id' => auth()->user()->project_id,
+                                'user_id' => auth()->user()->id,
                             ]);
                         }
                     }
@@ -299,6 +307,8 @@ class ProductPropertyController extends Controller
                 'default_sale_price' => $request->default_sale_price,
                 'buyable_type_id' => $request->buyable_type_id,
                 'product_form_type' => 'property',
+                'company_id' => auth()->user()->company_id,
+                'user_id' => auth()->user()->id,
             ];
             if(isset($request->buyable_type_id) && !empty($request->buyable_type_id)){
                 $p_data['buyable_type_id'] = $request->buyable_type_id;
@@ -326,6 +336,9 @@ class ProductPropertyController extends Controller
                                     'product_id' => $product->id,
                                     'product_variation_id' => $pvId,
                                     'value' => $checkboxList,
+                                    'company_id' => auth()->user()->company_id,
+                                    'project_id' => auth()->user()->project_id,
+                                    'user_id' => auth()->user()->id,
                                 ]);
                                 $k = $k + 1;
                             }
@@ -337,6 +350,9 @@ class ProductPropertyController extends Controller
                                 'product_id' => $product->id,
                                 'product_variation_id' => $pvId,
                                 'value' => $pvVal,
+                                'company_id' => auth()->user()->company_id,
+                                'project_id' => auth()->user()->project_id,
+                                'user_id' => auth()->user()->id,
                             ]);
                         }
                     }

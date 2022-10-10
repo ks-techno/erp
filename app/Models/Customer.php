@@ -17,6 +17,9 @@ class Customer extends Model
         'contact_no',
         'email',
         'status',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     public function addresses(){

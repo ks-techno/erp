@@ -181,6 +181,9 @@ class ProductController extends Controller
                 'stock_on_hand_units' => $request->stock_on_hand_units,
                 'stock_on_hand_packages' => $request->stock_on_hand_packages,
                 'product_form_type' => 'inventory',
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {
@@ -279,6 +282,9 @@ class ProductController extends Controller
                     'stock_on_hand_units' => $request->stock_on_hand_units,
                     'stock_on_hand_packages' => $request->stock_on_hand_packages,
                     'product_form_type' => 'inventory',
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
                 ]);
 
         }catch (Exception $e) {

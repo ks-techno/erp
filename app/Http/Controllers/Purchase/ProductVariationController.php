@@ -150,6 +150,9 @@ class ProductVariationController extends Controller{
                 'key_name' => $key_name,
                 'description' => $request->description,
                 'value_type' => $request->value_type,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
             if(count($request->buyable_type_id) != 0){
@@ -162,6 +165,9 @@ class ProductVariationController extends Controller{
                             'buyable_type_id' => $buyable_type_id,
                             'sr_no' => 1,
                             'value' => "input",
+                            'company_id' => auth()->user()->company_id,
+                            'project_id' => auth()->user()->project_id,
+                            'user_id' => auth()->user()->id,
                         ]);
                     }else{
                         foreach ($request->options_list as $k=>$options_list){
@@ -176,6 +182,9 @@ class ProductVariationController extends Controller{
                                     'buyable_type_id' => $buyable_type_id,
                                     'sr_no' => $k+1,
                                     'value' => $options_list['option'],
+                                    'company_id' => auth()->user()->company_id,
+                                    'project_id' => auth()->user()->project_id,
+                                    'user_id' => auth()->user()->id,
                                 ]);
                             }
                         }
@@ -272,6 +281,9 @@ class ProductVariationController extends Controller{
                 'key_name' => $key_name,
                 'description' => $request->description,
                 'value_type' => $request->value_type,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
             $pv = ProductVariation::where('uuid',$id)->first();
 
@@ -286,6 +298,9 @@ class ProductVariationController extends Controller{
                             'buyable_type_id' => $buyable_type_id,
                             'sr_no' => 1,
                             'value' => "input",
+                            'company_id' => auth()->user()->company_id,
+                            'project_id' => auth()->user()->project_id,
+                            'user_id' => auth()->user()->id,
                         ]);
                     }else{
                         foreach ($request->options_list as $k=>$options_list){
@@ -300,6 +315,9 @@ class ProductVariationController extends Controller{
                                     'buyable_type_id' => $buyable_type_id,
                                     'sr_no' => $k+1,
                                     'value' => $options_list['option'],
+                                    'company_id' => auth()->user()->company_id,
+                                    'project_id' => auth()->user()->project_id,
+                                    'user_id' => auth()->user()->id,
                                 ]);
                             }
                         }

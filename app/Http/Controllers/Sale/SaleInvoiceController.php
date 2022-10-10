@@ -173,6 +173,8 @@ class SaleInvoiceController extends Controller
                 'is_purchased' => isset($request->is_purchased)?1:0,
                 'sale_price' => $request->sale_price,
                 'booked_price' => $request->booked_price,
+                'company_id' => auth()->user()->company_id,
+                'user_id' => auth()->user()->id,
             ]);
 
             $saleSeller = new SaleSeller();
@@ -274,6 +276,8 @@ class SaleInvoiceController extends Controller
                 'is_purchased' => isset($request->is_purchased)?1:0,
                 'sale_price' => $request->sale_price,
                 'booked_price' => $request->booked_price,
+                'company_id' => auth()->user()->company_id,
+                'user_id' => auth()->user()->id,
             ]);
 
             $sale = Sale::where('uuid',$id)->first();

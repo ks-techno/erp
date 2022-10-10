@@ -15,6 +15,9 @@ class PaymentMode extends Model
         'name',
         'default',
         'status',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
 }

@@ -135,6 +135,10 @@ class DepartmentController extends Controller
             Department::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
+                'status' => isset($request->status) ? "1" : "0",
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {
@@ -211,6 +215,10 @@ class DepartmentController extends Controller
             Department::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
+                    'status' => isset($request->status) ? "1" : "0",
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
                 ]);
 
         }catch (Exception $e) {
