@@ -108,7 +108,7 @@ class BankPaymentController extends Controller
         $data['permission'] = self::Constants()['create'];
         $max = Voucher::where('type',self::Constants()['type'])->max('voucher_no');
         $data['voucher_no'] = self::documentCode(self::Constants()['type'],$max);
-        $data['payment_mode'] = PaymentMode::where('status',1)->get();
+      //  $data['payment_mode'] = PaymentMode::where('status',1)->get();
         return view('accounts.bank_payment.create', compact('data'));
     }
 
@@ -122,7 +122,7 @@ class BankPaymentController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'payment_mode' => ['required',Rule::notIn([0,'0'])],
+            //'payment_mode' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -137,35 +137,28 @@ class BankPaymentController extends Controller
         if(!isset($request->pd) || empty($request->pd)){
             return $this->jsonErrorResponse($data, 'Grid must be include one row');
         }
+
+        $total_debit = 0;
+        $total_credit = 0;
+        foreach ($request->pd as $pd) {
+            $total_debit += $pd['egt_debit'];
+            $total_credit += $pd['egt_credit'];
+        }
+        if(($total_debit != $total_credit) || (empty($total_debit) && empty($total_credit)) ){
+            return $this->jsonErrorResponse($data, 'debit credit must be equal');
+        }
+
         DB::beginTransaction();
         try {
-
+//dd("sef");
             $max = Voucher::where('type',self::Constants()['type'])->max('voucher_no');
             $voucher_no = self::documentCode(self::Constants()['type'],$max);
             $voucher_id = self::uuid();
-            $creditAccount = ChartOfAccount::where('code','01-01-01-0001')->first();
 
-            Voucher::create([
-                'voucher_id' => $voucher_id,
-                'uuid' => self::uuid(),
-                'date' => date('Y-m-d', strtotime($request->date)),
-                'type' => self::Constants()['type'],
-                'voucher_no' => $voucher_no,
-                'sr_no' => 1,
-                'chart_account_id' => $creditAccount->id,
-                'chart_account_name' => $creditAccount->name,
-                'chart_account_code' => $creditAccount->code,
-                'payment_mode_id' => $request->payment_mode,
-                'debit' => 0,
-                'credit' => isset($request->tot_voucher_amount)?$request->tot_voucher_amount:0,
-                'description' => '',
-                'remarks' => $request->remarks,
-            ]);
-            $sr = 2;
-            $total_amount = 0;
+            $sr = 1;
             foreach ($request->pd as $pd){
-                $debitAccount = ChartOfAccount::where('id',$pd['chart_id'])->first();
-                if(!empty($debitAccount)){
+                $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
+                if(!empty($account)){
                     Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
@@ -173,17 +166,20 @@ class BankPaymentController extends Controller
                         'type' => self::Constants()['type'],
                         'voucher_no' => $voucher_no,
                         'sr_no' => $sr,
-                        'chart_account_id' => $debitAccount->id,
-                        'chart_account_name' => $debitAccount->name,
-                        'chart_account_code' => $debitAccount->code,
-                        'payment_mode_id' => $request->payment_mode,
-                        'debit' => $pd['egt_amount'],
-                        'credit' => 0,
+                        'chart_account_id' => $account->id,
+                        'chart_account_name' => $account->name,
+                        'chart_account_code' => $account->code,
+                        'cheque_no' => $pd['egt_cheque_no'],
+                        'cheque_date' => $pd['egt_cheque_date'],
+                        'debit' => $pd['egt_debit'],
+                        'credit' => $pd['egt_credit'],
                         'description' => $pd['egt_description'],
                         'remarks' => $request->remarks,
+                        'company_id' => auth()->user()->company_id,
+                        'project_id' => auth()->user()->project_id,
+                        'user_id' => auth()->user()->id,
                     ]);
                     $sr = $sr + 1;
-                    $total_amount += $pd['egt_amount'];
                 }
             }
 
@@ -224,7 +220,7 @@ class BankPaymentController extends Controller
         if(Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->exists()){
 
             $data['current'] = Voucher::where('type',self::Constants()['type'])->where(['voucher_id'=>$id,'sr_no'=>1])->first();
-            $data['dtl'] = Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->where('sr_no','<>',1)->get();
+            $data['dtl'] = Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->get();
 
         }else{
             abort('404');
@@ -245,7 +241,7 @@ class BankPaymentController extends Controller
 
         $data = [];
         $validator = Validator::make($request->all(), [
-            'payment_mode' => ['required',Rule::notIn([0,'0'])],
+           // 'payment_mode' => ['required',Rule::notIn([0,'0'])],
         ]);
 
         if ($validator->fails()) {
@@ -260,6 +256,18 @@ class BankPaymentController extends Controller
         if(!isset($request->pd) || empty($request->pd)){
             return $this->jsonErrorResponse($data, 'Grid must be include one row');
         }
+
+
+        $total_debit = 0;
+        $total_credit = 0;
+        foreach ($request->pd as $pd) {
+            $total_debit += $pd['egt_debit'];
+            $total_credit += $pd['egt_credit'];
+        }
+        if(($total_debit != $total_credit) || (empty($total_debit) && empty($total_credit)) ){
+            return $this->jsonErrorResponse($data, 'debit credit must be equal');
+        }
+
         DB::beginTransaction();
         try {
 
@@ -267,28 +275,11 @@ class BankPaymentController extends Controller
             $voucher_no = $firstVoucher->voucher_no;
             $voucher_id = $id;
             DB::select("delete FROM `vouchers` where voucher_id = '$voucher_id'");
-            $creditAccount = ChartOfAccount::where('code','01-01-01-0001')->first();
-            Voucher::create([
-                'voucher_id' => $voucher_id,
-                'uuid' => self::uuid(),
-                'date' => date('Y-m-d', strtotime($request->date)),
-                'type' => self::Constants()['type'],
-                'voucher_no' => $voucher_no,
-                'sr_no' => 1,
-                'chart_account_id' => $creditAccount->id,
-                'chart_account_name' => $creditAccount->name,
-                'chart_account_code' => $creditAccount->code,
-                'payment_mode_id' => $request->payment_mode,
-                'debit' => 0,
-                'credit' => isset($request->tot_voucher_amount)?$request->tot_voucher_amount:0,
-                'description' => '',
-                'remarks' => $request->remarks,
-            ]);
-            $sr = 2;
-            $total_amount = 0;
+
+            $sr = 1;
             foreach ($request->pd as $pd){
-                $debitAccount = ChartOfAccount::where('id',$pd['chart_id'])->first();
-                if(!empty($debitAccount)){
+                $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
+                if(!empty($account)){
                     Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
@@ -296,17 +287,20 @@ class BankPaymentController extends Controller
                         'type' => self::Constants()['type'],
                         'voucher_no' => $voucher_no,
                         'sr_no' => $sr,
-                        'chart_account_id' => $debitAccount->id,
-                        'chart_account_name' => $debitAccount->name,
-                        'chart_account_code' => $debitAccount->code,
-                        'payment_mode_id' => $request->payment_mode,
-                        'debit' => $pd['egt_amount'],
-                        'credit' => 0,
+                        'chart_account_id' => $account->id,
+                        'chart_account_name' => $account->name,
+                        'chart_account_code' => $account->code,
+                        'cheque_no' => $pd['egt_cheque_no'],
+                        'cheque_date' => $pd['egt_cheque_date'],
+                        'debit' => $pd['egt_debit'],
+                        'credit' => $pd['egt_credit'],
                         'description' => $pd['egt_description'],
                         'remarks' => $request->remarks,
+                        'company_id' => auth()->user()->company_id,
+                        'project_id' => auth()->user()->project_id,
+                        'user_id' => auth()->user()->id,
                     ]);
                     $sr = $sr + 1;
-                    $total_amount += $pd['egt_amount'];
                 }
             }
 

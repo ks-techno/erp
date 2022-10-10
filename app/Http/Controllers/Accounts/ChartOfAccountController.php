@@ -163,6 +163,9 @@ class ChartOfAccountController extends Controller
                 'parent_account_id' => $parent_account_id,
                 'parent_account_code' => $parent_account_code,
                 'status' => isset($request->status) ? "1" : "0",
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {
@@ -240,6 +243,9 @@ class ChartOfAccountController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'status' => isset($request->status) ? "1" : "0",
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
                 ]);
 
         }catch (Exception $e) {
@@ -309,7 +315,8 @@ class ChartOfAccountController extends Controller
     public static function coaDisplayMaxCode($radioValue,$parent_account_code)
     {
         $parent_account_code = empty($parent_account_code)?NULL:$parent_account_code;
-        $code = ChartOfAccount::where('parent_account_code',$parent_account_code)->max('code');
+
+        $code = ChartOfAccount::where('parent_account_code','=',$parent_account_code)->max('code');
 
         if(empty($code)){
             $code = empty($parent_account_code)?NULL:$parent_account_code;
@@ -323,11 +330,12 @@ class ChartOfAccountController extends Controller
     public static function getMaxChartCode($radioValue,$chart_code){
         if($radioValue == 1){
             if(empty($chart_code)){
-                $max_code = '01-00-00-0000';
+                $max_code = '01-00-0000-0000';
             }else{
                 $code = substr($chart_code,0,2);
                 $max =  sprintf("%'02d", $code+1);
                 $max_code = substr_replace($chart_code,$max,0,2);
+                $max_code = $max.'-00-0000-0000';
             }
         }
         if($radioValue == 2){

@@ -31,6 +31,9 @@ class Voucher extends Model
         'cheque_no',
         'invoice_id',
         'invoice_no',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
 }
