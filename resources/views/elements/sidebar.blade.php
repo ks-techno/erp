@@ -106,6 +106,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('cash-receive'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/cash-receive')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.cash-receive.index') }}">
+                            <span class="menu-item text-truncate">Cash Receive</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
             <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
