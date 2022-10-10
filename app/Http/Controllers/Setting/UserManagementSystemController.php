@@ -73,6 +73,11 @@ class UserManagementSystemController extends Controller
                         'name' => 'bank-receive',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
+                    [
+                        'dname' => 'Cash Payment',
+                        'name' => 'cash-payment',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
                 ]
             ],
             // Purchase

@@ -99,6 +99,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('cash-payment'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/cash-payment')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.cash-payment.index') }}">
+                            <span class="menu-item text-truncate">Cash Payment</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
             <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
