@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Accounts\BankPaymentController;
+use App\Http\Controllers\Accounts\BankReceiveController;
 use App\Http\Controllers\Setting\CountryController;
 use App\Http\Controllers\Setting\RegionController;
 use App\Http\Controllers\Setting\CityController;
@@ -78,6 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('get-code-by-parent-account', 'getChildCodeByParentAccount')->name('getChildCodeByParentAccount');
         });
         Route::prefix('bank-payment')->resource('bank-payment', BankPaymentController::class);
+        Route::prefix('bank-receive')->resource('bank-receive', BankReceiveController::class);
 
     });
 
