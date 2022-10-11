@@ -18,6 +18,9 @@ class ProductVariationDtl extends Model
         'buyable_type_id',
         'sr_no',
         'value',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
     public function buyable_type(){
         return $this->belongsTo(BuyableType::class,'buyable_type_id','id');

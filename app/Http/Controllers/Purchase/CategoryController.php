@@ -141,6 +141,9 @@ class CategoryController extends Controller
                 'name' => self::strUCWord($request->name),
                 'category_type_id' => $request->category_type_id,
                 'parent_id' => !empty($request->parent_id)?$request->parent_id:null,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
 
@@ -225,6 +228,9 @@ class CategoryController extends Controller
                 'name' => self::strUCWord($request->name),
                 'category_type_id' => $request->category_type_id,
                 'parent_id' => !empty($request->parent_id)?$request->parent_id:null,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {

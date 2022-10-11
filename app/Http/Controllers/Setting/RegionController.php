@@ -142,6 +142,9 @@ class RegionController extends Controller
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'country_id' => $request->country_id,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {
@@ -222,6 +225,9 @@ class RegionController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'country_id' => $request->country_id,
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
                 ]);
 
         }catch (Exception $e) {

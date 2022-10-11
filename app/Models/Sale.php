@@ -15,13 +15,15 @@ class Sale extends Model
         'code',
         'customer_id',
         'sale_by_staff',
-        'project_id',
         'product_id',
         'is_installment',
         'is_booked',
         'is_purchased',
         'sale_price',
         'booked_price',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     protected $morphClass = null;

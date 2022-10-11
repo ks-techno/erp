@@ -16,5 +16,8 @@ class PropertyVariation extends Model
         'product_id',
         'product_variation_id',
         'value',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 }

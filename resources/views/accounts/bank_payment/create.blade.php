@@ -37,19 +37,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Payment Mode <span class="required">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select class="select2 form-select" id="payment_mode" name="payment_mode">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['payment_mode'] as $payment_mode)
-                                                <option value="{{$payment_mode->id}}"> {{$payment_mode->name}} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                         <div class="row">
@@ -60,7 +48,7 @@
                                     <div class="dropdown chart-dropdown" style="display: inline-block;">
                                         <i data-feather="more-vertical" class="font-medium-3 cursor-pointer" data-bs-toggle="dropdown"></i>
                                         @php
-                                            $headings = ['Sr','Account Code','Account Name','Description','Amount'];
+                                            $headings = ['Sr','Account Code','Account Name','Cheque No','Cheque Date','Description','Debit','Credit'];
                                         @endphp
                                         <ul class="listing_dropdown dropdown-menu dropdown-menu-end">
                                             @foreach($headings as $key=>$heading)
@@ -86,8 +74,11 @@
                                                     <th width="7%">Sr</th>
                                                     <th width="20%">Account Code</th>
                                                     <th width="22%">Account Name</th>
+                                                    <th width="22%">Cheque No</th>
+                                                    <th width="22%">Cheque Date</th>
                                                     <th width="22%">Description</th>
-                                                    <th width="16%">Amount</th>
+                                                    <th width="16%">Debit</th>
+                                                    <th width="16%">Credit</th>
                                                     <th width="13%" class="text-center">Action</th>
                                                 </tr>
                                                 <tr class="egt_form_header_input">
@@ -102,10 +93,19 @@
                                                         <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
                                                     </td>
                                                     <td>
+                                                        <input id="egt_cheque_no" type="text" class="cheque_no form-control form-control-sm">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_cheque_date" type="text" class="cheque_date form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="Click & Select Date">
+                                                    </td>
+                                                    <td>
                                                         <input id="egt_description" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_amount" type="text" class="NumberValidate amount form-control form-control-sm">
+                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm">
                                                     </td>
                                                     <td class="text-center">
                                                         <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
@@ -122,9 +122,15 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="voucher-total-amt text-end">
-                                                        <span id="tot_amount"></span>
-                                                        <input id="tot_voucher_amount" name="tot_voucher_amount" type="hidden" >
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="voucher-total-debit text-end">
+                                                        <span id="tot_debit"></span>
+                                                        <input id="tot_voucher_debit" name="tot_voucher_debit" type="hidden" >
+                                                    </td>
+                                                    <td class="voucher-total-credit text-end">
+                                                        <span id="tot_credit"></span>
+                                                        <input id="tot_voucher_credit" name="tot_voucher_credit" type="hidden" >
                                                     </td>
                                                     <td></td>
                                                 </tr>

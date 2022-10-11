@@ -29,7 +29,6 @@
                                     <th class="cell-fit">Name</th>
                                     <th class="cell-fit">Contact No</th>
                                     <th class="cell-fit">Company</th>
-                                    <th class="cell-fit">City</th>
                                     <th class="cell-fit"></th>
                                 </tr>
                                 </thead>

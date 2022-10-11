@@ -59,7 +59,7 @@ class CountryController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $entry_status = $this->getStatusTitle()[$row->country_status];
+                $entry_status = $this->getStatusTitle()[$row->status];
                 $urlEdit = route('setting.country.edit',$row->uuid);
                 $urlDel = route('setting.country.destroy',$row->uuid);
 
@@ -139,7 +139,10 @@ class CountryController extends Controller
             Country::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
-                'country_status' => isset($request->country_status) ? "1" : "0",
+                'status' => isset($request->country_status) ? "1" : "0",
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {
@@ -216,7 +219,10 @@ class CountryController extends Controller
             Country::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
-                    'country_status' => isset($request->country_status) ? "1" : "0",
+                    'status' => isset($request->country_status) ? "1" : "0",
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
                 ]);
 
         }catch (Exception $e) {

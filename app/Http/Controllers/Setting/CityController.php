@@ -145,6 +145,9 @@ class CityController extends Controller
                 'name' => self::strUCWord($request->name),
                 'country_id' => $region->country_id,
                 'region_id' => $request->region_id,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {
@@ -227,6 +230,9 @@ class CityController extends Controller
                 'name' => self::strUCWord($request->name),
                 'country_id' => $region->country_id,
                 'region_id' => $request->region_id,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {

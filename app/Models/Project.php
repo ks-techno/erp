@@ -15,10 +15,7 @@ class Project extends Model
         'name',
         'contact_no',
         'company_id',
-        'country_id',
-        'region_id',
-        'city_id',
-        'address',
+        'user_id',
     ];
 
     public function addresses(){

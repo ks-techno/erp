@@ -14,6 +14,9 @@ class Region extends Model
         'uuid',
         'name',
         'country_id',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){

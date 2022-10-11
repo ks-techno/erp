@@ -44,7 +44,7 @@ class ProjectController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Project::with('company','city')->where('id','<>',0)->orderByName();
+            $dataSql = Project::with('company')->where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
 
@@ -82,7 +82,6 @@ class ProjectController extends Controller
                     $row->name,
                     $row->contact_no,
                     $row->company->name,
-                    $row->city->name,
                     $actions,
                 ];
             }
@@ -147,10 +146,7 @@ class ProjectController extends Controller
                 'name' => self::strUCWord($request->name),
                 'contact_no' => $request->contact_no,
                 'company_id' => $request->company_id,
-                'country_id' => $city->country_id,
-                'region_id' => $city->region_id,
-                'city_id' => $request->city_id,
-                'address' => $request->address,
+                'user_id' => auth()->user()->id,
             ]);
 
             $r = self::insertAddress($request,$project);
@@ -239,7 +235,8 @@ class ProjectController extends Controller
                 ->update([
                 'name' => self::strUCWord($request->name),
                 'contact_no' => $request->contact_no,
-                'company_id' => $request->company_id
+                'company_id' => $request->company_id,
+                'user_id' => auth()->user()->id,
             ]);
             $project = Project::where('uuid',$id)->first();
 

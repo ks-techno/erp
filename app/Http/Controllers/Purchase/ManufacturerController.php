@@ -142,6 +142,9 @@ class ManufacturerController extends Controller
                 'contact_no' => $request->contact_no,
                 'email' => $request->email,
                 'status' => isset($request->status) ? "1" : "0",
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
             $r = self::insertAddress($request,$manufacturer);
@@ -229,6 +232,9 @@ class ManufacturerController extends Controller
                     'contact_no' => $request->contact_no,
                     'email' => $request->email,
                     'status' => isset($request->status) ? "1" : "0",
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
                 ]);
 
             $manufacturer = Manufacturer::where('uuid',$id)->first();

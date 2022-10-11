@@ -15,6 +15,9 @@ class City extends Model
         'name',
         'country_id',
         'region_id',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){

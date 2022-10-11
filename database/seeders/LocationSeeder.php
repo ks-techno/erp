@@ -38,7 +38,7 @@ class LocationSeeder extends Seeder
                 $country = Country::create([
                     'uuid' => Uuid::generate()->string,
                     'name' =>  ucwords(strtolower(strtoupper($row['name']))),
-                    'country_status' => 1,
+                    'status' => 1,
                 ]);
                 foreach($row['childes'] as $rchild){
                     if(!Region::where('name',$rchild['name'])->exists()){

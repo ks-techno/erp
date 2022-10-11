@@ -14,7 +14,10 @@ class Country extends Model
         'uuid',
         'name',
         'default_country',
-        'country_status',
+        'status',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){

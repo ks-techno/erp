@@ -21,6 +21,9 @@ class ChartOfAccount extends Model
         'parent_account_id',
         'parent_account_code',
         'status',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
 

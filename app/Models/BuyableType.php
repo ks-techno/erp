@@ -14,6 +14,9 @@ class BuyableType extends Model
         'uuid',
         'name',
         'status',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){

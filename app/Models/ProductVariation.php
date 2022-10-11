@@ -17,6 +17,9 @@ class ProductVariation extends Model
         'key_name',
         'description',
         'value_type',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){

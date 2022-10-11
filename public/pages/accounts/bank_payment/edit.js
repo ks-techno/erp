@@ -18,9 +18,7 @@ $(function () {
               $(element).valid();
             }, */
             rules: {
-                payment_mode: {
-                    required: true,
-                },
+
             },
             submitHandler: function (form) {
                 pageLoginForm.find(":submit").prop('disabled', true);

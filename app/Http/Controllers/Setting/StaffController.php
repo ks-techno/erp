@@ -155,6 +155,8 @@ class StaffController extends Controller
                 /*'address' => $request->address,*/
                 'project_id' => $request->project_id,
                 'department_id' => $request->department_id,
+                'company_id' => auth()->user()->company_id,
+                'user_id' => auth()->user()->id,
             ]);
 
             $r = self::insertAddress($request,$staff);
@@ -247,6 +249,8 @@ class StaffController extends Controller
                     'address' => $request->address,
                     'project_id' => $request->project_id,
                     'department_id' => $request->department_id,
+                    'company_id' => auth()->user()->company_id,
+                    'user_id' => auth()->user()->id,
                 ]);
             $staff = Staff::where('uuid',$id)->first();
 
