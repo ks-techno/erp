@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Validation\Rule;
 use Validator;
 
 class RegionController extends Controller
@@ -121,7 +122,7 @@ class RegionController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:regions',
             'country_id' => 'required'
         ]);
 
@@ -202,9 +203,10 @@ class RegionController extends Controller
 
     public function update(Request $request, $id)
     {
+        $ignoreId = Region::where('uuid',$id)->first();
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => ["required",Rule::unique('regions')->ignore($ignoreId->id)],
             'country_id' => 'required'
         ]);
 

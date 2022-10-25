@@ -82,5 +82,10 @@
 @endsection
 
 @section('script')
-
+    <script src="{{ asset('/js/jquery-inputmask.js') }}"></script>
+    <script>
+        $(".cnic").inputmask({
+            'mask': '99999-9999999-9'
+        });
+    </script>
 @endsection

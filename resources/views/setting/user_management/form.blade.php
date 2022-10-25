@@ -39,7 +39,7 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label">Region <span class="required">*</span></label>
+                                        <label class="col-form-label">User <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
                                         <select class="select2 form-select" id="user_id" name="user_id">
@@ -200,5 +200,14 @@
                 }
             });
         });
+
+        $('.permission_table input[type="checkbox"]').click(function(){
+            $(".permission_table tr").each(function(){
+                if(!$(this).find('input[type="checkbox"]').is('checked')){
+                    $('#check_all').prop('checked', false);
+                }
+            })
+        })
+
     </script>
 @endsection

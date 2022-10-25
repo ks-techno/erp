@@ -40,9 +40,11 @@ class ProductVariationController extends Controller{
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = ProductVariation::where('id','<>',0)->orderByName();
+            $dataSql = DB::select("SELECT pv.uuid,pv.id,pv.display_title,pv.value_type,pv.description,bt.id,bt.name FROM product_variations pv
+                                        join product_variation_dtl pvd on pv.id = pvd.product_variation_id
+                                        join buyable_types bt on bt.id = pvd.buyable_type_id group by pv.uuid,pv.id,pv.display_title,pv.value_type,pv.description,bt.id,bt.name order by pv.display_title");
 
-            $allData = $dataSql->get();
+            $allData = $dataSql;
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -77,7 +79,7 @@ class ProductVariationController extends Controller{
 
                 $entries[] = [
                     $row->display_title,
-                    $row->key_name,
+                    $row->name,
                     $row->value_type,
                     $row->description,
                     $actions,
@@ -124,7 +126,6 @@ class ProductVariationController extends Controller{
         $validator = Validator::make($request->all(), [
             'buyable_type_id' => 'required|array',
             'display_title' => 'required',
-            'key_name' => 'required',
             'value_type' => ['required',Rule::in(['input','select','checkbox','radio','yes_no'])],
         ]);
 
@@ -141,9 +142,12 @@ class ProductVariationController extends Controller{
        // dd($request->toArray());
         DB::beginTransaction();
         try {
-            $key_name = trim(strtolower(strtoupper($request->key_name)));
+            $key_name = trim(strtolower(strtoupper($request->display_title)));
             $key_name = str_replace(' ','_',$key_name);
-
+            $existsKey = ProductVariation::where('key_name',$key_name)->exists();
+            if($existsKey){
+                $key_name = $key_name."_".time();
+            }
             $pv = ProductVariation::create([
                 'uuid' => self::uuid(),
                 'display_title' => self::strUCWord($request->display_title),
@@ -256,7 +260,6 @@ class ProductVariationController extends Controller{
         $validator = Validator::make($request->all(), [
             'buyable_type_id' => 'required|array',
             'display_title' => 'required',
-            'key_name' => 'required',
             'value_type' => ['required',Rule::in(['input','select','checkbox','radio','yes_no'])],
         ]);
 
@@ -272,13 +275,13 @@ class ProductVariationController extends Controller{
 
         DB::beginTransaction();
         try {
-            $key_name = trim(strtolower(strtoupper($request->key_name)));
+            $key_name = trim(strtolower(strtoupper($request->display_title)));
             $key_name = str_replace(' ','_',$key_name);
 
             $pvup = ProductVariation::where('uuid',$id)
                 ->update([
                 'display_title' => self::strUCWord($request->display_title),
-                'key_name' => $key_name,
+                /*'key_name' => $key_name,*/
                 'description' => $request->description,
                 'value_type' => $request->value_type,
                 'company_id' => auth()->user()->company_id,

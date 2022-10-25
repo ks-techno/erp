@@ -14,6 +14,7 @@ class Staff extends Model
         'uuid',
         'name',
         'contact_no',
+        'cnic_no',
         'address',
         'department_id',
         'company_id',

@@ -50,6 +50,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">CNIC No# <span class="required">*</span></label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm cnic" value="{{$current->cnic_no}}" id="cnic_no" name="cnic_no" />
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="mb-1 row">
@@ -102,5 +110,11 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('/js/jquery-inputmask.js') }}"></script>
+    <script>
+        $(".cnic").inputmask({
+            'mask': '99999-9999999-9'
+        });
+    </script>
 
 @endsection
