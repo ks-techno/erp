@@ -28,6 +28,10 @@ class ChartOfAccount extends Model
 
 
 
+    public function children(){
+        return $this->hasMany(self::class, 'parent_account_code', 'code')->with('children')
+            ->select(['id','code','name','parent_account_code'])->orderBy('code');
+    }
 
 
 }

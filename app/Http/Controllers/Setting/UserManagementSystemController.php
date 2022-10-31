@@ -64,6 +64,11 @@ class UserManagementSystemController extends Controller
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
+                        'dname' => 'Chart of Account Tree',
+                        'name' => 'chart-of-account-tree',
+                        'action' => [ $smenu,$list,$view ]
+                    ],
+                    [
                         'dname' => 'Bank Payment',
                         'name' => 'bank-payment',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]

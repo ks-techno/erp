@@ -78,6 +78,13 @@
                     <span class="menu-title text-truncate">Accounts</span>
                 </a>
                 <ul class="menu-content" id="accounts_nav_ul">
+                    @permission('chart-of-account-tree'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/chart-of-account-tree')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.chart-of-account-tree.index') }}">
+                            <span class="menu-item text-truncate">Chart of Account Tree</span>
+                        </a>
+                    </li>
+                    @endpermission
                     @permission('chart-of-account'.$sidebar_menu)
                     <li class="{{ ($path == 'accounts/chart-of-account')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('accounts.chart-of-account.index') }}">
