@@ -114,7 +114,7 @@
                                         <label class="col-form-label">Sale Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->sale_price}}" id="sale_price" name="sale_price">
+                                        <input type="text" readonly class="form-control form-control-sm" value="{{$current->sale_price}}" id="sale_price" name="sale_price">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -204,6 +204,42 @@
                                 }
                             }
                             $('form').find('.sellerList').html(options);
+                        }else{
+                            ntoastr.error(response.message);
+                        }
+                    },
+                    error: function(response,status) {
+                        ntoastr.error('server error..404');
+                    }
+                });
+            }
+        })
+        $(document).on('change','#product_id',function(){
+            var validate = true;
+            var thix = $(this);
+            var val = thix.find('option:selected').val();
+            if(valueEmpty(val)){
+                //  ntoastr.error("Select Any Product");
+                validate = false;
+                return false;
+            }
+            if(validate){
+                var formData = {
+                    product_id : val
+                };
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "POST",
+                    url: '{{ route('sale.sale-invoice.getProductDetail') }}',
+                    dataType	: 'json',
+                    data        : formData,
+                    success: function(response,data) {
+                        if(response.status == 'success'){
+                            var product = response.data['product'];
+
+                            $('form').find('#sale_price').val(product.default_sale_price);
                         }else{
                             ntoastr.error(response.message);
                         }

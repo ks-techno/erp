@@ -127,6 +127,12 @@ class ProductVariationController extends Controller{
             'buyable_type_id' => 'required|array',
             'display_title' => 'required',
             'value_type' => ['required',Rule::in(['input','select','checkbox','radio','yes_no'])],
+        ],[
+            'buyable_type_id.required' => 'Product type is required',
+            'buyable_type_id.array' => 'Product type is required',
+            'display_title.required' => 'Title is required',
+            'value_type.required' => 'Value type is required',
+            'value_type.in' => 'Value type is required',
         ]);
 
         if ($validator->fails()) {
@@ -261,6 +267,12 @@ class ProductVariationController extends Controller{
             'buyable_type_id' => 'required|array',
             'display_title' => 'required',
             'value_type' => ['required',Rule::in(['input','select','checkbox','radio','yes_no'])],
+        ],[
+            'buyable_type_id.required' => 'Product type is required',
+            'buyable_type_id.array' => 'Product type is required',
+            'display_title.required' => 'Title is required',
+            'value_type.required' => 'Value type is required',
+            'value_type.in' => 'Value type is required',
         ]);
 
         if ($validator->fails()) {

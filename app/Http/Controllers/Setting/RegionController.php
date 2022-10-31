@@ -123,7 +123,12 @@ class RegionController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:regions',
-            'country_id' => 'required'
+            'country_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name already exists',
+            'country_id.required' => 'Country is required',
+            'country_id.not_in' => 'Country is required',
         ]);
 
         if ($validator->fails()) {
@@ -207,7 +212,12 @@ class RegionController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => ["required",Rule::unique('regions')->ignore($ignoreId->id)],
-            'country_id' => 'required'
+            'country_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name already exists',
+            'country_id.required' => 'Country is required',
+            'country_id.not_in' => 'Country is required',
         ]);
 
         if ($validator->fails()) {

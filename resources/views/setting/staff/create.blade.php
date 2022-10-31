@@ -41,7 +41,7 @@
                                                 <label class="col-form-label">Contact No# </label>
                                             </div>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control form-control-sm" value="" id="contact_no" name="contact_no" />
+                                                <input type="text" class="form-control form-control-sm validate_number" value="" id="contact_no" name="contact_no" />
                                             </div>
                                         </div>
                                     </div>

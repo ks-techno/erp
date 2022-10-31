@@ -131,9 +131,13 @@ class StaffController extends Controller
             'cnic_no' => 'required',
             'project_id' => ['required',Rule::notIn([0,'0'])],
             'department_id' => ['required',Rule::notIn([0,'0'])],
-            'country_id' => ['required',Rule::notIn([0,'0'])],
-            'region_id' => ['required',Rule::notIn([0,'0'])],
-            'city_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'cnic_no.required' => 'CNIC NO is required',
+            'project_id.required' => 'Project is required',
+            'project_id.not_in' => 'Project is required',
+            'department_id.required' => 'Department is required',
+            'department_id.not_in' => 'Department is required',
         ]);
 
         if ($validator->fails()) {
@@ -231,6 +235,13 @@ class StaffController extends Controller
             'cnic_no' => 'required',
             'project_id' => ['required',Rule::notIn([0,'0'])],
             'department_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'cnic_no.required' => 'CNIC NO is required',
+            'project_id.required' => 'Project is required',
+            'project_id.not_in' => 'Project is required',
+            'department_id.required' => 'Department is required',
+            'department_id.not_in' => 'Department is required',
         ]);
 
         if ($validator->fails()) {

@@ -35,7 +35,7 @@
                                         <label class="col-form-label">Contact No#</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="" id="contact_no" name="contact_no" />
+                                        <input type="text" class="form-control form-control-sm validate_number" value="" id="contact_no" name="contact_no" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -51,7 +51,7 @@
                                         <label class="col-form-label">CNIC No# <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="" id="cnic_no" name="cnic_no" />
+                                        <input type="text" class="form-control form-control-sm cnic" value="" id="cnic_no" name="cnic_no" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
