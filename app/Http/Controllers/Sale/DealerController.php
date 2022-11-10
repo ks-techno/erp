@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sale;
 
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
 use App\Models\Dealer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -153,6 +154,16 @@ class DealerController extends Controller
             ]);
 
             $r = self::insertAddress($request,$dealer);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
+
+            $req = [
+                'level' => 4,
+                'parent_account' => '03-03-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
 
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
