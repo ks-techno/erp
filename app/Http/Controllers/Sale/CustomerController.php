@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Sale;
 
+use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Controller;
+use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

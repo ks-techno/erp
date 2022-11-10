@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::prefix('help')->name('help.')->group(function () {
         Route::get('chart/{str?}', [HelpController::class, 'chart'])->name('chart');
+        Route::get('customer/{str?}', [HelpController::class, 'customer'])->name('customer');
     });
 
     Route::prefix('accounts')->name('accounts.')->group(function () {

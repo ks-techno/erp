@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\ChartOfAccount;
+use App\Models\Customer;
 
 class HelpController extends Controller
 {
@@ -22,5 +23,22 @@ class HelpController extends Controller
         $data['chart'] =  $chart;
 
         return view('helps.chart_help',compact('data'));
+    }
+
+    public function customer($val = null)
+    {
+        $data = [];
+        $customer = Customer::where('id','<>',0);
+        if(!empty($val)){
+            $val = (string)$val;
+            $customer = $customer->where('contact_no','like',"%$val%");
+            $customer = $customer->orWhere('name','like',"%$val%");
+        }
+
+        $customer = $customer->select('id','contact_no','name')->get();
+//dd($chart);
+        $data['customer'] =  $customer;
+
+        return view('helps.customer_help',compact('data'));
     }
 }

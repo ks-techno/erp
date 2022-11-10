@@ -1,6 +1,32 @@
 @extends('layouts.form')
 @section('title', $data['title'])
 @section('style')
+    <style>
+        .right .modal-dialog {
+            position: fixed;
+            margin: auto;
+           /* width: 320px;*/
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .show .modal-dialog {
+            /*position: absolute;*/right: 0px !important;
+        }
+        .right.fade .modal-dialog {
+            right: -320px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+        .right.fade.in .modal-dialog {
+            right: 0;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -58,12 +84,11 @@
                                         <label class="col-form-label">Customer <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="customer_id" name="customer_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['customer'] as $customer)
-                                                <option value="{{$customer->id}}"> {{$customer->name}} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="input-group eg_help_block">
+                                            <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
+                                            <input id="customer_name" type="text" class="customer_name form-control form-control-sm text-left">
+                                            <input id="customer_id" type="hidden" name="customer_id">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -71,6 +96,12 @@
                                         <label class="col-form-label">Seller Type <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
+                                        <select class="select2 form-select" id="customer_id" name="customer_id">
+                                            <option value="0" selected>Select</option>
+                                            @foreach($data['customer'] as $customer)
+                                                <option value="{{$customer->id}}"> {{$customer->name}} </option>
+                                            @endforeach
+                                        </select>
                                         <select class="select2 form-select" id="seller_type" name="seller_type">
                                             <option value="0" selected>Select</option>
                                             <option value="dealer">Dealer</option>
@@ -142,6 +173,42 @@
             </div>
         </div>
     </form>
+
+    <div class="modal fade right" id="createNewCustomer" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" style="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">Customer <small>New</small></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="margin: 0;"></button>
+                </div>
+                <div class="modal-body" style="height:100vh">
+                    <p>
+                        Biscuit powder jelly beans. Lollipop candy canes croissant icing chocolate cake. Cake fruitcake
+                        powder pudding pastry.
+                    </p>
+                    <p>
+                        Tootsie roll oat cake I love bear claw I love caramels caramels halvah chocolate bar. Cotton
+                        candy gummi bears pudding pie apple pie cookie. Cheesecake jujubes lemon drops danish dessert I
+                        love caramels powder.
+                    </p>
+                    <p>
+                        Chocolate cake icing tiramisu liquorice toffee donut sweet roll cake. Cupcake dessert icing
+                        dragée dessert. Liquorice jujubes cake tart pie donut. Cotton candy candy canes lollipop
+                        liquorice chocolate marzipan muffin pie liquorice.
+                    </p>
+                    <p>
+                        Powder cookie jelly beans sugar plum ice cream. Candy canes I love powder sugar plum tiramisu.
+                        Liquorice pudding chocolate cake cupcake topping biscuit. Lemon drops apple pie sesame snaps
+                        tootsie roll carrot cake soufflé halvah. Biscuit powder jelly beans. Lollipop candy canes
+                        croissant icing chocolate cake. Cake fruitcake powder pudding pastry.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @endpermission
 @endsection
 
@@ -151,6 +218,7 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('/pages/help/customer_help.js')}}"></script>
     <script>
         $(document).on('change','#seller_type',function(){
             var validate = true;

@@ -26,3 +26,6 @@
 .FloatValidate{
     text-align: right;
 }
+#addon_remove:hover {
+    cursor: pointer;
+}
