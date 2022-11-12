@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 
 use App\Models\ChartOfAccount;
 use App\Models\Customer;
+use App\Models\Product;
+use App\Models\Sale;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HelpController extends Controller
 {
@@ -40,5 +44,24 @@ class HelpController extends Controller
         $data['customer'] =  $customer;
 
         return view('helps.customer_help',compact('data'));
+    }
+    public function propertyProduct(Request $request)
+    {
+
+        $sale = Sale::where('project_id',$request->project_id)->pluck('product_id')->unique()->toArray();
+
+        $data = [];
+        $product = Product::whereNotIn('id',$sale);
+        if(!empty($val)){
+            $val = (string)$val;
+            $product = $product->where('code','like',"%$val%");
+            $product = $product->orWhere('name','like',"%$val%");
+        }
+
+        $product = $product->select('id','code','name','default_sale_price')->get();
+//dd($chart);
+        $data['property'] =  $product;
+
+        return view('helps.product_help',compact('data'));
     }
 }

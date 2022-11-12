@@ -5,7 +5,7 @@
         .right .modal-dialog {
             position: fixed;
             margin: auto;
-           /* width: 320px;*/
+            width: 800px;
             height: 100%;
             -webkit-transform: translate3d(0%, 0, 0);
             -ms-transform: translate3d(0%, 0, 0);
@@ -32,6 +32,7 @@
 @section('content')
     @permission($data['permission'])
     <form id="sale_invoice_create" class="sale_invoice_create" action="{{route('sale.sale-invoice.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+        <input type="hidden" id="form_type" value="sale_invoice">
         @csrf
         <div class="row">
             <div class="col-12">
@@ -71,12 +72,11 @@
                                         <label class="col-form-label">Product <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="product_id" name="product_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['property'] as $property)
-                                                <option value="{{$property->id}}"> {{$property->name}} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="input-group eg_help_block">
+                                            <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
+                                            <input id="product_name" type="text" class="product_name form-control form-control-sm text-left">
+                                            <input id="product_id" type="hidden" name="product_id">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -96,12 +96,6 @@
                                         <label class="col-form-label">Seller Type <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="customer_id" name="customer_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['customer'] as $customer)
-                                                <option value="{{$customer->id}}"> {{$customer->name}} </option>
-                                            @endforeach
-                                        </select>
                                         <select class="select2 form-select" id="seller_type" name="seller_type">
                                             <option value="0" selected>Select</option>
                                             <option value="dealer">Dealer</option>
@@ -176,35 +170,12 @@
 
     <div class="modal fade right" id="createNewCustomer" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg" style="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalScrollableTitle">Customer <small>New</small></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="margin: 0;"></button>
-                </div>
-                <div class="modal-body" style="height:100vh">
-                    <p>
-                        Biscuit powder jelly beans. Lollipop candy canes croissant icing chocolate cake. Cake fruitcake
-                        powder pudding pastry.
-                    </p>
-                    <p>
-                        Tootsie roll oat cake I love bear claw I love caramels caramels halvah chocolate bar. Cotton
-                        candy gummi bears pudding pie apple pie cookie. Cheesecake jujubes lemon drops danish dessert I
-                        love caramels powder.
-                    </p>
-                    <p>
-                        Chocolate cake icing tiramisu liquorice toffee donut sweet roll cake. Cupcake dessert icing
-                        dragée dessert. Liquorice jujubes cake tart pie donut. Cotton candy candy canes lollipop
-                        liquorice chocolate marzipan muffin pie liquorice.
-                    </p>
-                    <p>
-                        Powder cookie jelly beans sugar plum ice cream. Candy canes I love powder sugar plum tiramisu.
-                        Liquorice pudding chocolate cake cupcake topping biscuit. Lemon drops apple pie sesame snaps
-                        tootsie roll carrot cake soufflé halvah. Biscuit powder jelly beans. Lollipop candy canes
-                        croissant icing chocolate cake. Cake fruitcake powder pudding pastry.
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Create</button>
+            <div class="modal-content" id="modal_create_customer">
+                <div class="modal-body " style="height:100vh">
+                    @php
+                        $modal = true;
+                    @endphp
+                    @include('sale.customer.form')
                 </div>
             </div>
         </div>
@@ -214,11 +185,12 @@
 
 @section('pageJs')
     <script src="{{ asset('/pages/sale/sale_invoice/create.js') }}"></script>
-
+    @yield('pageJsScript')
 @endsection
 
 @section('script')
     <script src="{{asset('/pages/help/customer_help.js')}}"></script>
+    <script src="{{asset('/pages/help/product_help.js')}}"></script>
     <script>
         $(document).on('change','#seller_type',function(){
             var validate = true;
@@ -262,42 +234,7 @@
                 });
             }
         })
-
-        $(document).on('change','#product_id',function(){
-            var validate = true;
-            var thix = $(this);
-            var val = thix.find('option:selected').val();
-            if(valueEmpty(val)){
-                //  ntoastr.error("Select Any Product");
-                validate = false;
-                return false;
-            }
-            if(validate){
-                var formData = {
-                    product_id : val
-                };
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: '{{ route('sale.sale-invoice.getProductDetail') }}',
-                    dataType	: 'json',
-                    data        : formData,
-                    success: function(response,data) {
-                        if(response.status == 'success'){
-                            var product = response.data['product'];
-
-                            $('form').find('#sale_price').val(product.default_sale_price);
-                        }else{
-                            ntoastr.error(response.message);
-                        }
-                    },
-                    error: function(response,status) {
-                        ntoastr.error('server error..404');
-                    }
-                });
-            }
-        })
     </script>
+
+    @yield('scriptCustom')
 @endsection

@@ -65,7 +65,9 @@
 </div>
 <!-- END: Content-->
 
-
+<script>
+    var routeGetProductDetail = '{{ route('sale.sale-invoice.getProductDetail') }}';
+</script>
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('assets/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
@@ -119,6 +121,12 @@
         var validate = true;
         var thix = $(this);
         var val = thix.find('option:selected').val();
+        if(valueEmpty(val)){
+            $('form').find('.cityList').html("<option value='0' selected>Select</option>");
+            $('form').find('.regionList').html("<option value='0' selected>Select</option>");
+            validate = false;
+            return false;
+        }
         if(validate){
             var formData = {
                 country_id : val
@@ -159,6 +167,11 @@
         var country_id = $('form').find('.countryList option:selected').val();
         if(valueEmpty(country_id)){
             ntoastr.error("Select country");
+            validate = false;
+            return false;
+        }
+        if(valueEmpty(val)){
+            $('form').find('.cityList').html("<option value='0' selected>Select</option>");
             validate = false;
             return false;
         }

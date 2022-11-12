@@ -153,7 +153,8 @@ class CustomerController extends Controller
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
             ]);
-
+            $data['id'] = $dealer->id;
+            $data['name'] = $dealer->name;
             $r = self::insertAddress($request,$dealer);
 
             if(isset($r['status']) && $r['status'] == 'error'){
