@@ -6,18 +6,41 @@
 @section('content')
     @permission($data['permission'])
     @php
+   // dd($data);
         $current = $data['current'];
+        if(!$data['view']){
+            $url = route('setting.project.update',$data['id']);
+        }
     @endphp
-    <form id="project_edit" class="project_edit" action="{{route('setting.project.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
-        @csrf
-        @method('patch')
+    <form id="project_edit" class="project_edit" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
+        @if($data['view'])
+            <style>
+                input,.select2 {
+                    pointer-events:none !important;
+                    color:#000 !important;
+                    background:#F5F5F5 !important;
+                }
+                .select2-selection{
+                    background:#F5F5F5 !important;
+                }
+            </style>
+        @else
+            @csrf
+            @method('patch')
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @if($data['view'])
+                                @permission($data['permission'])
+                                <a href="{{route('setting.project.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                @endpermission
+                            @else
+                                <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @endif
                         </div>
                         <div class="card-link">
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -84,4 +107,10 @@
 
 @section('script')
 
+    @if($data['view'])
+        <script>
+            $('.select2').select2({ disabled : false });
+            $(".select2").prop('disabled', false);
+        </script>
+    @endif
 @endsection

@@ -232,12 +232,10 @@ class SaleInvoiceController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
-        $data['customer'] = Customer::get();
         $data['project'] = Project::get();
-        $data['property'] = Product::ProductProperty()->get();
         if(Sale::where('uuid',$id)->exists()){
 
-            $data['current'] = Sale::with('dealer','staff')->where('uuid',$id)->first();
+            $data['current'] = Sale::with('product','customer','dealer','staff')->where('uuid',$id)->first();
 
         }else{
             abort('404');

@@ -66,4 +66,8 @@ class Utilities
         }
 
     }
+
+    public static function NumFormat($num){
+        return number_format($num,3,'.','');
+    }
 }

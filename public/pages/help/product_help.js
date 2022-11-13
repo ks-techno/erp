@@ -26,7 +26,8 @@ $(document).on('click','.data_tbody_row',function(e){
 $('#'+help_product_id).on('focusin keyup',function(e){
     $('#inLineHelp').remove();
     var validate = true;
-    var project_id =$('#sale_invoice_create').find('#project_id option:selected').val();
+    var project_id = $('form').find('#project_id option:selected').val();
+    console.log(project_id);
     if(valueEmpty(project_id)){
         ntoastr.error("First Select Any Project");
         validate = false;
@@ -41,7 +42,7 @@ $('#'+help_product_id).on('focusin keyup',function(e){
         if ((val || !val) && inLIneHelpLength == 0){
             eg_help_block.append('<div id="inLineHelp"></div>');
             var inLineHelp = eg_help_block.find('#inLineHelp');
-            val = val.replace(' ','%20');
+            val = val.replace(/\s/g,'%20');
             var setval = "?project_id="+project_id
             setval += "&search="+val
             var url2 = help_product_url +'/'+setval

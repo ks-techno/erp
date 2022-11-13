@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
 use App\Models\ChartOfAccount;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -168,8 +169,8 @@ class CashPaymentController extends Controller
                         'chart_account_id' => $account->id,
                         'chart_account_name' => $account->name,
                         'chart_account_code' => $account->code,
-                        'debit' => $pd['egt_debit'],
-                        'credit' => $pd['egt_credit'],
+                        'debit' => Utilities::NumFormat($pd['egt_debit']),
+                        'credit' => Utilities::NumFormat($pd['egt_credit']),
                         'description' => $pd['egt_description'],
                         'remarks' => $request->remarks,
                         'company_id' => auth()->user()->company_id,
@@ -287,8 +288,8 @@ class CashPaymentController extends Controller
                         'chart_account_id' => $account->id,
                         'chart_account_name' => $account->name,
                         'chart_account_code' => $account->code,
-                        'debit' => $pd['egt_debit'],
-                        'credit' => $pd['egt_credit'],
+                        'debit' => Utilities::NumFormat($pd['egt_debit']),
+                        'credit' => Utilities::NumFormat($pd['egt_credit']),
                         'description' => $pd['egt_description'],
                         'remarks' => $request->remarks,
                         'company_id' => auth()->user()->company_id,

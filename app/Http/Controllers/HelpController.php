@@ -51,7 +51,7 @@ class HelpController extends Controller
         $sale = Sale::where('project_id',$request->project_id)->pluck('product_id')->unique()->toArray();
 
         $data = [];
-        $product = Product::whereNotIn('id',$sale);
+        $product = Product::whereNotIn('id',$sale)->where('product_form_type','property');
         if(!empty($val)){
             $val = (string)$val;
             $product = $product->where('code','like',"%$val%");

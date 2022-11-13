@@ -37,7 +37,7 @@ $('#'+help_customer_id).on('focusin keyup',function(e){
     if ((val || !val) && inLIneHelpLength == 0){
         eg_help_block.append('<div id="inLineHelp"></div>');
         var inLineHelp = eg_help_block.find('#inLineHelp');
-        val = val.replace(' ','%20');
+        val = val.replace(/\s/g,'%20');
         var url2 = help_customer_url +'/'+val
         inLineHelp.load(url2);
         var offsetTop = 30;

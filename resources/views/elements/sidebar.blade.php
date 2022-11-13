@@ -10,6 +10,17 @@
         $path = $path1.'/'.$path2;
 
 @endphp
+<style>
+    #accounts_nav_ul a,
+    #crm_nav_ul a,
+    #purchase_nav_ul a,
+    #sale_nav_ul a,
+    #hr_nav_ul a,
+    #setting_nav_ul a
+    {
+        padding-left: 50px;
+    }
+</style>
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
@@ -67,14 +78,14 @@
             @permission('project'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'setting/project')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('setting.project.index') }}">
-                    <i data-feather='book-open'></i>
+                    <i data-feather='aperture'></i>
                     <span class="menu-item text-truncate">Project</span>
                 </a>
             </li>
             @endpermission
             <li id="accounts_nav" class="nav-item has-sub {{ ($prefix == '/accounts')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
-                    <i data-feather='users'></i>
+                    <i data-feather='book-open'></i>
                     <span class="menu-title text-truncate">Accounts</span>
                 </a>
                 <ul class="menu-content" id="accounts_nav_ul">
@@ -129,12 +140,12 @@
                     @endpermission
                 </ul>
             </li>
-            <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
+            <li id="crm_nav" class="nav-item has-sub {{ ($prefix == '/crm')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
-                    <i data-feather='shopping-bag'></i>
-                    <span class="menu-title text-truncate">Purchase</span>
+                    <i data-feather='codesandbox'></i>
+                    <span class="menu-title text-truncate">CRM</span>
                 </a>
-                <ul class="menu-content" id="purchase_nav_ul">
+                <ul class="menu-content" id="crm_nav_ul">
                     @permission('product-inventory'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/product')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product.index') }}">
@@ -145,10 +156,25 @@
                     @permission('product-property'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/product-property')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product-property.index') }}">
-                            <span class="menu-item text-truncate">Product Property</span>
+                            <span class="menu-item text-truncate">Product</span>
                         </a>
                     </li>
                     @endpermission
+                    @permission('customer'.$sidebar_menu)
+                    <li class="{{ ($path == 'sale/customer')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.customer.index') }}">
+                            <span class="menu-item text-truncate">Customer</span>
+                        </a>
+                    </li>
+                    @endpermission
+                </ul>
+            </li>
+            <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
+                <a class="d-flex align-items-center" href="#">
+                    <i data-feather='shopping-bag'></i>
+                    <span class="menu-title text-truncate">Purchase</span>
+                </a>
+                <ul class="menu-content" id="purchase_nav_ul">
                     @permission('category-type'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/category_types')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.category_types.index') }}">
@@ -210,13 +236,6 @@
                     <li class="{{ ($path == 'sale/dealer')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.dealer.index') }}">
                             <span class="menu-item text-truncate">Dealer</span>
-                        </a>
-                    </li>
-                    @endpermission
-                    @permission('customer'.$sidebar_menu)
-                    <li class="{{ ($path == 'sale/customer')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('sale.customer.index') }}">
-                            <span class="menu-item text-truncate">Customer</span>
                         </a>
                     </li>
                     @endpermission
@@ -292,6 +311,10 @@
     <script>
         var main_nav_ids = [
             {
+                'id':'accounts_nav',
+                'nav_ul':'accounts_nav_ul',
+            },
+            {
                 'id':'purchase_nav',
                 'nav_ul':'purchase_nav_ul',
             },
@@ -306,6 +329,10 @@
             {
                 'id':'hr_nav',
                 'nav_ul':'hr_nav_ul',
+            },
+            {
+                'id':'crm_nav',
+                'nav_ul':'crm_nav_ul',
             }
         ];
         main_nav_ids.forEach(function(item){

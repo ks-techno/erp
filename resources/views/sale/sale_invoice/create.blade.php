@@ -234,6 +234,11 @@
                 });
             }
         })
+
+        $(document).on('change','#project_id',function(){
+            $('form').find('#product_name').val("");
+            $('form').find('#product_id').val("");
+        })
     </script>
 
     @yield('scriptCustom')
