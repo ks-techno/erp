@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Sale;
 
+use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Controller;
+use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -151,7 +153,8 @@ class CustomerController extends Controller
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
             ]);
-
+            $data['id'] = $dealer->id;
+            $data['name'] = $dealer->name;
             $r = self::insertAddress($request,$dealer);
 
             if(isset($r['status']) && $r['status'] == 'error'){

@@ -140,6 +140,17 @@ class SaleInvoiceController extends Controller
             'customer_id' => ['required',Rule::notIn([0,'0'])],
             'seller_type' => ['required',Rule::in(['dealer','staff'])],
             'seller_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'project_id.required' => 'Project is required',
+            'project_id.not_in' => 'Project is required',
+            'product_id.required' => 'Product is required',
+            'product_id.not_in' => 'Product is required',
+            'customer_id.required' => 'Customer is required',
+            'customer_id.not_in' => 'Customer is required',
+            'seller_type.required' => 'Seller type is required',
+            'seller_type.in' => 'Seller type is required',
+            'seller_id.required' => 'Seller is required',
+            'seller_id.not_in' => 'Seller is required',
         ]);
 
         if ($validator->fails()) {
@@ -221,12 +232,10 @@ class SaleInvoiceController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
-        $data['customer'] = Customer::get();
         $data['project'] = Project::get();
-        $data['property'] = Product::ProductProperty()->get();
         if(Sale::where('uuid',$id)->exists()){
 
-            $data['current'] = Sale::with('dealer','staff')->where('uuid',$id)->first();
+            $data['current'] = Sale::with('product','customer','dealer','staff')->where('uuid',$id)->first();
 
         }else{
             abort('404');
@@ -251,6 +260,17 @@ class SaleInvoiceController extends Controller
             'customer_id' => ['required',Rule::notIn([0,'0'])],
             'seller_type' => ['required',Rule::in(['dealer','staff'])],
             'seller_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'project_id.required' => 'Project is required',
+            'project_id.not_in' => 'Project is required',
+            'product_id.required' => 'Product is required',
+            'product_id.not_in' => 'Product is required',
+            'customer_id.required' => 'Customer is required',
+            'customer_id.not_in' => 'Customer is required',
+            'seller_type.required' => 'Seller type is required',
+            'seller_type.in' => 'Seller type is required',
+            'seller_id.required' => 'Seller is required',
+            'seller_id.not_in' => 'Seller is required',
         ]);
 
         if ($validator->fails()) {
@@ -345,5 +365,27 @@ class SaleInvoiceController extends Controller
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully get seller', 200);
+    }
+    public function getProductDetail(Request $request)
+    {
+
+        $data = [];
+
+        $product_id = isset($request->product_id)?$request->product_id:"";
+
+        DB::beginTransaction();
+        try{
+            $data['product'] = Product::where('id',$product_id)->first();
+
+            if(empty($data['product'])){
+                return $this->jsonErrorResponse($data, "Product not found", 200);
+            }
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, 'Successfully get product detail', 200);
     }
 }

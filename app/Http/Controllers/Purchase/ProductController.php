@@ -142,6 +142,18 @@ class ProductController extends Controller
             'brand_id' => ['required',Rule::notIn([0,'0'])],
             'parent_category' => ['required',Rule::notIn([0,'0'])],
             'category_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'supplier_id.required' => 'Supplier is required',
+            'supplier_id.not_in' => 'Supplier is required',
+            'manufacturer_id.required' => 'Manufacturer is required',
+            'manufacturer_id.not_in' => 'Manufacturer is required',
+            'brand_id.required' => 'Brand is required',
+            'brand_id.not_in' => 'Brand is required',
+            'parent_category.required' => 'Parent Category Type is required',
+            'parent_category.not_in' => 'Parent Category Type is required',
+            'category_id.required' => 'Category is required',
+            'category_id.not_in' => 'Category is required',
         ]);
 
         if ($validator->fails()) {
@@ -253,6 +265,18 @@ class ProductController extends Controller
             'brand_id' => ['required',Rule::notIn([0,'0'])],
             'parent_category' => ['required',Rule::notIn([0,'0'])],
             'category_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'supplier_id.required' => 'Supplier is required',
+            'supplier_id.not_in' => 'Supplier is required',
+            'manufacturer_id.required' => 'Manufacturer is required',
+            'manufacturer_id.not_in' => 'Manufacturer is required',
+            'brand_id.required' => 'Brand is required',
+            'brand_id.not_in' => 'Brand is required',
+            'parent_category.required' => 'Parent Category Type is required',
+            'parent_category.not_in' => 'Parent Category Type is required',
+            'category_id.required' => 'Category is required',
+            'category_id.not_in' => 'Category is required',
         ]);
 
         if ($validator->fails()) {

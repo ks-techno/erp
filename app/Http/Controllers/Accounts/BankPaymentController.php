@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
 use App\Models\ChartOfAccount;
 use App\Models\PaymentMode;
 use App\Models\Voucher;
@@ -171,8 +172,8 @@ class BankPaymentController extends Controller
                         'chart_account_code' => $account->code,
                         'cheque_no' => $pd['egt_cheque_no'],
                         'cheque_date' => $pd['egt_cheque_date'],
-                        'debit' => $pd['egt_debit'],
-                        'credit' => $pd['egt_credit'],
+                        'debit' => Utilities::NumFormat($pd['egt_debit']),
+                        'credit' => Utilities::NumFormat($pd['egt_credit']),
                         'description' => $pd['egt_description'],
                         'remarks' => $request->remarks,
                         'company_id' => auth()->user()->company_id,
@@ -292,8 +293,8 @@ class BankPaymentController extends Controller
                         'chart_account_code' => $account->code,
                         'cheque_no' => $pd['egt_cheque_no'],
                         'cheque_date' => $pd['egt_cheque_date'],
-                        'debit' => $pd['egt_debit'],
-                        'credit' => $pd['egt_credit'],
+                        'debit' => Utilities::NumFormat($pd['egt_debit']),
+                        'credit' => Utilities::NumFormat($pd['egt_credit']),
                         'description' => $pd['egt_description'],
                         'remarks' => $request->remarks,
                         'company_id' => auth()->user()->company_id,

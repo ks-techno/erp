@@ -27,7 +27,7 @@
                                     <thead>
                                     <tr>
                                         <th class="cell-fit">Title</th>
-                                        <th class="cell-fit">Key Name</th>
+                                        <th class="cell-fit">Property type</th>
                                         <th class="cell-fit">Value Type</th>
                                         <th class="cell-fit">Description</th>
                                         <th class="cell-fit"></th>

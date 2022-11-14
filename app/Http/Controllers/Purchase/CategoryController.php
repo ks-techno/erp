@@ -121,6 +121,10 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'category_type_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'category_type_id.required' => 'Category Type is required',
+            'category_type_id.not_in' => 'Category Type is required',
         ]);
 
         if ($validator->fails()) {
@@ -208,6 +212,10 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'category_type_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'category_type_id.required' => 'Category Type is required',
+            'category_type_id.not_in' => 'Category Type is required',
         ]);
 
         if ($validator->fails()) {

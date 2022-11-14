@@ -139,6 +139,10 @@ class ProductPropertyController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'project_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'project_id.required' => 'Project is required',
+            'project_id.not_in' => 'Project is required',
         ]);
 
         if ($validator->fails()) {
@@ -285,6 +289,10 @@ class ProductPropertyController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'project_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'project_id.required' => 'Project is required',
+            'project_id.not_in' => 'Project is required',
         ]);
 
         if ($validator->fails()) {

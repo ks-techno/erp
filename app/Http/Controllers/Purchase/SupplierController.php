@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Purchase;
 
+use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
+use App\Models\ChartOfAccount;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -150,6 +153,18 @@ class SupplierController extends Controller
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
             }
+
+            $req = [
+                'name' => $request->name,
+                'level' => 4,
+                'parent_account' => '03-01-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
+
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());

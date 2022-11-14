@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Accounts\ChartOfAccountTreeController;
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Accounts\BankPaymentController;
 use App\Http\Controllers\Accounts\BankReceiveController;
@@ -73,9 +74,16 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::prefix('help')->name('help.')->group(function () {
         Route::get('chart/{str?}', [HelpController::class, 'chart'])->name('chart');
+        Route::get('customer/{str?}', [HelpController::class, 'customer'])->name('customer');
+        Route::get('property-product/{str?}', [HelpController::class, 'propertyProduct'])->name('propertyProduct');
     });
 
     Route::prefix('accounts')->name('accounts.')->group(function () {
+      //  Route::prefix('chart-of-account-tree')->resource('chart-of-account-tree', ChartOfAccountTreeController::class);
+        Route::prefix('chart-of-account-tree')->name('chart-of-account-tree.')->controller(ChartOfAccountTreeController::class)->group(function(){
+            Route::get('/', 'index')->name('index');
+            Route::get('get-chart-of-account-tree', 'getChartOfAccountTree')->name('getChartOfAccountTree');
+        });
         Route::prefix('chart-of-account')->resource('chart-of-account', ChartOfAccountController::class);
         Route::prefix('chart-of-account')->name('chart-of-account.')->controller(ChartOfAccountController::class)->group(function(){
             Route::post('get-parent-coa', 'getParentCoaList')->name('getParentCoaList');
@@ -134,6 +142,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('sale-invoice')->resource('sale-invoice', SaleInvoiceController::class);
         Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
             Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+            Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
         });
     });
 

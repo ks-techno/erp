@@ -1,6 +1,32 @@
 @extends('layouts.form')
 @section('title', $data['title'])
 @section('style')
+    <style>
+        .right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 800px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .show .modal-dialog {
+            /*position: absolute;*/right: 0px !important;
+        }
+        .right.fade .modal-dialog {
+            right: -320px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+        .right.fade.in .modal-dialog {
+            right: 0;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -49,12 +75,11 @@
                                         <label class="col-form-label">Product <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="product_id" name="product_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['property'] as $property)
-                                                <option value="{{$property->id}}" {{$current->product_id == $property->id?"selected":""}}> {{$property->name}} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="input-group eg_help_block">
+                                            <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
+                                            <input id="product_name" type="text" value="{{isset($current->product->name)?$current->product->name:""}}" class="product_name form-control form-control-sm text-left">
+                                            <input id="product_id" type="hidden" name="product_id" value="{{$current->product_id}}">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -62,12 +87,11 @@
                                         <label class="col-form-label">Customer <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="customer_id" name="customer_id">
-                                            <option value="0" selected>Select</option>
-                                            @foreach($data['customer'] as $customer)
-                                                <option value="{{$customer->id}}" {{$current->customer_id == $customer->id?"selected":""}}> {{$customer->name}} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="input-group eg_help_block">
+                                            <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
+                                            <input id="customer_name" type="text" value="{{isset($current->customer->name)?$current->customer->name:""}}" class="customer_name form-control form-control-sm text-left">
+                                            <input id="customer_id" type="hidden" name="customer_id" value="{{$current->customer_id}}">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -114,7 +138,7 @@
                                         <label class="col-form-label">Sale Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->sale_price}}" id="sale_price" name="sale_price">
+                                        <input type="text" readonly class="form-control form-control-sm" value="{{$current->sale_price}}" id="sale_price" name="sale_price">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -162,15 +186,29 @@
             </div>
         </div>
     </form>
+    <div class="modal fade right" id="createNewCustomer" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" style="">
+            <div class="modal-content" id="modal_create_customer">
+                <div class="modal-body " style="height:100vh">
+                    @php
+                        $modal = true;
+                    @endphp
+                    @include('sale.customer.form')
+                </div>
+            </div>
+        </div>
+    </div>
     @endpermission
 @endsection
 
 @section('pageJs')
     <script src="{{ asset('/pages/sale/sale_invoice/edit.js') }}"></script>
-
+    @yield('pageJsScript')
 @endsection
 
 @section('script')
+    <script src="{{asset('/pages/help/customer_help.js')}}"></script>
+    <script src="{{asset('/pages/help/product_help.js')}}"></script>
     <script>
         $(document).on('change','#seller_type',function(){
             var validate = true;
@@ -214,5 +252,11 @@
                 });
             }
         })
+        $(document).on('change','#project_id',function(){
+            $('form').find('#product_name').val("");
+            $('form').find('#product_id').val("");
+        })
     </script>
+
+    @yield('scriptCustom')
 @endsection

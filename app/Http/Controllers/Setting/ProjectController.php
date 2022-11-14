@@ -27,6 +27,7 @@ class ProjectController extends Controller
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -126,6 +127,12 @@ class ProjectController extends Controller
             'name' => 'required',
             'company_id' => ['required',Rule::notIn([0,'0'])],
             'city_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'company_id.required' => 'Company is required',
+            'company_id.not_in' => 'Company is required',
+            'city_id.required' => 'City is required',
+            'city_id.not_in' => 'City is required',
         ]);
 
         if ($validator->fails()) {
@@ -181,9 +188,10 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
+        $data['view'] = false;
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
@@ -197,7 +205,11 @@ class ProjectController extends Controller
         }else{
             abort('404');
         }
-
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
+        }
         return view('setting.project.edit', compact('data'));
     }
 
@@ -216,6 +228,12 @@ class ProjectController extends Controller
             'name' => 'required',
             'company_id' => ['required',Rule::notIn([0,'0'])],
             'city_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'company_id.required' => 'Company is required',
+            'company_id.not_in' => 'Company is required',
+            'city_id.required' => 'City is required',
+            'city_id.not_in' => 'City is required',
         ]);
 
         if ($validator->fails()) {

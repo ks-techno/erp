@@ -24,7 +24,7 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Buyable Type <span class="required">*</span> </label>
+                                        <label class="col-form-label">Property type <span class="required">*</span> </label>
                                     </div>
                                     <div class="col-sm-8">
                                         <select class="select2 form-select" multiple id="buyable_type_id" name="buyable_type_id[]">
@@ -40,14 +40,6 @@
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="" id="display_title" name="display_title" />
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Key Name <span class="required">*</span></label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="key_name" name="key_name" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">

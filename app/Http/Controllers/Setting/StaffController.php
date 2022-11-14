@@ -128,11 +128,16 @@ class StaffController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'cnic_no' => 'required',
             'project_id' => ['required',Rule::notIn([0,'0'])],
             'department_id' => ['required',Rule::notIn([0,'0'])],
-            'country_id' => ['required',Rule::notIn([0,'0'])],
-            'region_id' => ['required',Rule::notIn([0,'0'])],
-            'city_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'cnic_no.required' => 'CNIC NO is required',
+            'project_id.required' => 'Project is required',
+            'project_id.not_in' => 'Project is required',
+            'department_id.required' => 'Department is required',
+            'department_id.not_in' => 'Department is required',
         ]);
 
         if ($validator->fails()) {
@@ -151,6 +156,7 @@ class StaffController extends Controller
             $staff = Staff::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
+                'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
                 /*'address' => $request->address,*/
                 'project_id' => $request->project_id,
@@ -226,8 +232,16 @@ class StaffController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'cnic_no' => 'required',
             'project_id' => ['required',Rule::notIn([0,'0'])],
             'department_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'cnic_no.required' => 'CNIC NO is required',
+            'project_id.required' => 'Project is required',
+            'project_id.not_in' => 'Project is required',
+            'department_id.required' => 'Department is required',
+            'department_id.not_in' => 'Department is required',
         ]);
 
         if ($validator->fails()) {
@@ -246,6 +260,7 @@ class StaffController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'contact_no' => $request->contact_no,
+                    'cnic_no' => $request->cnic_no,
                     'address' => $request->address,
                     'project_id' => $request->project_id,
                     'department_id' => $request->department_id,
