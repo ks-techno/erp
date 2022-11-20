@@ -43,6 +43,8 @@ class ChartOfAccountSeeder extends Seeder
             [ 'code' => '03-02-0007-0000', 'name' => 'PAYABLE TAX', 'level' => '3', 'parent_code' => '03-02-0000-0000' ],
             [ 'code' => '03-03-0000-0000', 'name' => 'DEALER', 'level' => '2', 'parent_code' => '03-00-0000-0000' ],
             [ 'code' => '03-03-0001-0000', 'name' => 'DEALER', 'level' => '3', 'parent_code' => '03-03-0000-0000' ],
+            [ 'code' => '03-04-0000-0000', 'name' => 'STAFF', 'level' => '2', 'parent_code' => '03-00-0000-0000' ],
+            [ 'code' => '03-04-0001-0000', 'name' => 'STAFF', 'level' => '3', 'parent_code' => '03-04-0000-0000' ],
             [ 'code' => '04-00-0000-0000', 'name' => 'ASSETS', 'level' => '1', 'parent_code' => 'NULL' ],
             [ 'code' => '04-01-0000-0000', 'name' => 'FIXED ASSETS', 'level' => '2', 'parent_code' => '04-00-0000-0000' ],
             [ 'code' => '04-01-0001-0000', 'name' => 'BUILDING A/C', 'level' => '3', 'parent_code' => '04-01-0000-0000' ],

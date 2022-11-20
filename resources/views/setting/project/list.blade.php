@@ -1,11 +1,6 @@
 @extends('layouts.datatable')
 @section('title', $data['title'])
 @section('style')
-    <style>
-        .datatables-ajax>tbody>tr:hover {
-            background: #f0f8ff;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -53,14 +48,5 @@
 @endsection
 
 @section('script')
-    <script>
-        $(document).on('click','.datatables-ajax>tbody>tr>td',function(){
-            var thix = $(this);
-            if(thix.find('a.item-edit').length == 0){
-                var tr = thix.parents('tr');
-                var edit_url = tr.find('a.item-edit').attr('href');
-                location.href = edit_url+'?view=true'
-            }
-        })
-    </script>
+
 @endsection

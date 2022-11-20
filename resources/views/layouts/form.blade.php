@@ -44,7 +44,18 @@
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
     <!-- END: Custom CSS-->
-
+    @if(isset($data['view']) && $data['view'])
+        <style>
+            input[type='text'],.select2 {
+                pointer-events:none !important;
+                color:#000 !important;
+                background:#F5F5F5 !important;
+            }
+            .select2-selection{
+                background:#F5F5F5 !important;
+            }
+        </style>
+    @endif
     @yield('style')
 </head>
 <!-- END: Head-->

@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Dealer;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\PropertyPaymentMode;
 use App\Models\Sale;
 use App\Models\SaleSeller;
 use App\Models\Staff;
@@ -29,6 +30,7 @@ class SaleInvoiceController extends Controller
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
     /**
@@ -122,6 +124,7 @@ class SaleInvoiceController extends Controller
         $data['customer'] = Customer::get();
         $data['project'] = Project::get();
         $data['property'] = Product::ProductProperty()->get();
+        $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
         return view('sale.sale_invoice.create', compact('data'));
     }
 
@@ -179,10 +182,12 @@ class SaleInvoiceController extends Controller
                 'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
                 'project_id' => $request->project_id,
                 'product_id' => $request->product_id,
+                'property_payment_mode_id' => $request->property_payment_mode_id,
                 'is_installment' => isset($request->is_installment)?1:0,
                 'is_booked' => isset($request->is_booked)?1:0,
                 'is_purchased' => isset($request->is_purchased)?1:0,
                 'sale_price' => $request->sale_price,
+                'currency_note_no' => $request->currency_note_no,
                 'booked_price' => $request->booked_price,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
@@ -225,7 +230,7 @@ class SaleInvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
@@ -233,12 +238,19 @@ class SaleInvoiceController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
         $data['project'] = Project::get();
+        $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
         if(Sale::where('uuid',$id)->exists()){
 
             $data['current'] = Sale::with('product','customer','dealer','staff')->where('uuid',$id)->first();
 
         }else{
             abort('404');
+        }
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
         }
 
         return view('sale.sale_invoice.edit', compact('data'));
@@ -291,10 +303,12 @@ class SaleInvoiceController extends Controller
                 'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
                 'project_id' => $request->project_id,
                 'product_id' => $request->product_id,
+                'property_payment_mode_id' => $request->property_payment_mode_id,
                 'is_installment' => isset($request->is_installment)?1:0,
                 'is_booked' => isset($request->is_booked)?1:0,
                 'is_purchased' => isset($request->is_purchased)?1:0,
                 'sale_price' => $request->sale_price,
+                'currency_note_no' => $request->currency_note_no,
                 'booked_price' => $request->booked_price,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,

@@ -147,16 +147,16 @@
                 </a>
                 <ul class="menu-content" id="crm_nav_ul">
                     @permission('product-inventory'.$sidebar_menu)
-                    <li class="{{ ($path == 'purchase/product')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('purchase.product.index') }}">
-                            <span class="menu-item text-truncate">Product Inventory</span>
+                    <li class="{{ ($path == 'purchase/inventory')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.inventory.index') }}">
+                            <span class="menu-item text-truncate">Inventory</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('product-property'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/product-property')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product-property.index') }}">
-                            <span class="menu-item text-truncate">Product</span>
+                            <span class="menu-item text-truncate">Project Inventory</span>
                         </a>
                     </li>
                     @endpermission
@@ -242,7 +242,7 @@
                     @permission('sale-invoice'.$sidebar_menu)
                     <li class="{{ ($path == 'sale/sale-invoice')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.sale-invoice.index') }}">
-                            <span class="menu-item text-truncate">Sale Invoice</span>
+                            <span class="menu-item text-truncate">Booking</span>
                         </a>
                     </li>
                     @endpermission

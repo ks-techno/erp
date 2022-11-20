@@ -13,18 +13,7 @@
         }
     @endphp
     <form id="project_edit" class="project_edit" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
-        @if($data['view'])
-            <style>
-                input,.select2 {
-                    pointer-events:none !important;
-                    color:#000 !important;
-                    background:#F5F5F5 !important;
-                }
-                .select2-selection{
-                    background:#F5F5F5 !important;
-                }
-            </style>
-        @else
+        @if(!$data['view'])
             @csrf
             @method('patch')
         @endif
@@ -35,7 +24,7 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
-                                @permission($data['permission'])
+                                @permission($data['permission_edit'])
                                 <a href="{{route('setting.project.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 @endpermission
                             @else
@@ -107,10 +96,4 @@
 
 @section('script')
 
-    @if($data['view'])
-        <script>
-            $('.select2').select2({ disabled : false });
-            $(".select2").prop('disabled', false);
-        </script>
-    @endif
 @endsection

@@ -60,7 +60,7 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">External Item ID</label>
+                                        <label class="col-form-label">Registration No</label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="" id="external_item_id" name="external_item_id" />

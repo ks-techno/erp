@@ -16,18 +16,19 @@ use Illuminate\Validation\Rule;
 use Exception;
 use Validator;
 
-class ProductController extends Controller
+class InventoryController extends Controller
 {
     private static function Constants()
     {
-        $name = 'product-inventory';
+        $name = 'inventory';
         return [
-            'title' => 'Product Inventory',
-            'list_url' => route('purchase.product.index'),
+            'title' => 'Inventory',
+            'list_url' => route('purchase.inventory.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
     /**
@@ -62,8 +63,8 @@ class ProductController extends Controller
             $entries = [];
             foreach ($allData as $row) {
                 $entry_status = $this->getStatusTitle()[$row->status];
-                $urlEdit = route('purchase.product.edit',$row->uuid);
-                $urlDel = route('purchase.product.destroy',$row->uuid);
+                $urlEdit = route('purchase.inventory.edit',$row->uuid);
+                $urlDel = route('purchase.inventory.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per) {
@@ -95,7 +96,7 @@ class ProductController extends Controller
             return response()->json($result);
         }
 
-        return view('purchase.product.list', compact('data'));
+        return view('purchase.inventory.list', compact('data'));
     }
 
     /**
@@ -123,7 +124,7 @@ class ProductController extends Controller
         $data['categories'] = Category::where('parent_id',null)->OrderByName()->get();
         $data['buyable'] = BuyableType::OrderByName()->get();
 
-        return view('purchase.product.create', compact('data'));
+        return view('purchase.inventory.create', compact('data'));
     }
 
     /**
@@ -224,7 +225,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
@@ -240,12 +241,20 @@ class ProductController extends Controller
         }else{
             abort('404');
         }
+
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
+        }
+
         $data['suppliers'] = Supplier::where('status',1)->OrderByName()->get();
         $data['manufacturers'] = Manufacturer::where('status',1)->OrderByName()->get();
         $data['brands'] = Brand::where('status',1)->OrderByName()->get();
         $data['categories'] = Category::where('parent_id',null)->OrderByName()->get();
 
-        return view('purchase.product.edit', compact('data'));
+        return view('purchase.inventory.edit', compact('data'));
     }
 
     /**

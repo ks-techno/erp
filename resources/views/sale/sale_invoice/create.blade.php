@@ -116,6 +116,18 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
+                                        <label class="col-form-label">Payment Mode</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="select2 form-select" id="property_payment_mode_id" name="property_payment_mode_id">
+                                            @foreach($data['property_payment_mode'] as $property_payment_mode)
+                                                <option value="{{$property_payment_mode->id}}"> {{$property_payment_mode->name}} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
                                         <label class="col-form-label">Sale Price</label>
                                     </div>
                                     <div class="col-sm-9">
@@ -132,32 +144,10 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label">is Installment</label>
+                                        <label class="col-form-label">Currency Note No.</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="is_installment" name="is_installment" checked>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">is Booked</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="is_booked" name="is_booked">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">is Purchased</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="is_purchased" name="is_purchased">
-                                        </div>
+                                        <input type="text" class="form-control form-control-sm" id="currency_note_no" name="currency_note_no">
                                     </div>
                                 </div>
                             </div>

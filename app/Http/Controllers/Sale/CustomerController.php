@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Sale;
 
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
 use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class CustomerController extends Controller
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -147,7 +149,14 @@ class CustomerController extends Controller
                 'name' => self::strUCWord($request->name),
                 'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
+                'mobile_no' => $request->mobile_no,
                 'email' => $request->email,
+                'father_name' => $request->father_name,
+                'husband_name' => $request->husband_name,
+                'registration_no' => $request->registration_no,
+                'membership_no' => $request->cnic_no,
+                'nominee_no' => $request->nominee_no,
+                'nominee_name' => $request->nominee_name,
                 'status' => isset($request->status) ? "1" : "0",
                 'company_id' => auth()->user()->company_id,
                 'project_id' => auth()->user()->project_id,
@@ -161,6 +170,16 @@ class CustomerController extends Controller
                 return $this->jsonErrorResponse($data, $r['message']);
             }
 
+            $req = [
+                'name' => $request->name,
+                'level' => 4,
+                'parent_account' => '06-03-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
@@ -187,7 +206,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
@@ -200,6 +219,12 @@ class CustomerController extends Controller
 
         }else{
             abort('404');
+        }
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
         }
 
         return view('sale.customer.edit', compact('data'));
@@ -238,7 +263,14 @@ class CustomerController extends Controller
                 'name' => self::strUCWord($request->name),
                 'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
+                'mobile_no' => $request->mobile_no,
                 'email' => $request->email,
+                'father_name' => $request->father_name,
+                'husband_name' => $request->husband_name,
+                'registration_no' => $request->registration_no,
+                'membership_no' => $request->cnic_no,
+                'nominee_no' => $request->nominee_no,
+                'nominee_name' => $request->nominee_name,
                 'status' => isset($request->status) ? "1" : "0",
                 'company_id' => auth()->user()->company_id,
                 'project_id' => auth()->user()->project_id,
