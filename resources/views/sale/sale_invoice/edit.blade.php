@@ -32,18 +32,29 @@
 @section('content')
     @php
         $current = $data['current'];
+        if(!$data['view']){
+            $url = route('sale.sale-invoice.update',$data['id']);
+        }
     @endphp
     @permission($data['permission'])
-    <form id="sale_invoice_edit" class="sale_invoice_edit" action="{{route('sale.sale-invoice.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
-        @csrf
-        @method('patch')
+    <form id="sale_invoice_edit" class="sale_invoice_edit" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
+        @if(!$data['view'])
+            @csrf
+            @method('patch')
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @if($data['view'])
+                                @permission($data['permission_edit'])
+                                <a href="{{route('sale.sale-invoice.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                @endpermission
+                            @else
+                                <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @endif
                         </div>
                         <div class="card-link">
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -135,6 +146,18 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
+                                        <label class="col-form-label">Payment Mode</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="select2 form-select" id="property_payment_mode_id" name="property_payment_mode_id">
+                                            @foreach($data['property_payment_mode'] as $property_payment_mode)
+                                                <option value="{{$property_payment_mode->id}}" {{$current->property_payment_mode_id == $property_payment_mode->id?"selected":""}}> {{$property_payment_mode->name}} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
                                         <label class="col-form-label">Sale Price</label>
                                     </div>
                                     <div class="col-sm-9">
@@ -151,32 +174,10 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label">is Installment</label>
+                                        <label class="col-form-label">Currency Note No.</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="is_installment" name="is_installment" {{$current->is_installment == 1?"checked":""}}>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">is Booked</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="is_booked" name="is_booked" {{$current->is_booked == 1?"checked":""}}>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">is Purchased</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <div class="form-check form-check-primary form-switch">
-                                            <input type="checkbox" class="form-check-input" id="is_purchased" name="is_purchased" {{$current->is_purchased == 1?"checked":""}}>
-                                        </div>
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->currency_note_no}}" id="currency_note_no" name="currency_note_no">
                                     </div>
                                 </div>
                             </div>

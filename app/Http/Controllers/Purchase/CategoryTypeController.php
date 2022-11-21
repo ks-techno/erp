@@ -22,6 +22,7 @@ class CategoryTypeController extends Controller
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
     /**
@@ -166,7 +167,7 @@ class CategoryTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
@@ -183,6 +184,12 @@ class CategoryTypeController extends Controller
             abort('404');
         }
 
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
+        }
         return view('purchase.category_types.edit', compact('data'));
     }
 

@@ -101,13 +101,13 @@ class UserManagementSystemController extends Controller
                 'icon' => 'icon-xl la la-shopping-cart',
                 'child' => [
                     [
-                        'dname' => 'Product Inventory',
-                        'name' => 'product-inventory',
+                        'dname' => 'Inventory',
+                        'name' => 'inventory',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
-                        'dname' => 'Product Property',
-                        'name' => 'product-property',
+                        'dname' => 'Product',
+                        'name' => 'product',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [

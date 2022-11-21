@@ -7,17 +7,28 @@
     @permission($data['permission'])
     @php
         $current = $data['current'];
+        if(!$data['view']){
+            $url = route('setting.country.update',$data['id']);
+        }
     @endphp
-    <form id="country_edit" class="country_edit" action="{{route('setting.country.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
-        @csrf
-        @method('patch')
+    <form id="country_edit" class="country_edit" action="{{isset($url)?$url:""}}"  method="post" enctype="multipart/form-data" autocomplete="off">
+        @if(!$data['view'])
+            @csrf
+            @method('patch')
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @if($data['view'])
+                                @permission($data['permission_edit'])
+                                <a href="{{route('setting.country.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                @endpermission
+                            @else
+                                <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @endif
                         </div>
                         <div class="card-link">
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -41,7 +52,7 @@
                                     <div class="col-sm-9">
                                         <div class="form-check form-check-primary form-switch">
                                             <input type="checkbox" class="form-check-input" id="country_status" name="country_status"
-                                                   {{$current->country_status == 1?"checked":""}}>
+                                                   {{$current->status == 1?"checked":""}}>
                                         </div>
                                     </div>
                                 </div>

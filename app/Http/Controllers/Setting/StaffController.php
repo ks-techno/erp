@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
 use App\Models\Address;
 use App\Models\City;
 use App\Models\Company;
@@ -30,6 +31,7 @@ class StaffController extends Controller
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -170,6 +172,16 @@ class StaffController extends Controller
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
             }
+            $req = [
+                'name' => $request->name,
+                'level' => 4,
+                'parent_account' => '03-04-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
         }catch (Exception $e) {
             DB::rollback();
@@ -197,7 +209,7 @@ class StaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
@@ -214,6 +226,12 @@ class StaffController extends Controller
 
         }else{
             abort('404');
+        }
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
         }
 
         return view('setting.staff.edit', compact('data'));

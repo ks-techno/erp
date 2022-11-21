@@ -26,12 +26,13 @@ class ProductPropertyController extends Controller
     {
         $name = 'product-property';
         return [
-            'title' => 'Product Property',
+            'title' => 'Project Inventory',
             'list_url' => route('purchase.product-property.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
     /**
@@ -244,7 +245,7 @@ class ProductPropertyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
@@ -269,6 +270,12 @@ class ProductPropertyController extends Controller
           // dd($data['property_values']);
         }else{
             abort('404');
+        }
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
         }
         $data['project'] = Project::OrderByName()->get();
         $data['buyable'] = BuyableType::OrderByName()->get();

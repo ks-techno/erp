@@ -7,17 +7,28 @@
     @permission($data['permission'])
     @php
         $current = $data['current'];
+        if(!$data['view']){
+            $url = route('purchase.supplier.update',$data['id']);
+        }
     @endphp
-    <form id="supplier_edit" class="supplier_edit" action="{{route('purchase.supplier.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
-        @csrf
-        @method('patch')
+    <form id="supplier_edit" class="supplier_edit" action="{{isset($url)?$url:""}}"  method="post" enctype="multipart/form-data" autocomplete="off">
+        @if(!$data['view'])
+            @csrf
+            @method('patch')
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @if($data['view'])
+                                @permission($data['permission_edit'])
+                                <a href="{{route('purchase.supplier.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                @endpermission
+                            @else
+                                <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @endif
                         </div>
                         <div class="card-link">
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>

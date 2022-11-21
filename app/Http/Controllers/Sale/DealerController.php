@@ -23,6 +23,7 @@ class DealerController extends Controller
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -160,6 +161,7 @@ class DealerController extends Controller
             }
 
             $req = [
+                'name' => $request->name,
                 'level' => 4,
                 'parent_account' => '03-03-0001-0000',
             ];
@@ -195,7 +197,7 @@ class DealerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
@@ -208,6 +210,12 @@ class DealerController extends Controller
 
         }else{
             abort('404');
+        }
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
         }
 
         return view('sale.dealer.edit', compact('data'));

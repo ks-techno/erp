@@ -50,7 +50,7 @@ class Utilities
                     'name' => ucwords(strtolower(strtoupper(trim($name)))),
                     'code' => $code,
                     'level' => $level,
-                    'group' => 'D',
+                    'group' => ($level < 4)?'G':'D',
                     'parent_account_id' => $parent_account_dtl->id,
                     'parent_account_code' => $parent_account,
                     'status' => 1,

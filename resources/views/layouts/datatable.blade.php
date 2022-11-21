@@ -45,6 +45,12 @@
 
     @yield('style')
 
+    <style>
+        .datatables-ajax>tbody>tr:hover {
+            background: #f0f8ff;
+        }
+    </style>
+
     <script>
         let cd = console.log;
         let spinner = '<div class="spinner-border text-primary" role="status">\n' +
@@ -114,6 +120,14 @@
             $('#modal_md').find('.modal-content').html(spinner);
         });
     });
+    $(document).on('click','.datatables-ajax>tbody>tr>td',function(){
+        var thix = $(this);
+        if(thix.find('a.item-edit').length == 0){
+            var tr = thix.parents('tr');
+            var edit_url = tr.find('a.item-edit').attr('href');
+            location.href = edit_url+'?view=true'
+        }
+    })
 </script>
 </body>
 <!-- END: Body-->

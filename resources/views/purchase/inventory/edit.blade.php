@@ -7,17 +7,28 @@
     @permission($data['permission'])
     @php
         $current = $data['current'];
+        if(!$data['view']){
+            $url = route('purchase.inventory.update',$data['id']);
+        }
     @endphp
-    <form id="product_edit" class="product_edit" action="{{route('purchase.product.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
-        @csrf
-        @method('patch')
+    <form id="product_edit" class="product_edit" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
+        @if(!$data['view'])
+            @csrf
+            @method('patch')
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @if($data['view'])
+                                @permission($data['permission_edit'])
+                                <a href="{{route('purchase.inventory.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                @endpermission
+                            @else
+                                <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            @endif
                         </div>
                         <div class="card-link">
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -33,7 +44,7 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Name <span class="required">*</span></label>
+                                        <label class="col-form-label">Plot No. <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->name}}" id="name" name="name" />
@@ -111,7 +122,7 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">External Item ID</label>
+                                        <label class="col-form-label">Registration No</label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->external_item_id}}" id="external_item_id" name="external_item_id" />

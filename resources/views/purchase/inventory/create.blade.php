@@ -5,7 +5,7 @@
 
 @section('content')
     @permission($data['permission'])
-    <form id="product_create" class="product_create" action="{{route('purchase.product.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="inventory_create" class="inventory_create" action="{{route('purchase.inventory.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-12">
@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Name <span class="required">*</span></label>
+                                        <label class="col-form-label">Plot No. <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="" id="name" name="name" />
@@ -101,7 +101,7 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">External Item ID</label>
+                                        <label class="col-form-label">Registration No.</label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="" id="external_item_id" name="external_item_id" />
