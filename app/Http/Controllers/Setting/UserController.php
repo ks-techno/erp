@@ -3,15 +3,7 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
-use App\Library\Utilities;
-use App\Models\Address;
-use App\Models\City;
-use App\Models\Company;
-use App\Models\Country;
-use App\Models\Department;
 use App\Models\Project;
-use App\Models\Region;
-use App\Models\Staff;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -163,6 +155,7 @@ class UserController extends Controller
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'email' => $request->email,
+                'user_status' => isset($request->status)?1:0,
                 'project_id' => $request->project_id,
                 'password' => Hash::make($request->password),
                 'company_id' => auth()->user()->company_id,
@@ -275,6 +268,7 @@ class UserController extends Controller
         try {
             $user = User::where('uuid',$id)->first();
             $user->name = self::strUCWord($request->name);
+            $user->user_status = isset($request->status)?1:0;
             $user->project_id = $request->project_id;
             $user->company_id = auth()->user()->company_id;
             $user->save();

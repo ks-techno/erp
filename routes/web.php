@@ -68,7 +68,12 @@ Route::prefix('password')->name('password.')->group(function () {
 
 });
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/project-list', [HomeController::class,'projectList'])->name('projectList');
+    Route::post('/store-default-project', [HomeController::class,'defaultProjectStore'])->name('defaultProjectStore');
+    Route::group(['middleware' => ['checkProject']], function () {
+
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
+    });
     Route::prefix('profile')->name('profile.')->controller(ProfileController::class)->group(function () {
         Route::get('edit', 'edit')->name('edit');
         Route::post('update','update')->name('update');

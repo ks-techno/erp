@@ -94,7 +94,17 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Status</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="form-check form-check-primary form-switch">
+                                            <input type="checkbox" class="form-check-input" id="status" name="status"
+                                                {{$current->user_status == 1?"checked":""}}>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -73,6 +73,16 @@
                                     <div class="col-sm-12">
                                         <div class="mb-1 row">
                                             <div class="col-sm-3">
+                                                <label class="col-form-label">Status</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="form-check form-check-primary form-switch">
+                                                    <input type="checkbox" class="form-check-input" id="status" name="status" checked>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
                                                 <label class="col-form-label">Password <span class="required">*</span></label>
                                             </div>
                                             <div class="col-sm-9">
