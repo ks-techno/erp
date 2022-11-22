@@ -41,4 +41,8 @@ class Project extends Model
     public function regions(){
         return $this->hasMany(Region::class)->with('cities')->OrderByName();
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class,'user_project');
+    }
 }
