@@ -23,6 +23,7 @@ use App\Http\Controllers\Setting\DepartmentController;
 use App\Http\Controllers\Setting\StaffController;
 use App\Http\Controllers\Setting\ProfileController;
 use App\Http\Controllers\Setting\UserManagementSystemController;
+use App\Http\Controllers\Setting\UserController;
 use App\Http\Controllers\Purchase\CategoryTypeController;
 use App\Http\Controllers\Purchase\CategoryController;
 use App\Http\Controllers\Purchase\BrandController;
@@ -67,7 +68,12 @@ Route::prefix('password')->name('password.')->group(function () {
 
 });
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/project-list', [HomeController::class,'projectList'])->name('projectList');
+    Route::post('/store-default-project', [HomeController::class,'defaultProjectStore'])->name('defaultProjectStore');
+    Route::group(['middleware' => ['checkProject']], function () {
+
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
+    });
     Route::prefix('profile')->name('profile.')->controller(ProfileController::class)->group(function () {
         Route::get('edit', 'edit')->name('edit');
         Route::post('update','update')->name('update');
@@ -111,6 +117,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('project')->resource('project', ProjectController::class);
         Route::prefix('department')->resource('department', DepartmentController::class);
         Route::prefix('staff')->resource('staff', StaffController::class);
+        Route::prefix('user')->resource('user', UserController::class);
 
         Route::prefix('user-management')->name('user-management.')->group(function () {
             Route::get('form/{id?}', [UserManagementSystemController::class, 'create'])->name('create');

@@ -276,6 +276,13 @@
                     <span class="menu-title text-truncate">Setting</span>
                 </a>
                 <ul class="menu-content" id="setting_nav_ul">
+                    @permission('user'.$sidebar_menu)
+                    <li class="{{ ($path == 'setting/user')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.user.index') }}">
+                            <span class="menu-item text-truncate">User</span>
+                        </a>
+                    </li>
+                    @endpermission
                     @permission('country'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/country')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.country.index') }}">
