@@ -69,7 +69,7 @@
                                         <input type="text" class="form-control form-control-sm cnic" value="{{$current->cnic_no}}" id="cnic_no" name="cnic_no" />
                                     </div>
                                 </div>
-                                <div class="row">
+                                {{--<div class="row">
                                     <div class="col-sm-12">
                                         <div class="mb-1 row">
                                             <div class="col-sm-3">
@@ -85,7 +85,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--}}
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="mb-1 row">

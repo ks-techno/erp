@@ -53,7 +53,7 @@
                                     <div class="col-sm-3">
                                         <b>{{$data['code']}}</b>
                                     </div>
-                                </div>
+                                </div>{{--
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Project <span class="required">*</span></label>
@@ -66,7 +66,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div>--}}
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Product <span class="required">*</span></label>
@@ -174,6 +174,9 @@
 @endsection
 
 @section('pageJs')
+    <script>
+        var current_project_id = '{{auth()->user()->project_id}}'
+    </script>
     <script src="{{ asset('/pages/sale/sale_invoice/create.js') }}"></script>
     @yield('pageJsScript')
 @endsection

@@ -26,8 +26,8 @@ $(document).on('click','.data_tbody_row',function(e){
 $('#'+help_product_id).on('focusin keyup',function(e){
     $('#inLineHelp').remove();
     var validate = true;
-    var project_id = $('form').find('#project_id option:selected').val();
-    console.log(project_id);
+    var project_id = current_project_id;
+
     if(valueEmpty(project_id)){
         ntoastr.error("First Select Any Project");
         validate = false;

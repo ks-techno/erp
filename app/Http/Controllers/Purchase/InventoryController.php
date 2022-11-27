@@ -45,7 +45,7 @@ class InventoryController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Product::where('product_form_type','inventory')->orderByName();
+            $dataSql = Product::where('product_form_type','inventory')->where(Utilities::CompanyId())->orderByName();
 
             $allData = $dataSql->get();
 

@@ -46,7 +46,7 @@ class BankPaymentController extends Controller
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
 
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','remarks']);
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','remarks']);
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -61,6 +61,7 @@ class BankPaymentController extends Controller
             }
             $entries = [];
             foreach ($allData as $row) {
+                $posted = $this->getPostedTitle()[$row->posted];
                 $urlEdit = route('accounts.bank-payment.edit',$row->voucher_id);
                 $urlDel = route('accounts.bank-payment.destroy',$row->voucher_id);
 
@@ -77,10 +78,10 @@ class BankPaymentController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-
                 $entries[] = [
                     $row->date,
                     $row->voucher_no,
+                    '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
                     $row->remarks,
                     $actions,
                 ];
@@ -156,7 +157,7 @@ class BankPaymentController extends Controller
             $max = Voucher::where('type',self::Constants()['type'])->max('voucher_no');
             $voucher_no = self::documentCode(self::Constants()['type'],$max);
             $voucher_id = self::uuid();
-
+            $posted = $request->current_action_id == 'post'?1:0;
             $sr = 1;
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
@@ -180,6 +181,7 @@ class BankPaymentController extends Controller
                         'company_id' => auth()->user()->company_id,
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
+                        'posted' => $posted,
                     ]);
                     $sr = $sr + 1;
                 }
@@ -229,7 +231,11 @@ class BankPaymentController extends Controller
         }
 
         $data['view'] = false;
-        if(isset($request->view)){
+        $data['posted'] = false;
+        if($data['current']->posted == 1){
+            $data['posted'] = true;
+        }
+        if(isset($request->view) || $data['current']->posted == 1){
             $data['view'] = true;
             $data['permission'] = self::Constants()['view'];
             $data['permission_edit'] = self::Constants()['edit'];
@@ -281,10 +287,15 @@ class BankPaymentController extends Controller
         try {
 
             $firstVoucher = Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->first();
+            if($firstVoucher->posted == 1){
+                return $this->jsonErrorResponse($data, 'This voucher have been already posted');
+            }
+
             $voucher_no = $firstVoucher->voucher_no;
             $voucher_id = $id;
             DB::select("delete FROM `vouchers` where voucher_id = '$voucher_id'");
 
+            $posted = $request->current_action_id == 'post'?1:0;
             $sr = 1;
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
@@ -308,6 +319,7 @@ class BankPaymentController extends Controller
                         'company_id' => auth()->user()->company_id,
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
+                        'posted' => $posted,
                     ]);
                     $sr = $sr + 1;
                 }
