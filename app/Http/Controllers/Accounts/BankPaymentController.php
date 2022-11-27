@@ -109,7 +109,7 @@ class BankPaymentController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['create'];
-        $max = Voucher::where('type',self::Constants()['type'])->max('voucher_no');
+        $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
         $data['voucher_no'] = self::documentCode(self::Constants()['type'],$max);
       //  $data['payment_mode'] = PaymentMode::where('status',1)->get();
         return view('accounts.bank_payment.create', compact('data'));
@@ -154,7 +154,7 @@ class BankPaymentController extends Controller
         DB::beginTransaction();
         try {
 //dd("sef");
-            $max = Voucher::where('type',self::Constants()['type'])->max('voucher_no');
+            $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
             $voucher_no = self::documentCode(self::Constants()['type'],$max);
             $voucher_id = self::uuid();
             $posted = $request->current_action_id == 'post'?1:0;
@@ -343,6 +343,17 @@ class BankPaymentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = [];
+        DB::beginTransaction();
+        try{
+
+            Voucher::where('voucher_id',$id)->delete();
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
 }

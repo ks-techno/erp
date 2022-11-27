@@ -109,7 +109,7 @@ class BankReceiveController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['create'];
-        $max = Voucher::where('type',self::Constants()['type'])->max('voucher_no');
+        $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
         $data['voucher_no'] = self::documentCode(self::Constants()['type'],$max);
 
         return view('accounts.bank_receive.create', compact('data'));
@@ -154,7 +154,7 @@ class BankReceiveController extends Controller
         DB::beginTransaction();
         try {
 //dd("sef");
-            $max = Voucher::where('type',self::Constants()['type'])->max('voucher_no');
+            $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
             $voucher_no = self::documentCode(self::Constants()['type'],$max);
             $voucher_id = self::uuid();
 
@@ -342,6 +342,17 @@ class BankReceiveController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = [];
+        DB::beginTransaction();
+        try{
+
+            Voucher::where('voucher_id',$id)->delete();
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
 }
