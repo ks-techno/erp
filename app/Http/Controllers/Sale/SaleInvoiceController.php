@@ -24,7 +24,7 @@ class SaleInvoiceController extends Controller
     {
         $name = 'sale-invoice';
         return [
-            'title' => 'Sale Invoice',
+            'title' => 'Booking',
             'list_url' => route('sale.sale-invoice.index'),
             'list' => "$name-list",
             'create' => "$name-create",
