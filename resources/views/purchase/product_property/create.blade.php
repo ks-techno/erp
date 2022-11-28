@@ -29,13 +29,13 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Name <span class="required">*</span></label>
+                                        <label class="col-form-label">Plot No <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm" value="" id="name" name="name" />
                                     </div>
                                 </div>
-                                <div class="mb-1 row">
+                                {{--<div class="mb-1 row">
                                     <div class="col-sm-4">
                                         <label class="col-form-label">Project <span class="required">*</span> </label>
                                     </div>
@@ -47,7 +47,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div>--}}
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
                                         <label class="col-form-label">Sale Price </label>

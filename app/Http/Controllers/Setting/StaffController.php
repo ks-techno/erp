@@ -49,7 +49,7 @@ class StaffController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Staff::with('project','department')->where('id','<>',0)->orderByName();
+            $dataSql = Staff::with('project','department')->where(Utilities::CompanyProjectId())->orderByName();
 
             $allData = $dataSql->get();
 
@@ -131,13 +131,13 @@ class StaffController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'cnic_no' => 'required',
-            'project_id' => ['required',Rule::notIn([0,'0'])],
+          //  'project_id' => ['required',Rule::notIn([0,'0'])],
             'department_id' => ['required',Rule::notIn([0,'0'])],
         ],[
             'name.required' => 'Name is required',
             'cnic_no.required' => 'CNIC NO is required',
-            'project_id.required' => 'Project is required',
-            'project_id.not_in' => 'Project is required',
+            //'project_id.required' => 'Project is required',
+            //'project_id.not_in' => 'Project is required',
             'department_id.required' => 'Department is required',
             'department_id.not_in' => 'Department is required',
         ]);
@@ -161,7 +161,7 @@ class StaffController extends Controller
                 'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
                 /*'address' => $request->address,*/
-                'project_id' => $request->project_id,
+                'project_id' => auth()->user()->project_id,
                 'department_id' => $request->department_id,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
@@ -216,7 +216,7 @@ class StaffController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
-        $data['projects'] = Project::OrderByName()->get();
+      //  $data['projects'] = Project::OrderByName()->get();
         $data['departments'] = Department::OrderByName()->get();
 
         if(Staff::where('uuid',$id)->exists()){
@@ -251,13 +251,13 @@ class StaffController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'cnic_no' => 'required',
-            'project_id' => ['required',Rule::notIn([0,'0'])],
+          //  'project_id' => ['required',Rule::notIn([0,'0'])],
             'department_id' => ['required',Rule::notIn([0,'0'])]
         ],[
             'name.required' => 'Name is required',
             'cnic_no.required' => 'CNIC NO is required',
-            'project_id.required' => 'Project is required',
-            'project_id.not_in' => 'Project is required',
+          //  'project_id.required' => 'Project is required',
+          //  'project_id.not_in' => 'Project is required',
             'department_id.required' => 'Department is required',
             'department_id.not_in' => 'Department is required',
         ]);
@@ -279,8 +279,8 @@ class StaffController extends Controller
                     'name' => self::strUCWord($request->name),
                     'contact_no' => $request->contact_no,
                     'cnic_no' => $request->cnic_no,
-                    'address' => $request->address,
-                    'project_id' => $request->project_id,
+                   // 'address' => $request->address,
+                    'project_id' => auth()->user()->project_id,
                     'department_id' => $request->department_id,
                     'company_id' => auth()->user()->company_id,
                     'user_id' => auth()->user()->id,

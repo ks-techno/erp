@@ -49,7 +49,7 @@ class SaleInvoiceController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project')->orderby('created_at','desc');
+            $dataSql = Sale::with('customer','project')->where(Utilities::CompanyId())->orderby('created_at','desc');
 
             $allData = $dataSql->get();
 
@@ -122,7 +122,7 @@ class SaleInvoiceController extends Controller
         ];
         $data['code'] = Utilities::documentCode($doc_data);
         $data['customer'] = Customer::get();
-        $data['project'] = Project::get();
+   //     $data['project'] = Project::get();
         $data['property'] = Product::ProductProperty()->get();
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
         return view('sale.sale_invoice.create', compact('data'));
@@ -138,14 +138,14 @@ class SaleInvoiceController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'project_id' => ['required',Rule::notIn([0,'0'])],
+           // 'project_id' => ['required',Rule::notIn([0,'0'])],
             'product_id' => ['required',Rule::notIn([0,'0'])],
             'customer_id' => ['required',Rule::notIn([0,'0'])],
             'seller_type' => ['required',Rule::in(['dealer','staff'])],
             'seller_id' => ['required',Rule::notIn([0,'0'])],
         ],[
-            'project_id.required' => 'Project is required',
-            'project_id.not_in' => 'Project is required',
+//            'project_id.required' => 'Project is required',
+//            'project_id.not_in' => 'Project is required',
             'product_id.required' => 'Product is required',
             'product_id.not_in' => 'Product is required',
             'customer_id.required' => 'Customer is required',
@@ -180,7 +180,7 @@ class SaleInvoiceController extends Controller
                 'code' => $code,
                 'customer_id' => $request->customer_id,
                 'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
-                'project_id' => $request->project_id,
+                'project_id' => auth()->user()->prject_id,
                 'product_id' => $request->product_id,
                 'property_payment_mode_id' => $request->property_payment_mode_id,
                 'is_installment' => isset($request->is_installment)?1:0,
@@ -237,7 +237,7 @@ class SaleInvoiceController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
-        $data['project'] = Project::get();
+    //    $data['project'] = Project::get();
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
         if(Sale::where('uuid',$id)->exists()){
 
@@ -267,14 +267,14 @@ class SaleInvoiceController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'project_id' => ['required',Rule::notIn([0,'0'])],
+            //'project_id' => ['required',Rule::notIn([0,'0'])],
             'product_id' => ['required',Rule::notIn([0,'0'])],
             'customer_id' => ['required',Rule::notIn([0,'0'])],
             'seller_type' => ['required',Rule::in(['dealer','staff'])],
             'seller_id' => ['required',Rule::notIn([0,'0'])],
         ],[
-            'project_id.required' => 'Project is required',
-            'project_id.not_in' => 'Project is required',
+            //'project_id.required' => 'Project is required',
+            //'project_id.not_in' => 'Project is required',
             'product_id.required' => 'Product is required',
             'product_id.not_in' => 'Product is required',
             'customer_id.required' => 'Customer is required',
@@ -301,7 +301,7 @@ class SaleInvoiceController extends Controller
                 ->update([
                 'customer_id' => $request->customer_id,
                 'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
-                'project_id' => $request->project_id,
+                'project_id' => auth()->user()->prject_id,
                 'product_id' => $request->product_id,
                 'property_payment_mode_id' => $request->property_payment_mode_id,
                 'is_installment' => isset($request->is_installment)?1:0,

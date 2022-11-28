@@ -23,11 +23,14 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
-                                @permission($data['permission_edit'])
-                                <a href="{{route('accounts.bank-payment.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
-                                @endpermission
+                                @if(!$data['posted'])
+                                    @permission($data['permission_edit'])
+                                    <a href="{{route('accounts.bank-payment.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                    @endpermission
+                                @endif
                             @else
-                                <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                                <button type="submit" name="current_action_id" value="update" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                                <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
                             @endif
                         </div>
                         <div class="card-link">

@@ -49,7 +49,7 @@ class ProductPropertyController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Product::where('product_form_type','property')->orderByName();
+            $dataSql = Product::where('product_form_type','property')->where(Utilities::CompanyProjectId())->orderByName();
 
             $allData = $dataSql->get();
 
@@ -122,7 +122,7 @@ class ProductPropertyController extends Controller
             'form_type_value'       => 'property',
         ];
         $data['code'] = Utilities::documentCode($doc_data);
-        $data['project'] = Project::OrderByName()->get();
+       // $data['project'] = Project::where(Utilities::CompanyId())->OrderByName()->get();
         $data['buyable'] = BuyableType::OrderByName()->get();
 
         return view('purchase.product_property.create', compact('data'));
@@ -139,11 +139,11 @@ class ProductPropertyController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'project_id' => ['required',Rule::notIn([0,'0'])],
+         //   'project_id' => ['required',Rule::notIn([0,'0'])],
         ],[
             'name.required' => 'Name is required',
-            'project_id.required' => 'Project is required',
-            'project_id.not_in' => 'Project is required',
+//            'project_id.required' => 'Project is required',
+//            'project_id.not_in' => 'Project is required',
         ]);
 
         if ($validator->fails()) {
@@ -172,9 +172,9 @@ class ProductPropertyController extends Controller
                 'code' => $data['code'],
                 'external_item_id' => $request->external_item_id,
                 'status' => isset($request->status) ? "1" : "0",
-                'project_id' => $request->project_id,
                 'default_sale_price' => $request->default_sale_price,
                 'product_form_type' => 'property',
+                'project_id' => auth()->user()->project_id,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ];
@@ -277,7 +277,7 @@ class ProductPropertyController extends Controller
             $data['permission'] = self::Constants()['view'];
             $data['permission_edit'] = self::Constants()['edit'];
         }
-        $data['project'] = Project::OrderByName()->get();
+       // $data['project'] = Project::OrderByName()->get();
         $data['buyable'] = BuyableType::OrderByName()->get();
 
         return view('purchase.product_property.edit', compact('data'));
@@ -295,11 +295,11 @@ class ProductPropertyController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'project_id' => ['required',Rule::notIn([0,'0'])],
+         //   'project_id' => ['required',Rule::notIn([0,'0'])],
         ],[
             'name.required' => 'Name is required',
-            'project_id.required' => 'Project is required',
-            'project_id.not_in' => 'Project is required',
+//            'project_id.required' => 'Project is required',
+//            'project_id.not_in' => 'Project is required',
         ]);
 
         if ($validator->fails()) {
@@ -318,10 +318,10 @@ class ProductPropertyController extends Controller
                 'name' => self::strUCWord($request->name),
                 'external_item_id' => $request->external_item_id,
                 'status' => isset($request->status) ? "1" : "0",
-                'project_id' => $request->project_id,
                 'default_sale_price' => $request->default_sale_price,
                 'buyable_type_id' => $request->buyable_type_id,
                 'product_form_type' => 'property',
+                'project_id' => auth()->user()->project_id,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ];

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
 use App\Models\City;
 use App\Models\Company;
 use App\Models\Country;
@@ -45,7 +46,7 @@ class ProjectController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Project::with('company')->where('id','<>',0)->orderByName();
+            $dataSql = Project::with('company')->where(Utilities::CompanyId())->orderByName();
 
             $allData = $dataSql->get();
 

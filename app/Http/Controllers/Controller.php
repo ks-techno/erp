@@ -41,6 +41,13 @@ class Controller extends BaseController
             ['title'=> 'Active', 'class' => 'badge-light-success']
         ];
     }
+
+    protected function getPostedTitle(){
+        return [
+            ['title'=> 'Draft', 'class' => 'badge-light-warning'],
+            ['title'=> 'Posted', 'class' => 'badge-light-success']
+        ];
+    }
     protected function strUCWord($str){
         return ucwords(strtolower(strtoupper(trim($str))));
     }

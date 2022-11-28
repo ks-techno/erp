@@ -7,6 +7,17 @@ use Webpatser\Uuid\Uuid;
 
 class Utilities
 {
+    public static function CompanyId(){
+        return ['company_id'=>auth()->user()->company_id];
+    }
+
+    public static function CompanyProjectId(){
+        return [
+            'company_id'=>auth()->user()->company_id,
+            'project_id'=>auth()->user()->project_id,
+        ];
+    }
+
     public static function documentCode($doc_data){
         $model = $doc_data['model'];
         $code_field = $doc_data['code_field'];
