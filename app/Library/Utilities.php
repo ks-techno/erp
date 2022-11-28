@@ -51,7 +51,7 @@ class Utilities
         $level = $req['level'];
         $name = $req['name'];
 
-        $parent_account_dtl = ChartOfAccount::where('parent_account_code',$parent_account)->first();
+        $parent_account_dtl = ChartOfAccount::where('code',$parent_account)->first();
 
         if(!empty($parent_account_dtl)){
             $code = ChartOfAccountController::coaDisplayMaxCode($level,$parent_account);
