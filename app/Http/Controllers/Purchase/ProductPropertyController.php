@@ -24,7 +24,7 @@ class ProductPropertyController extends Controller
 {
     private static function Constants()
     {
-        $name = 'product-property';
+        $name = 'product';
         return [
             'title' => 'Product Inventory',
             'list_url' => route('purchase.product-property.index'),
