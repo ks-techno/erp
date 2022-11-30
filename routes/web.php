@@ -94,11 +94,41 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('chart-of-account')->name('chart-of-account.')->controller(ChartOfAccountController::class)->group(function(){
                 Route::post('get-parent-coa', 'getParentCoaList')->name('getParentCoaList');
                 Route::post('get-code-by-parent-account', 'getChildCodeByParentAccount')->name('getChildCodeByParentAccount');
+
+            });
+            Route::prefix('bank-payment')->name('bank-payment.')->controller(BankPaymentController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
             });
             Route::prefix('bank-payment')->resource('bank-payment', BankPaymentController::class);
+
+            Route::prefix('bank-receive')->name('bank-receive.')->controller(BankReceiveController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
             Route::prefix('bank-receive')->resource('bank-receive', BankReceiveController::class);
+
+            Route::prefix('cash-payment')->name('cash-payment.')->controller(CashPaymentController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
             Route::prefix('cash-payment')->resource('cash-payment', CashPaymentController::class);
+
+            Route::prefix('cash-receive')->name('cash-receive.')->controller(CashReceiveController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
             Route::prefix('cash-receive')->resource('cash-receive', CashReceiveController::class);
+
+            Route::prefix('journal')->name('journal.')->controller(JournalController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
             Route::prefix('journal')->resource('journal', JournalController::class);
 
         });

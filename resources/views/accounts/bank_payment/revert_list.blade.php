@@ -15,16 +15,13 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                         </div>
                         <div class="card-link">
-                            <a href="{{route('accounts.cash-payment.revertList')}}" class="btn btn-danger btn-sm waves-effect waves-float waves-light">Revert List</a>
-                            @permission($data['permission_create'])
-                            <a href="{{route('accounts.cash-payment.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
-                            @endpermission
+                            <a href="{{route('accounts.bank-payment.index')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">List</a>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="card-datatable">
-                            @permission($data['permission_list'])
-                            <table class="datatables-ajax table table-responsive" data-url="{{route('accounts.cash-payment.index')}}">
+                            {{--@permission($data['permission_list'])--}}
+                            <table class="datatables-ajax table table-responsive" data-url="{{route('accounts.bank-payment.revertList')}}">
                                 <thead>
                                 <tr>
                                     <th class="cell-fit">Date</th>
@@ -35,7 +32,7 @@
                                 </tr>
                                 </thead>
                             </table>
-                            @endpermission
+                            {{--@endpermission--}}
                         </div>
                     </div>
                 </div>
