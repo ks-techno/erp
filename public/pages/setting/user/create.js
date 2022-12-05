@@ -40,6 +40,11 @@ $(function () {
                     equalTo: "#password"
                 }
             },
+            messages : {
+                confirm_password: {
+                    equalTo: "Confirm Password must be same as password"
+                }
+            },
             submitHandler: function (form) {
                 pageLoginForm.find(":submit").prop('disabled', true);
                 //form[0].submit(); // submit the form

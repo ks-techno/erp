@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
-                            <h4 class="card-title">{{$data['title']}}</h4>
+                            <h4 class="card-title">Archive {{$data['title']}}</h4>
                         </div>
                         <div class="card-link">
                             <a href="{{route('accounts.bank-payment.index')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">List</a>

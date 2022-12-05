@@ -127,13 +127,10 @@ class ProjectController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'company_id' => ['required',Rule::notIn([0,'0'])],
-            'city_id' => ['required',Rule::notIn([0,'0'])]
         ],[
             'name.required' => 'Name is required',
             'company_id.required' => 'Company is required',
             'company_id.not_in' => 'Company is required',
-            'city_id.required' => 'City is required',
-            'city_id.not_in' => 'City is required',
         ]);
 
         if ($validator->fails()) {

@@ -8,5 +8,6 @@ return [
     'approved_by' => 'Approved By',
     'authorized_by' => 'Authorized By',
     'paid_by' => 'Paid By',
+    'archive' => 'Archive',
 
 ];
