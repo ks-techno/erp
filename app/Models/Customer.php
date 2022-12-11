@@ -27,6 +27,10 @@ class Customer extends Model
         'membership_no',
         'nominee_no',
         'nominee_name',
+        'nominee_father_name',
+        'nominee_relation',
+        'nominee_contact_no',
+        'nominee_cnic_no',
     ];
 
     public function addresses(){
