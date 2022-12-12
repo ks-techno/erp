@@ -56,6 +56,14 @@ class User extends Authenticatable
         return $this->morphOne(Address::class, 'addressable');
     }
 
+    public function project() {
+        return $this->hasOne(Project::class,'id','project_id');
+    }
+
+    public function company() {
+        return $this->hasOne(Company::class,'id','company_id');
+    }
+
     public function projects() {
         return $this->belongsToMany(Project::class,'user_project');
     }

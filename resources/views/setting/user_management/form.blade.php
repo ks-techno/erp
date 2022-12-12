@@ -28,7 +28,9 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
+                            @if($id !== "")
                             <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
+                            @endif
                         </div>
                         <div class="card-link">
                             <a href="{{$data['create_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -175,6 +177,11 @@
 @endsection
 
 @section('script')
+    @if($id == "")
+        <script>
+            $('form').find('input[type="checkbox"]').attr('disabled',true)
+        </script>
+    @endif
     <script>
         $('#user_id').on('change', function() {
             var val = $(this).val();

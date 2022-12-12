@@ -146,17 +146,17 @@
                     <span class="menu-title text-truncate">CRM</span>
                 </a>
                 <ul class="menu-content" id="crm_nav_ul">
-                    @permission('product-inventory'.$sidebar_menu)
+                    @permission('inventory'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/inventory')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.inventory.index') }}">
                             <span class="menu-item text-truncate">Inventory</span>
                         </a>
                     </li>
                     @endpermission
-                    @permission('product-property'.$sidebar_menu)
+                    @permission('product'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/product-property')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.product-property.index') }}">
-                            <span class="menu-item text-truncate">Project Inventory</span>
+                            <span class="menu-item text-truncate">Product Inventory</span>
                         </a>
                     </li>
                     @endpermission

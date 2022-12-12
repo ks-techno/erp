@@ -50,7 +50,7 @@
                                         <label class="col-form-label">Date <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" id="date" name="date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="{{date('Y-m-d')}}" />
+                                        <input type="text" id="date" name="date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="{{date('Y-m-d',strtotime($current->date))}}" />
                                     </div>
                                 </div>
                             </div>

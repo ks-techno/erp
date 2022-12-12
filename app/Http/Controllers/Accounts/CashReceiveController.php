@@ -26,6 +26,7 @@ class CashReceiveController extends Controller
             'edit' => "$name-edit",
             'delete' => "$name-delete",
             'view' => "$name-view",
+            'print' => "$name-print",
         ];
     }
 
@@ -58,18 +59,28 @@ class CashReceiveController extends Controller
             if(auth()->user()->isAbleTo(self::Constants()['edit'])){
                 $edit_per = true;
             }
+            $print_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['print'])){
+                $print_per = true;
+            }
             $entries = [];
             foreach ($allData as $row) {
                 $posted = $this->getPostedTitle()[$row->posted];
                 $urlEdit = route('accounts.cash-receive.edit',$row->voucher_id);
                 $urlDel = route('accounts.cash-receive.destroy',$row->voucher_id);
+                $urlPrint = route('accounts.cash-receive.print',$row->voucher_id);
 
                 $actions = '<div class="text-end">';
-                if($delete_per) {
+                if($delete_per || $print_per) {
                     $actions .= '<div class="d-inline-flex">';
                     $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    if($delete_per) {
+                        $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
+                    }
+                    if($print_per) {
+                        $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    }
                     $actions .= '</div>'; // end dropdown-menu
                     $actions .= '</div>'; // end d-inline-flex
                 }
@@ -351,5 +362,84 @@ class CashReceiveController extends Controller
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
+    }
+
+
+    public function printView($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['print'];
+
+        if(Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->exists()){
+
+            $data['current'] = Voucher::where('type',self::Constants()['type'])->where(['voucher_id'=>$id,'sr_no'=>1])->first();
+            $data['dtl'] = Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->get();
+
+        }else{
+            abort('404');
+        }
+
+        return view('accounts.cash_receive.print', compact('data'));
+    }
+
+    public function revertList(Request $request)
+    {
+        $data = [];
+        $data['title'] = self::Constants()['title'];
+
+        if ($request->ajax()) {
+            $draw = 'all';
+
+            $dataSql = Voucher::where('type',self::Constants()['type'])->onlyTrashed()->distinct()->orderby('date','desc');
+
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','remarks']);
+
+            $recordsTotal = count($allData);
+            $recordsFiltered = count($allData);
+
+            $entries = [];
+            foreach ($allData as $row) {
+                $posted = $this->getPostedTitle()[$row->posted];
+                $urlRevert = route('accounts.cash-receive.revert',$row->voucher_id);
+
+                $actions = '<div class="text-end">';
+                $actions .= '<a href="javascript:;" data-url="' . $urlRevert . '" class="revert-record">Revert</a>';
+                $actions .= '</div>'; //end main div
+
+                $entries[] = [
+                    $row->date,
+                    $row->voucher_no,
+                    '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
+                    $row->remarks,
+                    $actions,
+                ];
+            }
+            $result = [
+                'draw' => $draw,
+                'recordsTotal' => $recordsTotal,
+                'recordsFiltered' => $recordsFiltered,
+                'data' => $entries,
+            ];
+            return response()->json($result);
+        }
+
+        return view('accounts.cash_receive.revert_list', compact('data'));
+    }
+
+    public function revert($id){
+        $data = [];
+        DB::beginTransaction();
+        try{
+
+            Voucher::where('voucher_id',$id)->onlyTrashed()->restore();
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, 'Successfully revert', 200);
     }
 }

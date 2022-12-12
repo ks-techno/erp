@@ -62,6 +62,14 @@ class Controller extends BaseController
             'region_id' => ['required',Rule::notIn([0,'0'])],
             'city_id' => ['required',Rule::notIn([0,'0'])],
             'address' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'country_id.required' => 'Country is required',
+            'country_id.not_in' => 'Country is required',
+            'region_id.required' => 'Region is required',
+            'region_id.not_in' => 'Region is required',
+            'city_id.required' => 'City is required',
+            'city_id.not_in' => 'City is required',
+            'address.required' => 'Address is required',
         ]);
 
         if ($validator->fails()) {

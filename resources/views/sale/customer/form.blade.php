@@ -32,18 +32,10 @@
                             </div>
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label">Father Name</label>
+                                    <label class="col-form-label p-0">S/O,W/O Name</label>
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control form-control-sm" value="" id="father_name" name="father_name" />
-                                </div>
-                            </div>
-                            <div class="mb-1 row">
-                                <div class="col-sm-3">
-                                    <label class="col-form-label">Husband Name</label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control form-control-sm" value="" id="husband_name" name="husband_name" />
                                 </div>
                             </div>
                             <div class="mb-1 row">
@@ -78,22 +70,6 @@
                                     <input type="text" class="form-control form-control-sm cnic" value="" id="cnic_no" name="cnic_no" />
                                 </div>
                             </div>
-                            <div class="mb-1 row">
-                                <div class="col-sm-3">
-                                    <label class="col-form-label">Nominee No.</label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control form-control-sm" value="" id="nominee_no" name="nominee_no" />
-                                </div>
-                            </div>
-                            <div class="mb-1 row">
-                                <div class="col-sm-3">
-                                    <label class="col-form-label">Nominee Name</label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control form-control-sm" value="" id="nominee_name" name="nominee_name" />
-                                </div>
-                            </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="mb-1 row">
@@ -117,6 +93,61 @@
                             @include('partials.address')
                         </div>
                     </div>{{--end row--}}
+                    <h3>Nominee Info</h3>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-1 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Nominee No.</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" value="" id="nominee_no" name="nominee_no" />
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Nominee Name</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" value="" id="nominee_name" name="nominee_name" />
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">S/O,W/O Name</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" value="" id="nominee_father_name" name="nominee_father_name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-1 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label p-0">Relation With Client </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" value="" id="nominee_relation" name="nominee_relation" />
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Contact No#</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="text-start form-control form-control-sm NumberValidate" value="" id="nominee_contact_no" name="nominee_contact_no" />
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">CNIC No# </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm cnic" value="" id="nominee_cnic_no" name="nominee_cnic_no" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

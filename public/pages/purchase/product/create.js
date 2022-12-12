@@ -1,7 +1,7 @@
 $(function () {
     'use strict';
 
-    var pageLoginForm = $('#inventory_create');
+    var pageLoginForm = $('#product_create');
 
     // jQuery Validation
     // --------------------------------------------------------------------

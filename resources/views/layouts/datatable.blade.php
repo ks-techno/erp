@@ -100,6 +100,7 @@
 <!-- BEGIN: Page JS-->
 <script src="{{ asset('/pages/datatable/list.js?v=1') }}"></script>
 <script src="{{ asset('/pages/datatable/data-delete.js?v=1') }}"></script>
+<script src="{{ asset('/pages/datatable/data-revert.js?v=1') }}"></script>
 @yield('pageJs')
 <!-- END: Page JS-->
 
@@ -114,6 +115,13 @@
             });
         }
     })
+
+    function valueEmpty(val){
+        if(val == 0 || val == undefined || val == "" || val == null || val == NaN || val == 'NaN' || !val){
+            return true;
+        }
+        return false;
+    }
     $(function () {
         $("#modal_md").on("hidden.bs.modal", function (e) {
             console.log("Modal hidden");
@@ -125,7 +133,9 @@
         if(thix.find('a.item-edit').length == 0){
             var tr = thix.parents('tr');
             var edit_url = tr.find('a.item-edit').attr('href');
-            location.href = edit_url+'?view=true'
+            if(!valueEmpty(edit_url)){
+                location.href = edit_url+'?view=true'
+            }
         }
     })
 </script>
