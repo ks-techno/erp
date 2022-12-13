@@ -106,7 +106,7 @@
                             </div>
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label">Nominee Name</label>
+                                    <label class="col-form-label p-0">Nominee Name</label>
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control form-control-sm" value="" id="nominee_name" name="nominee_name" />
@@ -114,7 +114,7 @@
                             </div>
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label">S/O,W/O Name</label>
+                                    <label class="col-form-label p-0">S/O,W/O Name</label>
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control form-control-sm" value="" id="nominee_father_name" name="nominee_father_name" />
