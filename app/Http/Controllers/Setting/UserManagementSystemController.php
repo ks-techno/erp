@@ -106,7 +106,7 @@ class UserManagementSystemController extends Controller
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
-                        'dname' => 'Product',
+                        'dname' => 'Product Inventory',
                         'name' => 'product',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
@@ -163,7 +163,7 @@ class UserManagementSystemController extends Controller
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
-                        'dname' => 'Sale Invoice',
+                        'dname' => 'Booking',
                         'name' => 'sale-invoice',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
