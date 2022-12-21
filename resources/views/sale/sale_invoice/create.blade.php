@@ -115,13 +115,13 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Payment Mode</label>
+                                    <div class="col-sm-3 pr-0">
+                                        <label class="col-form-label p-0">Payment Mode</label>
                                     </div>
                                     <div class="col-sm-9">
                                         <select class="select2 form-select" id="property_payment_mode_id" name="property_payment_mode_id">
                                             @foreach($data['property_payment_mode'] as $property_payment_mode)
-                                                <option value="{{$property_payment_mode->id}}"> {{$property_payment_mode->name}} </option>
+                                                <option value="{{$property_payment_mode->id}}" data-slug="{{$property_payment_mode->slug}}"> {{$property_payment_mode->name}} </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -131,7 +131,7 @@
                                         <label class="col-form-label">Sale Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" readonly class="form-control form-control-sm" id="sale_price" name="sale_price">
+                                        <input type="text" readonly="" class="form-control form-control-sm" id="sale_price" name="sale_price" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -139,12 +139,79 @@
                                         <label class="col-form-label">Booking Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" id="booked_price" name="booked_price">
+                                        <input type="text" class="form-control form-control-sm" id="booked_price" name="booked_price" aria-invalid="false">
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3 pr-0">
+                                        <label class="col-form-label p-0">Down Payment</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm" id="down_payment" name="down_payment" aria-invalid="false">
+                                    </div>
+                                </div>
+                                <div id="installments_block" style="display: none">
+                                    <div class="mb-1 row">
+                                        <div class="col-sm-3">
+                                            <label class="col-form-label p-0">On Balloting</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control form-control-sm" id="on_balloting" name="on_balloting" aria-invalid="false">
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 row">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-6 pr-0">
+                                                    <label class="col-form-label p-0">No. Of Bi-Annual</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control form-control-sm" id="no_of_bi_annual" name="no_of_bi_annual" aria-invalid="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label class="col-form-label">Installments</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control form-control-sm" id="installment_bi_annual" name="installment_bi_annual" aria-invalid="false"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 row">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label class="col-form-label p-0">No. of Month</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control form-control-sm" id="no_of_month" name="no_of_month" aria-invalid="false"> </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label class="col-form-label">Installments</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control form-control-sm" id="installment_amount_monthly" name="installment_amount_monthly" aria-invalid="false"> </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label">Currency Note No.</label>
+                                        <label class="col-form-label">On Possession</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm" id="on_possession" name="on_possession" aria-invalid="false">
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label p-0">Currency Note No.</label>
                                     </div>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control form-control-sm" id="currency_note_no" name="currency_note_no">
@@ -232,6 +299,18 @@
             $('form').find('#product_name').val("");
             $('form').find('#product_id').val("");
         })
+        $(document).on('change','#property_payment_mode_id',function(){
+           var slug = $(this).find('option:selected').attr('data-slug');
+            $('#installments_block').hide();
+            $('#installments_block').find('input').val("");
+           if(slug == 'installment'){
+                $('#installments_block').show()
+           }
+        })
+        var slug = $('#property_payment_mode_id').find('option:selected').attr('data-slug');
+        if(slug == 'installment'){
+            $('#installments_block').show();
+        }
     </script>
 
     @yield('scriptCustom')

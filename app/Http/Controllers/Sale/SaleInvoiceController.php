@@ -49,7 +49,7 @@ class SaleInvoiceController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project')->where(Utilities::CompanyId())->orderby('created_at','desc');
+            $dataSql = Sale::with('customer','project','property_payment_mode')->where(Utilities::CompanyId())->orderby('created_at','desc');
 
             $allData = $dataSql->get();
 
@@ -85,10 +85,11 @@ class SaleInvoiceController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
-                    date('d m Y',strtotime($row->created_at)),
+                    date('d-m-Y',strtotime($row->created_at)),
                     $row->code,
                     $row->project->name,
                     $row->customer->name,
+                    isset($row->property_payment_mode->name)?$row->property_payment_mode->name:"",
                     $actions,
                 ];
             }
@@ -180,15 +181,22 @@ class SaleInvoiceController extends Controller
                 'code' => $code,
                 'customer_id' => $request->customer_id,
                 'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
-                'project_id' => auth()->user()->prject_id,
+                'project_id' => auth()->user()->project_id,
                 'product_id' => $request->product_id,
                 'property_payment_mode_id' => $request->property_payment_mode_id,
                 'is_installment' => isset($request->is_installment)?1:0,
                 'is_booked' => isset($request->is_booked)?1:0,
                 'is_purchased' => isset($request->is_purchased)?1:0,
                 'sale_price' => $request->sale_price,
-                'currency_note_no' => $request->currency_note_no,
+                'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
                 'booked_price' => $request->booked_price,
+                'down_payment' => $request->down_payment,
+                'on_balloting' => $request->on_balloting,
+                'no_of_bi_annual' => $request->no_of_bi_annual,
+                'installment_bi_annual' => $request->installment_bi_annual,
+                'no_of_month' => $request->no_of_month,
+                'installment_amount_monthly' => $request->installment_amount_monthly,
+                'on_possession' => $request->on_possession,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ]);
@@ -301,15 +309,22 @@ class SaleInvoiceController extends Controller
                 ->update([
                 'customer_id' => $request->customer_id,
                 'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
-                'project_id' => auth()->user()->prject_id,
+                'project_id' => auth()->user()->project_id,
                 'product_id' => $request->product_id,
                 'property_payment_mode_id' => $request->property_payment_mode_id,
                 'is_installment' => isset($request->is_installment)?1:0,
                 'is_booked' => isset($request->is_booked)?1:0,
                 'is_purchased' => isset($request->is_purchased)?1:0,
                 'sale_price' => $request->sale_price,
-                'currency_note_no' => $request->currency_note_no,
+                'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
                 'booked_price' => $request->booked_price,
+                'down_payment' => $request->down_payment,
+                'on_balloting' => $request->on_balloting,
+                'no_of_bi_annual' => $request->no_of_bi_annual,
+                'installment_bi_annual' => $request->installment_bi_annual,
+                'no_of_month' => $request->no_of_month,
+                'installment_amount_monthly' => $request->installment_amount_monthly,
+                'on_possession' => $request->on_possession,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ]);

@@ -26,6 +26,13 @@ class Sale extends Model
         'company_id',
         'project_id',
         'user_id',
+        'down_payment',
+        'on_balloting',
+        'no_of_bi_annual',
+        'installment_bi_annual',
+        'no_of_month',
+        'installment_amount_monthly',
+        'on_possession',
     ];
 
     protected $morphClass = null;
@@ -35,6 +42,9 @@ class Sale extends Model
     }
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');
+    }
+    public function property_payment_mode(){
+        return $this->belongsTo(PropertyPaymentMode::class,'property_payment_mode_id','id');
     }
     public function product(){
         return $this->belongsTo(Product::class,'product_id','id');
