@@ -47,7 +47,8 @@ class Sale extends Model
         return $this->belongsTo(PropertyPaymentMode::class,'property_payment_mode_id','id');
     }
     public function product(){
-        return $this->belongsTo(Product::class,'product_id','id');
+        return $this->belongsTo(Product::class,'product_id','id')
+            ->with('buyable_type');
     }
 
     public function getMorphClass()
@@ -57,11 +58,13 @@ class Sale extends Model
     public function dealer()
     {
         $this->morphClass = 'App\Models\Dealer';
-        return $this->morphOne(SaleSeller::class,'sale_sellersable','sale_sellerable_type','sale_id','id');
+        return $this->morphOne(SaleSeller::class,'sale_sellersable','sale_sellerable_type','sale_id','id')
+            ->with('dealer');
     }
     public function staff()
     {
         $this->morphClass = 'App\Models\Staff';
-        return $this->morphOne(SaleSeller::class,'sale_sellersable','sale_sellerable_type','sale_id','id');
+        return $this->morphOne(SaleSeller::class,'sale_sellersable','sale_sellerable_type','sale_id','id')
+            ->with('staff');
     }
 }

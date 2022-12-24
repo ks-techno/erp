@@ -180,6 +180,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
                 Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
                 Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+                Route::get('print/{id}', 'printView')->name('print');
             });
         });
     });

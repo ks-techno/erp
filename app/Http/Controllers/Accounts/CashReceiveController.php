@@ -75,10 +75,10 @@ class CashReceiveController extends Controller
                     $actions .= '<div class="d-inline-flex">';
                     $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                    if($delete_per) {
+                    if($print_per) {
                         $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
                     }
-                    if($print_per) {
+                    if($delete_per) {
                         $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
                     }
                     $actions .= '</div>'; // end dropdown-menu

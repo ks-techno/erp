@@ -13,4 +13,10 @@ class SaleSeller extends Model
     {
         return $this->morphTo();
     }
+    public function dealer(){
+        return $this->belongsTo(Dealer::class,'sale_sellerable_id','id');
+    }
+    public function staff(){
+        return $this->belongsTo(Staff::class,'sale_sellerable_id','id');
+    }
 }

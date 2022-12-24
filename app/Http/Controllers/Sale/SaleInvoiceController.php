@@ -31,6 +31,7 @@ class SaleInvoiceController extends Controller
             'edit' => "$name-edit",
             'delete' => "$name-delete",
             'view' => "$name-view",
+            'print' => "$name-print",
         ];
     }
     /**
@@ -64,18 +65,28 @@ class SaleInvoiceController extends Controller
             if(auth()->user()->isAbleTo(self::Constants()['edit'])){
                 $edit_per = true;
             }
+            $print_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['print'])){
+                $print_per = true;
+            }
 
             $entries = [];
             foreach ($allData as $row) {
                 $urlEdit = route('sale.sale-invoice.edit',$row->uuid);
                 $urlDel = route('sale.sale-invoice.destroy',$row->uuid);
+                $urlPrint = route('sale.sale-invoice.print',$row->uuid);
 
                 $actions = '<div class="text-end">';
-                if($delete_per){
+                if($delete_per || $print_per) {
                     $actions .= '<div class="d-inline-flex">';
                     $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                    $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    if($print_per) {
+                        $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
+                    }
+                    if($delete_per) {
+                        $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    }
                     $actions .= '</div>'; // end dropdown-menu
                     $actions .= '</div>'; // end d-inline-flex
                 }
@@ -365,6 +376,24 @@ class SaleInvoiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function printView($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['print'];
+
+        if(Sale::where('uuid',$id)->exists()){
+
+            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode')->where('uuid',$id)->first();
+
+        }else{
+            abort('404');
+        }
+     //   dd($data['current']->toArray());
+        return view('sale.sale_invoice.print', compact('data'));
     }
 
     public function getSellerList(Request $request)
