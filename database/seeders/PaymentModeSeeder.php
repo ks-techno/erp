@@ -39,26 +39,29 @@ class PaymentModeSeeder extends Seeder
                 ]);
             }
         }
+        /* Payment Mode for Property*/
         $property_payment_modes = [
             ['name'=>'Cash', 'old_name'=>'On Cash','slug'=>'cash','default'=>1],
             ['name'=>'Installment', 'old_name'=> 'On Installment','slug'=>'installment','default'=>0],
         ];
-        foreach ($property_payment_modes as $property_mode){
-            if(!PropertyPaymentMode::where('name',$property_mode['old_name'])->exists()){
+        foreach ($property_payment_modes as $row){
+            if(!PropertyPaymentMode::where('name',$row['name'])->exists()
+                && !PropertyPaymentMode::where('name',$row['old_name'])->exists()){
+
                 PropertyPaymentMode::create([
                     'uuid' => Uuid::generate()->string,
-                    'name' => $property_mode['name'],
-                    'default' => $property_mode['default'],
-                    'slug' => $property_mode['slug'],
+                    'name' => $row['name'],
+                    'default' => $row['default'],
+                    'slug' => $row['slug'],
                     'status' => 1,
                     'company_id' => $comp->id,
                     'project_id' => $project->id,
                     'user_id' => $user->id,
                 ]);
             }else{
-                $ppm = PropertyPaymentMode::where('name',$property_mode['old_name'])->first();
+                $ppm = PropertyPaymentMode::where('name',$row['old_name'])->first();
                 if(!empty($ppm)){
-                    $ppm->name = $property_mode['name'];
+                    $ppm->name = $row['name'];
                     $ppm->save();
                 }
             }

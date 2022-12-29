@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PropertyPaymentMode extends Model
+class BookingFileStatus extends Model
 {
+    protected $table = 'booking_file_status';
     use SoftDeletes;
 
     protected $fillable = [

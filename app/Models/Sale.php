@@ -33,6 +33,8 @@ class Sale extends Model
         'no_of_month',
         'installment_amount_monthly',
         'on_possession',
+        'file_status_id',
+        'sale_discount',
     ];
 
     protected $morphClass = null;
@@ -45,6 +47,9 @@ class Sale extends Model
     }
     public function property_payment_mode(){
         return $this->belongsTo(PropertyPaymentMode::class,'property_payment_mode_id','id');
+    }
+    public function file_status(){
+        return $this->belongsTo(BookingFileStatus::class,'file_status_id','id');
     }
     public function product(){
         return $this->belongsTo(Product::class,'product_id','id')

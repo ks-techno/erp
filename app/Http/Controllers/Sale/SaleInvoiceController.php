@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sale;
 
 use App\Library\Utilities;
+use App\Models\BookingFileStatus;
 use App\Models\Customer;
 use App\Models\Dealer;
 use App\Models\Product;
@@ -134,6 +135,7 @@ class SaleInvoiceController extends Controller
         ];
         $data['code'] = Utilities::documentCode($doc_data);
         $data['customer'] = Customer::get();
+        $data['file_status'] = BookingFileStatus::where('status',1)->get();
    //     $data['project'] = Project::get();
         $data['property'] = Product::ProductProperty()->get();
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
@@ -208,6 +210,8 @@ class SaleInvoiceController extends Controller
                 'no_of_month' => $request->no_of_month,
                 'installment_amount_monthly' => $request->installment_amount_monthly,
                 'on_possession' => $request->on_possession,
+                'file_status_id' => $request->file_status_id,
+                'sale_discount' => $request->sale_discount,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ]);
@@ -258,6 +262,7 @@ class SaleInvoiceController extends Controller
         $data['permission'] = self::Constants()['edit'];
     //    $data['project'] = Project::get();
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
+        $data['file_status'] = BookingFileStatus::where('status',1)->get();
         if(Sale::where('uuid',$id)->exists()){
 
             $data['current'] = Sale::with('product','customer','dealer','staff')->where('uuid',$id)->first();
@@ -336,6 +341,8 @@ class SaleInvoiceController extends Controller
                 'no_of_month' => $request->no_of_month,
                 'installment_amount_monthly' => $request->installment_amount_monthly,
                 'on_possession' => $request->on_possession,
+                'file_status_id' => $request->file_status_id,
+                'sale_discount' => $request->sale_discount,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ]);
@@ -387,12 +394,12 @@ class SaleInvoiceController extends Controller
 
         if(Sale::where('uuid',$id)->exists()){
 
-            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode')->where('uuid',$id)->first();
+            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode','file_status')->where('uuid',$id)->first();
 
         }else{
             abort('404');
         }
-     //   dd($data['current']->toArray());
+ //       dd($data['current']->product->toArray());
         return view('sale.sale_invoice.print', compact('data'));
     }
 
