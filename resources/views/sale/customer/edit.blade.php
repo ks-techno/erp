@@ -1,6 +1,36 @@
 @extends('layouts.form')
 @section('title', $data['title'])
 @section('style')
+    <style>
+        /*
+    .accordion {
+      background-color: #eee;
+      color: #444;
+      padding: 5px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 13px;
+      transition: 0.4s;
+    }
+
+    .panel {
+      padding: 0 18px;
+      display: none;
+      background-color: white;
+      overflow: hidden;
+    }*/
+
+        .dtl-head{color:#000;font-weight:bold;font-size:12px;vertical-align:middle;border-right:1px solid #000;border-bottom:1px solid #000; height:20px; }
+        .dtl-contents a { text-decoration:none; color:#000; font-size:10px;border-bottom:#CCC;}
+        .dtl-contents a:hover { text-decoration:none; color:#000; font-size:10px; font-weight:bold; cursor:pointer;}
+        #title{
+            color:#000;font-weight:bold;font-size:12px;
+        }
+
+
+    </style>
 @endsection
 
 @section('content')
@@ -172,6 +202,8 @@
                                 </div>
                             </div>
                         </div>
+                        <h3>Customer History </h3>
+                        @include('sale.customer.customer_history')
                     </div>
                 </div>
             </div>

@@ -20,6 +20,7 @@ class Dealer extends Model
         'company_id',
         'project_id',
         'user_id',
+        'commission',
     ];
 
     public function addresses(){

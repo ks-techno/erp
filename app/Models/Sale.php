@@ -35,6 +35,7 @@ class Sale extends Model
         'on_possession',
         'file_status_id',
         'sale_discount',
+        'seller_commission_perc',
     ];
 
     protected $morphClass = null;

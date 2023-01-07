@@ -56,6 +56,17 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
+                                        <label class="col-form-label">Commission(%)</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm validate_number" value="" id="commission" name="commission" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                @include('partials.address')
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
                                         <label class="col-form-label">Status</label>
                                     </div>
                                     <div class="col-sm-9">
@@ -64,9 +75,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                @include('partials.address')
                             </div>
                         </div>
                     </div>

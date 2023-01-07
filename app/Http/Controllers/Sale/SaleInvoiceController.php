@@ -188,7 +188,12 @@ class SaleInvoiceController extends Controller
                 'code_prefix'       => strtoupper('si'),
             ];
             $code = Utilities::documentCode($doc_data);
-
+            if($request->seller_type == 'staff'){
+                $modal = Staff::where('id',$request->seller_id)->first();
+            }
+            if($request->seller_type == 'dealer'){
+                $modal = Dealer::where('id',$request->seller_id)->first();
+            }
             $sale = Sale::create([
                 'uuid' => self::uuid(),
                 'code' => $code,
@@ -212,18 +217,14 @@ class SaleInvoiceController extends Controller
                 'on_possession' => $request->on_possession,
                 'file_status_id' => $request->file_status_id,
                 'sale_discount' => $request->sale_discount,
+                'seller_commission_perc' => isset($modal->commission) ? $modal->commission : 0,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ]);
 
             $saleSeller = new SaleSeller();
             $saleSeller->sale_id = $sale->id;
-            if($request->seller_type == 'staff'){
-                $modal = Staff::where('id',$request->seller_id)->first();
-            }
-            if($request->seller_type == 'dealer'){
-                $modal = Dealer::where('id',$request->seller_id)->first();
-            }
+
             $modal->sale_seller()->save($saleSeller);
 
         }catch (Exception $e) {
