@@ -374,19 +374,17 @@
             });
         }
 
-        // new customer
-        $(document).on('focus','#customer_name',function(){
+        // get customer data new member
+        function funcGetNewMemberDetail(customer_id) {
             var validate = true;
-            var thix = $(this);
-            var val = $('form').find('.nm_customer_id').val();
-            if(valueEmpty(val)){
+            if(valueEmpty(customer_id)){
                 // ntoastr.error("Select New Customer");
                 validate = false;
                 return false;
             }
             if(validate){
                 var formData = {
-                    customer_id : val
+                    customer_id : customer_id
                 };
                 $.ajax({
                     headers: {
@@ -441,7 +439,8 @@
                 });
 
             }
-        });
+        }
+
         //remove customer in new member
         $(document).on('click','#addon_remove',function(){
             $('form').find('.nm_customer_id').val('');
@@ -478,19 +477,17 @@
 
         });
 
-        //old customer om_customer_id
-        $(document).on('focus','#om_customer_name',function(){
+        // get customer data old member
+        function funcGetOldMemberDetail(customer_id) {
             var validate = true;
-            var thix = $(this);
-            var val = $('form').find('.om_customer_id').val();
-            if(valueEmpty(val)){
+            if(valueEmpty(customer_id)){
                 // ntoastr.error("Select New Customer");
                 validate = false;
                 return false;
             }
             if(validate){
                 var formData = {
-                    customer_id : val
+                    customer_id : customer_id
                 };
                 $.ajax({
                     headers: {
@@ -508,7 +505,7 @@
                             var length = customer.length;
                             var sales_length = customer.sales.length;
 
-                            // console.log(sales_length);
+                            console.log(customer.sales[0]['code']);
                             for(var i=0;i<sales_length;i++){
                                 if(customer.sales[i]['code']){
                                     options += '<option value="'+customer.sales[i]['id']+'">'+customer.sales[i]['code']+'</option>';
@@ -557,6 +554,8 @@
                             $('form').find('.om_nominee_relation_name').html(customer.nominee_relation);
                             $('form').find('#om_nominee_relation_input').val(customer.nominee_relation);
 
+
+
                         }else{
                             ntoastr.error(response.message);
                         }
@@ -566,7 +565,8 @@
                     }
                 });
             }
-        });
+        }
+
         //remove customer in new member
         $(document).on('click','#om_addon_remove',function(){
             $('form').find('.om_customer_id').val('');
