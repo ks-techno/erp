@@ -36,6 +36,7 @@ use App\Http\Controllers\Purchase\ProductVariationController;
 use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
 use App\Http\Controllers\Sale\SaleInvoiceController;
+use App\Http\Controllers\Sale\BookingTransferController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('help')->name('help.')->group(function () {
             Route::get('chart/{str?}', [HelpController::class, 'chart'])->name('chart');
             Route::get('customer/{str?}', [HelpController::class, 'customer'])->name('customer');
+            Route::get('oldCustomerHelp/{str?}', [HelpController::class, 'oldCustomerHelp'])->name('oldCustomerHelp');
             Route::get('property-product/{str?}', [HelpController::class, 'propertyProduct'])->name('propertyProduct');
         });
 
@@ -180,6 +182,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
                 Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
                 Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+                Route::get('print/{id}', 'printView')->name('print');
+            });
+            Route::prefix('booking-transfer')->resource('booking-transfer', BookingTransferController::class);
+            Route::prefix('booking-transfer')->name('booking-transfer.')->controller(BookingTransferController::class)->group(function(){
+                Route::post('get-customer-list', 'getCustomerList')->name('getCustomerList');
+                Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
             });
         });

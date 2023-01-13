@@ -246,6 +246,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('booking-transfer'.$sidebar_menu)
+                    <li class="{{ ($path == 'sale/booking-transfer')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.booking-transfer.index') }}">
+                            <span class="menu-item text-truncate">Booking Transfer</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
             <li id="hr_nav" class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
