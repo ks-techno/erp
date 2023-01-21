@@ -146,6 +146,18 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3 pr-0">
+                                        <label class="col-form-label p-0">File Status</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="select2 form-select" id="file_status_id" name="file_status_id">
+                                            @foreach($data['file_status'] as $file_status)
+                                                <option value="{{$file_status->id}}" data-slug="{{$file_status->slug}}" {{$current->file_status_id == $file_status->id?"selected":""}}> {{$file_status->name}} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3 pr-0">
                                         <label class="col-form-label p-0">Payment Mode</label>
                                     </div>
                                     <div class="col-sm-9">
@@ -161,7 +173,15 @@
                                         <label class="col-form-label">Sale Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" readonly class="form-control form-control-sm" value="{{$current->sale_price}}" id="sale_price" name="sale_price">
+                                        <input type="text" readonly class="form-control form-control-sm FloatValidate" value="{{$current->sale_price}}" id="sale_price" name="sale_price">
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label p-0">Sale Discount</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->sale_discount}}"  id="sale_discount" name="sale_discount">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -169,7 +189,7 @@
                                         <label class="col-form-label">Booking Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->booked_price}}" id="booked_price" name="booked_price">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->booked_price}}" id="booked_price" name="booked_price">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -177,7 +197,7 @@
                                         <label class="col-form-label p-0">Down Payment</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->down_payment}}" id="down_payment" name="down_payment" aria-invalid="false">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->down_payment}}" id="down_payment" name="down_payment" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div id="installments_block" style="display: none">
@@ -186,7 +206,7 @@
                                             <label class="col-form-label p-0">On Balloting</label>
                                         </div>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control form-control-sm" id="on_balloting" name="on_balloting" aria-invalid="false">
+                                            <input type="text" class="form-control form-control-sm FloatValidate" id="on_balloting" name="on_balloting" aria-invalid="false">
                                         </div>
                                     </div>
                                     <div class="mb-1 row">
@@ -196,7 +216,7 @@
                                                     <label class="col-form-label p-0">No. Of Bi-Annual</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm" value="{{$current->no_of_bi_annual}}" id="no_of_bi_annual" name="no_of_bi_annual" aria-invalid="false">
+                                                    <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->no_of_bi_annual}}" id="no_of_bi_annual" name="no_of_bi_annual" aria-invalid="false">
                                                 </div>
                                             </div>
                                         </div>
@@ -206,7 +226,8 @@
                                                     <label class="col-form-label">Installments</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm" value="{{$current->installment_bi_annual}}" id="installment_bi_annual" name="installment_bi_annual" aria-invalid="false"> </div>
+                                                    <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->installment_bi_annual}}" id="installment_bi_annual" name="installment_bi_annual" aria-invalid="false">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -217,7 +238,8 @@
                                                     <label class="col-form-label p-0">No. of Month</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm" value="{{$current->no_of_month}}" id="no_of_month" name="no_of_month" aria-invalid="false"> </div>
+                                                    <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->no_of_month}}" id="no_of_month" name="no_of_month" aria-invalid="false">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -226,7 +248,8 @@
                                                     <label class="col-form-label">Installments</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm" value="{{$current->installment_amount_monthly}}" id="installment_amount_monthly" name="installment_amount_monthly" aria-invalid="false"> </div>
+                                                    <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->installment_amount_monthly}}" id="installment_amount_monthly" name="installment_amount_monthly" aria-invalid="false">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -236,7 +259,7 @@
                                         <label class="col-form-label">On Possession</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->on_possession}}" id="on_possession" name="on_possession" aria-invalid="false">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->on_possession}}" id="on_possession" name="on_possession" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">

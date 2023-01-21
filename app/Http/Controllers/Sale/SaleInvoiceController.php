@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sale;
 
 use App\Library\Utilities;
+use App\Models\BookingFileStatus;
 use App\Models\Customer;
 use App\Models\Dealer;
 use App\Models\Product;
@@ -31,6 +32,7 @@ class SaleInvoiceController extends Controller
             'edit' => "$name-edit",
             'delete' => "$name-delete",
             'view' => "$name-view",
+            'print' => "$name-print",
         ];
     }
     /**
@@ -64,18 +66,28 @@ class SaleInvoiceController extends Controller
             if(auth()->user()->isAbleTo(self::Constants()['edit'])){
                 $edit_per = true;
             }
+            $print_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['print'])){
+                $print_per = true;
+            }
 
             $entries = [];
             foreach ($allData as $row) {
                 $urlEdit = route('sale.sale-invoice.edit',$row->uuid);
                 $urlDel = route('sale.sale-invoice.destroy',$row->uuid);
+                $urlPrint = route('sale.sale-invoice.print',$row->uuid);
 
                 $actions = '<div class="text-end">';
-                if($delete_per){
+                if($delete_per || $print_per) {
                     $actions .= '<div class="d-inline-flex">';
                     $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                    $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    if($print_per) {
+                        $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
+                    }
+                    if($delete_per) {
+                        $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    }
                     $actions .= '</div>'; // end dropdown-menu
                     $actions .= '</div>'; // end d-inline-flex
                 }
@@ -123,6 +135,7 @@ class SaleInvoiceController extends Controller
         ];
         $data['code'] = Utilities::documentCode($doc_data);
         $data['customer'] = Customer::get();
+        $data['file_status'] = BookingFileStatus::where('status',1)->get();
    //     $data['project'] = Project::get();
         $data['property'] = Product::ProductProperty()->get();
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
@@ -175,7 +188,12 @@ class SaleInvoiceController extends Controller
                 'code_prefix'       => strtoupper('si'),
             ];
             $code = Utilities::documentCode($doc_data);
-
+            if($request->seller_type == 'staff'){
+                $modal = Staff::where('id',$request->seller_id)->first();
+            }
+            if($request->seller_type == 'dealer'){
+                $modal = Dealer::where('id',$request->seller_id)->first();
+            }
             $sale = Sale::create([
                 'uuid' => self::uuid(),
                 'code' => $code,
@@ -197,18 +215,16 @@ class SaleInvoiceController extends Controller
                 'no_of_month' => $request->no_of_month,
                 'installment_amount_monthly' => $request->installment_amount_monthly,
                 'on_possession' => $request->on_possession,
+                'file_status_id' => $request->file_status_id,
+                'sale_discount' => $request->sale_discount,
+                'seller_commission_perc' => isset($modal->commission) ? $modal->commission : 0,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ]);
 
             $saleSeller = new SaleSeller();
             $saleSeller->sale_id = $sale->id;
-            if($request->seller_type == 'staff'){
-                $modal = Staff::where('id',$request->seller_id)->first();
-            }
-            if($request->seller_type == 'dealer'){
-                $modal = Dealer::where('id',$request->seller_id)->first();
-            }
+
             $modal->sale_seller()->save($saleSeller);
 
         }catch (Exception $e) {
@@ -247,6 +263,7 @@ class SaleInvoiceController extends Controller
         $data['permission'] = self::Constants()['edit'];
     //    $data['project'] = Project::get();
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
+        $data['file_status'] = BookingFileStatus::where('status',1)->get();
         if(Sale::where('uuid',$id)->exists()){
 
             $data['current'] = Sale::with('product','customer','dealer','staff')->where('uuid',$id)->first();
@@ -325,6 +342,8 @@ class SaleInvoiceController extends Controller
                 'no_of_month' => $request->no_of_month,
                 'installment_amount_monthly' => $request->installment_amount_monthly,
                 'on_possession' => $request->on_possession,
+                'file_status_id' => $request->file_status_id,
+                'sale_discount' => $request->sale_discount,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
             ]);
@@ -365,6 +384,24 @@ class SaleInvoiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function printView($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['print'];
+
+        if(Sale::where('uuid',$id)->exists()){
+
+            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode','file_status')->where('uuid',$id)->first();
+
+        }else{
+            abort('404');
+        }
+ //       dd($data['current']->product->toArray());
+        return view('sale.sale_invoice.print', compact('data'));
     }
 
     public function getSellerList(Request $request)

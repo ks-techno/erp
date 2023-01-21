@@ -45,6 +45,25 @@ class HelpController extends Controller
 
         return view('helps.customer_help',compact('data'));
     }
+
+    public function oldCustomerHelp($val = null)
+    {
+        // dd('in old');
+        $data = [];
+        $customer = Customer::where('id','<>',0);
+        if(!empty($val)){
+            $val = (string)$val;
+            $customer = $customer->where('contact_no','like',"%$val%");
+            $customer = $customer->orWhere('name','like',"%$val%");
+        }
+
+        $customer = $customer->select('id','contact_no','name')->get();
+        //dd($chart);
+        $data['old_customer'] =  $customer;
+
+        return view('helps.old_customer_help',compact('data'));
+    }
+
     public function propertyProduct(Request $request)
     {
 

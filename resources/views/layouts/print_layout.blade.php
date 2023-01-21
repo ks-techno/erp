@@ -65,7 +65,7 @@
 @yield('script')
 
 
-<table class="pt-15" style="position: absolute;bottom: 0;">
+<table class="pt-15" {{--style="position: absolute;bottom: 0;"--}}>
     <tr>
         <td class="text-right">Print Date & Time: {{date("d-m-Y h:i:s")}} User Name: {{auth()->user()->name}}</td>
     </tr>

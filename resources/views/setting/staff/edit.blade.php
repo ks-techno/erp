@@ -108,6 +108,11 @@
                                 @include('partials.address')
                             </div>
                         </div>
+                        <div class="row">
+                            <h3>Staff History </h3>
+                            @include('setting.staff.staff_history')
+                        </div>
+
                     </div>
                 </div>
             </div>

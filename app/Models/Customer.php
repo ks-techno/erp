@@ -41,4 +41,7 @@ class Customer extends Model
         return $qry->orderby('name',$dir);
     }
 
+    public function sales(){
+        return $this->hasMany(Sale::class,'customer_id');
+    }
 }
