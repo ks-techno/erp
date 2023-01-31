@@ -329,7 +329,11 @@ class BookingTransferController extends Controller
             $nm_filename = date('yzHis') . '-' . Auth::user()->id . '-' . sprintf("%'05d", rand(0, 99999)) . '.png';
             $file->move(public_path('uploads'), $nm_filename);
         }else{
-            $nm_filename = $request->nm_hidden_image;
+            if(empty($request->nm_hidden_image)){
+                $nm_filename = "";
+            }else{
+                $nm_filename = $request->nm_hidden_image;
+            }
         }
         if ($request->has('om_image')) {
             $file = $request->file('om_image');
@@ -337,7 +341,11 @@ class BookingTransferController extends Controller
             $file->move(public_path('uploads'), $om_filename);
         }
         else{
-            $om_filename = $request->om_hidden_image;
+            if(empty($request->om_hidden_image)){
+                $om_filename = "";
+            }else{
+                $om_filename = $request->om_hidden_image;
+            }
         }
         DB::beginTransaction();
         try {

@@ -667,13 +667,19 @@
         //Reset Image on Cross Click
         $(document).ready(function() {
             $('#nm_resetInput').on('click', function() {
+                var src = "{{ asset('assets/images/avatars/blank-img.png') }}";
                 $('#nm_image_url').val('');
+                $('#nm_showImage').attr('src', src );
+                $('#nm_hidden_avatar').val('');
             });
         });
         //Reset Image on Cross Click
         $(document).ready(function() {
             $('#om_resetInput').on('click', function() {
+                var src = "{{ asset('assets/images/avatars/blank-img.png') }}";
                 $('#om_image_url').val('');
+                $('#om_showImage').attr('src', src );
+                $('#om_hidden_avatar').val('');
             });
         });
 
