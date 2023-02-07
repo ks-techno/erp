@@ -68,6 +68,7 @@ class CompanyController extends Controller
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
                     $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
                     $actions .= '</div>'; // end dropdown-menu
+                    //test
                     $actions .= '</div>'; // end d-inline-flex
                 }
                 if($edit_per) {
