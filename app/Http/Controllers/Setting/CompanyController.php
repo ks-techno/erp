@@ -19,7 +19,7 @@ class CompanyController extends Controller
         $name = 'company';
         return [
             'title' => 'Company',
-            'list_url' => route('setting.company.index'),
+            'list_url' => route('company.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",

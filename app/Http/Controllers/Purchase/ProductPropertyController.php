@@ -27,7 +27,7 @@ class ProductPropertyController extends Controller
         $name = 'product';
         return [
             'title' => 'Product Inventory',
-            'list_url' => route('purchase.product-property.index'),
+            'list_url' => route('product-property.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",

@@ -134,8 +134,16 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('journal')->resource('journal', JournalController::class);
 
         });
+            
+        
+        Route::prefix('company')->resource('company', CompanyController::class);
+        Route::prefix('project')->resource('project', ProjectController::class);
 
-        Route::prefix('setting')->name('setting.')->group(function () {
+        Route::prefix('department')->resource('department', DepartmentController::class);
+           
+        Route::prefix('staff')->resource('staff', StaffController::class);
+        
+            Route::prefix('setting')->name('setting.')->group(function () {
             Route::prefix('country')->resource('country', CountryController::class);
             Route::prefix('region')->resource('region', RegionController::class);
             Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){
@@ -145,17 +153,23 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('city')->name('city.')->controller(CityController::class)->group(function(){
                 Route::post('get-city-by-region', 'getCityByRegion')->name('getCityByRegion');
             });
-            Route::prefix('company')->resource('company', CompanyController::class);
-            Route::prefix('project')->resource('project', ProjectController::class);
-            Route::prefix('department')->resource('department', DepartmentController::class);
-            Route::prefix('staff')->resource('staff', StaffController::class);
+           
+           
+           
+
+
+
+         
             Route::prefix('user')->resource('user', UserController::class);
 
             Route::prefix('user-management')->name('user-management.')->group(function () {
                 Route::get('form/{id?}', [UserManagementSystemController::class, 'create'])->name('create');
                 Route::post('form/{id?}', [UserManagementSystemController::class, 'store'])->name('store');
             });
+
         });
+
+        Route::prefix('product-property')->resource('product-property', ProductPropertyController::class);
 
         Route::prefix('purchase')->name('purchase.')->group(function () {
             Route::prefix('category_types')->resource('category_types', CategoryTypeController::class);
@@ -167,7 +181,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('manufacturer')->resource('manufacturer', ManufacturerController::class);
             Route::prefix('supplier')->resource('supplier', SupplierController::class);
             Route::prefix('inventory')->resource('inventory', InventoryController::class);
-            Route::prefix('product-property')->resource('product-property', ProductPropertyController::class);
+          
             Route::prefix('property-type')->resource('property-type', BuyableTypeController::class);
             Route::prefix('product-variation')->resource('product-variation', ProductVariationController::class);
             Route::prefix('product-variation')->name('product-variation.')->controller(ProductVariationController::class)->group(function(){

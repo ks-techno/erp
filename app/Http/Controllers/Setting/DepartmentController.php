@@ -18,7 +18,7 @@ class DepartmentController extends Controller
         $name = 'department';
         return [
             'title' => 'Department',
-            'list_url' => route('setting.department.index'),
+            'list_url' => route('department.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -58,8 +58,8 @@ class DepartmentController extends Controller
             }
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.department.edit',$row->uuid);
-                $urlDel = route('setting.department.destroy',$row->uuid);
+                $urlEdit = route('department.edit',$row->uuid);
+                $urlDel = route('department.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per) {

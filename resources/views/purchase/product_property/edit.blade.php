@@ -7,11 +7,11 @@
     @php
         $current = $data['current'];
         if(!$data['view']){
-            $url = route('purchase.product-property.update',$data['id']);
+            $url = route('product-property.update',$data['id']);
         }
     @endphp
     @permission($data['permission'])
-    <form id="product_edit" class="product_edit" action="{{route('purchase.product-property.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="product_edit" class="product_edit" action="{{route('product-property.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @if(!$data['view'])
             @csrf
             @method('patch')
@@ -24,7 +24,7 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <a href="{{route('purchase.product-property.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{route('product-property.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 @endpermission
                             @else
                                 <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>

@@ -26,7 +26,7 @@ class StaffController extends Controller
         $name = 'staff';
         return [
             'title' => 'Staff',
-            'list_url' => route('setting.staff.index'),
+            'list_url' => route('staff.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -66,8 +66,8 @@ class StaffController extends Controller
             }
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.staff.edit',$row->uuid);
-                $urlDel = route('setting.staff.destroy',$row->uuid);
+                $urlEdit = route('staff.edit',$row->uuid);
+                $urlDel = route('staff.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per) {
