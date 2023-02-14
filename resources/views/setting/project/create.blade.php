@@ -5,7 +5,7 @@
 
 @section('content')
     @permission($data['permission'])
-    <form id="project_create" class="project_create" action="{{route('setting.project.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="project_create" class="project_create" action="{{route('project.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-12">
@@ -81,3 +81,13 @@
 @section('script')
 
 @endsection
+
+
+
+
+<!-- 
+'list' => "$name-list",
+            'create' => "$name-create",
+            'edit' => "$name-edit",
+            'delete' => "$name-delete",
+            'view' => "$name-view", -->

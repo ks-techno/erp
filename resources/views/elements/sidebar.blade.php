@@ -69,7 +69,7 @@
             @endpermission
             @permission('company'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'setting/company')?'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ route('setting.company.index') }}">
+                <a class="d-flex align-items-center" href="{{ route('company.index') }}">
                     <i data-feather='briefcase'></i>
                     <span class="menu-item text-truncate">Company</span>
                 </a>
@@ -77,7 +77,7 @@
             @endpermission
             @permission('project'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'setting/project')?'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ route('setting.project.index') }}">
+                <a class="d-flex align-items-center" href="{{ route('project.index') }}">
                     <i data-feather='aperture'></i>
                     <span class="menu-item text-truncate">Project</span>
                 </a>
@@ -146,16 +146,10 @@
                     <span class="menu-title text-truncate">CRM</span>
                 </a>
                 <ul class="menu-content" id="crm_nav_ul">
-                    @permission('inventory'.$sidebar_menu)
-                    <li class="{{ ($path == 'purchase/inventory')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('purchase.inventory.index') }}">
-                            <span class="menu-item text-truncate">Inventory</span>
-                        </a>
-                    </li>
-                    @endpermission
+                    
                     @permission('product'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/product-property')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('purchase.product-property.index') }}">
+                        <a class="d-flex align-items-center" href="{{ route('product-property.index') }}">
                             <span class="menu-item text-truncate">Product Inventory</span>
                         </a>
                     </li>
@@ -175,6 +169,13 @@
                     <span class="menu-title text-truncate">Purchase</span>
                 </a>
                 <ul class="menu-content" id="purchase_nav_ul">
+                @permission('inventory'.$sidebar_menu)
+                    <li class="{{ ($path == 'purchase/inventory')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.inventory.index') }}">
+                            <span class="menu-item text-truncate">Inventory</span>
+                        </a>
+                    </li>
+                    @endpermission
                     @permission('category-type'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/category_types')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.category_types.index') }}">
@@ -263,14 +264,14 @@
                 <ul class="menu-content" id="hr_nav_ul">
                     @permission('department'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/department')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.department.index') }}">
+                        <a class="d-flex align-items-center" href="{{ route('department.index') }}">
                             <span class="menu-item text-truncate">Department</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('staff'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/staff')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.staff.index') }}">
+                        <a class="d-flex align-items-center" href="{{ route('staff.index') }}">
                             <span class="menu-item text-truncate">Staff</span>
                         </a>
                     </li>

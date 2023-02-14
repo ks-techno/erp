@@ -2,33 +2,28 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Http\Controllers\Controller;
-use App\Library\Utilities;
-use App\Models\City;
 use App\Models\Company;
 use App\Models\Country;
-use App\Models\Project;
-use App\Models\Region;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Exception;
-use Illuminate\Validation\Rule;
 use Validator;
 
-class ProjectController extends Controller
+class CompanyController extends Controller
 {
 
     private static function Constants()
     {
-        $name = 'project';
+        $name = 'company';
         return [
-            'title' => 'Project',
-            'list_url' => route('project.index'),
+            'title' => 'Company',
+            'list_url' => route('setting.company.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
-            'view' => "$name-view",
         ];
     }
 
@@ -46,13 +41,12 @@ class ProjectController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Project::with('company')->where(Utilities::CompanyId())->orderByName();
+            $dataSql = Company::with('addresses')->where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
-
             $delete_per = false;
             if(auth()->user()->isAbleTo(self::Constants()['delete'])){
                 $delete_per = true;
@@ -61,10 +55,11 @@ class ProjectController extends Controller
             if(auth()->user()->isAbleTo(self::Constants()['edit'])){
                 $edit_per = true;
             }
+
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('project.edit',$row->uuid);
-                $urlDel = route('project.destroy',$row->uuid);
+                $urlEdit = route('setting.company.edit',$row->uuid);
+                $urlDel = route('setting.company.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per) {
@@ -73,6 +68,7 @@ class ProjectController extends Controller
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
                     $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
                     $actions .= '</div>'; // end dropdown-menu
+                    //test
                     $actions .= '</div>'; // end d-inline-flex
                 }
                 if($edit_per) {
@@ -83,7 +79,8 @@ class ProjectController extends Controller
                 $entries[] = [
                     $row->name,
                     $row->contact_no,
-                    $row->company->name,
+                    isset($row->addresses->country->name)?$row->addresses->country->name:"",
+                    $row->addresses->address,
                     $actions,
                 ];
             }
@@ -96,7 +93,7 @@ class ProjectController extends Controller
             return response()->json($result);
         }
 
-        return view('setting.project.list', compact('data'));
+        return view('setting.company.list', compact('data'));
     }
 
     /**
@@ -110,10 +107,9 @@ class ProjectController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['create'];
-        $data['companies'] = Company::OrderByName()->get();
-        $data['regions'] = Region::with('cities')->OrderByName()->get();
-        return view('setting.project.create', compact('data'));
+        return view('setting.company.create', compact('data'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -126,11 +122,7 @@ class ProjectController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'company_id' => ['required',Rule::notIn([0,'0'])],
-        ],[
-            'name.required' => 'Name is required',
-            'company_id.required' => 'Company is required',
-            'company_id.not_in' => 'Company is required',
+            'country_id' => ['required',Rule::notIn([0,'0'])]
         ]);
 
         if ($validator->fails()) {
@@ -145,16 +137,16 @@ class ProjectController extends Controller
 
         DB::beginTransaction();
         try {
-            $city = City::where('id',$request->city_id)->first();
-            $project = Project::create([
+
+            $company = Company::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'contact_no' => $request->contact_no,
-                'company_id' => $request->company_id,
-                'user_id' => auth()->user()->id,
+                'address' => $request->address,
+                'country_id' => $request->country_id,
             ]);
 
-            $r = self::insertAddress($request,$project);
+            $r = self::insertAddress($request,$company);
 
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
@@ -186,29 +178,23 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request,$id)
+    public function edit($id)
     {
         $data = [];
-        $data['view'] = false;
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
-        $data['companies'] = Company::OrderByName()->get();
-        $data['regions'] = Region::with('cities')->OrderByName()->get();
-        if(Project::where('uuid',$id)->exists()){
 
-            $data['current'] = Project::where('uuid',$id)->first();
+        if(Company::where('uuid',$id)->exists()){
+
+            $data['current'] = Company::where('uuid',$id)->first();
 
         }else{
             abort('404');
         }
-        if(isset($request->view)){
-            $data['view'] = true;
-            $data['permission'] = self::Constants()['view'];
-            $data['permission_edit'] = self::Constants()['edit'];
-        }
-        return view('setting.project.edit', compact('data'));
+
+        return view('setting.company.edit', compact('data'));
     }
 
     /**
@@ -224,14 +210,7 @@ class ProjectController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'company_id' => ['required',Rule::notIn([0,'0'])],
-            'city_id' => ['required',Rule::notIn([0,'0'])]
-        ],[
-            'name.required' => 'Name is required',
-            'company_id.required' => 'Company is required',
-            'company_id.not_in' => 'Company is required',
-            'city_id.required' => 'City is required',
-            'city_id.not_in' => 'City is required',
+            'country_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -246,17 +225,17 @@ class ProjectController extends Controller
 
         DB::beginTransaction();
         try {
-            $city = City::where('id',$request->city_id)->first();
-            Project::where('uuid',$id)
-                ->update([
-                'name' => self::strUCWord($request->name),
-                'contact_no' => $request->contact_no,
-                'company_id' => $request->company_id,
-                'user_id' => auth()->user()->id,
-            ]);
-            $project = Project::where('uuid',$id)->first();
 
-            $r = self::insertAddress($request,$project);
+            Company::where('uuid',$id)
+                ->update([
+                    'name' => self::strUCWord($request->name),
+                    'contact_no' => $request->contact_no,
+                    'address' => $request->address,
+                    'country_id' => $request->country_id,
+                ]);
+            $company = Company::where('uuid',$id)->first();
+
+            $r = self::insertAddress($request,$company);
 
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
@@ -284,7 +263,7 @@ class ProjectController extends Controller
         DB::beginTransaction();
         try{
 
-            Project::where('uuid',$id)->delete();
+            Company::where('uuid',$id)->delete();
 
         }catch (Exception $e) {
             DB::rollback();

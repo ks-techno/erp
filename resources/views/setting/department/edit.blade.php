@@ -8,7 +8,7 @@
     @php
         $current = $data['current'];
         if(!$data['view']){
-            $url = route('setting.department.update',$data['id']);
+            $url = route('department.update',$data['id']);
         }
     @endphp
     <form id="department_edit" class="department_edit" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
@@ -24,7 +24,7 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <a href="{{route('setting.department.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{route('department.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 @endpermission
                             @else
                                 <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>

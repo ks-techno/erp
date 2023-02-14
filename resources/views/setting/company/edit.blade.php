@@ -8,7 +8,7 @@
     @php
         $current = $data['current'];
     @endphp
-    <form id="region_edit" class="region_edit" action="{{route('setting.company.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="region_edit" class="region_edit" action="{{route('company.update',$data['id'])}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         @method('patch')
         <div class="row">
