@@ -221,6 +221,7 @@ class CountryController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('setting.country.index');
         }
 
         DB::beginTransaction();

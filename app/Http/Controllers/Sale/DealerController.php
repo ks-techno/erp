@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Validator;
+use session;
 
 class DealerController extends Controller
 {
@@ -179,7 +180,11 @@ class DealerController extends Controller
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        
+        
+        return redirect()->back();
     }
+   
 
     /**
      * Display the specified resource.
@@ -220,6 +225,7 @@ class DealerController extends Controller
         }
 
         return view('sale.dealer.edit', compact('data'));
+       
     }
 
     /**
@@ -277,10 +283,13 @@ class DealerController extends Controller
         }
         DB::commit();
 
-        $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully updated');
-    }
+         $data['redirect'] = self::Constants()['list_url'];
+         return $this->jsonSuccessResponse($data, 'Successfully updated');
+         
 
+       
+    }
+   
     /**
      * Remove the specified resource from storage.
      *

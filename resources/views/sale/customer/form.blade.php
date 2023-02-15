@@ -7,7 +7,7 @@
                 <div class="card-header border-bottom">
                     <div class="card-left-side">
                         <h4 class="card-title">{{$data['title']}}</h4>
-                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
+                        
                     </div>
                     <div class="card-link">
                         <script> var modal = true; </script>
@@ -15,6 +15,7 @@
                             <script> var modal = true; </script>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="margin: 0;"></button>
                         @else
+                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         @endif
                     </div>

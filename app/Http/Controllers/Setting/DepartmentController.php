@@ -89,7 +89,7 @@ class DepartmentController extends Controller
             return response()->json($result);
         }
 
-        return view('setting.department.list', compact('data'));
+        return view('hr.department.list', compact('data'));
     }
 
     /**
@@ -104,7 +104,7 @@ class DepartmentController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['create'];
 
-        return view('setting.department.create', compact('data'));
+        return view('hr.department.create', compact('data'));
     }
 
     /**
@@ -128,6 +128,8 @@ class DepartmentController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('department.index');
+            
         }
 
         DB::beginTransaction();
@@ -147,8 +149,9 @@ class DepartmentController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
+        
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        
     }
 
     /**
@@ -189,7 +192,7 @@ class DepartmentController extends Controller
             $data['permission'] = self::Constants()['view'];
             $data['permission_edit'] = self::Constants()['edit'];
         }
-        return view('setting.department.edit', compact('data'));
+        return view('hr.department.edit', compact('data'));
     }
 
     /**
@@ -214,7 +217,9 @@ class DepartmentController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('department.index');
         }
+       
 
         DB::beginTransaction();
         try {

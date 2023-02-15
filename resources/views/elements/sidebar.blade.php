@@ -262,22 +262,24 @@
                     <span class="menu-title text-truncate">HR</span>
                 </a>
                 <ul class="menu-content" id="hr_nav_ul">
-                    @permission('department'.$sidebar_menu)
-                    <li class="{{ ($path == 'setting/department')?'active':'' }}">
+                @permission('inventory'.$sidebar_menu)
+                    <li class="{{ ($path == 'hr/department')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('department.index') }}">
                             <span class="menu-item text-truncate">Department</span>
                         </a>
                     </li>
                     @endpermission
-                    @permission('staff'.$sidebar_menu)
-                    <li class="{{ ($path == 'setting/staff')?'active':'' }}">
+                    @permission('category-type'.$sidebar_menu)
+                    <li class="{{ ($path == 'hr/staff')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('staff.index') }}">
                             <span class="menu-item text-truncate">Staff</span>
                         </a>
                     </li>
                     @endpermission
-                </ul>
-            </li>
+                    </ul>
+                    </li>
+          
+
             <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>

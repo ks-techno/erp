@@ -139,9 +139,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('company')->resource('company', CompanyController::class);
         Route::prefix('project')->resource('project', ProjectController::class);
 
+        
         Route::prefix('department')->resource('department', DepartmentController::class);
            
         Route::prefix('staff')->resource('staff', StaffController::class);
+
         
             Route::prefix('setting')->name('setting.')->group(function () {
             Route::prefix('country')->resource('country', CountryController::class);

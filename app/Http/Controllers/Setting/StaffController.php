@@ -100,7 +100,7 @@ class StaffController extends Controller
             return response()->json($result);
         }
 
-        return view('setting.staff.list', compact('data'));
+        return view('hr.staff.list', compact('data'));
     }
 
     /**
@@ -116,7 +116,7 @@ class StaffController extends Controller
         $data['permission'] = self::Constants()['create'];
         $data['projects'] = Project::OrderByName()->get();
         $data['departments'] = Department::OrderByName()->get();
-        return view('setting.staff.create', compact('data'));
+        return view('hr.staff.create', compact('data'));
     }
 
     /**
@@ -149,8 +149,12 @@ class StaffController extends Controller
             foreach ($validator_errors as $key=>$valid_error){
                 $err = $valid_error[0];
             }
+            
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('staff.index');
+           
         }
+        
 
         DB::beginTransaction();
         try {
@@ -186,6 +190,7 @@ class StaffController extends Controller
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
+           
         }
         DB::commit();
 
@@ -234,7 +239,7 @@ class StaffController extends Controller
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('setting.staff.edit', compact('data'));
+        return view('hr.staff.edit', compact('data'));
     }
 
     /**
