@@ -20,7 +20,7 @@ class CustomerController extends Controller
         $name = 'customer';
         return [
             'title' => 'Customer',
-            'list_url' => route('sale.customer.index'),
+            'list_url' => route('customer.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -64,8 +64,8 @@ class CustomerController extends Controller
             $entries = [];
             foreach ($allData as $row) {
                 $entry_status = $this->getStatusTitle()[$row->status];
-                $urlEdit = route('sale.customer.edit',$row->uuid);
-                $urlDel = route('sale.customer.destroy',$row->uuid);
+                $urlEdit = route('customer.edit',$row->uuid);
+                $urlDel = route('customer.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per){
@@ -257,6 +257,7 @@ class CustomerController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('customer.index');
         }
 
         DB::beginTransaction();

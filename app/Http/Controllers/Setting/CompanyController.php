@@ -58,8 +58,8 @@ class CompanyController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.company.edit',$row->uuid);
-                $urlDel = route('setting.company.destroy',$row->uuid);
+                $urlEdit = route('company.edit',$row->uuid);
+                $urlDel = route('company.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per) {

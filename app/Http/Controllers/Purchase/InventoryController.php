@@ -296,6 +296,7 @@ class InventoryController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('purchase.inventory.index');
         }
 
         DB::beginTransaction();

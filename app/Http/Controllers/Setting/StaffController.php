@@ -151,7 +151,7 @@ class StaffController extends Controller
             }
             
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('staff.index');
+           
            
         }
         
@@ -172,9 +172,10 @@ class StaffController extends Controller
             ]);
 
             $r = self::insertAddress($request,$staff);
-
+           
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
+               
             }
             $req = [
                 'name' => $request->name,
@@ -184,12 +185,14 @@ class StaffController extends Controller
             $r = Utilities::createCOA($req);
 
             if(isset($r['status']) && $r['status'] == 'error'){
-                return $this->jsonErrorResponse($data, $r['message']);
+                return $this->jsonErrorResponse($data, $r['message']);    
             }
+            return $this->redirect()->route('staff.index');
 
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
+
            
         }
         DB::commit();

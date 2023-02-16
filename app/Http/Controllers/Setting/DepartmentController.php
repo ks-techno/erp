@@ -105,6 +105,8 @@ class DepartmentController extends Controller
         $data['permission'] = self::Constants()['create'];
 
         return view('hr.department.create', compact('data'));
+        return redirect()->route('department.index');
+           
     }
 
     /**
@@ -126,16 +128,16 @@ class DepartmentController extends Controller
             $err = 'Fields are required';
             foreach ($validator_errors as $key=>$valid_error){
                 $err = $valid_error[0];
+               
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('department.index');
-            
-        }
-
+          
+             }
+             
+      
         DB::beginTransaction();
         try {
-
-            Department::create([
+                Department::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'status' => isset($request->status) ? "1" : "0",
@@ -143,14 +145,20 @@ class DepartmentController extends Controller
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
             ]);
-
-        }catch (Exception $e) {
-            DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+         
+           
         }
+        catch (Exception $e) {
+            
+            DB::rollback();
+            
+            return $this->jsonErrorResponse($data, $e->getMessage());
+              }
+              
         DB::commit();
-        
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
+
         
     }
 

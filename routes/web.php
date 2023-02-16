@@ -189,11 +189,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('product-variation')->name('product-variation.')->controller(ProductVariationController::class)->group(function(){
                 Route::post('get-product-variation-by-buyable-type', 'getProductVariations')->name('getProductVariations');
             });
-
-        });
+  });
+       Route::prefix('customer')->resource('customer', CustomerController::class);
+       
         Route::prefix('sale')->name('sale.')->group(function () {
             Route::prefix('dealer')->resource('dealer', DealerController::class);
-            Route::prefix('customer')->resource('customer', CustomerController::class);
+           
             Route::prefix('sale-invoice')->resource('sale-invoice', SaleInvoiceController::class);
             Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
                 Route::post('get-seller-list', 'getSellerList')->name('getSellerList');

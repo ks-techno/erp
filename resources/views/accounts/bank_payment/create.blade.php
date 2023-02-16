@@ -5,7 +5,9 @@
 
 @section('content')
     @permission($data['permission'])
-    <form id="bank_payment_create" class="bank_payment_create" action="{{route('accounts.bank-payment.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="bank_payment_create" class="bank_payment_create"
+     action="{{route('accounts.bank-payment.store')}}"
+      method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-12">
@@ -13,11 +15,15 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" name="current_action_id" value="store" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
-                            <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
+                            
                         </div>
                         <div class="card-link">
-                            <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                        <button type="submit" name="current_action_id" value="store"
+                         class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
+                            <button type="submit" name="current_action_id" value="post"
+                             class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
+                            <a href="{{$data['list_url']}}"
+                            class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
                     </div>
                     <div class="card-body mt-2">
@@ -33,7 +39,9 @@
                                         <label class="col-form-label">Date <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" id="date" name="date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="{{date('Y-m-d')}}" />
+                                        <input type="text" id="date" name="date"
+                                         class="form-control form-control-sm flatpickr-basic flatpickr-input"
+                                          placeholder="YYYY-MM-DD" value="{{date('Y-m-d')}}" />
                                     </div>
                                 </div>
                             </div>
@@ -44,12 +52,15 @@
                         <div class="row">
                             <div class="col-lg-12 text-end">
                                 <div class="data_entry_header">
-                                    <div class="hiddenFiledsCount" style="display: inline-block;"><span>0</span> fields hide</div>
+                                    <div class="hiddenFiledsCount" style="display: inline-block;">
+                                    <span>0</span> fields hide</div>
 
                                     <div class="dropdown chart-dropdown" style="display: inline-block;">
-                                        <i data-feather="more-vertical" class="font-medium-3 cursor-pointer" data-bs-toggle="dropdown"></i>
+                                        <i data-feather="more-vertical" class="font-medium-3 cursor-pointer"
+                                        data-bs-toggle="dropdown"></i>
                                         @php
-                                            $headings = ['Sr','Account Code','Account Name','Cheque No','Cheque Date','Description','Debit','Credit'];
+                                            $headings = ['Sr','Account Code','Account Name','Cheque No',
+                                            'Cheque Date','Description','Debit','Credit'];
                                         @endphp
                                         <ul class="listing_dropdown dropdown-menu dropdown-menu-end">
                                             @foreach($headings as $key=>$heading)
@@ -72,7 +83,10 @@
                                             <table class="egt_form_table table table-bordered">
                                                 <thead class="egt_form_header">
                                                 <tr class="egt_form_header_title">
-                                                    <th width="7%">Sr</th>
+                                                    <th 
+                                                    width="7%">
+                                                        Sr
+                                                    </th>
                                                     <th width="20%">Account Code</th>
                                                     <th width="22%">Account Name</th>
                                                     <th width="22%">Cheque No</th>

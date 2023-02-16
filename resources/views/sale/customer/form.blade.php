@@ -1,5 +1,5 @@
 @permission($data['permission'])
-<form id="customer_create" class="customer_create" action="{{route('sale.customer.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+<form id="customer_create" class="customer_create" action="{{route('customer.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
     @csrf
     <div class="row">
         <div class="col-12">

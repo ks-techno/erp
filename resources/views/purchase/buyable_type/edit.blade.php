@@ -26,9 +26,7 @@
                                 @permission($data['permission_edit'])
                                 <a href="{{route('purchase.brand.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 @endpermission
-                            
-                           
-                            @endif
+                         @endif
                         </div>
                         <div class="card-link">
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>

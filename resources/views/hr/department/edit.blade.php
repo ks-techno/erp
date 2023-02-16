@@ -24,15 +24,22 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <a href="{{route('department.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{route('department.edit',$data['id'])}}"
+                                    class="btn btn-primary btn-sm waves-effect waves-float waves-light"
+                                >
+                                    Edit
+                                </a>
                                 @endpermission
-                            
-                                
                             @endif
                         </div>
                         <div class="card-link">
-                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
-                            <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">
+                        Update
+                    </button>
+                            <a href="{{$data['list_url']}}"
+                            class="btn btn-secondary btn-sm waves-effect waves-float waves-light">
+                               Back
+                            </a>
                         </div>
                     </div>
                     <div class="card-body mt-2">
@@ -43,7 +50,9 @@
                                         <label class="col-form-label">Name <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->name}}" id="name" name="name" />
+                                        <input type="text"
+                                        class="form-control form-control-sm"
+                                        value="{{$current->name}}" id="name" name="name" />
                                     </div>
                                 </div>
                             </div>
