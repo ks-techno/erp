@@ -58,8 +58,8 @@ class CompanyController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.company.edit',$row->uuid);
-                $urlDel = route('setting.company.destroy',$row->uuid);
+                $urlEdit = route('company.edit',$row->uuid);
+                $urlDel = route('company.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per) {
@@ -133,6 +133,7 @@ class CompanyController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('company.index');
         }
 
         DB::beginTransaction();

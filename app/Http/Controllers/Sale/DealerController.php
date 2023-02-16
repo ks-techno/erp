@@ -12,8 +12,7 @@ use Validator;
 
 class DealerController extends Controller
 {
-
-    private static function Constants()
+  private static function Constants()
     {
         $name = 'dealer';
         return [
@@ -26,7 +25,6 @@ class DealerController extends Controller
             'view' => "$name-view",
         ];
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -138,7 +136,7 @@ class DealerController extends Controller
             }
             return $this->jsonErrorResponse($data, $err);
         }
-
+     
         DB::beginTransaction();
         try {
 
@@ -154,14 +152,11 @@ class DealerController extends Controller
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
             ]);
-
-            $r = self::insertAddress($request,$dealer);
-
-            if(isset($r['status']) && $r['status'] == 'error'){
+             $r = self::insertAddress($request,$dealer);
+         if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
             }
-
-            $req = [
+             $req = [
                 'name' => $request->name,
                 'level' => 4,
                 'parent_account' => '03-03-0001-0000',
@@ -171,16 +166,14 @@ class DealerController extends Controller
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
             }
-
-        }catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
-        return $this->jsonSuccessResponse($data, 'Successfully created');
-    }
-
+      return $this->jsonSuccessResponse($data, 'Successfully created');
+         }
     /**
      * Display the specified resource.
      *
@@ -220,6 +213,7 @@ class DealerController extends Controller
         }
 
         return view('sale.dealer.edit', compact('data'));
+       
     }
 
     /**
@@ -246,6 +240,7 @@ class DealerController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('sale.dealer.index');
         }
 
         DB::beginTransaction();
@@ -277,10 +272,10 @@ class DealerController extends Controller
         }
         DB::commit();
 
-        $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully updated');
-    }
-
+         $data['redirect'] = self::Constants()['list_url'];
+         return $this->jsonSuccessResponse($data, 'Successfully updated');
+          }
+   
     /**
      * Remove the specified resource from storage.
      *

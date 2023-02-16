@@ -67,8 +67,8 @@ class ProductPropertyController extends Controller
             $entries = [];
             foreach ($allData as $row) {
                 $entry_status = $this->getStatusTitle()[$row->status];
-                $urlEdit = route('purchase.product-property.edit',$row->uuid);
-                $urlDel = route('purchase.product-property.destroy',$row->uuid);
+                $urlEdit = route('product-property.edit',$row->uuid);
+                $urlDel = route('product-property.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per) {
@@ -310,6 +310,7 @@ class ProductPropertyController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('product-property.index');
         }
 
         DB::beginTransaction();

@@ -131,11 +131,11 @@ class CountryController extends Controller
             $err = 'Fields are required';
             foreach ($validator_errors as $key=>$valid_error){
                 $err = $valid_error[0];
+               
             }
             return $this->jsonErrorResponse($data, $err);
-        }
-
-        DB::beginTransaction();
+             }
+               DB::beginTransaction();
         try {
 
             Country::create([
@@ -145,15 +145,16 @@ class CountryController extends Controller
                 'company_id' => auth()->user()->company_id,
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
+               
             ]);
-
-        }catch (Exception $e) {
+            }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
-        }
+            }
+            
         DB::commit();
-
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+         return $this->jsonSuccessResponse($data, 'Successfully created');
+         return $this->redirect()->route('setting.country.index');
     }
 
     /**
@@ -221,6 +222,7 @@ class CountryController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('setting.country.index');
         }
 
         DB::beginTransaction();
