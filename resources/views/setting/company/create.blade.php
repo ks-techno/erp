@@ -52,7 +52,7 @@
                                         <label class="col-form-label">Country <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="country_id" name="country_id">
+                                        <select class="select2 form-select NumberValidate" id="country_id" name="country_id">
                                             <option value="0" selected>Select</option>
                                             @foreach($data['countries'] as $country)
                                                 <option value="{{$country->id}}"> {{$country->name}} </option>

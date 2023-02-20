@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
+
+    public $timestamps = false;
+    
     use SoftDeletes;
 
     protected $fillable = [

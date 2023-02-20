@@ -250,7 +250,8 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg" style="">
             <div class="modal-content" id="modal_create_customer">
                 <div class="modal-body " style="height:100vh">
-                  @include('sale.customer.form')
+                  
+@include('sale.customer.form')
                 </div>
             </div>
         </div>
