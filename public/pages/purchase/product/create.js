@@ -6,6 +6,10 @@ $(function () {
     // jQuery Validation
     // --------------------------------------------------------------------
     if (pageLoginForm.length) {
+        $.validator.addMethod("valueNotEquals", function(value, element, arg){
+            return arg !== value;
+        }, "This field is required");
+
         pageLoginForm.validate({
             /*
             * ? To enable validation onkeyup
@@ -21,6 +25,27 @@ $(function () {
                 name: {
                     required: true,
                 },
+                supplier_id: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                manufacturer_id: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                brand_id: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                parent_category: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                category_id: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                
             },
             submitHandler: function (form) {
                 pageLoginForm.find(":submit").prop('disabled', true);

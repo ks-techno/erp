@@ -282,8 +282,6 @@ class JournalController extends Controller
         if(!isset($request->pd) || empty($request->pd)){
             return $this->jsonErrorResponse($data, 'Grid must be include one row');
         }
-
-
         $total_debit = 0;
         $total_credit = 0;
         foreach ($request->pd as $pd) {
@@ -338,7 +336,6 @@ class JournalController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
     }
@@ -386,8 +383,7 @@ class JournalController extends Controller
         return view('accounts.journal.print', compact('data'));
     }
 
-
-    public function revertList(Request $request)
+       public function revertList(Request $request)
     {
         $data = [];
         $data['title'] = self::Constants()['title'];

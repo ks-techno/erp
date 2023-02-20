@@ -11,7 +11,9 @@
             $url = route('department.update',$data['id']);
         }
     @endphp
-    <form id="department_edit" class="department_edit" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="department_edit"
+    class="department_edit" action="{{isset($url)?$url:""}}"
+    method="post" enctype="multipart/form-data" autocomplete="off">
         @if(!$data['view'])
             @csrf
             @method('patch')

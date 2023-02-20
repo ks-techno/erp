@@ -127,7 +127,7 @@ class BrandController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('purchase.brand.index');
+          
         }
 
         DB::beginTransaction();
@@ -217,6 +217,7 @@ class BrandController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('purchase.brand.index');
         }
 
         DB::beginTransaction();

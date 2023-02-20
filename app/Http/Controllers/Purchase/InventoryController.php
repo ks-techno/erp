@@ -166,46 +166,47 @@ class InventoryController extends Controller
             }
             return $this->jsonErrorResponse($data, $err);
         }
+        
 
-        DB::beginTransaction();
-        try {
-            $doc_data = [
-                'model'             => 'Product',
-                'code_field'        => 'code',
-                'code_prefix'       => strtoupper('pi'),
-                'form_type_field'        => 'product_form_type',
-                'form_type_value'       => 'inventory',
-            ];
-            $data['code'] = Utilities::documentCode($doc_data);
+    //     DB::beginTransaction();
+    //     try {
+    //         $doc_data = [
+    //             'model'             => 'Product',
+    //             'code_field'        => 'code',
+    //             'code_prefix'       => strtoupper('pi'),
+    //             'form_type_field'        => 'product_form_type',
+    //             'form_type_value'       => 'inventory',
+    //         ];
+    //         $data['code'] = Utilities::documentCode($doc_data);
 
-            $product = Product::create([
-                'uuid' => self::uuid(),
-                'name' => self::strUCWord($request->name),
-                'code' => $data['code'],
-                'external_item_id' => $request->external_item_id,
-                'is_taxable' => isset($request->is_taxable) ? "1" : "0",
-                'status' => isset($request->status) ? "1" : "0",
-                'supplier_id' => $request->supplier_id,
-                'manufacturer_id' => $request->manufacturer_id,
-                'brand_id' => $request->brand_id,
-                'parent_category' => $request->parent_category,
-                'category_id' => $request->category_id,
-                'default_purchase_price' => $request->default_purchase_price,
-                'stock_on_hand_units' => $request->stock_on_hand_units,
-                'stock_on_hand_packages' => $request->stock_on_hand_packages,
-                'product_form_type' => 'inventory',
-                'company_id' => auth()->user()->company_id,
-                'project_id' => auth()->user()->project_id,
-                'user_id' => auth()->user()->id,
-            ]);
+    //         $product = Product::create([
+    //             'uuid' => self::uuid(),
+    //             'name' => self::strUCWord($request->name),
+    //             'code' => $data['code'],
+    //             'external_item_id' => $request->external_item_id,
+    //             'is_taxable' => isset($request->is_taxable) ? "1" : "0",
+    //             'status' => isset($request->status) ? "1" : "0",
+    //             'supplier_id' => $request->supplier_id,
+    //             'manufacturer_id' => $request->manufacturer_id,
+    //             'brand_id' => $request->brand_id,
+    //             'parent_category' => $request->parent_category,
+    //             'category_id' => $request->category_id,
+    //             'default_purchase_price' => $request->default_purchase_price,
+    //             'stock_on_hand_units' => $request->stock_on_hand_units,
+    //             'stock_on_hand_packages' => $request->stock_on_hand_packages,
+    //             'product_form_type' => 'inventory',
+    //             'company_id' => auth()->user()->company_id,
+    //             'project_id' => auth()->user()->project_id,
+    //             'user_id' => auth()->user()->id,
+    //         ]);
 
-        }catch (Exception $e) {
-            DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
-        }
-        DB::commit();
+    //     }catch (Exception $e) {
+    //         DB::rollback();
+    //         return $this->jsonErrorResponse($data, $e->getMessage());
+    //     }
+    //     DB::commit();
 
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+    //     return $this->jsonSuccessResponse($data, 'Successfully created');
     }
 
     /**

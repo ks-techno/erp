@@ -35,9 +35,13 @@ class Staff extends Model
     }
 
     public function project(){
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class)->withDefault([
+            'name' => 'No project'
+        ]);
     }
     public function department(){
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Department::class)->withDefault([
+            'name' => 'No department'
+        ]);
     }
 }

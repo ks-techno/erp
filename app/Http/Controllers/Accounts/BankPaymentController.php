@@ -206,6 +206,7 @@ class BankPaymentController extends Controller
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
     }
+    
 
     /**
      * Display the specified resource.
@@ -278,6 +279,7 @@ class BankPaymentController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            
         }
         if(!isset($request->pd) || empty($request->pd)){
             return $this->jsonErrorResponse($data, 'Grid must be include one row');

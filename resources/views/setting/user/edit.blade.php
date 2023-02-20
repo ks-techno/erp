@@ -26,9 +26,7 @@
                                 @permission($data['permission_edit'])
                                 <a href="{{route('setting.user.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 @endpermission
-                            
-                               
-                            @endif
+                             @endif
                         </div>
                         <div class="card-link">
                             
