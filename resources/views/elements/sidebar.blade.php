@@ -206,13 +206,7 @@
                     <span class="menu-title text-truncate">Purchase</span>
                 </a>
                 <ul class="menu-content" id="purchase_nav_ul">
-                @permission('inventory'.$sidebar_menu)
-                    <li class="{{ ($path == 'purchase/inventory')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('purchase.inventory.index') }}">
-                            <span class="menu-item text-truncate">Inventory</span>
-                        </a>
-                    </li>
-                    @endpermission
+                
                     @permission('supplier'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/supplier')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.supplier.index') }}">
@@ -233,13 +227,6 @@
                         </a>
                     </li>
                     @endpermission
-                    @permission('category-type'.$sidebar_menu)
-                    <li class="{{ ($path == 'purchase/category_types')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('purchase.category_types.index') }}">
-                            <span class="menu-item text-truncate">Category Type</span>
-                        </a>
-                    </li>
-                    @endpermission
                     @permission('category'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/category')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.category.index') }}">
@@ -247,7 +234,20 @@
                         </a>
                     </li>
                     @endpermission
-                   
+                    @permission('category-type'.$sidebar_menu)
+                    <li class="{{ ($path == 'purchase/category_types')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.category_types.index') }}">
+                            <span class="menu-item text-truncate">Category Type</span>
+                        </a>
+                    </li>
+                    @endpermission
+                    @permission('inventory'.$sidebar_menu)
+                    <li class="{{ ($path == 'purchase/inventory')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.inventory.index') }}">
+                            <span class="menu-item text-truncate">Inventory</span>
+                        </a>
+                    </li>
+                    @endpermission
                     @endpermission
                     @permission('property-type'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/property-type')?'active':'' }}">

@@ -205,7 +205,7 @@ class SaleInvoiceController extends Controller
                 'is_installment' => isset($request->is_installment)?1:0,
                 'is_booked' => isset($request->is_booked)?1:0,
                 'is_purchased' => isset($request->is_purchased)?1:0,
-                'sale_price' => $request->sale_price,
+                'sale_price'=>(!is_null($request->sale_price) ? $request->sale_price: ""),
                 'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
                 'booked_price' => $request->booked_price,
                 'down_payment' => $request->down_payment,
