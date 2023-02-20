@@ -247,8 +247,7 @@ class ChartOfAccountController extends Controller
 
         DB::beginTransaction();
         try {
-
-            ChartOfAccount::where('uuid',$id)
+             ChartOfAccount::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'status' => isset($request->status) ? "1" : "0",

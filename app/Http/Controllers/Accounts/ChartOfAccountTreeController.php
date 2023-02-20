@@ -36,10 +36,7 @@ class ChartOfAccountTreeController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['permission'] = self::Constants()['view'];
-
-
-
-        return view('accounts.chart_of_account_tree.list', compact('data'));
+       return view('accounts.chart_of_account_tree.list', compact('data'));
     }
     public function getChartOfAccountTree(){
 

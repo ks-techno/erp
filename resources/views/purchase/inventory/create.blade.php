@@ -33,7 +33,7 @@
                                         <label class="col-form-label">Name <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="name" name="name" />
+                                        <input type="text" class="form-control form-control-sm" value="" id="name" name="name" required/>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -41,7 +41,7 @@
                                         <label class="col-form-label">Supplier <span class="required">*</span> </label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <select class="select2 form-select" id="supplier_id" name="supplier_id">
+                                        <select class="select2 form-select" id="supplier_id" name="supplier_id" > 
                                             <option value="0" selected>Select</option>
                                             @foreach($data['suppliers'] as $supplier)
                                                 <option value="{{$supplier->id}}"> {{$supplier->name}} </option>
@@ -167,5 +167,5 @@
 @endsection
 
 @section('script')
-
+ 
 @endsection

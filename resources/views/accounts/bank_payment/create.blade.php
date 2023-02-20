@@ -83,10 +83,7 @@
                                             <table class="egt_form_table table table-bordered">
                                                 <thead class="egt_form_header">
                                                 <tr class="egt_form_header_title">
-                                                    <th 
-                                                    width="7%">
-                                                        Sr
-                                                    </th>
+                                                    <th width="7%">Sr</th>
                                                     <th width="20%">Account Code</th>
                                                     <th width="22%">Account Name</th>
                                                     <th width="22%">Cheque No</th>
@@ -98,32 +95,45 @@
                                                 </tr>
                                                 <tr class="egt_form_header_input">
                                                     <td>
-                                                        <input id="egt_sr_no" readonly type="text" class="form-control form-control-sm">
-                                                        <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
+                                                        <input id="egt_sr_no" readonly type="text"
+                                                        class="form-control form-control-sm">
+                                                        <input id="chart_id" type="hidden"
+                                                         class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
+                                                        <input id="egt_chart_code" type="text"
+                                                         class="chart_code form-control form-control-sm text-left"
+                                                          placeholder="Press F2">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
+                                                        <input id="egt_chart_name" type="text"
+                                                         class="chart_name form-control form-control-sm" readonly>
                                                     </td>
                                                     <td>
-                                                        <input id="egt_cheque_no" type="text" class="cheque_no form-control form-control-sm">
+                                                        <input id="egt_cheque_no" type="text"
+                                                         class="cheque_no form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_cheque_date" type="text" class="cheque_date form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="Click & Select Date">
+                                                        <input id="egt_cheque_date" type="text"
+                                                         class="cheque_date form-control
+                                                         form-control-sm flatpickr-basic flatpickr-input"
+                                                          placeholder="Click & Select Date">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_description" type="text" class="form-control form-control-sm">
+                                                        <input id="egt_description" type="text"
+                                                         class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm">
+                                                        <input id="egt_debit" type="text"
+                                                         class="FloatValidate debit form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm">
+                                                        <input id="egt_credit" type="text"
+                                                         class="FloatValidate credit form-control form-control-sm">
                                                     </td>
                                                     <td class="text-center">
-                                                        <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
+                                                        <button type="button" id="egt_add"
+                                                         class="egt_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
                                                         </button>
                                                     </td>
@@ -141,11 +151,13 @@
                                                     <td></td>
                                                     <td class="voucher-total-debit text-end">
                                                         <span id="tot_debit"></span>
-                                                        <input id="tot_voucher_debit" name="tot_voucher_debit" type="hidden" >
+                                                        <input id="tot_voucher_debit"
+                                                         name="tot_voucher_debit" type="hidden" >
                                                     </td>
                                                     <td class="voucher-total-credit text-end">
                                                         <span id="tot_credit"></span>
-                                                        <input id="tot_voucher_credit" name="tot_voucher_credit" type="hidden" >
+                                                        <input id="tot_voucher_credit"
+                                                         name="tot_voucher_credit" type="hidden" >
                                                     </td>
                                                     <td></td>
                                                 </tr>
@@ -161,7 +173,8 @@
                                 <div class="row">
                                     <label class="col-form-label col-lg-2">Remarks:</label>
                                     <div class="col-lg-10">
-                                        <textarea class="form-control form-control-sm" rows="3" name="remarks" id="remarks"></textarea>
+                                        <textarea class="form-control form-control-sm"
+                                         rows="3" name="remarks" id="remarks"></textarea>
                                     </div>
                                 </div>
                             </div>

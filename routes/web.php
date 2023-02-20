@@ -135,17 +135,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
             
-        
         Route::prefix('company')->resource('company', CompanyController::class);
         Route::prefix('project')->resource('project', ProjectController::class);
-
-        
         Route::prefix('department')->resource('department', DepartmentController::class);
-           
         Route::prefix('staff')->resource('staff', StaffController::class);
 
-        
-            Route::prefix('setting')->name('setting.')->group(function () {
+        Route::prefix('setting')->name('setting.')->group(function () {
             Route::prefix('country')->resource('country', CountryController::class);
             Route::prefix('region')->resource('region', RegionController::class);
             Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){
@@ -156,15 +151,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('get-city-by-region', 'getCityByRegion')->name('getCityByRegion');
             });
            
-           
-           
-
-
-
-         
             Route::prefix('user')->resource('user', UserController::class);
-
-            Route::prefix('user-management')->name('user-management.')->group(function () {
+                Route::prefix('user-management')->name('user-management.')->group(function () {
                 Route::get('form/{id?}', [UserManagementSystemController::class, 'create'])->name('create');
                 Route::post('form/{id?}', [UserManagementSystemController::class, 'store'])->name('store');
             });
@@ -191,12 +179,11 @@ Route::group(['middleware' => 'auth'], function () {
             });
   });
        Route::prefix('customer')->resource('customer', CustomerController::class);
-       
-        Route::prefix('sale')->name('sale.')->group(function () {
-            Route::prefix('dealer')->resource('dealer', DealerController::class);
-           
-            Route::prefix('sale-invoice')->resource('sale-invoice', SaleInvoiceController::class);
-            Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
+
+               Route::prefix('sale')->name('sale.')->group(function () {
+               Route::prefix('dealer')->resource('dealer', DealerController::class);
+               Route::prefix('sale-invoice')->resource('sale-invoice', SaleInvoiceController::class);
+               Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
                 Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
                 Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
                 Route::get('print/{id}', 'printView')->name('print');

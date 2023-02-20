@@ -103,6 +103,7 @@ class ProfileController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            
         }
 
         DB::beginTransaction();

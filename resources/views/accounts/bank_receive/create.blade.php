@@ -5,7 +5,9 @@
 
 @section('content')
     @permission($data['permission'])
-    <form id="bank_receive_create" class="bank_receive_create" action="{{route('accounts.bank-receive.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="bank_receive_create" class="bank_receive_create"
+     action="{{route('accounts.bank-receive.store')}}" method="post"
+      enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-12">
@@ -16,9 +18,14 @@
                             
                         </div>
                         <div class="card-link">
-                        <button type="submit" name="current_action_id" value="store" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
-                            <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
-                            <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                        <button type="submit" name="current_action_id"
+                        value="store" class="btn btn-success btn-sm waves-effect waves-float waves-light">
+                        Save</button>
+                            <button type="submit" name="current_action_id"
+                             value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">
+                             Post</button>
+                            <a href="{{$data['list_url']}}"
+                             class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
                     </div>
                     <div class="card-body mt-2">
@@ -34,7 +41,9 @@
                                         <label class="col-form-label">Date <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" id="date" name="date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="{{date('Y-m-d')}}" />
+                                        <input type="text" id="date" name="date"
+                                         class="form-control form-control-sm flatpickr-basic flatpickr-input"
+                                          placeholder="YYYY-MM-DD" value="{{date('Y-m-d')}}" />
                                     </div>
                                 </div>
                             </div>
@@ -45,12 +54,15 @@
                         <div class="row">
                             <div class="col-lg-12 text-end">
                                 <div class="data_entry_header">
-                                    <div class="hiddenFiledsCount" style="display: inline-block;"><span>0</span> fields hide</div>
+                                    <div class="hiddenFiledsCount" style="display: inline-block;">
+                                    <span>0</span> fields hide</div>
 
                                     <div class="dropdown chart-dropdown" style="display: inline-block;">
-                                        <i data-feather="more-vertical" class="font-medium-3 cursor-pointer" data-bs-toggle="dropdown"></i>
+                                        <i data-feather="more-vertical"
+                                         class="font-medium-3 cursor-pointer" data-bs-toggle="dropdown"></i>
                                         @php
-                                            $headings = ['Sr','Account Code','Account Name','Cheque No','Cheque Date','Description','Debit','Credit'];
+                                            $headings = ['Sr','Account Code','Account Name','Cheque No',
+                                            'Cheque Date','Description','Debit','Credit'];
                                         @endphp
                                         <ul class="listing_dropdown dropdown-menu dropdown-menu-end">
                                             @foreach($headings as $key=>$heading)
@@ -85,32 +97,45 @@
                                                 </tr>
                                                 <tr class="egt_form_header_input">
                                                     <td>
-                                                        <input id="egt_sr_no" readonly type="text" class="form-control form-control-sm">
-                                                        <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
+                                                        <input id="egt_sr_no" readonly type="text"
+                                                         class="form-control form-control-sm">
+                                                        <input id="chart_id" type="hidden"
+                                                        class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
+                                                        <input id="egt_chart_code" type="text"
+                                                        class="chart_code form-control form-control-sm text-left"
+                                                        placeholder="Press F2">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
+                                                        <input id="egt_chart_name" type="text"
+                                                         class="chart_name form-control form-control-sm" readonly>
                                                     </td>
                                                     <td>
-                                                        <input id="egt_cheque_no" type="text" class="cheque_no form-control form-control-sm">
+                                                        <input id="egt_cheque_no" type="text"
+                                                         class="cheque_no form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_cheque_date" type="text" class="cheque_date form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="Click & Select Date">
+                                                        <input id="egt_cheque_date" type="text"
+                                                         class="cheque_date form-control
+                                                         form-control-sm flatpickr-basic flatpickr-input"
+                                                          placeholder="Click & Select Date">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_description" type="text" class="form-control form-control-sm">
+                                                        <input id="egt_description" type="text"
+                                                         class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm">
+                                                        <input id="egt_debit" type="text"
+                                                         class="FloatValidate debit form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm">
+                                                        <input id="egt_credit" type="text"
+                                                         class="FloatValidate credit form-control form-control-sm">
                                                     </td>
                                                     <td class="text-center">
-                                                        <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
+                                                        <button type="button" id="egt_add"
+                                                         class="egt_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
                                                         </button>
                                                     </td>
@@ -128,11 +153,13 @@
                                                     <td></td>
                                                     <td class="voucher-total-debit text-end">
                                                         <span id="tot_debit"></span>
-                                                        <input id="tot_voucher_debit" name="tot_voucher_debit" type="hidden" >
+                                                        <input id="tot_voucher_debit"
+                                                         name="tot_voucher_debit" type="hidden" >
                                                     </td>
                                                     <td class="voucher-total-credit text-end">
                                                         <span id="tot_credit"></span>
-                                                        <input id="tot_voucher_credit" name="tot_voucher_credit" type="hidden" >
+                                                        <input id="tot_voucher_credit"
+                                                         name="tot_voucher_credit" type="hidden" >
                                                     </td>
                                                     <td></td>
                                                 </tr>

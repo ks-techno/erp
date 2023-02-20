@@ -109,7 +109,7 @@
                         </div>
                         <div class="row">
                             <h3>Staff History </h3>
-                            @include('hr.staff.staff_history')
+                            @include('setting.staff.staff_history')
                         </div>
 
                     </div>
