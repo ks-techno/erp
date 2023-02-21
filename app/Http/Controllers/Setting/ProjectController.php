@@ -132,7 +132,7 @@ class ProjectController extends Controller
             'company_id.required' => 'Company is required',
             'company_id.not_in' => 'Company is required',
         ]);
-
+         
         if ($validator->fails()) {
             $data['validator_errors'] = $validator->errors();
             $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
@@ -141,6 +141,7 @@ class ProjectController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('project.index');
         }
 
         DB::beginTransaction();

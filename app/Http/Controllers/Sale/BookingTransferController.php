@@ -321,7 +321,7 @@ class BookingTransferController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('department.index');
+            return $this->redirect()->route('sale.booking-transfer.index');
 
         }
         $nm_filename = '';

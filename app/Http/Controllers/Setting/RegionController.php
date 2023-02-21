@@ -140,6 +140,7 @@ class RegionController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('setting.region.index');
         }
 
         DB::beginTransaction();

@@ -134,6 +134,7 @@ class CountryController extends Controller
                
             }
             return $this->jsonErrorResponse($data, $err);
+            
              }
                DB::beginTransaction();
         try {
@@ -154,7 +155,7 @@ class CountryController extends Controller
             
         DB::commit();
          return $this->jsonSuccessResponse($data, 'Successfully created');
-         return $this->redirect()->route('setting.country.index');
+         
     }
 
     /**
