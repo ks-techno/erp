@@ -90,7 +90,7 @@
                 </thead>
             </table>
         </div>
-        @if(count($data['customer']) >=0)
+        @if(count($data['customer']))
             <div class="data_tbody_row">
                 <table border="1" class="val_table" width="100%">
                     <tbody>
