@@ -76,8 +76,8 @@ class CategoryController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
-                    $row->category_type->name,
                     $row->name,
+                    $row->category_type->name,
                     isset($row->parent->name)?$row->parent->name:"",
                     $actions,
                 ];
