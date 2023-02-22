@@ -168,6 +168,7 @@ class ProjectController extends Controller
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('project.index');
     }
 
     /**
@@ -243,7 +244,6 @@ class ProjectController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('project.index');
         }
 
         DB::beginTransaction();
@@ -272,6 +272,7 @@ class ProjectController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('project.index');
     }
 
     /**

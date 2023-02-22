@@ -158,9 +158,8 @@ class DepartmentController extends Controller
         DB::commit();
       
         return $this->jsonSuccessResponse($data, 'Successfully created');
-
-        
-    }
+        return $this->redirect()->route('department.index');
+       }
 
     /**
      * Display the specified resource.
@@ -225,7 +224,6 @@ class DepartmentController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('department.index');
         }
        
 
@@ -249,6 +247,7 @@ class DepartmentController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('department.index');
     }
 
     /**

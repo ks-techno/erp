@@ -273,6 +273,7 @@ class SupplierController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('purchase.supplier.index');
     }
 
     /**

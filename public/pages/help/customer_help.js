@@ -54,7 +54,7 @@ $('#'+help_customer_id).on('focusin keyup',function(e){
 });
 $(document).on('click',function(e){
     if($(e.target).attr('id') != help_customer_id) {
-    $("#inLineHelp[data-id='customer']").remove();
+        $("#inLineHelp[data-id='customer']").remove();
     }
 });
 

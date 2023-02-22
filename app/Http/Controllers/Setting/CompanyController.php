@@ -160,6 +160,7 @@ class CompanyController extends Controller
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('company.index');
     }
 
     /**
@@ -222,7 +223,7 @@ class CompanyController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('company.index');
+            
         }
 
         DB::beginTransaction();
@@ -251,6 +252,7 @@ class CompanyController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('company.index');
     }
 
     /**

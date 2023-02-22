@@ -180,6 +180,7 @@ class UserController extends Controller
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('setting.user.index');
     }
 
     /**
@@ -262,7 +263,6 @@ class UserController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('setting.user.index');
         }
 
         DB::beginTransaction();
@@ -295,6 +295,7 @@ class UserController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('setting.user.index');
     }
 
     /**

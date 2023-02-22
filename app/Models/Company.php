@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
     use SoftDeletes;
-    public $timestamps=false;
 
     protected $fillable = [
         'uuid',
