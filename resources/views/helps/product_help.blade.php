@@ -103,8 +103,8 @@
                     <tbody>
                     <tr class="data-dtl">
                         <td data-field="product_code" width="25%">{{$property->code}}</td>
-                        <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td>
-                        <td data-view="show" data-field="sale_price" width="25%">{{$property->default_sale_price}}</td>
+                        <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td> 
+                        <td data-view="show" data-field="sale_price" width="25%">{{$property->sale_price}}</td>
                     </tr>
                     <tr class="d-none">
                         <td data-field="product_id">{{$property->id}}</td>

@@ -140,6 +140,7 @@ class RegionController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            
         }
 
         DB::beginTransaction();
@@ -161,6 +162,7 @@ class RegionController extends Controller
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('setting.region.index');
     }
 
     /**
@@ -235,7 +237,6 @@ class RegionController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('setting.region.index');
         }
 
         DB::beginTransaction();
@@ -258,6 +259,7 @@ class RegionController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('setting.region.index');
     }
 
     /**

@@ -321,8 +321,6 @@ class BookingTransferController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('department.index');
-
         }
         $nm_filename = '';
         $om_filename = '';
@@ -397,6 +395,7 @@ class BookingTransferController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('sale.booking-transfer.index');
 
     }
 
@@ -431,6 +430,7 @@ class BookingTransferController extends Controller
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully get Customer', 200);
+        return $this->redirect()->route('sale.booking-transfer.index');
     }
 
     public function printView($id)

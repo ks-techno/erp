@@ -291,7 +291,7 @@ class ProductVariationController extends Controller{
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('purchase.product-variation.index');
+            
         }
 
         DB::beginTransaction();
@@ -357,6 +357,7 @@ class ProductVariationController extends Controller{
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('purchase.product-variation.index');
     }
 
     /**

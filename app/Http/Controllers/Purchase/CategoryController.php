@@ -76,8 +76,8 @@ class CategoryController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
-                    $row->category_type->name,
                     $row->name,
+                    $row->category_type->name,
                     isset($row->parent->name)?$row->parent->name:"",
                     $actions,
                 ];
@@ -150,15 +150,16 @@ class CategoryController extends Controller
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
             ]);
-
-
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
+            
         }
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('purchase.category.index');
+
     }
 
     /**
@@ -233,7 +234,6 @@ class CategoryController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('purchase.category.index');
         }
 
         DB::beginTransaction();
@@ -257,6 +257,7 @@ class CategoryController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('purchase.category.index');
     }
 
     /**

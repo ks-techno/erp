@@ -204,6 +204,7 @@ class JournalController extends Controller
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('accounts.journal.index');
     }
 
     /**
@@ -277,7 +278,6 @@ class JournalController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('accounts.journal.index');
         }
         if(!isset($request->pd) || empty($request->pd)){
             return $this->jsonErrorResponse($data, 'Grid must be include one row');
@@ -338,6 +338,7 @@ class JournalController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('accounts.journal.index');
     }
 
     /**

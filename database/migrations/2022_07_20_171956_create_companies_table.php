@@ -20,9 +20,8 @@ return new class extends Migration
             $table->string('contact_no')->nullable();
             $table->unsignedBigInteger('country_id');
             $table->string('address')->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
-           
+            $table->timestamps();
+            $table->softDeletes();
 
 
             $table->foreign('country_id')->references('id')->on('countries')

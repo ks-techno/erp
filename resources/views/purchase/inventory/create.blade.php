@@ -102,10 +102,10 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Registration No.</label>
+                                        <label class="col-form-label mt-3">Registration No.</label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="external_item_id" name="external_item_id" />
+                                        <input type="text" class="form-control form-control-sm mt-3" value="" id="external_item_id" name="external_item_id" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">

@@ -1,4 +1,4 @@
-<div id="inLineHelp" data-id="customer">
+<div id="inLineHelp" data-id="project">
     <div class="inLineHelp inline_help_table">
         <style>
 
@@ -33,11 +33,6 @@
             .data_tbody_row>table {
                 table-layout: fixed;
             }
-           /* for header fixed
-           .inline_help_table>.data_thead_row{
-                position: fixed;
-                width: 484px;
-            }*/
             .inline_help_table>.data_thead_row>table>thead>tr>th,
             .inline_help>.data_thead_row>table>thead>tr>th {
                 background: #5578eb;
@@ -80,38 +75,39 @@
                 cursor: pointer;
             }
         </style>
-        <div class="data_thead_row" id="customerHelp">
+        <div class="data_thead_row" id="projectHelp">
             <table border="1" class="" width="100%">
                 <thead>
                 <tr>
-                    <th data-field="Customer Name" width="50%">Customer Name</th>
-                    <th data-field="Customer Phone" width="50%">Customer Phone</th>
+                    <th data-field="Product Code" width="25%">Product Code</th>
+                    <th data-field="Product Name" width="50%">Product Name</th>
+                    <th data-field="Sale Price" width="25%">Sale Price</th>
                 </tr>
                 </thead>
             </table>
         </div>
-        @if(count($data['customer']))
+        @if(count($data['property']) == 0)
             <div class="data_tbody_row">
                 <table border="1" class="val_table" width="100%">
                     <tbody>
                     <tr class="data-dtl">
-                        <td class="create_new" data-view="show" data-field="create_new_customer">Data not found -  Create New
-                        </td>
+                        <td data-view="show">Data not found</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         @endif
-        @foreach($data['customer'] as $customer)
+        @foreach($data['property'] as $property)
             <div class="data_tbody_row">
                 <table border="1" class="val_table" width="100%">
                     <tbody>
                     <tr class="data-dtl">
-                        <td data-field="customer_name" width="50%">{{$customer->name}}</td>
-                        <td data-view="show" data-field="customer_phone" width="50%">{{$customer->contact_no}}</td>
+                        <td data-field="product_code" width="25%">{{$property->code}}</td>
+                        <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td> 
+                        <td data-view="show" data-field="sale_price" width="25%">{{$property->sale_price}}</td>
                     </tr>
                     <tr class="d-none">
-                        <td data-field="customer_id">{{$customer->id}}</td>
+                        <td data-field="product_id">{{$property->id}}</td>
                     </tr>
                     </tbody>
                 </table>

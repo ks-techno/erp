@@ -176,6 +176,7 @@ class ChartOfAccountController extends Controller
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('accounts.chart-of-account.index');
     }
 
     /**
@@ -242,7 +243,6 @@ class ChartOfAccountController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('accounts.chart-of-account.index');
         }
 
         DB::beginTransaction();
@@ -264,6 +264,7 @@ class ChartOfAccountController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('accounts.chart-of-account.index');
     }
 
     /**

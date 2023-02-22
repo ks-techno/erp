@@ -190,6 +190,7 @@ class CustomerController extends Controller
         DB::commit();
 
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('customer.index');
     }
 
     /**
@@ -257,7 +258,6 @@ class CustomerController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('customer.index');
         }
 
         DB::beginTransaction();
@@ -300,6 +300,7 @@ class CustomerController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('customer.index');
     }
 
     /**

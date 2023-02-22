@@ -134,6 +134,7 @@ class CountryController extends Controller
                
             }
             return $this->jsonErrorResponse($data, $err);
+            
              }
                DB::beginTransaction();
         try {
@@ -148,14 +149,14 @@ class CountryController extends Controller
                
             ]);
             }catch (Exception $e) {
-            DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            	DB::rollback();
+            	return $this->jsonErrorResponse($data, $e->getMessage());
             }
             
         DB::commit();
          return $this->jsonSuccessResponse($data, 'Successfully created');
-         return $this->redirect()->route('setting.country.index');
-    }
+		 return $this->redirect()->route('setting.country.index');
+        }
 
     /**
      * Display the specified resource.
@@ -222,7 +223,6 @@ class CountryController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('setting.country.index');
         }
 
         DB::beginTransaction();
@@ -245,6 +245,7 @@ class CountryController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('setting.country.index');
     }
 
     /**
