@@ -30,7 +30,7 @@
                              @endif
                         </div>
                         <div class="card-link">
-                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                        <a href="{{$data['list_url']}}" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</a>
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                                         <label class="col-form-label">Contact No# </label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->contact_no}}" id="contact_no" name="contact_no" />
+                                        <input type="text" class="text-start form-control form-control-sm NumberValidate" value="{{$current->contact_no}}" id="contact_no" name="contact_no" />
                                     </div>
                                 </div>
                             </div>
