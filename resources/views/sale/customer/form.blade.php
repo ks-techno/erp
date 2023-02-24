@@ -73,14 +73,14 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="mb-1 row">
+                            <!-- <div class="mb-1 row">
                                 <div class="col-sm-3">
                                     <label class="col-form-label">Registration No.</label>
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control form-control-sm" value="" id="registration_no" name="registration_no" />
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
                                     <label class="col-form-label">Status</label>
