@@ -50,7 +50,7 @@
                                         <label class="col-form-label">Contact No#</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm validate_number" value="{{$current->contact_no}}" id="contact_no" name="contact_no" />
+                                        <input type="text" class="text-start form-control form-control-sm NumberValidate" value="{{$current->contact_no}}" id="contact_no" name="contact_no" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
