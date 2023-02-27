@@ -157,6 +157,7 @@ class SaleInvoiceController extends Controller
             'customer_id' => ['required',Rule::notIn([0,'0'])],
             'seller_type' => ['required',Rule::in(['dealer','staff'])],
             'seller_id' => ['required',Rule::notIn([0,'0'])],
+            'currency_note_no'=>'required'
         ],[
 //            'project_id.required' => 'Project is required',
 //            'project_id.not_in' => 'Project is required',
@@ -168,6 +169,7 @@ class SaleInvoiceController extends Controller
             'seller_type.in' => 'Seller type is required',
             'seller_id.required' => 'Seller is required',
             'seller_id.not_in' => 'Seller is required',
+            'currency_note_no.required' => 'currency is required',
         ]);
 
         if ($validator->fails()) {
@@ -299,6 +301,7 @@ class SaleInvoiceController extends Controller
             'customer_id' => ['required',Rule::notIn([0,'0'])],
             'seller_type' => ['required',Rule::in(['dealer','staff'])],
             'seller_id' => ['required',Rule::notIn([0,'0'])],
+            'currency_note_no'=>'required'
         ],[
             //'project_id.required' => 'Project is required',
             //'project_id.not_in' => 'Project is required',
@@ -310,6 +313,7 @@ class SaleInvoiceController extends Controller
             'seller_type.in' => 'Seller type is required',
             'seller_id.required' => 'Seller is required',
             'seller_id.not_in' => 'Seller is required',
+            'currency_note_no.required'=>'currency is required'
         ]);
 
         if ($validator->fails()) {

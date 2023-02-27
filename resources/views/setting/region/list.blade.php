@@ -27,7 +27,7 @@
                                 <thead>
                                 <tr>
                                     <th class="cell-fit">Country</th>
-                                    <th class="cell-fit">Name</th>
+                                    <th class="cell-fit">Region</th>
                                     <th class="cell-fit"></th>
                                 </tr>
                                 </thead>

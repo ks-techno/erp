@@ -41,12 +41,26 @@ class ProductVariationController extends Controller{
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = DB::select("SELECT pv.uuid,pv.id,pv.display_title,pv.value_type,pv.description,bt.id,bt.name FROM product_variations pv
-                                        join product_variation_dtl pvd on pv.id = pvd.product_variation_id
-                                        join buyable_types bt on bt.id = pvd.buyable_type_id group by pv.uuid,pv.id,pv.display_title,pv.value_type,pv.description,bt.id,bt.name order by pv.display_title");
-
-            $allData = $dataSql;
-
+            $dataSql = DB::select("
+            SELECT
+                pv.uuid,
+                pv.display_title,
+                GROUP_CONCAT(bt.name SEPARATOR ', ') AS buyable_type_name,
+                pv.value_type,
+                pv.description
+            FROM
+                product_variations pv
+                JOIN product_variation_dtl pvd ON pv.id = pvd.product_variation_id
+                JOIN buyable_types bt ON bt.id = pvd.buyable_type_id
+            GROUP BY
+                pv.uuid,
+                pv.display_title,
+                pv.value_type,
+                pv.description
+            ORDER BY
+                pv.display_title
+        ");
+            $allData = $dataSql;      
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -60,7 +74,6 @@ class ProductVariationController extends Controller{
             }
             $entries = [];
             foreach ($allData as $row) {
-
                 $urlEdit = route('purchase.product-variation.edit',$row->uuid);
                 $urlDel = route('purchase.product-variation.destroy',$row->uuid);
 
@@ -80,7 +93,7 @@ class ProductVariationController extends Controller{
 
                 $entries[] = [
                     $row->display_title,
-                    $row->name,
+                    $row->buyable_type_name,
                     $row->value_type,
                     $row->description,
                     $actions,
@@ -358,6 +371,7 @@ class ProductVariationController extends Controller{
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
         return $this->redirect()->route('purchase.product-variation.index');
+        
     }
 
     /**
