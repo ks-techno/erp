@@ -90,10 +90,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="variations_list">
-
-                                </div>
+                                
                             </div>
+
+                            <div class="col-sm-12">
+                                <div id="variations_list" class="mb-1 row"></div>
+                            </div>
+
+                            
                         </div>
                     </div>
                 </div>
@@ -135,14 +139,12 @@
                             var input_variations = prod_var['input'];
                             for (const input_item in input_variations) {
                                 var thix_item = input_variations[input_item][0];
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '  <div class="col-sm-4">\n' +
+                                variations_list += '<div class="col-sm-2">\n' +
                                     '  <label class="col-form-label">'+thix_item['product_variation']['display_title']+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +
+                                    '  </div>' +
+                                    '  <div class="col-sm-4">\n' +
                                     '  <input type="text" class="form-control form-control-sm" value="" id="'+thix_item['product_variation']['key_name']+'" name="pv['+input_item+']" />\n' +
-                                    '  </div>\n' +
-                                    '</div>';
+                                    '  </div>';
                             }
 
                             var yes_no_variations = prod_var['yes_no'];
@@ -198,16 +200,14 @@
                                     var value = thix_item[i]['value'];
                                     select_opt += '<option value="'+value+'">'+value+'</option>';
                                 }
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '  <div class="col-sm-4">\n' +
+                                variations_list += '<div class="col-sm-2">\n' +
                                     '  <label class="col-form-label">'+title+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +
+                                    '  </div>' +
+                                    '  <div class="col-sm-4">\n' +
                                     '  <select class="select2 form-select" id="'+key_name+'" name="pv['+select_item+']">\n' +
                                     '  <option value="0" selected>Select</option>\n' + select_opt +
                                     '  </select>\n' +
-                                    '  </div>\n' +
-                                    ' </div>';
+                                    '  </div>';
                             }
 
                             var checkbox_variations = prod_var['checkbox'];

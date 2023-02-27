@@ -19,7 +19,7 @@
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                     <a class="dropdown-item" href="{{route('profile.edit')}}"><i class="me-50" data-feather="user"></i> Profile</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="javascript:;"><i class="me-50" data-feather="settings"></i> Settings</a>
+                    <a class="dropdown-item" href="{{route('setting.user.index')}}"><i class="me-50" data-feather="settings"></i> Settings</a>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="me-50" data-feather="power"></i> Logout
                     </a>
