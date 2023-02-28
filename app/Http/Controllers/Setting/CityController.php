@@ -162,7 +162,7 @@ class CityController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
         return $this->redirect()->route('setting.city.index');
     }
@@ -277,17 +277,27 @@ class CityController extends Controller
     {
         $data = [];
         DB::beginTransaction();
-        try{
-
-            City::where('uuid',$id)->delete();
-
-        }catch (Exception $e) {
+    
+        try {
+            $city = City::where('uuid', $id)->firstOrFail();
+    
+            // Check if any related instances exist
+            if ($city->customers()->exists() || $city->dealers()->exists() || $city->staff()->exists()) {
+                throw new \Exception('Cannot delete city that is related to a customer, dealer, or staff.');
+            }
+    
+            // No related instances found, proceed with deletion
+            $city->delete();
+            
+        } catch (\Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage(), 200);
         }
+    
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
+    
 
     public function getCityByRegion(Request $request)
     {

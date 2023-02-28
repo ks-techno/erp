@@ -160,8 +160,9 @@ class RegionController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        
+        $data['redirect'] = self::Constants()['list_url'];
+        return $this->jsonSuccessResponse($data, 'Successfully updated');
         return $this->redirect()->route('setting.region.index');
     }
 

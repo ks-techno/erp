@@ -202,8 +202,10 @@ class CashReceiveController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
+       
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('accounts.cash-receive.index');
     }
 
     /**
@@ -340,6 +342,7 @@ class CashReceiveController extends Controller
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('accounts.cash-receive.index');
     }
 
     /**

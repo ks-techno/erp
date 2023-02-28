@@ -177,30 +177,32 @@
                     @endpermission
                 </ul>
             </li>
-            <li id="crm_nav" class="nav-item has-sub {{ ($prefix == '/crm')?'open':'' }}">
-                <a class="d-flex align-items-center" href="#">
-                    <i data-feather='codesandbox'></i>
-                    <span class="menu-title text-truncate">CRM</span>
-                </a>
-                <ul class="menu-content" id="crm_nav_ul">
-                    
-                    @permission('product'.$sidebar_menu)
-                    <li class="{{ ($path == 'purchase/product-property')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('product-property.index') }}">
-                            <span class="menu-item text-truncate">Product Inventory</span>
-                        </a>
-                    </li>
-                    @endpermission
-                    @permission('customer'.$sidebar_menu)
-                    <li class="{{ ($path == 'sale/customer')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('customer.index') }}">
-                            <span class="menu-item text-truncate">Customer</span>
-                        </a>
-                    </li>
-                    @endpermission
-                </ul>
-            </li>
-            <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
+
+            <li id="crm_nav" class="nav-item has-sub {{ (strpos(request()->path(), 'crm') === 0) ? 'open' : '' }}">
+              <a class="d-flex align-items-center" href="#">
+              <i data-feather='codesandbox'></i>
+                <span class="menu-title text-truncate">CRM</span>
+           </a>
+           <ul class="menu-content" id="crm_nav_ul" style="{{ (strpos(request()->path(), 'crm') === 0) ? 'display:block' : '' }}">
+           @permission('product'.$sidebar_menu)
+           <li class="{{ (request()->routeIs('product-property.*')) ? 'active' : '' }}">
+             <a class="d-flex align-items-center" href="{{ route('product-property.index') }}">
+                <span class="menu-item text-truncate">Product Inventory</span>
+             </a>
+         </li>
+          @endpermission
+            @permission('customer'.$sidebar_menu)
+           <li class="{{ (request()->routeIs('customer.*')) ? 'active' : '' }}">
+              <a class="d-flex align-items-center" href="{{ route('customer.index') }}">
+                <span class="menu-item text-truncate">Customer</span>
+                 </a>
+             </li>
+            @endpermission
+          </ul>
+         </li>
+
+
+             <li id="purchase_nav" class="nav-item has-sub {{ ($prefix == '/purchase')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='shopping-bag'></i>
                     <span class="menu-title text-truncate">Purchase</span>
@@ -265,7 +267,7 @@
                     @endpermission
                 </ul>
             </li>
-            <li id="sale_nav" class="nav-item has-sub {{ ($prefix == '/sale')?'open':'' }}">
+            <li id="sale_nav" class="nav-item has-sub {{ ($prefix == '/sale')?'open':'' }} ">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='shopping-cart'></i>
                     <span class="menu-title text-truncate">Sale</span>
@@ -294,21 +296,22 @@
                     @endpermission
                 </ul>
             </li>
-            <li id="hr_nav" class="nav-item has-sub {{ ($prefix == '/hr')?'open':'' }}">
+
+            <li id="hr_nav" class="nav-item has-sub {{ (strpos(request()->path(), 'hr') === 0) ? 'open' : '' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='users'></i>
                     <span class="menu-title text-truncate">HR</span>
                 </a>
-                <ul class="menu-content" id="hr_nav_ul">
+                <ul class="menu-content" id="hr_nav_ul" style="{{ (strpos(request()->path(), 'hr') === 0) ? 'display:block' : '' }}">
                 @permission('inventory'.$sidebar_menu)
-                    <li class="{{ ($path == 'hr/department')?'active':'' }}">
+                    <li class="{{ (request()->routeIs('department.*')) ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('department.index') }}">
                             <span class="menu-item text-truncate">Department</span>
                         </a>
                     </li>
                     @endpermission
                     @permission('category-type'.$sidebar_menu)
-                    <li class="{{ ($path == 'hr/staff')?'active':'' }}">
+                    <li class="{{ (request()->routeIs('staff.*')) ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('staff.index') }}">
                             <span class="menu-item text-truncate">Staff</span>
                         </a>
@@ -316,8 +319,6 @@
                     @endpermission
                     </ul>
                     </li>
-          
-
             <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>

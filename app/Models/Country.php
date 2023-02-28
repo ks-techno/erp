@@ -19,7 +19,7 @@ class Country extends Model
         'project_id',
         'user_id',
     ];
-
+    
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }

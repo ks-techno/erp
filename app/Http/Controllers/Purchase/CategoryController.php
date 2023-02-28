@@ -156,7 +156,7 @@ class CategoryController extends Controller
             
         }
         DB::commit();
-
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
         return $this->redirect()->route('purchase.category.index');
 

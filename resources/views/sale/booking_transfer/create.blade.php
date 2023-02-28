@@ -32,7 +32,8 @@
                     </div>
                     <div class="card-link">
                     <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
-                        </div>
+                    <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>   
+                </div>
                 </div>
                
                 <div class="card-body mt-2 new_member_and_nominee">

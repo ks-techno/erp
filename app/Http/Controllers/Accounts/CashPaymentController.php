@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Controllers\Accounts;
@@ -204,7 +203,9 @@ class CashPaymentController extends Controller
         }
         DB::commit();
 
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('accounts.cash-payment.index');
     }
 
     /**
@@ -338,9 +339,9 @@ class CashPaymentController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('accounts.cash-payment.index');
     }
 
     /**

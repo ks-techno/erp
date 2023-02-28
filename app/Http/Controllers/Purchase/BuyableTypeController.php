@@ -147,7 +147,9 @@ class BuyableTypeController extends Controller{
         }
         DB::commit();
 
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('purchase.property-type.index');
     }
 
     /**
@@ -238,6 +240,7 @@ class BuyableTypeController extends Controller{
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('purchase.property-type.index');
     }
 
     /**

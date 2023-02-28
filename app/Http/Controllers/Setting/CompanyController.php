@@ -158,7 +158,7 @@ class CompanyController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
         return $this->redirect()->route('company.index');
     }
@@ -233,7 +233,7 @@ class CompanyController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'contact_no' => $request->contact_no,
-                    'address' => $request->address,
+                    'address' => $request->input('address'),
                     'country_id' => $request->country_id,
                 ]);
             $company = Company::where('uuid',$id)->first();
