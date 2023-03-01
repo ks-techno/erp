@@ -61,7 +61,7 @@ $(function () {
                         console.log(response);
                         if(response.status == 'success'){
                             ntoastr.success(response.message);
-                            location.reload();
+                            window.location.href = response['data']['redirect'];
                         }else{
                             ntoastr.error(response.message);
                         }

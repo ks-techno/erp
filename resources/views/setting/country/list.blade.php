@@ -26,7 +26,7 @@
                             <table class="datatables-ajax table table-responsive" data-url="{{route('setting.country.index')}}">
                                 <thead>
                                 <tr>
-                                    <th class="cell-fit">Name</th>
+                                    <th class="cell-fit">Country</th>
                                     <th class="cell-fit text-center">Status</th>
                                     <th class="cell-fit"></th>
                                 </tr>

@@ -87,6 +87,7 @@ class ProductPropertyController extends Controller
                 $entries[] = [
                     $row->code,
                     $row->name,
+                    $row->product_form_type,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];
@@ -224,7 +225,7 @@ class ProductPropertyController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
         return $this->redirect()->route('product-property.index');
     }

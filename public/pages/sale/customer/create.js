@@ -51,7 +51,7 @@ $(function () {
                                 $(document).find('#customer_id').val(response.data.id);
                                 $(document).find('#customer_name').val(response.data.name);
                             }else {
-                                location.reload();
+                                  window.location.href = response['data']['redirect'];
                             }
                         }else{
                             ntoastr.error(response.message);

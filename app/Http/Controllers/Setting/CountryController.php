@@ -154,8 +154,10 @@ class CountryController extends Controller
             }
             
         DB::commit();
-         return $this->jsonSuccessResponse($data, 'Successfully created');
-		 return $this->redirect()->route('setting.country.index');
+        $data['redirect'] = self::Constants()['list_url'];
+        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('setting.country.index');
+        
         }
 
     /**
@@ -254,19 +256,28 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $data = [];
-        DB::beginTransaction();
-        try{
-
-            Country::where('uuid',$id)->delete();
-
-        }catch (Exception $e) {
-            DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+   public function destroy($id)
+{
+    $data = [];
+    DB::beginTransaction();
+    try {
+        $country = Country::where('uuid', $id)->first();
+        
+        // Check if the country is related to any customer, dealer or staff
+        if ($country->customers()->exists() || $country->dealers()->exists() || $country->staff()->exists()) {
+            throw new Exception('Cannot delete country as it is related to a customer, dealer or staff.');
         }
-        DB::commit();
-        return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
+
+        // Delete the country
+        $country->delete();
+
+    } catch (Exception $e) {
+        DB::rollback();
+        return $this->jsonErrorResponse($data, $e->getMessage(), 200);
     }
+    DB::commit();
+    return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
 }
+}
+
+

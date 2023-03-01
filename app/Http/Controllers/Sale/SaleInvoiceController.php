@@ -234,12 +234,10 @@ class SaleInvoiceController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
         return $this->redirect()->route('sale.sale-invoice.index');
-
-
-    }
+}
 
     /**
      * Display the specified resource.
@@ -378,9 +376,10 @@ class SaleInvoiceController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-
-        return $this->jsonSuccessResponse($data, 'Successfully updated');
-    }
+        $data['redirect'] = self::Constants()['list_url'];
+         return $this->jsonSuccessResponse($data, 'Successfully updated');
+         return $this->redirect()->route('sale.sale-invoice.index');
+        }
 
     /**
      * Remove the specified resource from storage.

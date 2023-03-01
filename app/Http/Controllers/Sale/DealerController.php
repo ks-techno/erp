@@ -172,8 +172,9 @@ class DealerController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-      return $this->jsonSuccessResponse($data, 'Successfully created');
-      return $this->redirect()->route('sale.dealer.index');
+        $data['redirect'] = self::Constants()['list_url'];
+        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('sale.dealer.index');
          }
     /**
      * Display the specified resource.

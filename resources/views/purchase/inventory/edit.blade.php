@@ -33,6 +33,7 @@
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
                     </div>
+                    @endif
                     <div class="card-body mt-2">
                         <div class="row">
                             <div class="col-sm-6">

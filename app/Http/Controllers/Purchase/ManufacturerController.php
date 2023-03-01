@@ -159,7 +159,7 @@ class ManufacturerController extends Controller
             return $this->jsonErrorResponse($data, $e->getLine());
         }
         DB::commit();
-
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
         return $this->redirect()->route('purchase.manufacturer.index');
     }

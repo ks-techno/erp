@@ -39,7 +39,7 @@
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label">Name <span class="required">*</span></label>
+                                        <label class="col-form-label">Country<span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->name}}" id="name" name="name" />
