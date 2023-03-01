@@ -232,7 +232,7 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label p-0">Currency Note No.</label>
+                                        <label class="col-form-label p-0">Currency Note No.<span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control form-control-sm" id="currency_note_no" name="currency_note_no">
