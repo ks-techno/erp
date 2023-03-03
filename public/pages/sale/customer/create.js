@@ -51,7 +51,7 @@ $(function () {
                                 $(document).find('#customer_id').val(response.data.id);
                                 $(document).find('#customer_name').val(response.data.name);
                             }else {
-                                  window.location.href = response['data']['redirect'];
+                                 
                             }
                         }else{
                             ntoastr.error(response.message);
@@ -59,7 +59,7 @@ $(function () {
                         setTimeout(function () {
                             pageLoginForm.find(":submit").prop('disabled', false);
                         }, 2000);
-
+                        window.location.href = response['data']['redirect'];
                     },
                     error: function(response,status) {
                         // console.log(response.responseJSON);

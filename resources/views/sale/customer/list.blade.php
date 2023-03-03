@@ -28,7 +28,7 @@
                                     <tr>
                                         <th class="cell-fit">Name</th>
                                         <th class="cell-fit">Contact No</th>
-                                        <th class="cell-fit">Email</th>
+                                        <th class="cell-fit">Membership No.</th>
                                         <th class="cell-fit text-center">Status</th>
                                         <th class="cell-fit"></th>
                                     </tr>

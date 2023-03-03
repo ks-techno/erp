@@ -191,6 +191,8 @@ class JournalController extends Controller
                         'company_id' => auth()->user()->company_id,
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
+                        'user_name' => auth()->user()->name,
+                        
                         'posted' => $posted,
                     ]);
                     $sr = $sr + 1;
