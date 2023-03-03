@@ -156,8 +156,9 @@ class CountryController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('setting.country.index');
-        
+        return $this->redirect()->route('company.index');
+         return $this->jsonSuccessResponse($data, 'Successfully created');
+		 return $this->redirect()->route('setting.country.index');
         }
 
     /**
@@ -261,15 +262,14 @@ class CountryController extends Controller
     $data = [];
     DB::beginTransaction();
     try {
-        $country = Country::where('uuid', $id)->first();
+         Country::where('uuid', $id)->delete();
         
-        // Check if the country is related to any customer, dealer or staff
-        if ($country->customers()->exists() || $country->dealers()->exists() || $country->staff()->exists()) {
-            throw new Exception('Cannot delete country as it is related to a customer, dealer or staff.');
-        }
+        // // Check if the country is related to any customer, dealer or staff
+        // if ($country->customers()->exists() || $country->dealers()->exists() || $country->staff()->exists()) {
+        //     throw new Exception('Cannot delete country as it is related to a customer, dealer or staff.');
+        // }
 
         // Delete the country
-        $country->delete();
 
     } catch (Exception $e) {
         DB::rollback();
