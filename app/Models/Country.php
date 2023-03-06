@@ -19,6 +19,7 @@ class Country extends Model
         'project_id',
         'user_id',
     ];
+    protected $dates = ['deleted_at']; // indicate that this model uses soft deletes
     
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);

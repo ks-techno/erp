@@ -151,7 +151,7 @@ class JournalController extends Controller
 
 
         return view('accounts.journal.create', compact('data'));
-    }
+    } 
 
     /**
      * Store a newly created resource in storage.

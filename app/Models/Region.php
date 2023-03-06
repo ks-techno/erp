@@ -18,6 +18,7 @@ class Region extends Model
         'project_id',
         'user_id',
     ];
+    protected $dates = ['deleted_at'];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);

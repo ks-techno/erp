@@ -123,7 +123,7 @@ class CityController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:cities',
+            'name' => 'required|unique:cities,name,NULL,id,deleted_at,NULL',
             'region_id' => ['required',Rule::notIn([0,'0'])],
         ],[
             'name.required' => 'Name is required',

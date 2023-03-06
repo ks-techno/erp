@@ -49,7 +49,9 @@ class ProductPropertyController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Product::where('product_form_type','property')->where(Utilities::CompanyProjectId())->orderByName();
+            $dataSql = Product::where('product_form_type','property')
+            ->where('product_type', '!=', 'data')
+            ->where(Utilities::CompanyProjectId())->orderByName();
 
             $allData = $dataSql->get();
 

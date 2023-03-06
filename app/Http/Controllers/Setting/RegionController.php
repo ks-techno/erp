@@ -123,7 +123,7 @@ class RegionController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:regions',
+            'name' => 'required|unique:regions,name,NULL,id,deleted_at,NULL',
             'country_id' => ['required',Rule::notIn([0,'0'])]
         ],[
             'name.required' => 'Name is required',
@@ -145,16 +145,21 @@ class RegionController extends Controller
 
         DB::beginTransaction();
         try {
-
-            Region::create([
-                'uuid' => self::uuid(),
-                'name' => self::strUCWord($request->name),
-                'country_id' => $request->country_id,
-                'company_id' => auth()->user()->company_id,
-                'project_id' => auth()->user()->project_id,
-                'user_id' => auth()->user()->id,
-            ]);
-
+            $region = Region::withTrashed()->where('name', $request->name)->first();
+    
+            if ($region && $region->trashed()) {
+                $region->restore();
+            } else {
+                Region::create([
+                    'uuid' => self::uuid(),
+                    'name' => self::strUCWord($request->name),
+                    'country_id' => $request->country_id,
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
+                ]);
+            }
+    
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $users = [
-            ['name'=>'admin','email'=>'admin@gmail.com','pass'=>'gaga']
+            ['name'=>'admin','email'=>'admin112@gmail.com','pass'=>'gage']
         ];
         $comp = Company::first();
         $project = Project::first();

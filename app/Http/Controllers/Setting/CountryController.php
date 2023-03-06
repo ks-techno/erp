@@ -122,7 +122,8 @@ class CountryController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:countries'
+       'name' => 'required|unique:countries,name,NULL,id,deleted_at,NULL'
+            
         ]);
 
         if ($validator->fails()) {
@@ -136,9 +137,15 @@ class CountryController extends Controller
             return $this->jsonErrorResponse($data, $err);
             
              }
-               DB::beginTransaction();
-        try {
 
+               DB::beginTransaction();
+
+            try {
+                $country= Country::withTrashed()->where('name', $request->name)->first();
+        
+                if ( $country && $country->trashed()) {
+                    $country->restore();
+                } else{
             Country::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
@@ -148,6 +155,7 @@ class CountryController extends Controller
                 'user_id' => auth()->user()->id,
                
             ]);
+        }
             }catch (Exception $e) {
             	DB::rollback();
             	return $this->jsonErrorResponse($data, $e->getMessage());
@@ -259,17 +267,11 @@ class CountryController extends Controller
 {
     $data = [];
     DB::beginTransaction();
-    try {
-         Country::where('uuid', $id)->delete();
-        
-        // // Check if the country is related to any customer, dealer or staff
-        // if ($country->customers()->exists() || $country->dealers()->exists() || $country->staff()->exists()) {
-        //     throw new Exception('Cannot delete country as it is related to a customer, dealer or staff.');
-        // }
+    try{
 
-        // Delete the country
+            Country::where('uuid',$id)->delete();
 
-    } catch (Exception $e) {
+        }catch (Exception $e) {
         DB::rollback();
         return $this->jsonErrorResponse($data, $e->getMessage(), 200);
     }
