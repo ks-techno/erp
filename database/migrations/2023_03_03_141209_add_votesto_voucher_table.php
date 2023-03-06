@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('vouchers')) return;  
+         
         Schema::table('vouchers', function (Blueprint $table) {
-            $table->string('user_name')->nullable();
+            $table->string('prepared_by')->nullable();
+            $table->string('approved_by')->nullable();
         });
     }
 

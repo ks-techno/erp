@@ -94,6 +94,10 @@ class JournalController extends Controller
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
                     $row->remarks,
+                    $row->prepared_by,
+                   '<div class="signature-field"></div>',
+                    $row->approved_by,
+                   '<div class="signature-field"></div>',
                     $actions,
                 ];
             }
@@ -122,6 +126,29 @@ class JournalController extends Controller
         $data['permission'] = self::Constants()['create'];
         $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
         $data['voucher_no'] = self::documentCode(self::Constants()['type'],$max);
+
+        // Add the name of the person who prepared the voucher
+    $data['prepared_by'] = auth()->user()->name;
+
+    // Add a space for the signature of the approver
+    $data['approver_signature'] = '';
+
+    // Add two rows to the grid by default
+    $data['pd'] = [
+        [
+            'chart_id' => '',
+            'egt_debit' => '',
+            'egt_credit' => '',
+            'egt_description' => '',
+        ],
+        [
+            'chart_id' => '',
+            'egt_debit' => '',
+            'egt_credit' => '',
+            'egt_description' => '',
+        ]
+    ];
+
 
         return view('accounts.journal.create', compact('data'));
     }
@@ -191,9 +218,8 @@ class JournalController extends Controller
                         'company_id' => auth()->user()->company_id,
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
-                        'user_name' => auth()->user()->name,
                         
-                        'posted' => $posted,
+                         'posted' => $posted,
                     ]);
                     $sr = $sr + 1;
                 }
@@ -444,4 +470,45 @@ class JournalController extends Controller
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully revert', 200);
     }
+}
+
+
+
+$entries = [];
+foreach ($allData as $row) {
+    $posted = $this->getPostedTitle()[$row->posted];
+    $urlEdit = route('accounts.journal.edit',$row->voucher_id);
+    $urlDel = route('accounts.journal.destroy',$row->voucher_id);
+    $urlPrint = route('accounts.journal.print',$row->voucher_id);
+
+    $actions = '<div class="text-end">';
+    if($delete_per || $print_per) {
+        $actions .= '<div class="d-inline-flex">';
+        $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
+        $actions .= '<div class="dropdown-menu dropdown-menu-end">';
+        if($print_per) {
+            $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
+        }
+        if($delete_per) {
+            $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+        }
+        $actions .= '</div>'; // end dropdown-menu
+        $actions .= '</div>'; // end d-inline-flex
+    }
+    if($edit_per) {
+        $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
+    }
+    $actions .= '</div>'; //end main div
+
+    $entries[] = [
+        $row->date,
+        $row->voucher_no,
+        '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
+        $row->remarks,
+        $row->prepared_by,
+        '<div class="signature-field"></div>',
+        $row->approved_by,
+        '<div class="signature-field"></div>',
+        $actions,
+    ];
 }
