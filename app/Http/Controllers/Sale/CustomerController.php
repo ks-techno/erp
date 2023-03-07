@@ -128,7 +128,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'cnic_no' => 'required',
-            'membership_no' => 'required',
+            'email' => 'nullable|email',
         ]);
 
         if ($validator->fails()) {
@@ -150,7 +150,7 @@ class CustomerController extends Controller
                 'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
                 'mobile_no' => $request->mobile_no,
-                'membership_no' => $request->membership_no,
+                'email' => $request->email,
                 'father_name' => $request->father_name,
                 'registration_no' => $request->registration_no,
                 'membership_no' => $request->cnic_no,
@@ -247,7 +247,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'cnic_no' => 'required',
-            'membership_no' => 'required',
+            'email' => 'nullable|email',
         ]);
 
         if ($validator->fails()) {
@@ -268,7 +268,7 @@ class CustomerController extends Controller
                 'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
                 'mobile_no' => $request->mobile_no,
-                'membership_no' => $request->membership_no,
+                'email' => $request->email,
                 'father_name' => $request->father_name,
                 'registration_no' => $request->registration_no,
                 'membership_no' => $request->cnic_no,
