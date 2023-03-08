@@ -84,7 +84,7 @@ class CustomerController extends Controller
                 $entries[] = [
                     $row->name,
                     $row->contact_no,
-                    $row->email,
+                    $row->membership_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];

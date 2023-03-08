@@ -143,7 +143,21 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group row">
+    <label for="prepared_by" class="col-sm-3 col-form-label">Prepared By</label>
+    <div class="col-sm-9">
+        <input type="text" class="form-control" id="prepared_by" name="prepared_by" value="{{ $data['prepared_by'] }}" readonly>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="approver_signature" class="col-sm-3 col-form-label">Approver Signature</label>
+    <div class="col-sm-9">
+        <input type="text" class="form-control" id="approver_signature" name="approver_signature" value="{{ $data['approver_signature'] }}">
+    </div>
+</div>
+
+              </div>
                 </div>
             </div>
         </div>

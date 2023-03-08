@@ -16,7 +16,7 @@ class Customer extends Model
         'cnic_no',
         'contact_no',
         'mobile_no',
-        'email',
+        'membership_no',
         'status',
         'company_id',
         'project_id',
@@ -24,7 +24,6 @@ class Customer extends Model
         'father_name',
         'husband_name',
         'registration_no',
-        'membership_no',
         'nominee_no',
         'nominee_name',
         'nominee_father_name',
@@ -44,4 +43,5 @@ class Customer extends Model
     public function sales(){
         return $this->hasMany(Sale::class,'customer_id');
     }
+    
 }

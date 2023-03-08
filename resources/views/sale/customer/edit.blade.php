@@ -55,12 +55,14 @@
                             @if($data['view'])
                                 @permission($data['permission_edit'])
                                 <a href="{{route('customer.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                        
                                 @endpermission
-                                @endif
-                        </div>
-                        <div class="card-link">
+                                @else
+                                <div class="card-link">
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
-                            <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                        <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                         @endif
                         </div>
                     </div>
                     <div class="card-body mt-2">
@@ -129,7 +131,7 @@
                                         <label class="col-form-label">Membership No.</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" disabled value="{{$current->membership_no}}" id="membership_no" name="registration_no" />
+                                        <input type="text" class="form-control form-control-sm" disabled value="{{$current->membership_no}}" id="membership_no" name="membership_no"  />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">

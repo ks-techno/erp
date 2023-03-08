@@ -25,35 +25,38 @@
                             @if($data['view'])
                                 @permission($data['permission_edit'])
                                 <a href="{{route('product-property.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                        
                                 @endpermission
-                             @endif
-                        </div>
-                        <div class="card-link">
+                               @else
+                                <div class="card-link">  
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
-                            <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                        <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                         @endif
                         </div>
                     </div>
+                  </div>
                     <div class="card-body mt-2">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <div class="mb-1 row">
                                     <div class="col-md-6">
                                         <h5>{{$current->code}}</h5>
                                     </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
+                                    </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
                                         <label class="col-form-label">Plot No <span class="required">*</span></label>
                                     </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-4">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->name}}" id="name" name="name" />
                                     </div>
-                                </div>
-                                {{--<div class="mb-1 row">
-                                    <div class="col-sm-4">
+                                
+                                {{--
+                                    <div class="col-sm-2">
                                         <label class="col-form-label">Project <span class="required">*</span> </label>
                                     </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-4">
                                         <select class="select2 form-select" id="project_id" name="project_id">
                                             <option value="0" selected>Select</option>
                                             @foreach($data['project'] as $project)
@@ -61,40 +64,39 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>--}}
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
+                                --}}
+                                
+                                    <div class="col-sm-2">
                                         <label class="col-form-label">Sale Price </label>
                                     </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-4">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->default_sale_price}}" id="default_sale_price" name="default_sale_price" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
+                                
+                            
                                 <div class="mb-1 row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <label class="col-form-label">Registration No</label>
                                     </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-4">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->external_item_id}}" id="external_item_id" name="external_item_id" />
                                     </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-4">
+                              
+                                    <div class="col-sm-2">
                                         <label class="col-form-label">Status</label>
                                     </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-4">
                                         <div class="form-check form-check-primary form-switch">
                                             <input type="checkbox" class="form-check-input" id="status" name="status" {{$current->status == 1?"checked":""}}>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <label class="col-form-label">Property Type </label>
                                     </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-4">
                                         <select class="select2 form-select" id="buyable_type_id" name="buyable_type_id">
                                             <option value="0" selected>Select</option>
                                             @foreach($data['buyable'] as $buyable)
@@ -109,20 +111,21 @@
                                         @php
                                             $prod_var = $data['prod_var'];
                                         @endphp
+                                        <div class="mb-1 row">
                                         @if(isset($prod_var['input']))
                                             @foreach($prod_var['input'] as $input_name=>$input_list)
                                                 @php
                                                     $thix_list = $input_list[0];
                                                     $product_variation = $thix_list['product_variation'];
                                                 @endphp
-                                                <div class="mb-1 row">
-                                                    <div class="col-sm-4">
+                                                
+                                                    <div class="col-sm-2">
                                                         <label class="col-form-label">{{$product_variation['display_title']}}</label>
                                                     </div>
-                                                    <div class="col-sm-8">
+                                                    <div class="col-sm-4">
                                                         <input type="text" class="form-control form-control-sm" value="{{isset($data['property_values'][$input_name])?current($data['property_values'][$input_name]):""}}" id="{{$product_variation['key_name']}}" name="pv[{{$input_name}}]">
                                                     </div>
-                                                </div>
+                                                    
                                             @endforeach
                                         @endif
                                         @if(isset($prod_var['yes_no']))
@@ -131,17 +134,17 @@
                                                 $thix_list = $yes_no_list[0];
                                                 $product_variation = $thix_list['product_variation'];
                                             @endphp
-                                            <div class="mb-1 row">
-                                                <div class="col-sm-4">
+                                            
+                                                <div class="col-sm-2">
                                                     <label class="col-form-label">{{$product_variation['display_title']}}</label>
                                                 </div>
-                                                <div class="col-sm-8">
+                                                <div class="col-sm-4">
                                                     <div class="form-check form-check-warning form-switch">
                                                         <input type="checkbox" class="form-check-input" id="{{$product_variation['key_name']}}" value="{{$thix_list['value']}}" name="pv[{{$yes_no_name}}]" {{isset($data['property_values'][$yes_no_name])?"checked":""}}>
                                                         <label class="form-check-label mb-50" for="corner_side">{{$thix_list['value']}}</label>
                                                     </div>
                                                 </div>
-                                            </div>
+                                           
                                         @endforeach
                                         @endif
                                         @if(isset($prod_var['radio']))
@@ -161,14 +164,14 @@
                                                 $radio_list_html .= '</div>';
                                             @endphp
                                         @endforeach
-                                        <div class="mb-1 row">
-                                            <div class="col-sm-4">
+                                       
+                                            <div class="col-sm-2">
                                                 <label class="col-form-label">{{$title}}</label>
                                             </div>
-                                            <div class="col-sm-8">
+                                            <div class="col-sm-4">
                                                 {!! $radio_list_html !!}
                                             </div>
-                                        </div>
+                                       
                                     @endforeach
                                         @endif
                                         @if(isset($prod_var['select']))
@@ -186,17 +189,17 @@
                                                         $select_list_html .= '<option value="'.$value.'" '.$selected.'>'.$value.'</option>';
                                                     @endphp
                                                 @endforeach
-                                                <div class="mb-1 row">
-                                                    <div class="col-sm-4">
+                                                
+                                                    <div class="col-sm-2">
                                                         <label class="col-form-label">{{$title}}</label>
                                                     </div>
-                                                    <div class="col-sm-8">
+                                                    <div class="col-sm-4">
                                                         <select class="select2 form-select" id="{{$key_name}}" name="pv[{{$select_name}}]">
                                                             <option value="0" selected>Select</option>
                                                             {!! $select_list_html !!}
                                                         </select>
                                                     </div>
-                                                </div>
+                                                
                                             @endforeach
                                         @endif
                                         @if(isset($prod_var['checkbox']))
@@ -217,14 +220,14 @@
                                                     $checkbox_list_html .= '</div>';
                                                 @endphp
                                             @endforeach
-                                            <div class="mb-1 row">
-                                                <div class="col-sm-4">
+                                            
+                                                <div class="col-sm-2">
                                                     <label class="col-form-label">{{$title}}</label>
                                                 </div>
-                                                <div class="col-sm-8">
+                                                <div class="col-sm-4">
                                                     {!! $checkbox_list_html !!}
                                                 </div>
-                                            </div>
+                                           
                                         @endforeach
                                         @endif
                                     @endif
@@ -247,9 +250,9 @@
             var thix = $(this);
             var val = thix.find('option:selected').val();
             if(valueEmpty(val)){
-               // ntoastr.error("Select Buyable Type");
+                ntoastr.error("Select Buyable Type");
                 validate = false;
-               // return false;
+                return false;
             }
             if(validate){
                 var formData = {
@@ -271,14 +274,15 @@
                             var input_variations = prod_var['input'];
                             for (const input_item in input_variations) {
                                 var thix_item = input_variations[input_item][0];
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '  <div class="col-sm-4">\n' +
+                                variations_list += 
+                                '<div class="mb-1 row">'+
+                                '<div class="col-sm-2">'+
                                     '  <label class="col-form-label">'+thix_item['product_variation']['display_title']+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +
+                                    '  </div>' +
+                                    '  <div class="col-sm-4">' +
                                     '  <input type="text" class="form-control form-control-sm" value="" id="'+thix_item['product_variation']['key_name']+'" name="pv['+input_item+']" />\n' +
-                                    '  </div>\n' +
-                                    '</div>';
+                                    '  </div>'+;
+                        
                             }
 
                             var yes_no_variations = prod_var['yes_no'];
@@ -286,16 +290,16 @@
                                 var thix_item = yes_no_variations[yes_no_item][0];
                                 var key_name = thix_item['product_variation']['key_name'];
                                 var value = thix_item['value'];
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '    <div class="col-sm-4">\n' +
-                                    '    <label class="col-form-label">'+thix_item['product_variation']['display_title']+'</label>\n' +
-                                    '   </div>\n' +
-                                    '   <div class="col-sm-8">\n' +
-                                    '     <div class="form-check form-check-warning form-switch">\n' +
-                                    '        <input type="checkbox" class="form-check-input" id="'+key_name+'"  value="'+value+'" name="pv['+yes_no_item+']">\n' +
+                                variations_list += 
+                                    '    <div class="col-sm-2">' +
+                                    '    <label class="col-form-label">'+thix_item['product_variation']['display_title']+'</label>' +
+                                    '   </div>' +
+                                    '   <div class="col-sm-4">' +
+                                    '     <div class="form-check form-check-warning form-switch">' +
+                                    '        <input type="checkbox" class="form-check-input" id="'+key_name+'"  value="'+value+'" name="pv['+yes_no_item+']">' +
                                     '        <label class="form-check-label mb-50" for="'+key_name+'" >'+value+'</label>' +
                                     '     </div>'+
-                                    '   </div>\n' +
+                                    '   </div>' +
                                     '</div>';
                             }
 
@@ -308,18 +312,18 @@
                                 for(var i=0;i<thix_length;i++){
                                     var title = thix_item[i]['product_variation']['display_title'];
                                     var key_name = thix_item[i]['product_variation']['key_name'];
-                                    radio_opt += '<div class="form-check form-check-inline">\n' +
+                                    radio_opt += '<div class="form-check form-check-inline">' +
                                         ' <input class="form-check-input" type="radio" name="pv['+radio_item+']" id="'+key_name+(i+1)+'" value="'+thix_item[i]['value']+'">\n' +
                                         ' <label class="form-check-label" for="'+key_name+(i+1)+'">'+thix_item[i]['value']+'</label>\n' +
                                         '</div>';
                                 }
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '   <div class="col-sm-4">\n' +
-                                    '   <label class="col-form-label">'+title+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +radio_opt +
-                                    ' </div>\n' +
-                                    ' </div>';
+                                variations_list += '<div class="mb-1 row">' +
+                                    '   <div class="col-sm-2">' +
+                                    '   <label class="col-form-label">'+title+'</label>' +
+                                    '  </div>' +
+                                    '  <div class="col-sm-4">' +radio_opt +
+                                    ' </div>' +;
+                                    
                             }
 
                             var select_variations = prod_var['select'];
@@ -334,16 +338,17 @@
                                     var value = thix_item[i]['value'];
                                     select_opt += '<option value="'+value+'">'+value+'</option>';
                                 }
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '  <div class="col-sm-4">\n' +
-                                    '  <label class="col-form-label">'+title+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +
-                                    '  <select class="select2 form-select" id="'+key_name+'" name="pv['+select_item+']">\n' +
-                                    '  <option value="0" selected>Select</option>\n' + select_opt +
-                                    '  </select>\n' +
-                                    '  </div>\n' +
-                                    ' </div>';
+                                variations_list += 
+                                
+                                '<div class="col-sm-2">' +
+                                    '  <label class="col-form-label">'+title+'</label>' +
+                                    '  </div>' +
+                                    '  <div class="col-sm-4">' +
+                                    '  <select class="select2 form-select" id="'+key_name+'" name="pv['+select_item+']">' +
+                                    '  <option value="0" selected>Select</option>' + select_opt +
+                                    '  </select>' +
+                                    '  </div>' +
+                                    '  </div>';
                             }
 
                             var checkbox_variations = prod_var['checkbox'];
@@ -356,17 +361,17 @@
                                     var title = thix_item[i]['product_variation']['display_title'];
                                     var key_name = thix_item[i]['product_variation']['key_name'];
                                     var value = thix_item[i]['value'];
-                                    checkbox_opt += '<div class="form-check form-check-inline">\n' +
-                                        ' <input class="form-check-input" type="checkbox" name="pv['+checkbox_item+'][]" id="'+value+(i+1)+'" value="'+value+'">\n' +
-                                        '   <label class="form-check-label" for="'+value+(i+1)+'">'+value+'</label>\n' +
+                                    checkbox_opt += '<div class="form-check form-check-inline">' +
+                                        ' <input class="form-check-input" type="checkbox" name="pv['+checkbox_item+'][]" id="'+value+(i+1)+'" value="'+value+'">' +
+                                        '   <label class="form-check-label" for="'+value+(i+1)+'">'+value+'</label>' +
                                         '  </div>';
                                 }
-                                variations_list += '<div class="mb-1 row">\n' +
-                                    '   <div class="col-sm-4">\n' +
-                                    '  <label class="col-form-label">'+title+'</label>\n' +
-                                    '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' + checkbox_opt+
-                                    '  </div>\n' +
+                                variations_list += '<div class="mb-1 row">' +
+                                    '   <div class="col-sm-2">' +
+                                    '  <label class="col-form-label">'+title+'</label>' +
+                                    '  </div>' +
+                                    '  <div class="col-sm-4">' + checkbox_opt+
+                                    '  </div>' +
                                     '</div>';
                             }
 

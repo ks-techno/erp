@@ -123,7 +123,7 @@ class CityController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:cities',
+            'name' => 'required|unique:cities,name,NULL,id,deleted_at,NULL',
             'region_id' => ['required',Rule::notIn([0,'0'])],
         ],[
             'name.required' => 'Name is required',
@@ -279,15 +279,7 @@ class CityController extends Controller
         DB::beginTransaction();
     
         try {
-            $city = City::where('uuid', $id)->firstOrFail();
-    
-            // Check if any related instances exist
-            if ($city->customers()->exists() || $city->dealers()->exists() || $city->staff()->exists()) {
-                throw new \Exception('Cannot delete city that is related to a customer, dealer, or staff.');
-            }
-    
-            // No related instances found, proceed with deletion
-            $city->delete();
+            City::where('uuid', $id)->delete();
             
         } catch (\Exception $e) {
             DB::rollback();

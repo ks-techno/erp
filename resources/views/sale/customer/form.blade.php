@@ -57,10 +57,11 @@
                             </div>
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label">Email</label>
+                                    <label class="col-form-label">Membership NO.</label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control form-control-sm" value="" id="email" name="email" />
+                                    
+                                    <input type="text" class="form-control form-control-sm" value="" id="membership_number" name="membership_number" />
                                 </div>
                             </div>
                             <div class="mb-1 row">
