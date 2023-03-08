@@ -279,15 +279,7 @@ class CityController extends Controller
         DB::beginTransaction();
     
         try {
-            $city = City::where('uuid', $id)->firstOrFail();
-    
-            // Check if any related instances exist
-            if ($city->customers()->exists() || $city->dealers()->exists() || $city->staff()->exists()) {
-                throw new \Exception('Cannot delete city that is related to a customer, dealer, or staff.');
-            }
-    
-            // No related instances found, proceed with deletion
-            $city->delete();
+            City::where('uuid', $id)->delete();
             
         } catch (\Exception $e) {
             DB::rollback();
