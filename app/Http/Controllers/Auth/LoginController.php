@@ -45,7 +45,7 @@ class LoginController extends Controller
 
         $user = User::where('email', $request->email)->EntryStatus()->first();
 
-        if(!empty($user)){
+        if(empty($user)){
             return $this->jsonErrorResponse([], "User not found.");
         }
 
