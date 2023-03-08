@@ -49,11 +49,11 @@ class ProductPropertyController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Product::where('product_form_type','property')
-            ->where('product_type', '!=', 'data')
-            ->where(Utilities::CompanyProjectId())->orderByName();
-
-            $allData = $dataSql->get();
+           $dataSql = DB::select("SELECT p.uuid,p.code,p.name,bt.name as bt,p.status
+           FROM products p 
+           JOIN buyable_types bt ON p.buyable_type_id = bt.id
+        ");
+           $allData = $dataSql;
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -89,7 +89,7 @@ class ProductPropertyController extends Controller
                 $entries[] = [
                     $row->code,
                     $row->name,
-                    $row->product_form_type,
+                    $row->bt,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];
