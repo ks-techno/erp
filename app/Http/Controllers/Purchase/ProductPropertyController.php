@@ -48,9 +48,8 @@ class ProductPropertyController extends Controller
         $data['permission_create'] = self::Constants()['create'];
         if ($request->ajax()) {
             $draw = 'all';
-
-            $dataSql = Product::where('product_form_type','property')
-            ->where('product_type', '!=', 'data')
+             
+             $dataSql = Product::with('buyable_type')->where('product_form_type','property')
             ->where(Utilities::CompanyProjectId())->orderByName();
 
             $allData = $dataSql->get();
@@ -85,11 +84,13 @@ class ProductPropertyController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-
+                
+                $rowBuyableType = $row->buyable_type;
+                $buyableTypeName = $rowBuyableType ? $rowBuyableType->name : '';
                 $entries[] = [
                     $row->code,
                     $row->name,
-                    $row->product_form_type,
+                    $buyableTypeName,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];
