@@ -29,7 +29,7 @@
                                 @endpermission
                                 @else
                                 <div class="card-link">
-                        <a href="{{$data['list_url']}}" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</a>
+                                <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                              @endif
                         </div>
