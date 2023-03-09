@@ -238,7 +238,7 @@
                 value_type_block.find('#yes_no_options').find('input').attr('disabled',true);
             }
             if(val == 'yes_no'){
-                value_type_block.find('#yes_no_options').show();
+                value_type_block.find('#yes_no_options').hide();
                 value_type_block.find('#select_options').hide();
                 value_type_block.find('#radio_options').hide();
                 value_type_block.find('#select_options').find('input').attr('disabled',true);

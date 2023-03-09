@@ -88,7 +88,6 @@ class JournalController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-
                 $entries[] = [
                     $row->date,
                     $row->voucher_no,
@@ -191,7 +190,6 @@ class JournalController extends Controller
 
         DB::beginTransaction();
         try {
-//dd("sef");
             $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
             $voucher_no = self::documentCode(self::Constants()['type'],$max);
             $voucher_id = self::uuid();
@@ -470,45 +468,4 @@ class JournalController extends Controller
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully revert', 200);
     }
-}
-
-
-
-$entries = [];
-foreach ($allData as $row) {
-    $posted = $this->getPostedTitle()[$row->posted];
-    $urlEdit = route('accounts.journal.edit',$row->voucher_id);
-    $urlDel = route('accounts.journal.destroy',$row->voucher_id);
-    $urlPrint = route('accounts.journal.print',$row->voucher_id);
-
-    $actions = '<div class="text-end">';
-    if($delete_per || $print_per) {
-        $actions .= '<div class="d-inline-flex">';
-        $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
-        $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-        if($print_per) {
-            $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
-        }
-        if($delete_per) {
-            $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-        }
-        $actions .= '</div>'; // end dropdown-menu
-        $actions .= '</div>'; // end d-inline-flex
-    }
-    if($edit_per) {
-        $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
-    }
-    $actions .= '</div>'; //end main div
-
-    $entries[] = [
-        $row->date,
-        $row->voucher_no,
-        '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-        $row->remarks,
-        $row->prepared_by,
-        '<div class="signature-field"></div>',
-        $row->approved_by,
-        '<div class="signature-field"></div>',
-        $actions,
-    ];
 }

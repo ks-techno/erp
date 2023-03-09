@@ -60,6 +60,7 @@ class UserController extends Controller
             }
             $entries = [];
             foreach ($allData as $row) {
+                $entry_status = $this->getStatusTitle()[$row->user_status];
                 $urlEdit = route('setting.user.edit',$row->uuid);
                 $urlDel = route('setting.user.destroy',$row->uuid);
 
@@ -80,6 +81,7 @@ class UserController extends Controller
                 $entries[] = [
                     $row->name,
                     $row->email,
+                    '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];
             }

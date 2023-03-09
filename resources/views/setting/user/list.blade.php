@@ -28,7 +28,8 @@
                                 <tr>
                                     <th class="cell-fit">Name</th>
                                     <th class="cell-fit">Email</th>
-                                    <th class="cell-fit"></th>
+                                    <th class="cell-fit">Status</th>
+                                     <th class="cell-fit"></th>
                                 </tr>
                                 </thead>
                             </table>

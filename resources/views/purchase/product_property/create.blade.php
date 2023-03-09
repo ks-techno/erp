@@ -159,7 +159,7 @@
                                     '   <div class="col-sm-8">\n' +
                                     '     <div class="form-check form-check-warning form-switch">\n' +
                                     '        <input type="checkbox" class="form-check-input" id="'+key_name+'"  value="'+value+'" name="pv['+yes_no_item+']">\n' +
-                                    '        <label class="form-check-label mb-50" for="'+key_name+'" >'+value+'</label>' +
+                                    '        <label class="form-check-label mb-50" for="'+key_name+'" ></label>' +
                                     '     </div>'+
                                     '   </div>\n' +
                                     '</div>';
