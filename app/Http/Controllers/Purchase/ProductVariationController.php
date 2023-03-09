@@ -195,7 +195,7 @@ class ProductVariationController extends Controller{
                         ]);
                     }else{
                         foreach ($request->options_list as $k=>$options_list){
-                            if(empty($options_list['option'])){
+                            if($request->value_type != 'yes_no' && empty($options_list['option'])){
                                 return $this->jsonErrorResponse($data, 'Option value must be filled');
                             }
                             if(!empty($options_list)){
@@ -342,7 +342,7 @@ class ProductVariationController extends Controller{
                         ]);
                     }else{
                         foreach ($request->options_list as $k=>$options_list){
-                            if(empty($options_list['option'])){
+                            if($request->value_type != 'yes_no' && empty($options_list['option'])){
                                 return $this->jsonErrorResponse($data, 'Option value must be filled');
                             }
                             if(!empty($options_list)){
