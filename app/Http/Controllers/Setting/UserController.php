@@ -81,7 +81,7 @@ class UserController extends Controller
                 $entries[] = [
                     $row->name,
                     $row->email,
-                    '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
+                    '<div class=""><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];
             }
