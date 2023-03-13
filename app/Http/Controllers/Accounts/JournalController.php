@@ -93,10 +93,6 @@ class JournalController extends Controller
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
                     $row->remarks,
-                    $row->prepared_by,
-                   '<div class="signature-field"></div>',
-                    $row->approved_by,
-                   '<div class="signature-field"></div>',
                     $actions,
                 ];
             }
@@ -125,28 +121,22 @@ class JournalController extends Controller
         $data['permission'] = self::Constants()['create'];
         $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
         $data['voucher_no'] = self::documentCode(self::Constants()['type'],$max);
-
-        // Add the name of the person who prepared the voucher
-    $data['prepared_by'] = auth()->user()->name;
-
-    // Add a space for the signature of the approver
-    $data['approver_signature'] = '';
-
-    // Add two rows to the grid by default
-    $data['pd'] = [
-        [
-            'chart_id' => '',
-            'egt_debit' => '',
-            'egt_credit' => '',
-            'egt_description' => '',
-        ],
-        [
-            'chart_id' => '',
-            'egt_debit' => '',
-            'egt_credit' => '',
-            'egt_description' => '',
-        ]
-    ];
+       
+    // // Add two rows to the grid by default
+    // $data['pd'] = [
+    //     [
+    //         'chart_id' => '',
+    //         'egt_debit' => '',
+    //         'egt_credit' => '',
+    //         'egt_description' => '',
+    //     ],
+    //     [
+    //         'chart_id' => '',
+    //         'egt_debit' => '',
+    //         'egt_credit' => '',
+    //         'egt_description' => '',
+    //     ]
+    // ];
 
 
         return view('accounts.journal.create', compact('data'));
@@ -215,8 +205,7 @@ class JournalController extends Controller
                         'remarks' => $request->remarks,
                         'company_id' => auth()->user()->company_id,
                         'project_id' => auth()->user()->project_id,
-                        'user_id' => auth()->user()->id,
-                        
+                        'user_id' => auth()->user()->id, 
                          'posted' => $posted,
                     ]);
                     $sr = $sr + 1;

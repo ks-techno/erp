@@ -26,14 +26,13 @@
                                 @permission($data['permission_edit'])
                                 <a href="{{route('purchase.supplier.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                        
                                 @endpermission
-                                <div class="card-link">
                                 @else
-                               
+                                <div class="card-link">        
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                         <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                          @endif
+                        </div>
                         </div>
                     </div>
                     <div class="card-body mt-2">

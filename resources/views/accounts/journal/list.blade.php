@@ -31,8 +31,6 @@
                                     <th class="cell-fit">Voucher No</th>
                                     <th class="cell-fit text-center">{{trans('label.draft_posted')}}</th>
                                     <th class="cell-fit">Remarks</th>
-                                    <th class="cell-fit">Prepared By</th>
-                                    <th class="cell-fit">Approved By</th>
                                     <th class="cell-fit"></th>
                                 </tr>
                                 </thead>

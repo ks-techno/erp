@@ -34,8 +34,6 @@ class Voucher extends Model
         'company_id',
         'project_id',
         'user_id',
-        'prepared_by',
-        'approved_by',
         'posted',
     ];
 

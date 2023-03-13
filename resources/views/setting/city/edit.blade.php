@@ -26,7 +26,6 @@
                                 @permission($data['permission_edit'])
                                 <a href="{{route('setting.city.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                        
                                 @endpermission
                                 @else
                                 <div class="card-link">
@@ -34,6 +33,7 @@
                         <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                          @endif
                         </div>
+                     </div>
                     </div>
                     <div class="card-body mt-2">
                         <div class="row">
