@@ -37,6 +37,8 @@ use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
 use App\Http\Controllers\Sale\SaleInvoiceController;
 use App\Http\Controllers\Sale\BookingTransferController;
+use App\Http\Controllers\Dashboard\AnalyticsController;
+use App\Http\Controllers\Dashboard\CRMController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +76,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => ['checkProject']], function () {
 
         Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+        Route::prefix('dashboard')->name('dashboard.')->group(function () {
+            Route::resource('crm', CRMController::class);
+        });
 
         Route::prefix('profile')->name('profile.')->controller(ProfileController::class)->group(function () {
             Route::get('edit', 'edit')->name('edit');
@@ -135,10 +141,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
             
+           
+
         Route::prefix('company')->resource('company', CompanyController::class);
         Route::prefix('project')->resource('project', ProjectController::class);
         Route::prefix('department')->resource('department', DepartmentController::class);
         Route::prefix('staff')->resource('staff', StaffController::class);
+        
 
         Route::prefix('setting')->name('setting.')->group(function () {
             Route::prefix('country')->resource('country', CountryController::class);

@@ -24,6 +24,7 @@ class CompanyController extends Controller
             'create' => "$name-create",
             'edit' => "$name-edit",
             'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -79,8 +80,8 @@ class CompanyController extends Controller
                 $entries[] = [
                     $row->name,
                     $row->contact_no,
-                    isset($row->addresses->country->name)?$row->addresses->country->name:"",
-                    $row->addresses->address,
+                    $row->addresses->country->name ?? "",
+                    $row->addresses->address ?? "",
                     $actions,
                 ];
             }
@@ -181,6 +182,7 @@ class CompanyController extends Controller
     public function edit($id)
     {
         $data = [];
+        $data['view'] = false;
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
@@ -192,6 +194,12 @@ class CompanyController extends Controller
 
         }else{
             abort('404');
+        }
+       
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
         }
 
         return view('setting.company.edit', compact('data'));

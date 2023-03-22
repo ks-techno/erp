@@ -35,7 +35,7 @@ class CompanySeeder extends Seeder
                 $address->region_id = $city->region_id;
                 $address->city_id = $city->id;
                 $address->address = '';
-                $company->addresses()->save($address);
+                $company->addresses()->update($address);
             }
         }
     }

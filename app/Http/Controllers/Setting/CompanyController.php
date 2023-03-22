@@ -80,7 +80,7 @@ class CompanyController extends Controller
                     $row->name,
                     $row->contact_no,
                     isset($row->addresses->country->name)?$row->addresses->country->name:"",
-                    $row->addresses->address,
+                    isset($row->addresses) ? $row->addresses->address : '',
                     $actions,
                 ];
             }

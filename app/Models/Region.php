@@ -24,7 +24,9 @@ class Region extends Model
         return $qry->orderby('name',$dir);
     }
     public function country(){
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class)->withDefault([
+            'name' => 'No project'
+        ]);;
     }
     public function cities(){
         return $this->hasMany(City::class)->OrderByName();

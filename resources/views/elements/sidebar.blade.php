@@ -94,6 +94,7 @@
     @php
         $sidebar_menu = '-sidebar-menu';
     @endphp
+    
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             @permission('home'.$sidebar_menu)
@@ -104,6 +105,23 @@
                 </a>
             </li>
             @endpermission
+
+               <li id="dash_nav" class="nav-item has-sub {{ ($prefix == '/dashboard') ? 'open' : '' }}">
+              <a class="d-flex align-items-center" href="#">
+              <i data-feather='shopping-cart'></i>
+              <span class="menu-title text-truncate">Dashboard</span>
+             </a>
+            <ul class="menu-content" id="dash_nav_ul">
+        
+        <li class="{{ ($path == 'dashboard/crm') ? 'active' : '' }}">
+            <a class="d-flex align-items-center" href="{{ route('dashboard.crm.index') }}">
+                <span class="menu-item text-truncate">CRM</span>
+            </a>
+        </li>
+        
+    </ul>
+</li>
+
             @permission('company'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'setting/company')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('company.index') }}">

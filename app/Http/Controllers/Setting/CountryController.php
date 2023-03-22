@@ -122,7 +122,7 @@ class CountryController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-       'name' => 'required|unique:countries,name,NULL,id,deleted_at,NULL'
+      'name' => 'required|unique:countries,name,NULL,id,deleted_at,NULL'
             
         ]);
 
@@ -266,10 +266,16 @@ class CountryController extends Controller
    public function destroy($id)
 {
     $data = [];
+    
     DB::beginTransaction();
     try{
+        $country = Country::where('uuid', $id)->firstOrFail();
 
-            Country::where('uuid',$id)->delete();
+        if (!$country->canDelete()) {
+            throw new Exception('Cannot delete this country because it is attached to another record.');
+        }
+
+        $country->delete();
 
         }catch (Exception $e) {
         DB::rollback();

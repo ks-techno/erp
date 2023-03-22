@@ -280,6 +280,8 @@ class CityController extends Controller
     
         try {
             City::where('uuid', $id)->delete();
+    
+           
             
         } catch (\Exception $e) {
             DB::rollback();
