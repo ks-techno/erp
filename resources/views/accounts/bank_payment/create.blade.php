@@ -125,11 +125,11 @@
                                                     </td>
                                                     <td>
                                                         <input id="egt_debit" type="text"
-                                                         class="FloatValidate debit form-control form-control-sm">
+                                                         class="FloatValidate debit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
                                                     <td>
                                                         <input id="egt_credit" type="text"
-                                                         class="FloatValidate credit form-control form-control-sm">
+                                                         class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);" >
                                                     </td>
                                                     <td class="text-center">
                                                         <button type="button" id="egt_add"
@@ -212,4 +212,9 @@
     <script src="{{asset('/pages/common/erp_grid.js')}}"></script>
     <script src="{{asset('/pages/help/chart_help.js')}}"></script>
     <script src="{{asset('/pages/common/account-calculations.js')}}"></script>
+    <script>
+function formatAmount(input) {
+    input.value = parseFloat(input.value.replace(/,/g, '')).toLocaleString('en-US');
+}
+</script>
 @endsection

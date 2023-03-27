@@ -96,10 +96,10 @@
                                                         <input id="egt_description" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm">
+                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm">
+                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
                                                     <td class="text-center">
                                                         <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-8">
                                 <div class="row">
                                     <label class="col-form-label col-lg-2">Remarks:</label>
                                     <div class="col-lg-10">
@@ -144,15 +144,22 @@
                             </div>
                         </div>
                         <div class="form-group row">
-    <label for="prepared_by" class="col-sm-3 col-form-label">Prepared By</label>
-    <div class="col-sm-9">
-        <input type="text" class="form-control" id="prepared_by" name="prepared_by" value="{{ $data['prepared_by'] }}" readonly>
+                        <div class="col-lg-8">
+                        <div class="row">
+    <label for="prepared_by" class="col-form-label col-lg-2">Prepared By</label>
+    <div class="col-lg-10">
+        <input type="text" class="form-control form-control-sm" id="prepared_by" name="prepared_by" value="{{ $data['prepared_by'] }}" readonly>
     </div>
 </div>
+</div>
+</div>
+
 
 <div class="form-group row">
-    <label for="approver_signature" class="col-sm-3 col-form-label">Approver Signature</label>
-    <div class="col-sm-9">
+<div class="col-lg-8">
+<div class="row">
+    <label for="approver_signature" class="col-form-label col-lg-2">Approver Signature</label>
+    <div class="col-lg-10">
         <input type="text" class="form-control" id="approver_signature" name="approver_signature" value="{{ $data['approver_signature'] }}">
     </div>
 </div>
@@ -190,4 +197,9 @@
     <script src="{{asset('/pages/common/erp_grid.js')}}"></script>
     <script src="{{asset('/pages/help/chart_help.js')}}"></script>
     <script src="{{asset('/pages/common/account-calculations.js')}}"></script>
+    <script>
+function formatAmount(input) {
+    input.value = parseFloat(input.value.replace(/,/g, '')).toLocaleString('en-US');
+}
+</script>
 @endsection
