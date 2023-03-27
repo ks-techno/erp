@@ -174,8 +174,6 @@ class CashPaymentController extends Controller
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-
-                    
                     Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
