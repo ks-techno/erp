@@ -34,7 +34,6 @@
                          @endif
                         </div>
                     </div>
-    </div>
                     <div class="card-body mt-2">
                         <div class="row">
                             <div class="col-sm-6">
