@@ -81,5 +81,7 @@ class HelpController extends Controller
         return view('helps.product_help',compact('data'));
     }
 
+   
+
 
 }

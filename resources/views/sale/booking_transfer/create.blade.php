@@ -11,6 +11,30 @@
     .txt_color{
         color: #0004f8;
     }
+    .right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 800px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .show .modal-dialog {
+            /*position: absolute;*/right: 0px !important;
+        }
+        .right.fade .modal-dialog {
+            right: -320px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+        .right.fade.in .modal-dialog {
+            right: 0;
+        }
 </style>
 @endsection
 
@@ -330,6 +354,15 @@
         </div>
     </div>
 </form>
+<div class="modal fade right" id="createNewCustomer" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" style="">
+            <div class="modal-content" id="modal_create_customer">
+                <div class="modal-body " style="height:100vh">
+                    @include('sale.customer.form')
+                </div>
+            </div>
+        </div>
+    </div>
 @endpermission
 @endsection
 

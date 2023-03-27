@@ -95,13 +95,13 @@
                 <table border="1" class="val_table" width="100%">
                     <tbody>
                     <tr class="data-dtl">
-                        <td class="create_new" data-view="show" data-field="create_new_customer">Data not found -  Create New
+                        <td class="create_new" data-view="show" data-field="create_new_customer">New Customer -  Create New
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-        @endif
+        
         @foreach($data['customer'] as $customer)
             <div class="data_tbody_row">
                 <table border="1" class="val_table" width="100%">
@@ -118,4 +118,17 @@
             </div>
         @endforeach
     </div>
+    @else
+    <div class="data_tbody_row">
+                <table border="1" class="val_table" width="100%">
+                    <tbody>
+                    <tr class="data-dtl">
+                        <td class="create_new" data-view="show" data-field="create_new_customer">Data Not Found -  Create New
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+    @endif
+   
 </div>
