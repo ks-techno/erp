@@ -95,10 +95,10 @@
                                                         <input id="egt_description" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm">
+                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm" onblur="formatAmount(this);" >
                                                     </td>
                                                     <td>
-                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm">
+                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
                                                     <td class="text-center">
                                                         <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
@@ -171,8 +171,9 @@
         ];
         var var_egt_readonly_fields = ['egt_chart_code','egt_chart_name'];
     </script>
-    <script src="{{asset('/js/jquery-12.js')}}"></script>
+   <script src="{{asset('/js/jquery-12.js')}}"></script>
     <script src="{{asset('/pages/common/erp_grid.js')}}"></script>
     <script src="{{asset('/pages/help/chart_help.js')}}"></script>
     <script src="{{asset('/pages/common/account-calculations.js')}}"></script>
+    <script  src="{{asset('/pages/common/number-format.js')}}"></script>
 @endsection
