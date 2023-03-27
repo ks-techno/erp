@@ -94,9 +94,9 @@ class JournalController extends Controller
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
                     $row->remarks,
                     $row->prepared_by,
-                   '<div class="signature-field"></div>',
+                //    '<div class="signature-field"></div>',
                     $row->approved_by,
-                   '<div class="signature-field"></div>',
+                //    '<div class="signature-field"></div>',
                     $actions,
                 ];
             }
