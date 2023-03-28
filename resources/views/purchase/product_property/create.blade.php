@@ -49,6 +49,7 @@
                                         </select>
                                     </div>
                                 </div>--}}
+                                
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
                                         <label class="col-form-label">Sale Price </label>
@@ -90,7 +91,15 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+                                <div class="mb-1 row">
+                                <div class="col-sm-4">
+                                        <label class="col-form-label">Block</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" value="" id="block" name="block" />
+                                    </div>
+                                </div>
+                                </div>
                             </div>
 
                             <div class="col-sm-12">

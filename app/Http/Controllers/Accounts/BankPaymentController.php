@@ -164,7 +164,6 @@ class BankPaymentController extends Controller
 
         DB::beginTransaction();
         try {
-//dd("sef");
             $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
             $voucher_no = self::documentCode(self::Constants()['type'],$max);
             $voucher_id = self::uuid();

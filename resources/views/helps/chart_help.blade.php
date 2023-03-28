@@ -111,5 +111,13 @@
                 </table>
             </div>
         @endforeach
-    </div>
-</div>
+        <div class="data_tbody_row">
+                <table border="1" class="val_table" width="100%">
+                    <tbody>
+                    <tr class="data-dtl">
+                        <td class="create_new" data-view="show" data-field="create_new_customer">New Customer -  Create New
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>

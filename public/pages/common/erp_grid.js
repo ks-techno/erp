@@ -35,72 +35,76 @@ $(document).on('click','.egt_del',function(){
     updateKeys();
     grid_fun();
 });
-function add_row(thix){
+function add_row(thix, num_rows = 2){
     var tr = thix.parents('tr');
     var tds = "";
     var nameAttrPrefix = 'pd';
     var trLength = $('.egt_form_body>tr').length + 1;
     var total_tds_length =  tr.find('td').length;
-    $('.egt_form_body').append('<tr></tr>');
-    var lastTr = $('.egt_form_body>tr:last-child');
-    for(var i=0;i < total_tds_length;i++){
-        var field = tr.find('td:eq('+i+')').clone();
-        field = field[0];
-        if(i == 0){
-            field.setAttribute('class','handle');
-            var newItem = document.createElement("i");
-            newItem.setAttribute('class','handle egt_handle');
-            newItem.setAttribute('data-feather','move');
 
-            for(var o=0;o<field.children.length;o++) {
-                if(field.children[o].id == 'egt_sr_no'){
-                    field.children[o].value = trLength;
+    for(var n = 0; n < num_rows; n++){
+        $('.egt_form_body').append('<tr></tr>');
+        var lastTr = $('.egt_form_body>tr:last-child');
+        for(var i=0;i < total_tds_length;i++){
+            var field = tr.find('td:eq('+i+')').clone();
+            field = field[0];
+            if(i == 0){
+                field.setAttribute('class','handle');
+                var newItem = document.createElement("i");
+                newItem.setAttribute('class','handle egt_handle');
+                newItem.setAttribute('data-feather','move');
+                for(var o=0;o<field.children.length;o++) {
+                    if(field.children[o].id == 'egt_sr_no'){
+                        field.children[o].value = trLength;
+                    }
+                    field.children[o].setAttribute('name',nameAttrPrefix+"["+trLength+"]["+field.children[o].id+"]")
+                    field.children[o].setAttribute('data-id',field.children[o].id)
+                    field.children[o].removeAttribute("id");
                 }
-                field.children[o].setAttribute('name',nameAttrPrefix+"["+trLength+"]["+field.children[o].id+"]")
-                field.children[o].setAttribute('data-id',field.children[o].id)
-                field.children[o].removeAttribute("id");
-            }
-            field.insertBefore(newItem, field.childNodes[0])
-        }else if(i == (total_tds_length-1) ){
-            field = "<td class=\"text-center\">\n" +
-                "<div class=\"egt_btn-group\">\n" +
-                "<button type=\"button\" class=\"btn btn-danger btn-sm egt_del\">\n" +
-                "<i data-feather=\"trash-2\"></i>\n" +
-                "</button>\n" +
-                "</div>\n" +
-                "</td>";
-        }else{
-            var childEle = field.children[0];
-            childEle.setAttribute('name',nameAttrPrefix+"["+trLength+"]["+childEle.id+"]")
-            childEle.setAttribute('data-id',childEle.id)
-            if(childEle.nodeName == "SELECT"){
-                var val =  tr.find('select#'+childEle.id).val();
-                childEle.value = val;
-            }
-            if(childEle.nodeName == "INPUT"){
+                field.insertBefore(newItem, field.childNodes[0])
+            }else if(i == (total_tds_length-1) ){
+                field = "<td class=\"text-center\">\n" +
+                    "<div class=\"egt_btn-group\">\n" +
+                    "<button type=\"button\" class=\"btn btn-danger btn-sm egt_del\">\n" +
+                    "<i data-feather=\"trash-2\"></i>\n" +
+                    "</button>\n" +
+                    "</div>\n" +
+                    "</td>";
+            }else{
+                var childEle = field.children[0];
+                childEle.setAttribute('name',nameAttrPrefix+"["+trLength+"]["+childEle.id+"]")
+                childEle.setAttribute('data-id',childEle.id)
+                if(childEle.nodeName == "SELECT"){
+                    var val =  tr.find('select#'+childEle.id).val();
+                    childEle.value = val;
+                }
+                if(childEle.nodeName == "INPUT"){
 
+                }
+                childEle.removeAttribute("id");
             }
-            childEle.removeAttribute("id");
-        }
-        lastTr.append(field);
+            lastTr.append(field);
 
-        feather.replace({
-            width: 14,
-            height: 14
-        });
-    }
-    for(var i=0;i < egt_fields.length; i++){
-        var sel_field = lastTr.find('input[data-id='+egt_fields[i].id+']');
-        if(egt_fields[i].classNames !== undefined){
-            sel_field.addClass(egt_fields[i].classNames);
+            feather.replace({
+                width: 14,
+                height: 14
+            });
         }
-        if(egt_fields[i].data_url !== undefined){
-            sel_field.attr('data-url',egt_fields[i].data_url);
+        for(var i=0;i < egt_fields.length; i++){
+            var sel_field = lastTr.find('input[data-id='+egt_fields[i].id+']');
+            if(egt_fields[i].classNames !== undefined){
+                sel_field.addClass(egt_fields[i].classNames);
+            }
+            if(egt_fields[i].data_url !== undefined){
+                sel_field.attr('data-url',egt_fields[i].data_url);
+            }
         }
-    }
-    for(var i=0;i < egt_readonly_fields.length; i++){
-        var sel_field = lastTr.find('input[data-id='+egt_readonly_fields[i]+']');
-        sel_field.attr('readonly',true);
+        for(var i=0;i < egt_readonly_fields.length; i++){
+            var sel_field = lastTr.find('input[data-id='+egt_readonly_fields[i]+']');
+            sel_field.attr('readonly',true);
+        }
+
+        trLength++;
     }
 }
 function updateKeys(){
