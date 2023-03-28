@@ -23,7 +23,6 @@ class HelpController extends Controller
         }
 
         $chart = $chart->select('id','code','name')->get();
-//dd($chart);
         $data['chart'] =  $chart;
 
         return view('helps.chart_help',compact('data'));
@@ -32,18 +31,17 @@ class HelpController extends Controller
     public function customer($val = null)
     {
         $data = [];
-        $customer = Customer::where('id','<>',0);
-        if(!empty($val)){
+        $customer = Customer::where('id', '<>', 0);
+        if (!empty($val)) {
             $val = (string)$val;
-            $customer = $customer->where('contact_no','like',"%$val%");
-            $customer = $customer->orWhere('name','like',"%$val%");
+            $customer = $customer->where('contact_no', 'like', "%$val%");
+            $customer = $customer->orWhere('name', 'like', "%$val%");
         }
 
-        $customer = $customer->select('id','contact_no','name')->get();
-//dd($chart);
+        $customer = $customer->select('id', 'contact_no', 'name')->get();
         $data['customer'] =  $customer;
 
-        return view('helps.customer_help',compact('data'));
+        return view('helps.customer_help', compact('data'));
     }
 
     public function oldCustomerHelp($val = null)
@@ -78,9 +76,12 @@ class HelpController extends Controller
         }
 
         $product = $product->select('id','code','name','default_sale_price')->get();
-//dd($chart);
         $data['property'] =  $product;
 
         return view('helps.product_help',compact('data'));
     }
+
+   
+
+
 }
