@@ -34,8 +34,8 @@
                                 <a href="{{$data['list_url']}}"
                              class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                                     @endpermission
-                                @endif
-                            @else
+                                    @endif
+                                    @else
                         <div class="card-link">
                         <button type="submit" name="current_action_id" value="update"
                          class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
@@ -43,7 +43,7 @@
                                  class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
                             <a href="{{$data['list_url']}}"
                              class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                             @endif
+                         @endif
                             </div>
                             </div>
                     </div>

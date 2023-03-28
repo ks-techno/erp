@@ -288,8 +288,8 @@ class CashPaymentController extends Controller
         $total_debit = 0;
         $total_credit = 0;
         foreach ($request->pd as $pd) {
-            $total_debit += $pd['egt_debit'];
-            $total_credit += $pd['egt_credit'];
+            $total_debit += intval($pd['egt_debit']);
+            $total_credit += intval($pd['egt_credit']);
         }
         if(($total_debit != $total_credit) || (empty($total_debit) && empty($total_credit)) ){
             return $this->jsonErrorResponse($data, 'debit credit must be equal');
@@ -321,8 +321,8 @@ class CashPaymentController extends Controller
                         'chart_account_id' => $account->id,
                         'chart_account_name' => $account->name,
                         'chart_account_code' => $account->code,
-                        'debit' => Utilities::NumFormat($pd['egt_debit']),
-                        'credit' => Utilities::NumFormat($pd['egt_credit']),
+                        'debit' =>str_replace(',', '',($pd['egt_debit'])),
+                        'credit' =>str_replace(',', '',($pd['egt_credit'])),
                         'description' => $pd['egt_description'],
                         'remarks' => $request->remarks,
                         'company_id' => auth()->user()->company_id,
