@@ -44,7 +44,6 @@ class DealerController extends Controller
             $dataSql = Dealer::where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
-
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -80,7 +79,7 @@ class DealerController extends Controller
                 $entries[] = [
                     $row->name,
                     $row->contact_no,
-                    $row->email,
+                    $row->agency_name,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];
@@ -124,7 +123,6 @@ class DealerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'cnic_no' => 'required',
-            'email' => 'nullable|email',
         ]);
 
         if ($validator->fails()) {
@@ -145,7 +143,8 @@ class DealerController extends Controller
                 'name' => self::strUCWord($request->name),
                 'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
-                'email' => $request->email,
+                'agency_name' => $request->agency_name,
+                'dealer_type' => $request->dealer_type,
                 'commission' => $request->commission,
                 'status' => isset($request->status) ? "1" : "0",
                 'company_id' => auth()->user()->company_id,
@@ -251,7 +250,8 @@ class DealerController extends Controller
                 'name' => self::strUCWord($request->name),
                 'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
-                'email' => $request->email,
+                'agency_name' => $request->agency_name,
+                'dealer_type' => $request->dealer_type,
                 'commission' => $request->commission,
                 'status' => isset($request->status) ? "1" : "0",
                 'company_id' => auth()->user()->company_id,

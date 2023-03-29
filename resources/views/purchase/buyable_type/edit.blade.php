@@ -8,7 +8,7 @@
     @php
         $current = $data['current'];
         if(!$data['view']){
-            $url = route('purchase.brand.update',$data['id']);
+            $url = route('purchase.property-type.update',$data['id']);
         }
     @endphp
     <form id="buyable_type_edit" class="buyable_type_edit" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
@@ -24,7 +24,7 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <a href="{{route('purchase.brand.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{route('purchase.property-type.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         
                                 @endpermission

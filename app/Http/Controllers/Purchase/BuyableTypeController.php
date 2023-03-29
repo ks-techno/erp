@@ -134,7 +134,7 @@ class BuyableTypeController extends Controller{
 
             $brand = BuyableType::create([
                 'uuid' => self::uuid(),
-                'name' => self::strUCWord($request->name),
+                'name' => $request->name,
                 'status' => isset($request->status) ? "1" : "0",
                 'company_id' => auth()->user()->company_id,
                 'project_id' => auth()->user()->project_id,
@@ -225,7 +225,7 @@ class BuyableTypeController extends Controller{
         try {
             BuyableType::where('uuid',$id)
                 ->update([
-                    'name' => self::strUCWord($request->name),
+                    'name' => $request->name,
                     'status' => isset($request->status) ? "1" : "0",
                     'company_id' => auth()->user()->company_id,
                     'project_id' => auth()->user()->project_id,

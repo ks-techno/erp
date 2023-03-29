@@ -130,7 +130,7 @@
                                 <div class="mb-1 row">
                                     <div class="col-sm-3 pr-0">
                                         <label class="col-form-label p-0">Payment Mode</label>
-                                    </div>
+                                </div>
                                     <div class="col-sm-9">
                                         <select class="select2 form-select" id="property_payment_mode_id" name="property_payment_mode_id">
                                             @foreach($data['property_payment_mode'] as $property_payment_mode)
@@ -298,7 +298,7 @@
                             var options = "<option value='0' selected>Select</option>";
                             for(var i=0;i<length;i++){
                                 if(seller[i]['name']){
-                                    options += '<option value="'+seller[i]['id']+'">'+seller[i]['name']+'</option>';
+                                    options += '<option value="'+seller[i]['id']+'">'+seller[i]['name']+'-'+seller[i]['agency_name']+'</option>';
                                 }
                             }
                             $('form').find('.sellerList').html(options);
