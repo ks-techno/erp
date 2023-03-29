@@ -63,7 +63,7 @@
                                         <label class="col-form-label">Code <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" id="code" name="code" readonly/>
+                                        <input type="text" class="form-control form-control-sm" value="{{$data['code']}}" id="code" name="code" readonly/>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
