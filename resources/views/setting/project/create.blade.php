@@ -80,6 +80,25 @@
 @endsection
 
 @section('script')
+<script>
+    $('#company_id').on('change', function() {
+    var companyId = $(this).val();
+    var addressUrl = $(this).data('address-url');
+
+    $.ajax({
+        url: addressUrl,
+        type: 'GET',
+        data: { company_id: companyId },
+        success: function(data) {
+            // Update the city, country, and region fields with the retrieved address information
+            $('#country').val(data.country);
+        },
+        error: function() {
+            alert('An error occurred while retrieving the address information.');
+        }
+    });
+});
+</script>
 
 @endsection
 

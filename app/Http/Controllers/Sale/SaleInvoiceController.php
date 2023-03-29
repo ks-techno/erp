@@ -196,6 +196,9 @@ class SaleInvoiceController extends Controller
             if($request->seller_type == 'dealer'){
                 $modal = Dealer::where('id',$request->seller_id)->first();
             }
+             // Calculate the Booking Price
+           $booking_price = $request->sale_price - $request->sale_discount;
+
             $sale = Sale::create([
                 'uuid' => self::uuid(),
                 'code' => $code,
@@ -209,7 +212,7 @@ class SaleInvoiceController extends Controller
                 'is_purchased' => isset($request->is_purchased)?1:0,
                 'sale_price'=> (!is_null($request->sale_price) ? $request->sale_price: ""),
                 'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
-                'booked_price' => $request->booked_price,
+                'booked_price' => $request->input('booked_price'),
                 'down_payment' => $request->down_payment,
                 'on_balloting' => $request->on_balloting,
                 'no_of_bi_annual' => $request->no_of_bi_annual,

@@ -19,7 +19,7 @@
                         </div>
                         <div class="card-link">
                         <button type="submit" name="current_action_id" value="store"
-                         class="btn btn-success btn-sm waves-effect waves-float waves-light">Save as Draft</button>
+                         class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
                             <button type="submit" name="current_action_id" value="post"
                              class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
                             <a href="{{$data['list_url']}}"
@@ -125,11 +125,11 @@
                                                     </td>
                                                     <td>
                                                         <input id="egt_debit" type="text"
-                                                         class="FloatValidate debit form-control form-control-sm" onblur="formatAmount(this);">
+                                                         class="FloatValidate debit form-control form-control-sm">
                                                     </td>
                                                     <td>
                                                         <input id="egt_credit" type="text"
-                                                         class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);" >
+                                                         class="FloatValidate credit form-control form-control-sm">
                                                     </td>
                                                     <td class="text-center">
                                                         <button type="button" id="egt_add"
@@ -212,5 +212,4 @@
     <script src="{{asset('/pages/common/erp_grid.js')}}"></script>
     <script src="{{asset('/pages/help/chart_help.js')}}"></script>
     <script src="{{asset('/pages/common/account-calculations.js')}}"></script>
-    <script  src="{{asset('/pages/common/number-format.js')}}"></script>
 @endsection
