@@ -1,6 +1,11 @@
 @extends('layouts.print_layout')
 @section('title', $data['title'])
 @section('style')
+<style>
+    .border-right{
+        border-right: 1px solid #000;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -8,6 +13,8 @@
 @section('page_title', $data['title'])
 @php
     $current = $data['current'];
+    $sum_debit = 0;
+    $sum_credit = 0;
 @endphp
 <table class="info-table" width="100%">
     <tbody>
@@ -53,12 +60,27 @@
                     <td>{{$dtl->chart_account_code}}</td>
                     <td>{{$dtl->chart_account_name}}</td>
                     <td>{{$dtl->description}}</td>
-                    <td class="text-right">{{number_format($dtl->debit,3)}}</td>
-                    <td class="text-right">{{number_format($dtl->credit,3)}}</td>
+                    <td class="text-right">{{number_format($dtl->debit,2)}}</td>
+                    <td class="text-right">{{number_format($dtl->credit,2)}}</td>
                 </tr>
+                @php
+                $sum_debit += $dtl->debit;
+                $sum_credit += $dtl->credit;
+                @endphp
             @endforeach
         @endif
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="border-right">Total in Words</td>
+            <td class="text-right border-right">
+                {{ numberToWords($sum_debit) }}
+            </td>
+            <td class="text-right">
+            {{ numberToWords($sum_credit) }}
+            </td>
+        </tr>
+        </tfoot>
 </table>
 
 <table class="mt-150" width="100%" valign="bottom">

@@ -114,12 +114,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <h3>Nominee Info</h3>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-6">
-                                        <label class="col-form-label p-0">Nominee No#</label>
-                                        <input type="hidden" class="form-control form-control-sm" value="{{ $current->nm_nominee_no }}" id="nm_nominee_no_input" name="nm_nominee_no" />
-                                        <p class="col-form-label nm_nominee_no p-0 txt_color">{{ $current->nm_nominee_no }}</p>
-                                    </div>
+                                <div class="mb-1 row"> 
                                     <div class="col-sm-6">
                                         <label class="col-form-label p-0">Nominee Name</label>
                                         <input type="hidden" class="form-control form-control-sm" value="{{ $current->nm_nominee_name }}" id="nm_nominee_name_input" name="nm_nominee_name" />
@@ -128,7 +123,7 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-6">
-                                        <label class="col-form-label p-0">S/O,W/O Name</label>
+                                        <label class="col-form-label p-0">S/O, D/O,W/O Name</label>
                                         <input type="hidden" class="form-control form-control-sm" value="{{ $current->nm_nominee_parent_name }}" id="nm_nominee_parent_name_input" name="nm_nominee_parent_name" />
                                         <p class="col-form-label nm_nominee_parent_name p-0 txt_color">{{ $current->nm_nominee_parent_name }}</p>
                                     </div>
@@ -230,11 +225,6 @@
                             <div class="col-sm-4">
                                 <h3>Nominee Info</h3>
                                 <div class="mb-1 row">
-                                    <div class="col-sm-6">
-                                        <label class="col-form-label p-0">Nominee No#</label>
-                                        <input type="hidden" class="form-control form-control-sm" value="{{ $current->om_nominee_no}}" id="om_nominee_no_input" name="om_nominee_no" />
-                                        <p class="col-form-label om_nominee_no p-0 txt_color">{{ $current->om_nominee_no}}</p>
-                                    </div>
                                     <div class="col-sm-6">
                                         <label class="col-form-label p-0">Nominee Name</label>
                                         <input type="hidden" class="form-control form-control-sm" value="{{ $current->om_nominee_name}}" id="om_nominee_name_input" name="om_nominee_name" />

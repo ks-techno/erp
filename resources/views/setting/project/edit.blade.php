@@ -26,6 +26,7 @@
                             @if($data['view'])
                                 @permission($data['permission_edit'])
                                 <a href="{{route('project.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                                 @endpermission
                                 @else
                                 <div class="card-link">
