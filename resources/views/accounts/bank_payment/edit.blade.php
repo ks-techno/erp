@@ -45,6 +45,7 @@
                             <a href="{{$data['list_url']}}"
                              class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                          @endif
+
                             </div>
                     </div>
                     <div class="card-body mt-2">
@@ -212,14 +213,14 @@
                                                             <td>
                                                                 <input data-id="egt_debit" type="text"
                                                                  name="pd[{{$loop->iteration}}][egt_debit]"
-                                                                 value="{{ is_numeric($dtl->debit) ? number_format($dtl->debit, 2) : number_format($dtl->debit) }}"
+                                                                 value="{{ is_float($dtl->debit) ? number_format($dtl->debit, 2) : number_format($dtl->debit) }}"
                                                                    class="FloatValidate debit form-control
                                                                    form-control-sm">
                                                             </td>
                                                             <td>
                                                                 <input data-id="egt_credit" type="text"
                                                                  name="pd[{{$loop->iteration}}][egt_credit]"
-                                                                 value="{{ is_numeric($dtl->credit) ? number_format($dtl->credit, 2) : number_format($dtl->credit) }}"
+                                                                 value="{{ is_float($dtl->credit) ? number_format($dtl->credit, 2) : number_format($dtl->credit) }}"
                                                                    class="FloatValidate credit form-control
                                                                    form-control-sm">
                                                             </td>
