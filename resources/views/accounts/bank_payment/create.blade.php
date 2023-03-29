@@ -1,6 +1,32 @@
 @extends('layouts.form')
 @section('title', $data['title'])
 @section('style')
+    <style>
+        .right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 800px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .show .modal-dialog {
+            /*position: absolute;*/right: 0px !important;
+        }
+        .right.fade .modal-dialog {
+            right: -320px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+        .right.fade.in .modal-dialog {
+            right: 0;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -131,6 +157,51 @@
                                                         <input id="egt_credit" type="text"
                                                          class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);" >
                                                     </td>
+                                                    <!-- <td class="text-center">
+                                                        <button type="button" id="egt_add"
+                                                         class="egt_add btn btn-primary btn-sm">
+                                                            <i data-feather='plus'></i>
+                                                        </button>
+                                                    </td> -->
+                                                </tr>
+                                                <tr class="egt_form_header_input">
+                                                    <td>
+                                                        <input id="egt_sr_no" readonly type="text"
+                                                        class="form-control form-control-sm">
+                                                        <input id="chart_id" type="hidden"
+                                                         class="chart_id form-control form-control-sm">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_chart_code" type="text"
+                                                         class="chart_code form-control form-control-sm text-left"
+                                                          placeholder="Press F2">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_chart_name" type="text"
+                                                         class="chart_name form-control form-control-sm" readonly>
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_cheque_no" type="text"
+                                                         class="cheque_no form-control form-control-sm">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_cheque_date" type="text"
+                                                         class="cheque_date form-control
+                                                         form-control-sm flatpickr-basic flatpickr-input"
+                                                          placeholder="Click & Select Date">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_description" type="text"
+                                                         class="form-control form-control-sm">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_debit" type="text"
+                                                         class="FloatValidate debit form-control form-control-sm" onblur="formatAmount(this);">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_credit" type="text"
+                                                         class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);" >
+                                                    </td>
                                                     <td class="text-center">
                                                         <button type="button" id="egt_add"
                                                          class="egt_add btn btn-primary btn-sm">
@@ -184,6 +255,7 @@
             </div>
         </div>
     </form>
+   
     @endpermission
 @endsection
 @section('pageJs')
