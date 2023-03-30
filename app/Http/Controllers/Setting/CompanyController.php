@@ -223,7 +223,7 @@ class CompanyController extends Controller
             'name' => 'required',
             'country_id' => 'required'
         ]);
-
+       
         if ($validator->fails()) {
             $data['validator_errors'] = $validator->errors();
             $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
@@ -242,11 +242,10 @@ class CompanyController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'contact_no' => $request->contact_no,
-                    'address' => $request->input('address'),
+                    'address' => $request->address,
                     'country_id' => $request->country_id,
                 ]);
             $company = Company::where('uuid',$id)->first();
-
             $r = self::insertAddress($request,$company);
 
             if(isset($r['status']) && $r['status'] == 'error'){

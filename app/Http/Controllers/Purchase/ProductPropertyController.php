@@ -64,28 +64,7 @@ class ProductPropertyController extends Controller
             }
             $entries = [];
             foreach ($allData as $row) {
-                $data['current'] = Product::with('property_variation')->where('uuid',$row->id)->first();
-                $data['property_values'] = [];
-                if(!empty($data['current']->property_variation)){
-                    foreach ($data['current']->property_variation as $property_variation){
-                        $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;
-                    }
-                    $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
-                    $data['prod_var'] = [];
-                    foreach ($pvdtls as $pvdtl ){
-                        $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
-                    }
-                    $prod_var = $data['prod_var'];
-                    foreach($prod_var['input'] as $input_name=>$input_list){
-                        $thix_list = $input_list[0];
-                        $product_variation = $thix_list['product_variation'];
-                        if($product_variation['display_title']=='Block'){
-                            $blockname=$data['property_values'];
-                        }
-                    }
-                    
-                }
-                
+                $getdat='';
                 $entry_status = $this->getStatusTitle()[$row->status];
                 $urlEdit = route('product-property.edit',$row->uuid);
                 $urlDel = route('product-property.destroy',$row->uuid);
@@ -103,17 +82,50 @@ class ProductPropertyController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-                
+                $data['current'] = Product::with('property_variation')->where('uuid',$row->id)->first();
+                $data['property_values'] = [];
+                $data['prod_var'] = [];
+                if(!empty($data['current']->property_variation)){
+                    foreach ($data['current']->property_variation as $property_variation){
+                        $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;
+                    }
+                    $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
+                   
+                    foreach ($pvdtls as $pvdtl ){
+                        $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
+                    }
+                }
+                $propertyValuesHtml = '';
+                if(count($data['prod_var']) != 0) {
+                    $prod_var = $data['prod_var'];
+                    $prop_val =$data['property_values'];
+                    if(isset($prod_var['input'])){
+                        foreach($prod_var['input'] as $input_name=>$input_list){
+                            $thix_list = $input_list[0];
+                            $product_variation = $thix_list['product_variation'];
+                            if(isset($data['property_values'][$input_name])) {
+                                if($product_variation['display_title'] == 'Block'){
+                                    foreach ($data['property_values'][$input_name] as $propertyValue) {
+                                        $propertyValuesHtml = $propertyValue;
+                                }
+                                
+                                }
+                            }
+                        }                                     
+                    }                                           
+                }
                 $rowBuyableType = $row->buyable_type;
                 $buyableTypeName = $rowBuyableType ? $rowBuyableType->name : '';
                 $entries[] = [
                     $row->code,
                     $row->name,
                     $buyableTypeName,
+                    $propertyValuesHtml,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];
             }
+        
             $result = [
                 'draw' => $draw,
                 'recordsTotal' => $recordsTotal,
@@ -291,7 +303,7 @@ class ProductPropertyController extends Controller
                     $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
                 }
             }
-          // dd($data['property_values']);
+          //dd($data['property_values']); die();
         }else{
             abort('404');
         }
