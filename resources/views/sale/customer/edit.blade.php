@@ -152,9 +152,6 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Nominee No.</label>
-                                    </div>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control form-control-sm" value="{{$current->nominee_no}}" id="nominee_no" name="nominee_no" />
                                     </div>

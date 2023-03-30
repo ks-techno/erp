@@ -19,7 +19,7 @@
 <table class="info-table" width="100%">
     <tbody>
         <tr>
-            <td width="7%">
+            <td width="10%">
                 <div class="info-block">
                     <span class="heading heading-block">Code :</span>
                     <span class="normal normal-block">{{$current->voucher_no}}</span>
@@ -46,7 +46,7 @@
         <tr>
             <th width="5%">Sr No#</th>
             <th width="10%">Account Code</th>
-            <th width="10%">Account Name</th>
+            <th width="15%">Account Name</th>
             <th width="10%">Cheque No#</th>
             <th width="10%">Cheque Date</th>
             <th width="20%">Description</th>
@@ -65,11 +65,24 @@
                     @php
                         $cheque_date = date('d-m-Y',strtotime($dtl->cheque_date));
                         $cheque_date = ($cheque_date == '01-01-1970')?"":$cheque_date;
+                        // Check if the debit value is a whole number
+                        if (floor($dtl->debit) == $dtl->debit) {
+                        $formatted_debit = number_format($dtl->debit, 0); // Format as integer with no decimal places
+                       } else {
+                       $formatted_debit = number_format($dtl->debit, 2); // Format with 2 decimal places
+                       }
+
+                       // Check if the credit value is a whole number
+                      if (floor($dtl->credit) == $dtl->credit) {
+                      $formatted_credit = number_format($dtl->credit, 0); // Format as integer with no decimal places
+                      } else {
+                       $formatted_credit = number_format($dtl->credit, 2); // Format with 2 decimal places
+                     }
                     @endphp
                     <td>{{$cheque_date}}</td>
                     <td>{{$dtl->description}}</td>
-                    <td class="text-right">{{number_format($dtl->debit,2)}}</td>
-                    <td class="text-right">{{number_format($dtl->credit,2)}}</td>
+                    <td class="text-right">{{ $formatted_debit }}</td>
+                    <td class="text-right">{{ $formatted_credit }}</td>
                 </tr>
                 @php
                 $sum_debit += $dtl->debit;

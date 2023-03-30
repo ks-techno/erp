@@ -163,6 +163,24 @@
                                                 <tbody class="egt_form_body">
                                                 @if(isset( $data['dtl']) && count( $data['dtl']) > 0)
                                                     @foreach($data['dtl'] as $dtl)
+
+                                                    @php
+                                                // Check if the debit value is a whole number
+                                                   if (floor($dtl->debit) == $dtl->debit) {
+                                                   $formatted_debit = number_format($dtl->debit, 0); // Format as integer with no decimal places
+                                                   } else {
+                                                     $formatted_debit = number_format($dtl->debit, 2); // Format with 2 decimal places
+                                                      }
+
+                                                    // Check if the credit value is a whole number
+                                                    if (floor($dtl->credit) == $dtl->credit) {
+                                                    $formatted_credit = number_format($dtl->credit, 0); // Format as integer with no decimal places
+                                                    } else {
+                                                   $formatted_credit = number_format($dtl->credit, 2); // Format with 2 decimal places
+                                                    }
+                                                    
+                                                    @endphp
+
                                                         <tr>
                                                             <td class="handle">
                                                                 <i data-feather="move" class="handle egt_handle"></i>
@@ -212,14 +230,14 @@
                                                             <td>
                                                                 <input data-id="egt_debit" type="text"
                                                                  name="pd[{{$loop->iteration}}][egt_debit]"
-                                                                  value="{{number_format($dtl->debit,3)}}"
+                                                                  value="{{$formatted_debit}}"
                                                                    class="FloatValidate debit form-control
                                                                    form-control-sm">
                                                             </td>
                                                             <td>
                                                                 <input data-id="egt_credit" type="text"
                                                                  name="pd[{{$loop->iteration}}][egt_credit]"
-                                                                  value="{{number_format($dtl->credit,3)}}"
+                                                                  value="{{$formatted_credit}}"
                                                                    class="FloatValidate credit form-control
                                                                    form-control-sm">
                                                             </td>
@@ -235,6 +253,7 @@
                                                     @endforeach
                                                 @endif
                                                 </tbody>
+                                                
                                                 <tfoot class="egt_form_footer">
                                                 <tr class="egt_form_footer_total">
                                                     <td class="voucher-total-title">Total</td>
