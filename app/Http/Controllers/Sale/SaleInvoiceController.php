@@ -196,9 +196,6 @@ class SaleInvoiceController extends Controller
             if($request->seller_type == 'dealer'){
                 $modal = Dealer::where('id',$request->seller_id)->first();
             }
-             // Calculate the Booking Price
-           $booking_price = $request->sale_price - $request->sale_discount;
-
             $sale = Sale::create([
                 'uuid' => self::uuid(),
                 'code' => $code,
