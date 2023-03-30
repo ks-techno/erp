@@ -15,6 +15,7 @@ class Dealer extends Model
         'name',
         'cnic_no',
         'contact_no',
+        'email',
         'agency_name',
         'dealer_type',
         'status',

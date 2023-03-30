@@ -288,8 +288,8 @@ class BankReceiveController extends Controller
         $total_debit = 0;
         $total_credit = 0;
         foreach ($request->pd as $pd) {
-            $total_debit += $pd['egt_debit'];
-            $total_credit += $pd['egt_credit'];
+            $total_debit += intval($pd['egt_debit']);
+            $total_credit += intval($pd['egt_credit']);
         }
         if(($total_debit != $total_credit) || (empty($total_debit) && empty($total_credit)) ){
             return $this->jsonErrorResponse($data, 'debit credit must be equal');
@@ -323,8 +323,8 @@ class BankReceiveController extends Controller
                         'chart_account_code' => $account->code,
                         'cheque_no' => $pd['egt_cheque_no'],
                         'cheque_date' => $pd['egt_cheque_date'],
-                        'debit' => Utilities::NumFormat($pd['egt_debit']),
-                        'credit' => Utilities::NumFormat($pd['egt_credit']),
+                        'debit' =>str_replace(',', '',($pd['egt_debit'])),
+                        'credit' =>str_replace(',', '',($pd['egt_credit'])),
                         'description' => $pd['egt_description'],
                         'remarks' => $request->remarks,
                         'company_id' => auth()->user()->company_id,

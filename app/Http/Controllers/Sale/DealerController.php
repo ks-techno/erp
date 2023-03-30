@@ -123,6 +123,7 @@ class DealerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'cnic_no' => 'required',
+            'email' => 'nullable|email',
         ]);
 
         if ($validator->fails()) {
@@ -143,6 +144,7 @@ class DealerController extends Controller
                 'name' => self::strUCWord($request->name),
                 'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
+                'email' => $request->email,
                 'agency_name' => $request->agency_name,
                 'dealer_type' => $request->dealer_type,
                 'commission' => $request->commission,

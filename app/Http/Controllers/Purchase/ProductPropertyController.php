@@ -110,7 +110,6 @@ class ProductPropertyController extends Controller
                     $row->code,
                     $row->name,
                     $buyableTypeName,
-                    $buyableTypeName,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];

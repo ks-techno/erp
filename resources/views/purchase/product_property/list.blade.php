@@ -29,7 +29,6 @@
                                         <th class="cell-fit">Code</th>
                                         <th class="cell-fit">Plot No</th>
                                         <th class="cell-fit">property type</th>
-                                        <th class="cell-fit">Block</th>
                                         <th class="cell-fit text-center">Status</th>
                                         <th class="cell-fit"></th>
                                     </tr>

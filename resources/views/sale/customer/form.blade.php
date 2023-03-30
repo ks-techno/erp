@@ -33,7 +33,7 @@
                             </div>
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
-                                    <label class="col-form-label p-0">S/O,W/O Name</label>
+                                    <label class="col-form-label p-0">S/O, D/O,W/O Name</label>
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control form-control-sm" value="" id="father_name" name="father_name" />
