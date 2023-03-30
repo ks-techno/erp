@@ -16,6 +16,7 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                             </div>
+                            
                         <div class="card-link">
                         <button type="submit" name="current_action_id" value="store"
                          class="btn btn-success btn-sm waves-effect waves-float waves-light">Save as Draft</button>
