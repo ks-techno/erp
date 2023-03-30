@@ -41,8 +41,8 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
+                            </div>
                             
-                        </div>
                         <div class="card-link">
                         <button type="submit" name="current_action_id" value="store"
                          class="btn btn-success btn-sm waves-effect waves-float waves-light">Save as Draft</button>
@@ -155,7 +155,7 @@
                                                     </td>
                                                     <td>
                                                         <input id="egt_credit" type="text"
-                                                         class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);" >
+                                                         class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
                                                     <!-- <td class="text-center">
                                                         <button type="button" id="egt_add"

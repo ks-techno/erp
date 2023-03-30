@@ -63,8 +63,8 @@
                     @endphp
                     <td>{{$cheque_date}}</td>
                     <td>{{$dtl->description}}</td>
-                    <td class="text-right">{{number_format($dtl->debit,2)}}</td>
-                    <td class="text-right">{{number_format($dtl->credit,2)}}</td>
+                    <td class="text-right">{{ is_float($dtl->debit) ? number_format($dtl->debit,2) : number_format($dtl->debit)}}</td>
+                    <td class="text-right">{{ is_float($dtl->credit) ? number_format($dtl->credit,2) : number_format($dtl->credit)}}</td>
                 </tr>
                 @php
                 $sum_debit += $dtl->debit;
