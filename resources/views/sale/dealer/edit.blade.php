@@ -58,10 +58,10 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
-                                        <label class="col-form-label">Email</label>
+                                        <label class="col-form-label">Agency Name</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->email}}" id="email" name="email" />
+                                        <input type="text" class="form-control form-control-sm" value="{{$current->agency_name}}" id="agency_name" name="agency_name" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -78,6 +78,19 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control form-control-sm validate_number" id="commission" name="commission" value="{{$current->commission}}" />
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Dealer Type</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select name="dealer_type" id="dealer_type" class="form-select select2">
+                                            <option value='{{$current->dealer_type}}'>{{$current->dealer_type}}</option>
+                                            <option value=''>Select Dealer Type</option>
+                                            <option value='Main Dealer'>Main Dealer</option>
+                                            <option value='SUb Dealer'>Sub Dealer</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

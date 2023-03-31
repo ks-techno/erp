@@ -51,12 +51,9 @@ class ProductPropertyController extends Controller
              
              $dataSql = Product::with('buyable_type')->where('product_form_type','property')
             ->where(Utilities::CompanyProjectId())->orderByName();
-
             $allData = $dataSql->get();
-
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
-
             $delete_per = false;
             if(auth()->user()->isAbleTo(self::Constants()['delete'])){
                 $delete_per = true;
@@ -67,6 +64,7 @@ class ProductPropertyController extends Controller
             }
             $entries = [];
             foreach ($allData as $row) {
+                $getdat='';
                 $entry_status = $this->getStatusTitle()[$row->status];
                 $urlEdit = route('product-property.edit',$row->uuid);
                 $urlDel = route('product-property.destroy',$row->uuid);
@@ -84,17 +82,50 @@ class ProductPropertyController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-                
+                $data['current'] = Product::with('property_variation')->where('uuid',$row->id)->first();
+                $data['property_values'] = [];
+                $data['prod_var'] = [];
+                if(!empty($data['current']->property_variation)){
+                    foreach ($data['current']->property_variation as $property_variation){
+                        $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;
+                    }
+                    $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
+                   
+                    foreach ($pvdtls as $pvdtl ){
+                        $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
+                    }
+                }
+                $propertyValuesHtml = '';
+                if(count($data['prod_var']) != 0) {
+                    $prod_var = $data['prod_var'];
+                    $prop_val =$data['property_values'];
+                    if(isset($prod_var['input'])){
+                        foreach($prod_var['input'] as $input_name=>$input_list){
+                            $thix_list = $input_list[0];
+                            $product_variation = $thix_list['product_variation'];
+                            if(isset($data['property_values'][$input_name])) {
+                                if($product_variation['display_title'] == 'Block'){
+                                    foreach ($data['property_values'][$input_name] as $propertyValue) {
+                                        $propertyValuesHtml = $propertyValue;
+                                }
+                                
+                                }
+                            }
+                        }                                     
+                    }                                           
+                }
                 $rowBuyableType = $row->buyable_type;
                 $buyableTypeName = $rowBuyableType ? $rowBuyableType->name : '';
                 $entries[] = [
                     $row->code,
                     $row->name,
                     $buyableTypeName,
+                    $propertyValuesHtml,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];
             }
+        
             $result = [
                 'draw' => $draw,
                 'recordsTotal' => $recordsTotal,
@@ -172,7 +203,7 @@ class ProductPropertyController extends Controller
             $data['code'] = Utilities::documentCode($doc_data);
             $p_data = [
                 'uuid' => self::uuid(),
-                'name' => self::strUCWord($request->name),
+                'name' => $request->name,
                 'code' => $data['code'],
                 'external_item_id' => $request->external_item_id,
                 'status' => isset($request->status) ? "1" : "0",
@@ -272,7 +303,7 @@ class ProductPropertyController extends Controller
                     $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
                 }
             }
-          // dd($data['property_values']);
+          //dd($data['property_values']); die();
         }else{
             abort('404');
         }
@@ -320,7 +351,7 @@ class ProductPropertyController extends Controller
         DB::beginTransaction();
         try {
             $p_data = [
-                'name' => self::strUCWord($request->name),
+                'name' => $request->name,
                 'external_item_id' => $request->external_item_id,
                 'status' => isset($request->status) ? "1" : "0",
                 'default_sale_price' => $request->default_sale_price,

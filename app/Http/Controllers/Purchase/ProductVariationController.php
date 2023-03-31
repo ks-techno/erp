@@ -170,7 +170,7 @@ class ProductVariationController extends Controller{
             }
             $pv = ProductVariation::create([
                 'uuid' => self::uuid(),
-                'display_title' => self::strUCWord($request->display_title),
+                'display_title' => $request->display_title,
                 'key_name' => $key_name,
                 'description' => $request->description,
                 'value_type' => $request->value_type,
@@ -315,7 +315,7 @@ class ProductVariationController extends Controller{
 
             $pvup = ProductVariation::where('uuid',$id)
                 ->update([
-                'display_title' => self::strUCWord($request->display_title),
+                'display_title' => $request->display_title,
                 /*'key_name' => $key_name,*/
                 'description' => $request->description,
                 'value_type' => $request->value_type,

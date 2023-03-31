@@ -41,7 +41,7 @@ class PaymentModeSeeder extends Seeder
         }
         /* Payment Mode for Property*/
         $property_payment_modes = [
-            ['name'=>'Cash', 'old_name'=>'On Cash','slug'=>'cash','default'=>1],
+            ['name'=>'Full Payment', 'old_name'=>'Cash','slug'=>'full payment','default'=>1],
             ['name'=>'Installment', 'old_name'=> 'On Installment','slug'=>'installment','default'=>0],
         ];
         foreach ($property_payment_modes as $row){
