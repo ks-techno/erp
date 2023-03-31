@@ -23,7 +23,7 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
-                            @if(!$data['posted'])
+                               @if(!$data['posted'])
                                 @permission($data['permission_edit'])
                                 <a href="{{route('accounts.journal.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -142,10 +142,10 @@
                                                                 <input type="text" data-id="egt_description" name="pd[{{$loop->iteration}}][egt_description]" value="{{$dtl->description}}"  class="form-control form-control-sm">
                                                             </td>
                                                             <td>
-                                                                <input data-id="egt_debit" type="text" name="pd[{{$loop->iteration}}][egt_debit]" value="{{number_format($dtl->debit,3)}}" class="FloatValidate debit form-control form-control-sm">
+                                                                <input data-id="egt_debit" type="text" name="pd[{{$loop->iteration}}][egt_debit]" value="{{ format_number($dtl->debit)}}" class="FloatValidate debit form-control form-control-sm">
                                                             </td>
                                                             <td>
-                                                                <input data-id="egt_credit" type="text" name="pd[{{$loop->iteration}}][egt_credit]" value="{{number_format($dtl->credit,3)}}" class="FloatValidate credit form-control form-control-sm">
+                                                                <input data-id="egt_credit" type="text" name="pd[{{$loop->iteration}}][egt_credit]" value="{{ format_number($dtl->credit)}}" class="FloatValidate credit form-control form-control-sm">
                                                             </td>
                                                             <td class="text-center">
                                                                 <div class="egt_btn-group">

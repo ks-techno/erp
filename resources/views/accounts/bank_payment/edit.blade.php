@@ -213,14 +213,14 @@
                                                             <td>
                                                                 <input data-id="egt_debit" type="text"
                                                                  name="pd[{{$loop->iteration}}][egt_debit]"
-                                                                 value="{{ is_float($dtl->debit) ? number_format($dtl->debit, 2) : number_format($dtl->debit) }}"
+                                                                  value="{{ format_number($dtl->debit)}}"
                                                                    class="FloatValidate debit form-control
                                                                    form-control-sm">
                                                             </td>
                                                             <td>
                                                                 <input data-id="egt_credit" type="text"
                                                                  name="pd[{{$loop->iteration}}][egt_credit]"
-                                                                 value="{{ is_float($dtl->credit) ? number_format($dtl->credit, 2) : number_format($dtl->credit) }}"
+                                                                  value="{{ format_number($dtl->credit)}}"
                                                                    class="FloatValidate credit form-control
                                                                    form-control-sm">
                                                             </td>
@@ -236,6 +236,7 @@
                                                     @endforeach
                                                 @endif
                                                 </tbody>
+                                                
                                                 <tfoot class="egt_form_footer">
                                                 <tr class="egt_form_footer_total">
                                                     <td class="voucher-total-title">Total</td>
@@ -247,7 +248,7 @@
                                                     <td class="voucher-total-debit text-end">
                                                         <span id="tot_debit"></span>
                                                         <input id="tot_voucher_debit"
-                                                         name="tot_voucher_debit" type="hidden" >
+                                                         name="tot_voucher_debit" type="hidden">
                                                     </td>
                                                     <td class="voucher-total-credit text-end">
                                                         <span id="tot_credit"></span>
