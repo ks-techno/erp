@@ -13,10 +13,6 @@ $(document).on('click','.data_tbody_row',function(e){
     $('.egt_form_header_input').find('.chart_id').val(chart_id);
 
 });
-var create_new_customer = thix.find('td').attr('data-field');
-if(create_new_customer == 'create_new_customer'){
-    $('#createNewCustomer').modal('show');
-}
 $('#'+id).keyup(function(e){
     var thix = $(this);
     var val = thix.val();

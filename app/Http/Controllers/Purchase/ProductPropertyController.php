@@ -82,7 +82,7 @@ class ProductPropertyController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-                $data['current'] = Product::with('property_variation')->where('uuid',$row->id)->first();
+                $data['current'] = Product::with('property_variation')->where('uuid',$row->uuid)->first();
                 $data['property_values'] = [];
                 $data['prod_var'] = [];
                 if(!empty($data['current']->property_variation)){
@@ -96,9 +96,7 @@ class ProductPropertyController extends Controller
                     }
                 }
                 $propertyValuesHtml = '';
-                if(count($data['prod_var']) != 0) {
                     $prod_var = $data['prod_var'];
-                    $prop_val =$data['property_values'];
                     if(isset($prod_var['input'])){
                         foreach($prod_var['input'] as $input_name=>$input_list){
                             $thix_list = $input_list[0];
@@ -113,7 +111,7 @@ class ProductPropertyController extends Controller
                             }
                         }                                     
                     }                                           
-                }
+                
                 $rowBuyableType = $row->buyable_type;
                 $buyableTypeName = $rowBuyableType ? $rowBuyableType->name : '';
                 $entries[] = [

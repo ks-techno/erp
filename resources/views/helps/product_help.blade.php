@@ -79,9 +79,9 @@
             <table border="1" class="" width="100%">
                 <thead>
                 <tr>
-                    <th data-field="Product Code" width="25%">Product Code</th>
-                    <th data-field="Product Name" width="50%">Product Name</th>
-                    <th data-field="Sale Price" width="25%">Sale Price</th>
+                    <th data-field="Product Code" width="25%">Registration No.</th>
+                    <th data-field="Product Name" width="50%">Plot Number</th>
+                    <th data-field="Sale Price" width="25%">Block</th>
                 </tr>
                 </thead>
             </table>
@@ -103,8 +103,19 @@
                     <tbody>
                     <tr class="data-dtl">
                         <td data-field="product_code" width="25%">{{$property->code}}</td>
-                        <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td> 
-                        <td data-view="show" data-field="sale_price" width="25%">{{$property->sale_price}}</td>
+                        <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td>
+                            @php
+                                $prod_var = $data['prod_var'];
+                            @endphp
+                            @if(isset($prod_var['input']))
+                                @foreach($prod_var['input'] as $input_name=>$input_list)
+                                    @php
+                                        $thix_list = $input_list[0];
+                                        $product_variation = $thix_list['product_variation'];
+                                    @endphp
+                        <td data-view="show" data-field="sale_price" width="25%">{{isset($data['property_values'][$input_name])?current($data['property_values'][$input_name]):""}}</td>
+                                    @endforeach
+                            @endif
                     </tr>
                     <tr class="d-none">
                         <td data-field="product_id">{{$property->id}}</td>
