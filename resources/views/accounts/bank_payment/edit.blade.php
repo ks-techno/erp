@@ -12,7 +12,7 @@
         }
     @endphp
     <form id="bank_payment_edit" class="bank_payment_edit"
-     action="{{isset($url)?$url:""}}"
+     action="{{isset($url)?$url:"}}"
        method="post" enctype="multipart/form-data" autocomplete="off">
         @if(!$data['view'])
             @csrf
@@ -36,6 +36,7 @@
                                     @endpermission
                                     @endif
                                     @else
+                                    </div>
                         <div class="card-link">
                         <button type="submit" name="current_action_id" value="update"
                          class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
@@ -44,7 +45,7 @@
                             <a href="{{$data['list_url']}}"
                              class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                          @endif
-                            </div>
+
                             </div>
                     </div>
                     <div class="card-body mt-2">

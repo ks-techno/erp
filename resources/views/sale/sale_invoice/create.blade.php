@@ -330,6 +330,32 @@
             $('#installments_block').show();
         }
     </script>
+    <script>
+    $(document).ready(function() {
+    // Get the sale price and sale discount input fields
+    var salePriceInput = $('#sale_price');
+    var saleDiscountInput = $('#sale_discount');
+
+    // Get the booking price input field
+    var bookedPriceInput = $('#booked_price');
+
+    // Calculate the booking price whenever the sale price or sale discount changes
+    salePriceInput.on('change', calculateBookingPrice);
+    saleDiscountInput.on('change', calculateBookingPrice);
+
+    function calculateBookingPrice() {
+        // Get the sale price and sale discount values
+        var salePrice = parseFloat(salePriceInput.val()) || 0;
+        var saleDiscount = parseFloat(saleDiscountInput.val()) || 0;
+
+        // Calculate the booking price
+        var bookedPrice = salePrice - saleDiscount;
+
+        // Set the booking price input field value
+        bookedPriceInput.val(bookedPrice.toFixed(2));
+    }
+});
+</script>
 
     @yield('scriptCustom')
 @endsection

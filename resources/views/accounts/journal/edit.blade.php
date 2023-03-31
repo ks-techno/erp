@@ -30,12 +30,13 @@
                                @endpermission
                                @endif
                                @else
+                           </div>
                               <div class="card-link">  
-                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
-                         <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
-                        <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                              <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                              <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
+                              <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                          @endif
-                         </div>
+                    </div>
                   </div>
                     <div class="card-body mt-2">
                         <div class="mb-1 row">

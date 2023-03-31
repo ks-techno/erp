@@ -28,12 +28,12 @@
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                                 @endpermission
                                 @else
+                                </div>
                            <div class="card-link">
                           <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                           <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         @endif
-                        </div>
-                        </div>
+                         </div>
                     </div>
                     <div class="card-body mt-2">
                         <div class="row">
