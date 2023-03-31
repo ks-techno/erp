@@ -31,7 +31,7 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <a href="{{route('sale.booking_transfer.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{route('sale.booking-transfer.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         
                                 @endpermission
@@ -234,7 +234,7 @@
                                 </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-6">
-                                        <label class="col-form-label p-0">S/O,W/O Name</label>
+                                        <label class="col-form-label p-0">S/O, D/O,W/O Name</label>
                                         <input type="hidden" class="form-control form-control-sm" value="{{ $current->om_nominee_parent_name}}" id="om_nominee_parent_name_input" name="om_nominee_parent_name" />
                                         <p class="col-form-label om_nominee_parent_name p-0 txt_color">{{ $current->om_nominee_parent_name}}</p>
                                     </div>

@@ -24,7 +24,7 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <a href="{{route('purchase.product_variation.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{route('purchase.product-variation.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                                @endpermission
                                 @else
