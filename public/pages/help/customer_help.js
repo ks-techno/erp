@@ -61,3 +61,41 @@ $(document).on('click',function(e){
 $(document).on('click','#addon_remove',function(e){
     $(this).parents('.eg_help_block').find('input').val('');
 });
+
+$(document).on('keydown', function(e) {
+    if ($('.inline_help_table').length) {
+        var inLineHelp = $('.inline_help_table');
+        var scrollHeight = inLineHelp.prop('scrollHeight');
+        var scrollTop = inLineHelp.scrollTop();
+        var lineHeight = parseInt(inLineHelp.css('line-height'));
+        var offsetTop = parseInt(inLineHelp.css('top'));
+        var keyCode = e.keyCode;
+        if (keyCode == 38) { // up arrow key
+            e.preventDefault();
+            $('#seller_type').focus();
+            inLineHelp.scrollTop(scrollTop - lineHeight);
+            if (inLineHelp.scrollTop() == 0) {
+                inLineHelp.css('top', offsetTop + lineHeight + 'px');
+            }
+            var selectedRow = inLineHelp.find('.selected');
+            if (selectedRow.prev().length) {
+                selectedRow.removeClass('selected');
+                selectedRow.prev().addClass('selected');
+            }
+        } else if (keyCode == 40) { // down arrow key
+            e.preventDefault();
+            $('#seller_type').focus();
+            inLineHelp.scrollTop(scrollTop + lineHeight);
+            if (inLineHelp.scrollTop() + inLineHelp.innerHeight() == scrollHeight) {
+                inLineHelp.css('top', offsetTop - lineHeight + 'px');
+            }
+            var selectedRow = inLineHelp.find('.selected');
+            if (selectedRow.next().length) {
+                selectedRow.removeClass('selected');
+                selectedRow.next().addClass('selected');
+            }
+        }
+        
+        
+    }
+});

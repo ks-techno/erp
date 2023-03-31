@@ -242,8 +242,6 @@ class CompanyController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'contact_no' => $request->contact_no,
-                    'address' => $request->address,
-                    'country_id' => $request->country_id,
                 ]);
             $company = Company::where('uuid',$id)->first();
             $r = self::insertAddress($request,$company);
