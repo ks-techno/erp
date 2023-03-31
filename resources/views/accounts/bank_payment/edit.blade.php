@@ -12,7 +12,7 @@
         }
     @endphp
     <form id="bank_payment_edit" class="bank_payment_edit"
-     action="{{isset($url)?$url:"}}"
+     action="{{isset($url)?$url:""}}"
        method="post" enctype="multipart/form-data" autocomplete="off">
         @if(!$data['view'])
             @csrf
