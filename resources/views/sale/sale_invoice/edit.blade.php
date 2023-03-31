@@ -26,6 +26,9 @@
         .right.fade.in .modal-dialog {
             right: 0;
         }
+        .text-right{
+          margin-left: 670px;
+        }
     </style>
 @endsection
 
@@ -50,8 +53,10 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
+                                <div class="text-right">
                                 <a href="{{route('sale.sale-invoice.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                                </div>
                                 @endpermission
                                 @else
                                 </div>

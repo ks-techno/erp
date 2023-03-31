@@ -5,7 +5,9 @@
         .txt_color{
         color: #0004f8;
     }
-
+.text-right{
+    margin-left: 670px;
+}
 </style>
 @endsection
 
@@ -31,9 +33,10 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
+                                <div class="text-right">
                                 <a href="{{route('sale.booking-transfer.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                        
+                                </div>
                                 @endpermission
                                 @else
                                 </div>
