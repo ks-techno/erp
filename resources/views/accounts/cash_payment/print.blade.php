@@ -55,28 +55,13 @@
     <tbody>
         @if(isset( $data['dtl']) && count( $data['dtl']) > 0)
             @foreach($data['dtl'] as $dtl)
-            @php
-            // Check if the debit value is a whole number
-                        if (floor($dtl->debit) == $dtl->debit) {
-                        $formatted_debit = number_format($dtl->debit, 0); // Format as integer with no decimal places
-                       } else {
-                       $formatted_debit = number_format($dtl->debit, 2); // Format with 2 decimal places
-                       }
-
-                       // Check if the credit value is a whole number
-                      if (floor($dtl->credit) == $dtl->credit) {
-                      $formatted_credit = number_format($dtl->credit, 0); // Format as integer with no decimal places
-                      } else {
-                       $formatted_credit = number_format($dtl->credit, 2); // Format with 2 decimal places
-                     }
-                     @endphp
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$dtl->chart_account_code}}</td>
                     <td>{{$dtl->chart_account_name}}</td>
                     <td>{{$dtl->description}}</td>
-                    <td class="text-right">{{$formatted_debit}}</td>
-                    <td class="text-right">{{$formatted_credit }}</td>
+                    <td class="text-right">{{ format_number($dtl->debit)}}</td>
+                    <td class="text-right">{{ format_number($dtl->credit)}}</td>
                 </tr>
                 @php
                 $sum_debit += $dtl->debit;
