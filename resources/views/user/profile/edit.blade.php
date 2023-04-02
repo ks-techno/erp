@@ -16,6 +16,7 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                             <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                            <a href="{{route('home')}}"  class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
                     </div>
                     <div class="card-body mt-2">

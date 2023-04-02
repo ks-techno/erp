@@ -1,7 +1,7 @@
 $(function () {
     'use strict';
 
-    var pageLoginForm = $('#bank_payment_edit');
+    var pageLoginForm = $('#bank_receive_edit');
 
     // jQuery Validation
     // --------------------------------------------------------------------

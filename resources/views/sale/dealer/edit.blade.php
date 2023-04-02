@@ -1,7 +1,11 @@
 @extends('layouts.form')
 @section('title', $data['title'])
 @section('style')
-
+<style>
+.text-right{
+    margin-left: 670px;
+}
+    </style>
 @endsection
 
 @section('content')
@@ -25,9 +29,10 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                             @if($data['view'])
                                 @permission($data['permission_edit'])
+                                <div class="text-right">
                                 <a href="{{route('sale.dealer.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                        
+                                </div>
                                 @endpermission
                                 @else
                                 </div>

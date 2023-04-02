@@ -1,6 +1,11 @@
 @extends('layouts.form')
 @section('title', $data['title'])
 @section('style')
+<style>
+.text-right{
+    margin-left: 670px;
+}
+    </style>
 @endsection
 
 @section('content')
