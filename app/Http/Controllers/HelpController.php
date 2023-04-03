@@ -53,11 +53,11 @@ class HelpController extends Controller
         $customer = Customer::where('id','<>',0);
         if(!empty($val)){
             $val = (string)$val;
-            $customer = $customer->where('contact_no','like',"%$val%");
+            $customer = $customer->where('cnic_no','like',"%$val%");
             $customer = $customer->orWhere('name','like',"%$val%");
         }
 
-        $customer = $customer->select('id','contact_no','name')->get();
+        $customer = $customer->select('id','cnic_no','name')->get();
         //dd($chart);
         $data['old_customer'] =  $customer;
 

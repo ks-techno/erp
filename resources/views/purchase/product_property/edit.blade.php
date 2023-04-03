@@ -27,16 +27,17 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
+                            </div>
+                                <div class="card-link"> 
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <div class="text-right">
+                               
                                 <a href="{{route('product-property.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                                </div>
+                                
                                 @endpermission
                                @else
-                               </div>
-                                <div class="card-link">  
+                                
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                         <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                          @endif
@@ -76,7 +77,7 @@
                                         <label class="col-form-label">Sale Price </label>
                                     </div>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->default_sale_price}}" id="default_sale_price" name="default_sale_price" />
+                                        <input type="text" class="form-control form-control-sm" value="{{number_format($current->default_sale_price)}}" id="default_sale_price" name="default_sale_price" />
                                     </div>
                                 </div>
                                 

@@ -246,7 +246,7 @@
                             </div>
                             <div class="mb-1 row">
                                 <div class="col-sm-6">
-                                    <label class="col-form-label p-0">S/O,W/O Name</label>
+                                    <label class="col-form-label p-0">S/O,D/O,W/O Name</label>
                                     <input type="hidden" class="form-control form-control-sm" value="" id="om_nominee_parent_name_input" name="om_nominee_parent_name" />
                                     <p class="col-form-label om_nominee_parent_name p-0 txt_color"></p>
                                 </div>

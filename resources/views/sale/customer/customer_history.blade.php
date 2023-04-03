@@ -24,7 +24,7 @@
                 </thead>
 	            <tbody>
                 @php
-                    $outerQry = App\Models\Views\ViewCustomerHistory::where('customer_id',$current->id)->groupBy('id')->get();
+                    $outerQry = App\Models\Views\ViewCustomerHistory::where('customer_id',$current->id)->get();
                     $innervariationQry = App\Models\ProductVariation::get();
                     $i=1;
                 @endphp
