@@ -85,7 +85,7 @@
                 <thead>
                 <tr>
                     <th data-field="Customer Name" width="50%">Customer Name</th>
-                    <th data-field="Customer Phone" width="50%">Customer Phone</th>
+                    <th data-field="Customer Phone" width="50%">Customer CNIC</th>
                 </tr>
                 </thead>
             </table>
@@ -108,7 +108,7 @@
                     <tbody>
                     <tr class="data-dtl">
                         <td data-field="customer_name" width="50%">{{$customer->name}}</td>
-                        <td data-view="show" data-field="customer_phone" width="50%">{{$customer->contact_no}}</td>
+                        <td data-view="show" data-field="customer_phone" width="50%">{{$customer->cnic_no}}</td>
                     </tr>
                     <tr class="d-none">
                         <td data-field="customer_id">{{$customer->id}}</td>

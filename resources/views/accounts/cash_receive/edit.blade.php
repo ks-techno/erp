@@ -1,10 +1,31 @@
 @extends('layouts.form')
 @section('title', $data['title'])
 @section('style')
-<style>
-.text-right{
-    margin-left: 670px;
-}
+    <style>
+        .right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 800px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .show .modal-dialog {
+            /*position: absolute;*/right: 0px !important;
+        }
+        .right.fade .modal-dialog {
+            right: -320px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+        .right.fade.in .modal-dialog {
+            right: 0;
+        }
     </style>
 @endsection
 
@@ -27,18 +48,19 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
+                            </div>
+                        <div class="card-link">
                             @if($data['view'])
                                 @if(!$data['posted'])
                                 @permission($data['permission_edit'])
-                            <div class="text-right">
+                           
                                 <a href="{{route('accounts.cash-receive.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                             </div>    
                                 @endpermission
                                 @endif
                                  @else
-                                 </div>
-                        <div class="card-link">
+                                 
                         <button type="submit" name="current_action_id" value="update" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                                 <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
                         <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -203,6 +225,15 @@
             </div>
         </div>
     </form>
+    <div class="modal fade right" id="createNewCustomer" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" style="">
+            <div class="modal-content" id="modal_create_customer">
+                <div class="modal-body " style="height:100vh">
+                    @include('accounts.chart_of_account.form')
+                </div>
+            </div>
+        </div>
+    </div>
     @endpermission
 @endsection
 @section('pageJs')

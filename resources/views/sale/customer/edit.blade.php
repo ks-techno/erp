@@ -53,16 +53,17 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
+                            </div>
+                                <div class="card-link">
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <div class="text-right">
+                               
                                 <a href="{{route('customer.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                                </div>
+                               
                                 @endpermission
                                 @else
-                                </div>
-                                <div class="card-link">
+                                
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                         <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                          @endif
@@ -154,11 +155,7 @@
                         <h3>Nominee Info</h3>
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->nominee_no}}" id="nominee_no" name="nominee_no" />
-                                    </div>
-                                </div>
+                                
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Nominee Name</label>

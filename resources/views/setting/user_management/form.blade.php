@@ -28,11 +28,12 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
+                            </div>
+                        <div class="card-link">
                             @if($id !== "")
                             <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
                             @endif
-                        </div>
-                        <div class="card-link">
+                        
                             <a href="{{$data['create_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
                     </div>

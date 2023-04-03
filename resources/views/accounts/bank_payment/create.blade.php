@@ -51,7 +51,7 @@
                             <a href="{{$data['list_url']}}"
                             class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
-                    </div>
+                        </div>
                     <div class="card-body mt-2">
                         <div class="mb-1 row">
                             <div class="col-sm-12">
@@ -255,7 +255,15 @@
             </div>
         </div>
     </form>
-   
+         <div class="modal fade right" id="createNewCustomer" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" style="">
+            <div class="modal-content" id="modal_create_customer">
+                <div class="modal-body " style="height:100vh">
+                    @include('accounts.chart_of_account.form')
+                </div>
+            </div>
+        </div>
+    </div>
     @endpermission
 @endsection
 @section('pageJs')

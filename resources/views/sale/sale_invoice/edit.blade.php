@@ -51,16 +51,15 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
+                            </div>
+                                <div class="card-link">
                             @if($data['view'])
                                 @permission($data['permission_edit'])
-                                <div class="text-right">
                                 <a href="{{route('sale.sale-invoice.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                                </div>
+                                
                                 @endpermission
                                 @else
-                                </div>
-                                <div class="card-link">
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                         <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                          @endif
@@ -179,7 +178,7 @@
                                         <label class="col-form-label">Sale Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" readonly class="form-control form-control-sm FloatValidate" value="{{$current->sale_price}}" id="sale_price" name="sale_price">
+                                        <input type="text" readonly class="form-control form-control-sm FloatValidate" value="{{number_format($current->sale_price)}}" id="sale_price" name="sale_price">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -187,7 +186,7 @@
                                         <label class="col-form-label p-0">Sale Discount</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->sale_discount}}"  id="sale_discount" name="sale_discount">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->sale_discount)}}"  id="sale_discount" name="sale_discount">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -195,7 +194,7 @@
                                         <label class="col-form-label">Booking Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->booked_price}}" id="booked_price" name="booked_price">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->booked_price)}}" id="booked_price" name="booked_price">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -203,7 +202,7 @@
                                         <label class="col-form-label p-0">Down Payment</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->down_payment}}" id="down_payment" name="down_payment" aria-invalid="false">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->down_payment)}}" id="down_payment" name="down_payment" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div id="installments_block" style="display: none">

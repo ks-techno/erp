@@ -7,7 +7,6 @@
                 <div class="card-header border-bottom">
                     <div class="card-left-side">
                         <h4 class="card-title">{{$data['title']}}</h4>
-                        
                     </div>
                     <div class="card-link">
                         <script> var modal = true; </script>
@@ -98,11 +97,7 @@
                     <h3>Nominee Info</h3>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="mb-1 row">
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control form-control-sm" value="" id="nominee_no" name="nominee_no" />
-                                </div>
-                            </div>
+                           
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
                                     <label class="col-form-label p-0">Nominee Name</label>

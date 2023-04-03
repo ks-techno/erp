@@ -1,6 +1,32 @@
 @extends('layouts.form')
 @section('title', $data['title'])
 @section('style')
+    <style>
+        .right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 800px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .show .modal-dialog {
+            /*position: absolute;*/right: 0px !important;
+        }
+        .right.fade .modal-dialog {
+            right: -320px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+        .right.fade.in .modal-dialog {
+            right: 0;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -101,6 +127,32 @@
                                                     <td>
                                                         <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
+                                                    <!-- <td class="text-center">
+                                                        <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
+                                                            <i data-feather='plus'></i>
+                                                        </button>
+                                                    </td> -->
+                                                </tr>
+                                                <tr class="egt_form_header_input">
+                                                    <td>
+                                                        <input id="egt_sr_no" readonly type="text" class="form-control form-control-sm">
+                                                        <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_description" type="text" class="form-control form-control-sm">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm" onblur="formatAmount(this);">
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
+                                                    </td>
                                                     <td class="text-center">
                                                         <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
@@ -146,29 +198,38 @@
                         <div class="form-group row">
                         <div class="col-lg-8">
                         <div class="row">
-    <label for="prepared_by" class="col-form-label col-lg-2">Prepared By</label>
-    <div class="col-lg-10">
-        <input type="text" class="form-control form-control-sm" id="prepared_by" name="prepared_by" value="{{ $data['prepared_by'] }}" readonly>
-    </div>
-</div>
-</div>
-</div>
+                        <label for="prepared_by" class="col-form-label col-lg-2">Prepared By</label>
+                        <div class="col-lg-10 mb-1 mt-1">
+                            <input type="text" class="form-control form-control-sm" id="prepared_by" name="prepared_by" value="{{ $data['prepared_by'] }}" readonly>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
 
 
-<div class="form-group row">
-<div class="col-lg-8">
-<div class="row">
-    <label for="approver_signature" class="col-form-label col-lg-2">Approver Signature</label>
-    <div class="col-lg-10">
-        <input type="text" class="form-control" id="approver_signature" name="approver_signature" value="{{ $data['approver_signature'] }}">
-    </div>
-</div>
+                    <div class="form-group row">
+                    <div class="col-lg-8">
+                    <div class="row">
+                        <label for="approver_signature" class="col-form-label col-lg-2">Approver Signature</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="approver_signature" name="approver_signature" value="{{ $data['approver_signature'] }}">
+                        </div>
+                    </div>
 
               </div>
                 </div>
             </div>
         </div>
     </form>
+    <div class="modal fade right" id="createNewCustomer" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" style="">
+            <div class="modal-content" id="modal_create_customer">
+                <div class="modal-body " style="height:100vh">
+                    @include('accounts.chart_of_account.form')
+                </div>
+            </div>
+        </div>
+    </div>
     @endpermission
 @endsection
 @section('pageJs')

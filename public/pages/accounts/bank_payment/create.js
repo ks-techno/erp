@@ -17,8 +17,7 @@ $(function () {
             onfocusout: function (element) {
               $(element).valid();
             }, */
-            rules: {
-                
+            rules: {  
             },
             submitHandler: function (form) {
                 pageLoginForm.find(":submit").prop('disabled', true);
