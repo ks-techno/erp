@@ -113,7 +113,7 @@
                                         $thix_list = $input_list[0];
                                         $product_variation = $thix_list['product_variation'];
                                     @endphp
-                                @if($product_variation['display_title']=='Block')
+                                @if(product_variation['display_title'] == 'Block')
                         <td data-view="show" data-field="sale_price" width="25%">{{isset($data['property_values'][$input_name])?current($data['property_values'][$input_name]):""}}</td>
                         @endif            
                         @endforeach
