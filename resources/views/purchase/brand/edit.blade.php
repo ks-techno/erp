@@ -34,7 +34,6 @@
                               
                                 <a href="{{route('purchase.brand.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                                <
                                 @endpermission
                                @else
                               

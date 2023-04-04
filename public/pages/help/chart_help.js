@@ -9,15 +9,11 @@ $(document).on('click','.data_tbody_row',function(e){
     var chart_id = thix.find('td[data-field="chart_id"]').text();
     var create_new_customer = thix.find('td').attr('data-field');
 
-        if(create_new_customer == 'create_new_customer'){
-            $('#createNewCustomer').modal('show')
-            var name = $(document).find('#customer_name').val();
-            $(document).find('#customer_create #name').val(name);
-        }else{
+       
             $('.egt_form_header_input').find('.chart_code').val(chart_code);
             $('.egt_form_header_input').find('.chart_name').val(chart_name);
             $('.egt_form_header_input').find('.chart_id').val(chart_id);
-        }
+        
     
 });
 $('#'+id).keyup(function(e){
