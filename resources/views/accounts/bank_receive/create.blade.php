@@ -176,7 +176,7 @@
                                                     <td>
                                                         <input id="egt_chart_code" type="text"
                                                         class="chart_code form-control form-control-sm text-left"
-                                                        placeholder="Press F2">
+                                                        >
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_name" type="text"
@@ -268,10 +268,11 @@
     </div>
 @endsection
 @section('pageJs')
-    <script src="{{ asset('/pages/accounts/bank_receive/create.js') }}"></script>
+    
 @endsection
 
 @section('script')
+<script src="{{ asset('/pages/accounts/bank_receive/create.js') }}"></script>
     <script>
         var var_egt_fields = [
 

@@ -138,7 +138,7 @@
                                                         <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
+                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left">
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
@@ -211,10 +211,11 @@
     @endpermission
 @endsection
 @section('pageJs')
-    <script src="{{ asset('/pages/accounts/cash_receive/create.js') }}"></script>
+    
 @endsection
 
 @section('script')
+<script src="{{ asset('/pages/accounts/cash_receive/create.js') }}"></script>
     <script>
         var var_egt_fields = [
 

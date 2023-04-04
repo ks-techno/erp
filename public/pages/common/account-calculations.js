@@ -18,6 +18,26 @@ function debit(tr){
     }
 }
 
+/*
+* credit
+* debit
+* */
+function credit(tr){
+    var credit = tr.find(".credit").val();
+    if(credit > 0){
+        tr.find('.debit').val(0);
+        TotalAmount();
+    }
+}
+
+function debit(tr){
+    var debit = tr.find(".debit").val();
+    if(debit > 0){
+        tr.find('.credit').val(0);
+        TotalAmount();
+    }
+}
+
 function TotalAmount()
 {
     var tot_amt = 0;
@@ -48,7 +68,6 @@ function TotalAmount()
     $("#tot_credit").html(tot_credit);
 
     $("#tot_voucher_amount").val(tot_amt);
-
     var tot_diff = parseFloat(tot_debit) - parseFloat(tot_credit);
 
     tot_diff = tot_diff.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2});
@@ -56,7 +75,41 @@ function TotalAmount()
     $("#tot_jv_difference").val(tot_diff);
     $("#tot_difference").html(tot_diff);
 
+    return {
+        tot_debit: tot_debit,
+        tot_credit: tot_credit
+    };
 }
+
+function calcDC(){
+    $(".credit").keyup(function(){
+        var tr = $(this).parents('tr');
+        credit(tr);
+        var tot = TotalAmount();
+        $("#tot_debit").html(tot.tot_debit);
+        $("#tot_credit").html(tot.tot_credit);
+    });
+    $(".debit").keyup(function(){
+        var tr = $(this).parents('tr');
+        debit(tr);
+        var tot = TotalAmount();
+        $("#tot_debit").html(tot.tot_debit);
+        $("#tot_credit").html(tot.tot_credit);
+    });
+    $(".amount").keyup(function(){
+        var tot = TotalAmount();
+        $("#tot_debit").html(tot.tot_debit);
+        $("#tot_credit").html(tot.tot_credit);
+    });
+    var tot = TotalAmount();
+    $("#tot_debit").html(tot.tot_debit);
+    $("#tot_credit").html(tot.tot_credit);
+}
+
+$(document).ready(function(){
+    calcDC();
+});
+
 
 
 function calcDC(){
