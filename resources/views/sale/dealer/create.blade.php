@@ -68,10 +68,11 @@
                                         <label class="col-form-label">Dealer Type</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select name="dealer_type" id="dealer_type" class="form-select select2">
-                                            <option value=''>Select Dealer Type</option>
-                                            <option value='Main Dealer'>Main Dealer</option>
-                                            <option value='SUb Dealer'>Sub Dealer</option>
+                                    <select name="dealer_type" id="dealer_type" class="form-select select2">
+                                    <option value="">Select Dealer Type</option>
+                                        @foreach (getDealerTypes() as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
                                         </select>
                                     </div>
                                 </div>

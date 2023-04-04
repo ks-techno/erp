@@ -92,10 +92,9 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <select name="dealer_type" id="dealer_type" class="form-select select2">
-                                            <option value='{{$current->dealer_type}}'>{{$current->dealer_type}}</option>
-                                            <option value=''>Select Dealer Type</option>
-                                            <option value='Main Dealer'>Main Dealer</option>
-                                            <option value='SUb Dealer'>Sub Dealer</option>
+                                        @foreach (getDealerTypes() as $value => $label)
+                                            <option value="{{ $value }}" {{ $current->dealer_type === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                        @endforeach
                                         </select>
                                     </div>
                                 </div>

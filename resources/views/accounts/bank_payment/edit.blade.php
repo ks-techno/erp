@@ -73,8 +73,7 @@
                                     class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                                 @endif
 
-                            </div>
-                            </div>
+                            
                     </div>
                     <div class="card-body mt-2">
                         <div class="mb-1 row">
