@@ -94,3 +94,9 @@ if (!function_exists('format_number')) {
            }
     }
 }
+function getDealerTypes() {
+    return [
+        'main' => 'Main Dealer',
+        'sub' => 'Sub Dealer',
+    ];
+}
