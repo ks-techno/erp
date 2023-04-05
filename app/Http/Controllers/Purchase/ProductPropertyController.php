@@ -345,7 +345,6 @@ class ProductPropertyController extends Controller
             }
             return $this->jsonErrorResponse($data, $err);
         }
-
         DB::beginTransaction();
         try {
             $p_data = [

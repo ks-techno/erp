@@ -57,7 +57,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100" tabindex="2">Send reset link</button>
                             </form>
-                            <p class="text-center mt-2"><a href="{{route('login')}}"><i data-feather="chevron-left"></i> Back to login</a></p>
+                            <p class="text-center mt-2"><a href="{{route('login')}}"><i data-feather="chevron-left"></i> Back to login BHAI</a></p>
                         </div>
                     </div>
                     <!-- /Forgot password-->

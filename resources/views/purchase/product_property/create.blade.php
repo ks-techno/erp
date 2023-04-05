@@ -55,7 +55,7 @@
                                         <label class="col-form-label">Sale Price </label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="default_sale_price" name="default_sale_price" />
+                                        <input type="number" class="form-control form-control-sm" value="" id="default_sale_price" name="default_sale_price" />
                                     </div>
                                 </div>
                             </div>
