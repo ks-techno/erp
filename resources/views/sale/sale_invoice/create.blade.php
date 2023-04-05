@@ -160,7 +160,7 @@
                                         <label class="col-form-label">Booking Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" id="booked_price" name="booked_price" aria-invalid="false">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" id="booked_price" name="booked_price"  aria-invalid="false">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -340,19 +340,22 @@
     var bookedPriceInput = $('#booked_price');
 
     // Calculate the booking price whenever the sale price or sale discount changes
-    salePriceInput.on('change', calculateBookingPrice);
-    saleDiscountInput.on('change', calculateBookingPrice);
+    salePriceInput.on('keyup', calculateBookingPrice);
+    saleDiscountInput.on('keyup', calculateBookingPrice);
 
     function calculateBookingPrice() {
         // Get the sale price and sale discount values
         var salePrice = parseFloat(salePriceInput.val()) || 0;
         var saleDiscount = parseFloat(saleDiscountInput.val()) || 0;
-
+        if (saleDiscount >= salePrice) {
+            // If sale discount is greater or equal to sale price, set booking price to 0
+            ntoastr.error('Sale discount must be less than Sale price');
+        } else {
         // Calculate the booking price
         var bookedPrice = salePrice - saleDiscount;
-
+        }
         // Set the booking price input field value
-        bookedPriceInput.val(bookedPrice.toFixed(2));
+        bookedPriceInput.val(bookedPrice);
     }
 });
 </script>

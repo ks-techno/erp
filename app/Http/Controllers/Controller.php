@@ -37,7 +37,7 @@ class Controller extends BaseController
 
     protected function getStatusTitle(){
         return [
-            ['title'=> 'De Active', 'class' => 'badge-light-warning'],
+            ['title'=> 'In Active', 'class' => 'badge-light-warning'],
             ['title'=> 'Active', 'class' => 'badge-light-success']
         ];
     }
