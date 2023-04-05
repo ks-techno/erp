@@ -27,7 +27,7 @@ $(function () {
             },
             submitHandler: function (form) {
                 pageLoginForm.find(":submit").prop('disabled', true);
-                //form[0].submit(); // submit the form
+                //form[0].submit(); // submit the formas
                 var formData = new FormData(form);
                 $.ajax({
                     headers: {

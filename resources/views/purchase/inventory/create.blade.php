@@ -5,7 +5,7 @@
 
 @section('content')
     @permission($data['permission'])
-    <form id="inventory_create" class="inventory_create" action="{{route('purchase.inventory.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="product_create" class="product_create" action="{{route('purchase.inventory.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-12">

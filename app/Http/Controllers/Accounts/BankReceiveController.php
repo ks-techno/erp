@@ -155,8 +155,8 @@ class BankReceiveController extends Controller
         $total_debit = 0;
         $total_credit = 0;
         foreach ($request->pd as $pd) {
-            $total_debit += $pd['egt_debit'];
-            $total_credit += $pd['egt_credit'];
+            $total_debit += str_replace(',', '',($pd['egt_debit']));
+            $total_credit += str_replace(',', '',($pd['egt_credit']));
         }
         if(($total_debit != $total_credit) || (empty($total_debit) && empty($total_credit)) ){
             return $this->jsonErrorResponse($data, 'debit credit must be equal');
@@ -288,8 +288,8 @@ class BankReceiveController extends Controller
         $total_debit = 0;
         $total_credit = 0;
         foreach ($request->pd as $pd) {
-            $total_debit += $pd['egt_debit'];
-            $total_credit += $pd['egt_credit'];
+            $total_debit += str_replace(',', '',($pd['egt_debit']));
+            $total_credit += str_replace(',', '',($pd['egt_credit']));
         }
         if(($total_debit != $total_credit) || (empty($total_debit) && empty($total_credit)) ){
             return $this->jsonErrorResponse($data, 'debit credit must be equal');

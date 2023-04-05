@@ -100,14 +100,15 @@ class ChartOfAccountController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-    {
-        $data = [];
-        $data['title'] = self::Constants()['title'];
-        $data['list_url'] = self::Constants()['list_url'];
-        $data['permission'] = self::Constants()['create'];
-        $data['code'] = self::coaDisplayMaxCode(1,0);
-        return view('accounts.chart_of_account.create', compact('data'));
-    }
+{
+    $data = [];
+    $data['title'] = self::Constants()['title'];
+    $data['list_url'] = self::Constants()['list_url'];
+    $data['permission'] = self::Constants()['create'];
+    $data['code'] = self::coaDisplayMaxCode(1,0);
+    $data['filed'] = 'sdfsdf';
+    return view('accounts.chart_of_account.create', compact('data'));
+}
 
     /**
      * Store a newly created resource in storage.
