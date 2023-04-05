@@ -235,10 +235,11 @@
     @endpermission
 @endsection
 @section('pageJs')
-    <script src="{{ asset('/pages/accounts/journal/edit.js') }}"></script>
+    
 @endsection
 
 @section('script')
+<script src="{{ asset('/pages/accounts/journal/edit.js') }}"></script>
     <script>
         var var_egt_fields = [
 

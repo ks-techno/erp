@@ -8,7 +8,9 @@ $(document).on('click','.data_tbody_row',function(e){
     var chart_name = thix.find('td[data-field="chart_name"]').text();
     var chart_id = thix.find('td[data-field="chart_id"]').text();
     var create_new_customer = thix.find('td').attr('data-field');
-
+    if(create_new_customer == 'create_new_customer'){
+        $('#createNewCustomer').modal('show')
+    }
        
             $('.egt_form_header_input').find('.chart_code').val(chart_code);
             $('.egt_form_header_input').find('.chart_name').val(chart_name);
@@ -57,6 +59,7 @@ $(document).on('click',function(e){
 });
 $(document).on('keydown', function(e) {
     if ($('.inline_help_table').length) {
+        
         var inLineHelp = $('.inline_help_table');
         var scrollHeight = inLineHelp.prop('scrollHeight');
         var scrollTop = inLineHelp.scrollTop();

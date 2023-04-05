@@ -125,7 +125,7 @@ class DealerController extends Controller
             'cnic_no' => 'required',
             'email' => 'nullable|email',
         ]);
-
+        
         if ($validator->fails()) {
             $data['validator_errors'] = $validator->errors();
             $validator_errors = $data['validator_errors']->getMessageBag()->toArray();

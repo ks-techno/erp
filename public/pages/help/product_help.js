@@ -87,7 +87,7 @@ function funcGetProductDetail(product_id) {
             success: function(response,data) {
                 if(response.status == 'success'){
                     var product = response.data['product'];
-                    const salePrice = product.default_sale_price.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2});
+                    const salePrice = product.default_sale_price;
                     $('form').find('#sale_price').val(salePrice);
                 }else{
                     ntoastr.error(response.message);

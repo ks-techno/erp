@@ -237,10 +237,11 @@
     @endpermission
 @endsection
 @section('pageJs')
-    <script src="{{ asset('/pages/accounts/cash_receive/edit.js') }}"></script>
+   
 @endsection
 
 @section('script')
+<script src="{{ asset('/pages/accounts/cash_receive/edit.js') }}"></script>
     <script>
         var var_egt_fields = [
 
