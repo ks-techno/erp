@@ -351,7 +351,7 @@ class ProductPropertyController extends Controller
                 'name' => $request->name,
                 'external_item_id' => $request->external_item_id,
                 'status' => isset($request->status) ? "1" : "0",
-                'default_sale_price' => $request->default_sale_price,
+                'default_sale_price' => str_replace(',', '',($request->default_sale_price)),
                 'buyable_type_id' => $request->buyable_type_id,
                 'product_form_type' => 'property',
                 'project_id' => auth()->user()->project_id,

@@ -8,6 +8,7 @@
     @include('accounts.chart_of_account.form')
 
 @endsection
+
 @section('pageJs')
     @yield('pageJsScript')
 @endsection

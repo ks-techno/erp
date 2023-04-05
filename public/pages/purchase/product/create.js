@@ -9,7 +9,7 @@ $(function () {
         $.validator.addMethod("valueNotEquals", function(value, element, arg){
             return arg !== value;
         }, "This field is required");
-
+        
         pageLoginForm.validate({
             /*
             * ? To enable validation onkeyup

@@ -264,7 +264,7 @@
                                         <label class="col-form-label">On Possession</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->on_possession}}" id="on_possession" name="on_possession" aria-invalid="false">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->on_possession)}}" id="on_possession" name="on_possession" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -368,6 +368,35 @@
             $('#installments_block').show();
         }
     </script>
+    <script>
+$(document).ready(function() {
+    // Get the sale price and sale discount input fields
+    var salePriceInput = $('#sale_price');
+    var saleDiscountInput = $('#sale_discount');
 
+    // Get the booking price input field
+    var bookedPriceInput = $('#booked_price');
+
+    // Calculate the booking price whenever the sale price or sale discount changes
+    salePriceInput.on('keyup', calculateBookingPrice);
+    saleDiscountInput.on('keyup', calculateBookingPrice);
+
+    function calculateBookingPrice() {
+        // Get the sale price and sale discount values without separators
+        var salePrice = parseFloat(salePriceInput.val().replace(/,/g, '')) || 0;
+        var saleDiscount = parseFloat(saleDiscountInput.val().replace(/,/g, '')) || 0;
+        if (saleDiscount >= salePrice) {
+            // If sale discount is greater or equal to sale price, set booking price to 0
+            ntoastr.error('Sale discount must be less than Sale price');
+        } else {
+        // Calculate the booking price
+        var bookedPrice = salePrice - saleDiscount;
+        }
+        // Format the booked price with separators and set the input field value
+        bookedPriceInput.val(bookedPrice.toLocaleString());
+    }
+});
+
+    </script>
     @yield('scriptCustom')
 @endsection

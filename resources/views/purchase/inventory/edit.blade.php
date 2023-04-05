@@ -189,7 +189,6 @@
     </form>
     @endpermission
 @endsection
-
 @section('pageJs')
     <script src="{{ asset('/pages/purchase/product/edit.js') }}"></script>
 @endsection

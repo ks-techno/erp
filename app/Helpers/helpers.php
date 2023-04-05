@@ -88,11 +88,12 @@ if (!function_exists('numberToWords')) {
 if (!function_exists('format_number')) {
     function format_number($number) {
         if (floor($number) == $number) {
-            return number_format($number,0);
-           } else {
-            return number_format($number,2);
-           }
+            return number_format($number,0,'.',',');
+        } else {
+            return number_format($number,2,'.',',');
+        }
     }
+    
 }
 function getDealerTypes() {
     return [
