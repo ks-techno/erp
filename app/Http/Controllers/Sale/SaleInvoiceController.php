@@ -420,7 +420,7 @@ class SaleInvoiceController extends Controller
         if(!in_array($seller_type ,$sellerList)){
             return $this->jsonErrorResponse($data, "Seller type not correct", 200);
         }
-
+        
         DB::beginTransaction();
         try{
             if($seller_type == 'dealer'){

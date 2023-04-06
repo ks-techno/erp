@@ -106,7 +106,6 @@ class ChartOfAccountController extends Controller
     $data['list_url'] = self::Constants()['list_url'];
     $data['permission'] = self::Constants()['create'];
     $data['code'] = self::coaDisplayMaxCode(1,0);
-    $data['filed'] = 'sdfsdf';
     return view('accounts.chart_of_account.create', compact('data'));
 }
 

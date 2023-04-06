@@ -26,6 +26,46 @@
         .right.fade.in .modal-dialog {
             right: 0;
         }
+        #sellerTable{
+            width: 500px;
+    position: absolute;
+    left: 15%;
+    top: 63%;
+    padding: 10px;
+        }
+        table{
+            background: #bbc8fd;
+                position: sticky;
+                width: 100% !important;
+                max-height: 100% !important;
+                overflow-y: scroll !important;
+                position: -webkit-sticky
+        }
+        table>thead>tr>th {
+                background: #5578eb;
+                color: #fff !important;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+            }
+            tr:hover{
+                cursor: pointer;
+            }
+            able>tbody>tr>td:hover {
+                background: #dedede;
+            }
+            table>tbody>tr>td{
+                /*white-space: nowrap;*/
+                text-overflow: ellipsis;
+                overflow: hidden;
+                border: 1px solid #e6e8f3;
+                font-weight: 400;
+                color: #212529;
+                font-size: 12px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+            }
     </style>
 @endsection
 
@@ -93,26 +133,28 @@
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Seller Type <span class="required">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select class="select2 form-select" id="seller_type" name="seller_type">
-                                            <option value="0" selected>Select</option>
-                                            <option value="dealer">Dealer</option>
-                                            <option value="staff">Staff</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3">
-                                        <label class="col-form-label">Seller <span class="required">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select class="select2 form-select sellerList" id="seller_id" name="seller_id">
-                                        </select>
-                                    </div>
-                                </div>
+  <div class="col-sm-3">
+    <label class="col-form-label">Seller Type <span class="required">*</span></label>
+  </div>
+  <div class="col-sm-9">
+    <select class="select2 form-select" id="seller_type" name="seller_type">
+      <option value="0" selected>Select</option>
+      <option value="dealer">Dealer</option>
+      <option value="staff">Staff</option>
+    </select>
+  </div>
+</div>
+<div class="mb-1 row">
+  <div class="col-sm-3">
+    <label class="col-form-label">Seller <span class="required">*</span></label>
+  </div>
+  <div class="col-sm-9">
+    <input type="text" class="form-control sellerList" id="seller_name" name="seller_name">
+    <input type="hidden" id="seller_id" name="seller_id">
+    <div id="sellerTable"></div>
+  </div>
+</div>
+
                             </div>
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
@@ -270,48 +312,66 @@
     <script src="{{asset('/pages/help/customer_help.js')}}"></script>
     <script src="{{asset('/pages/help/product_help.js')}}"></script>
     <script>
-        $(document).on('change','#seller_type',function(){
-            var validate = true;
-            var thix = $(this);
-            var val = thix.find('option:selected').val();
-            if(valueEmpty(val)){
-                ntoastr.error("Select Seller Type");
-                validate = false;
-                return false;
+      $(document).on('change','#seller_type',function(){
+    var validate = true;
+    var thix = $(this);
+    var val = thix.find('option:selected').val();
+    if(valueEmpty(val)){
+      ntoastr.error("Select Seller Type");
+      validate = false;
+      return false;
+    }
+    if(validate){
+      var formData = {
+        seller_type : val
+      };
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "POST",
+        url: '{{ route('sale.sale-invoice.getSellerList') }}',
+        dataType	: 'json',
+        data        : formData,
+        success: function(response,data) {
+          if(response.status == 'success'){
+            var seller = response.data['seller'];
+            var length = seller.length;
+            var table = "<table><thead><tr><th>Name</th><th>Agency Name</th></tr></thead><tbody>";
+            for(var i=0;i<length;i++){
+              if(seller[i]['name']){
+                table += '<tr data-id="'+seller[i]['id']+'" data-name="'+seller[i]['name']+'"><td>'+seller[i]['name']+'</td><td>'+seller[i]['agency_name']+'</td>';
+              }
             }
-            if(validate){
-                var formData = {
-                    seller_type : val
-                };
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: '{{ route('sale.sale-invoice.getSellerList') }}',
-                    dataType	: 'json',
-                    data        : formData,
-                    success: function(response,data) {
-                        if(response.status == 'success'){
-                            var seller = response.data['seller'];
-                            var length = seller.length;
-                            var options = "<option value='0' selected>Select</option>";
-                            for(var i=0;i<length;i++){
-                                if(seller[i]['name']){
-                                    options += '<option value="'+seller[i]['id']+'">'+seller[i]['name']+'-'+seller[i]['agency_name']+'</option>';
-                                }
-                            }
-                            $('form').find('.sellerList').html(options);
-                        }else{
-                            ntoastr.error(response.message);
-                        }
-                    },
-                    error: function(response,status) {
-                        ntoastr.error('server error..404');
-                    }
-                });
-            }
-        })
+            table += "</tbody></table>";
+            $('#sellerTable').html(table);
+          }else{
+            ntoastr.error(response.message);
+          }
+        },
+        error: function(response,status) {
+          ntoastr.error('server error..404');
+        }
+      });
+    }
+  });
+ 
+$(document).on('click', '#seller_name', function() {
+  if ($(this).val().trim() === '') {
+    $('#sellerTable').show();
+  } else {
+    $('#sellerTable').hide();
+  }
+});
+
+
+  $(document).on('click','#sellerTable tbody tr',function(){
+    var id = $(this).attr('data-id');
+    var name = $(this).attr('data-name');
+    $('#seller_id').val(id);
+    $('#seller_name').val(name);
+  });
+
 
         $(document).on('change','#project_id',function(){
             $('form').find('#product_name').val("");

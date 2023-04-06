@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\ProductVariationDtl;
+use App\Models\PropertyVariation;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +64,33 @@ class HelpController extends Controller
 
         return view('helps.old_customer_help',compact('data'));
     }
+    public function getSellerList(Request $request)
+    {
 
+        $data = [];
+
+        $seller_type = isset($request->seller_type)?$request->seller_type:"";
+        $sellerList = ['dealer','staff'];
+        if(!in_array($seller_type ,$sellerList)){
+            return $this->jsonErrorResponse($data, "Seller type not correct", 200);
+        }
+        
+        DB::beginTransaction();
+        try{
+            if($seller_type == 'dealer'){
+                $data['seller'] = Dealer::OrderByName()->get();
+            }
+
+            if($seller_type == 'staff'){
+                $data['seller'] = Staff::OrderByName()->get();
+            }
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return view('helps.dealer_help',compact('data'));        }
+        DB::commit();
+        return view('helps.dealer_help',compact('data'));    }
+   
     public function propertyProduct(Request $request)
     {
 
@@ -80,22 +107,23 @@ class HelpController extends Controller
         $product = $product->select('id','code','name','default_sale_price')->get();
         $data['property'] =  $product;
         $data['current'] = Product::with('property_variation')->first();
-        $data['property_values'] = [];
-        $data['prod_var'] = [];
-        if(!empty($data['current']->property_variation)){
-            foreach ($data['current']->property_variation as $property_variation){
-                $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;
-            }
-            $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
-           
-            foreach ($pvdtls as $pvdtl ){
-                $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
-            }
-        }            
+                $data['property_values'] = [];
+                $data['prod_var'] = [];
+                if(!empty($data['current']->property_variation)){
+                    
+                    foreach ($data['current']->property_variation as $property_variation){
+                        $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;
+                    }
+                    $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
+                   
+                    foreach ($pvdtls as $pvdtl ){
+                        $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
+                    }
+                }
+       
         return view('helps.product_help',compact('data'));
     }
-
-   
+    
 
 
 }
