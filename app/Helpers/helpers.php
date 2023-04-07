@@ -1,4 +1,7 @@
 <?php
+
+use App\Models\ChartOfAccount;
+
 if (!function_exists('numberToWords')) {
     function numberToWords($number) {
         $words = array(
@@ -95,6 +98,49 @@ if (!function_exists('format_number')) {
     }
     
 }
+function coaDisplayMaxCode($radioValue,$parent_account_code)
+    {
+        $parent_account_code = empty($parent_account_code)?NULL:$parent_account_code;
+
+        $code = ChartOfAccount::where('parent_account_code','=',$parent_account_code)->max('code');
+
+        if(empty($code)){
+            $code = empty($parent_account_code)?NULL:$parent_account_code;
+        }
+
+        $max_code = getMaxChartCode($radioValue,$code);
+
+        return $max_code;
+
+    }
+    function getMaxChartCode($radioValue,$chart_code){
+        if($radioValue == 1){
+            if(empty($chart_code)){
+                $max_code = '01-00-0000-0000';
+            }else{
+                $code = substr($chart_code,0,2);
+                $max =  sprintf("%'02d", $code+1);
+                $max_code = substr_replace($chart_code,$max,0,2);
+                $max_code = $max.'-00-0000-0000';
+            }
+        }
+        if($radioValue == 2){
+            $code = substr($chart_code,3,2);
+            $max =  sprintf("%'02d", (int)$code+1);
+            $max_code = substr_replace($chart_code,$max,3,2);
+        }
+        if($radioValue == 3){
+            $code = substr($chart_code,6,4);
+            $max =  sprintf("%'04d", (int)$code+1);
+            $max_code = substr_replace($chart_code,$max,6,4);
+        }
+        if($radioValue == 4){
+            $code = substr($chart_code,11,4);
+            $max =  sprintf("%'04d", (int)$code+1);
+            $max_code = substr_replace($chart_code,$max,11,4);
+        }
+        return $max_code;
+    }
 function getDealerTypes() {
     return [
         'main' => 'Main Dealer',

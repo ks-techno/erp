@@ -1,4 +1,4 @@
-<div id="inLineHelp" data-id="product">
+<div id="inLineHelp" data-id="seller">
     <div class="inLineHelp inline_help_table">
         <style>
 
@@ -33,6 +33,11 @@
             .data_tbody_row>table {
                 table-layout: fixed;
             }
+           /* for header fixed
+           .inline_help_table>.data_thead_row{
+                position: fixed;
+                width: 484px;
+            }*/
             .inline_help_table>.data_thead_row>table>thead>tr>th,
             .inline_help>.data_thead_row>table>thead>tr>th {
                 background: #5578eb;
@@ -75,52 +80,33 @@
                 cursor: pointer;
             }
         </style>
-        <div class="data_thead_row" id="productHelp">
+        <div class="data_thead_row" id="sellerHelp">
             <table border="1" class="" width="100%">
                 <thead>
                 <tr>
-                    <th data-field="Product Code" width="25%">Registration No.</th>
-                    <th data-field="Product Name" width="50%">Plot Number</th>
-                    <th data-field="Sale Price" width="25%">Block</th>
+                    <th data-field="seller Name" width="50%">seller Name</th>
+                    <th data-field="seller Phone" width="50%">Agency Name</th>
                 </tr>
                 </thead>
             </table>
         </div>
-        @if(count($data['property']) == 0)
+       
+        @foreach($data['seller'] as $seller)
             <div class="data_tbody_row">
                 <table border="1" class="val_table" width="100%">
                     <tbody>
                     <tr class="data-dtl">
-                        <td data-view="show">Data not found</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        @endif
-        @foreach($data['property'] as $property)
-            <div class="data_tbody_row">
-                <table border="1" class="val_table" width="100%">
-                    <tbody>
-                    <tr class="data-dtl">
-                        <td data-field="product_code" width="25%">{{$property->code}}</td>
-                        
-                        <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td>
-                        <td data-view="show" data-field="sale_price" width="25%">
-                        @foreach($data['current'] as $variation)
-                            @if($variation->product_variation_id == 8)
-                                @if($variation->product_id == $property->id)
-                                    {{ $variation->value }}
-                                @endif
-                            @endif
-                        @endforeach 
-                        </td>                
+                        <td data-field="seller_name" width="50%">{{$seller->name}}</td>
+                        <td data-view="show" data-field="seller_agency_name" width="50%">{{$seller->agency_name}}</td>
                     </tr>
                     <tr class="d-none">
-                        <td data-field="product_id">{{$property->id}}</td>
+                        <td data-field="seller_id">{{$seller->id}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         @endforeach
     </div>
+   
+   
 </div>

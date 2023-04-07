@@ -111,7 +111,7 @@ class ProductPropertyController extends Controller
                             }
                         }                                     
                     }                                           
-                
+       
                 $rowBuyableType = $row->buyable_type;
                 $buyableTypeName = $rowBuyableType ? $rowBuyableType->name : '';
                 $entries[] = [
