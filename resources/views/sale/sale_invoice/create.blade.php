@@ -12,7 +12,10 @@
             -o-transform: translate3d(0%, 0, 0);
             transform: translate3d(0%, 0, 0);
         }
-
+        .table-wrapper {
+        max-height: 230px !important;
+        overflow: auto;
+        }
         .show .modal-dialog {
             /*position: absolute;*/right: 0px !important;
         }
@@ -27,11 +30,11 @@
             right: 0;
         }
         #sellerTable{
-            width: 500px;
-    position: absolute;
-    left: 15%;
-    top: 63%;
-    padding: 10px;
+            width: 493px;
+            position: absolute;
+            left: 8%;
+            top: 100%;
+            height: 230px;
         }
         table{
             background: #bbc8fd;
@@ -40,6 +43,9 @@
                 max-height: 100% !important;
                 overflow-y: scroll !important;
                 position: -webkit-sticky
+        }
+        #sellerTable .tr{
+            border: 2px solid #e6e8f3;
         }
         table>thead>tr>th {
                 background: #5578eb;
@@ -51,7 +57,10 @@
             tr:hover{
                 cursor: pointer;
             }
-            able>tbody>tr>td:hover {
+            table>tbody>tr>td:hover {
+                background: #dedede;
+            }
+            table>tbody>tr:hover {
                 background: #dedede;
             }
             table>tbody>tr>td{
@@ -66,6 +75,7 @@
                 padding-bottom: 5px;
                 padding-left: 5px;
             }
+
     </style>
 @endsection
 
@@ -133,29 +143,32 @@
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
-  <div class="col-sm-3">
-    <label class="col-form-label">Seller Type <span class="required">*</span></label>
-  </div>
-  <div class="col-sm-9">
-    <select class="select2 form-select" id="seller_type" name="seller_type">
-      <option value="0" selected>Select</option>
-      <option value="dealer">Dealer</option>
-      <option value="staff">Staff</option>
-    </select>
-  </div>
-</div>
-<div class="mb-1 row">
-  <div class="col-sm-3">
-    <label class="col-form-label">Seller <span class="required">*</span></label>
-  </div>
-  <div class="col-sm-9">
-    <input type="text" class="form-control sellerList" id="seller_name" name="seller_name">
-    <input type="hidden" id="seller_id" name="seller_id">
-    <div id="sellerTable"></div>
-  </div>
-</div>
-
-                            </div>
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Seller Type <span class="required">*</span></label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="select2 form-select" id="seller_type" name="seller_type">
+                                        <option value="0" selected>Select</option>
+                                        <option value="dealer">Dealer</option>
+                                        <option value="staff">Staff</option>
+                                        </select>
+                                      
+                                    </div>
+                                    </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Seller <span class="required">*</span></label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                    <div class="input-group">
+                                    <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
+                                        <input type="text" class="form-control form-control-sm text-left sellerList" id="seller_name" name="seller_name">
+                                        <input type="hidden" id="seller_id" name="seller_id">
+                                        <div id="sellerTable"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
                             <div class="col-sm-6">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3 pr-0">
@@ -337,7 +350,7 @@
           if(response.status == 'success'){
             var seller = response.data['seller'];
             var length = seller.length;
-            var table = "<table><thead><tr><th>Name</th><th>Agency Name</th></tr></thead><tbody>";
+            table = "<div class='table-wrapper'><table><thead><tr><th>Name</th><th>Agency Name</th></tr></thead><tbody>";
             for(var i=0;i<length;i++){
               if(seller[i]['name']){
                 table += '<tr data-id="'+seller[i]['id']+'" data-name="'+seller[i]['name']+'"><td>'+seller[i]['name']+'</td><td>'+seller[i]['agency_name']+'</td>';
@@ -355,22 +368,32 @@
       });
     }
   });
- 
-$(document).on('click', '#seller_name', function() {
-  if ($(this).val().trim() === '') {
-    $('#sellerTable').show();
-  } else {
-    $('#sellerTable').hide();
-  }
-});
-
-
   $(document).on('click','#sellerTable tbody tr',function(){
     var id = $(this).attr('data-id');
     var name = $(this).attr('data-name');
     $('#seller_id').val(id);
     $('#seller_name').val(name);
   });
+  $(document).on('click','#sellerTable tbody tr',function(){
+  var id = $(this).attr('data-id');
+  var name = $(this).attr('data-name');
+  $('#seller_id').val(id);
+  $('#seller_name').val(name);
+  
+  if ($('#seller_name').val() == '') {
+    $('#sellerTable').show();
+  } else {
+    $('#sellerTable').hide();
+  }
+});
+$(document).on('change keyup','#seller_name',function(){
+  if ($(this).val() == '') {
+    $('#sellerTable').show();
+  } else {
+    $('#sellerTable').hide();
+  }
+});
+
 
 
         $(document).on('change','#project_id',function(){

@@ -21,11 +21,7 @@
                     </div>
                     <div class="card-body mt-2">
                         <div class="row">
-                        @if(isset($modal))
-                            <div class="col-sm-12">
-                            @else
                             <div class="col-sm-6">
-                            @endif
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Level </label>
@@ -66,7 +62,7 @@
                                         <label class="col-form-label">Code <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$data['code']}}"  id="code" name="code" readonly/>
+                                        <input type="text" class="form-control form-control-sm" value="{{coaDisplayMaxCode(1,0)}}"  id="code" name="code" readonly/>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -98,9 +94,6 @@
 
 @section('pageJs')
     <script src="{{ asset('/pages/accounts/chart_of_account/create.js') }}"></script>
-@endsection
-
-@section('scriptCustom')
     <script>
         var levelOneCodeOnPageLoad = $('#code').val();
         $(document).on('click',"input[name='level']",function(){
@@ -112,10 +105,12 @@
                 validate = false;
                 return false;
             }
+           
             if(validate){
                 var formData = {
                     level : val
                 };
+                
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -169,6 +164,7 @@
                     level : level,
                     parent_account : val
                 };
+                
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -192,4 +188,8 @@
             }
         });
     </script>
+@endsection
+
+@section('scriptCustom')
+   
  @endsection

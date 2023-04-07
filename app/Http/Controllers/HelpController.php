@@ -106,21 +106,7 @@ class HelpController extends Controller
 
         $product = $product->select('id','code','name','default_sale_price')->get();
         $data['property'] =  $product;
-        $data['current'] = Product::with('property_variation')->first();
-                $data['property_values'] = [];
-                $data['prod_var'] = [];
-                if(!empty($data['current']->property_variation)){
-                    
-                    foreach ($data['current']->property_variation as $property_variation){
-                        $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;
-                    }
-                    $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
-                   
-                    foreach ($pvdtls as $pvdtl ){
-                        $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
-                    }
-                }
-       
+        $data['current'] = Product::with('property_variation')->get();
         return view('helps.product_help',compact('data'));
     }
     

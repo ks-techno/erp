@@ -48,8 +48,9 @@ class Product extends Model
     }
 
     public function property_variation(){
-        return $this->hasMany(PropertyVariation::class,'product_id','id')->orderby('sr_no');
+        return $this->hasMany(PropertyVariation::class,'product_id','id');
     }
+    
     public function buyable_type(){
         return $this->belongsTo(BuyableType::class,'buyable_type_id','id');
     }

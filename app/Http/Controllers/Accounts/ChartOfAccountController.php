@@ -105,7 +105,7 @@ class ChartOfAccountController extends Controller
     $data['title'] = self::Constants()['title'];
     $data['list_url'] = self::Constants()['list_url'];
     $data['permission'] = self::Constants()['create'];
-    $data['code'] = self::coaDisplayMaxCode(1,0);
+   
     return view('accounts.chart_of_account.create', compact('data'));
 }
 
