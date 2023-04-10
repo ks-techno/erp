@@ -54,6 +54,7 @@
         table>thead>tr>th {
                 background: #5578eb;
                 color: #fff !important;
+                border: 2px solid #e6e8f3;
                 padding-top: 5px;
                 padding-bottom: 5px;
                 padding-left: 5px;
@@ -71,7 +72,7 @@
                 /*white-space: nowrap;*/
                 text-overflow: ellipsis;
                 overflow: hidden;
-                border: 1px solid #e6e8f3;
+                border: 2px solid #e6e8f3;
                 font-weight: 400;
                 color: #212529;
                 font-size: 12px;
@@ -362,7 +363,7 @@
     <script src="{{asset('/pages/help/customer_help.js')}}"></script>
     <script src="{{asset('/pages/help/product_help.js')}}"></script>
     <script>
-      $(document).on('change','#seller_type',function(){
+       $(document).on('change','#seller_type',function(){
     var validate = true;
     var thix = $(this);
     var val = thix.find('option:selected').val();
@@ -386,11 +387,29 @@
         success: function(response,data) {
           if(response.status == 'success'){
             var seller = response.data['seller'];
+            var departments = response.data['departments'];
+            console.log(seller); 
             var length = seller.length;
-            table = "<div class='table-wrapper'><table><thead><tr><th>Name</th><th>Agency Name</th></tr></thead><tbody>";
+            var lengthd = departments ? departments.length : 0;
+            if(val== 'dealer'){
+                table = "<div class='table-wrapper'><table><thead><tr><th>Name</th><th>Agency Name</th></tr></thead><tbody>";
+            }
+            else{
+                table = "<div class='table-wrapper'><table><thead><tr><th>Name</th><th>Department</th></tr></thead><tbody>";
+            }
+                var departmentMap = {};
+                for (var i = 0; i < lengthd; i++) {
+                departmentMap[departments[i].id] = departments[i].name;
+                }
             for(var i=0;i<length;i++){
               if(seller[i]['name']){
-                table += '<tr data-id="'+seller[i]['id']+'" data-name="'+seller[i]['name']+'"><td>'+seller[i]['name']+'</td><td>'+seller[i]['agency_name']+'</td>';
+                if(val== 'dealer'){
+                table += '<tr data-id="'+seller[i]['id']+'" data-name="'+seller[i]['name']+'"><td><b>'+seller[i]['name']+'</b></td><td><b>'+seller[i]['agency_name']+'</b></td>';
+                }
+                else{
+                    var departmentName = departmentMap[seller[i]['department_id']];
+                    table += '<tr data-id="' + seller[i]['id'] + '" data-name="' + seller[i]['name'] + '"><td><b>' + seller[i]['name'] + '</b></td><td><b>' + departmentName + '</b></td>';
+                }
               }
             }
             table += "</tbody></table>";
@@ -446,6 +465,45 @@ $(document).on('change keyup','#seller_name',function(){
         if(slug == 'installment'){
             $('#installments_block').show();
         }
+
+        $(document).on('keydown', function(e) {
+    if ($('.table-wrapper').length) {
+        
+        var inLineHelp = $('.table-wrapper');
+        var scrollHeight = inLineHelp.prop('scrollHeight');
+        var scrollTop = inLineHelp.scrollTop();
+        var lineHeight = parseInt(inLineHelp.css('line-height'));
+        var offsetTop = parseInt(inLineHelp.css('top'));
+        var keyCode = e.keyCode;
+        if (keyCode == 38) { // up arrow key
+            e.preventDefault();
+            //$('#egt_cheque_no').focus();
+            inLineHelp.scrollTop(scrollTop - lineHeight);
+            if (inLineHelp.scrollTop() == 0) {
+                inLineHelp.css('top', offsetTop + lineHeight + 'px');
+            }
+            var selectedRow = inLineHelp.find('.selected');
+            if (selectedRow.prev().length) {
+                selectedRow.removeClass('selected');
+                selectedRow.prev().addClass('selected');
+            }
+        } else if (keyCode == 40) { // down arrow key
+            e.preventDefault();
+            //$('#egt_cheque_no').focus();
+            inLineHelp.scrollTop(scrollTop + lineHeight);
+            if (inLineHelp.scrollTop() + inLineHelp.innerHeight() == scrollHeight) {
+                inLineHelp.css('top', offsetTop - lineHeight + 'px');
+            }
+            var selectedRow = inLineHelp.find('.selected');
+            if (selectedRow.next().length) {
+                selectedRow.removeClass('selected');
+                selectedRow.next().addClass('selected');
+            }
+        }
+        
+        
+    }
+});
     </script>
     <script>
 

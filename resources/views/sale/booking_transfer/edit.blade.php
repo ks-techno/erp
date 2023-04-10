@@ -87,8 +87,8 @@
                                     <label class="col-form-label p-0">Customer  <span class="required">*</span></label>
                                     <div class="input-group eg_help_block">
                                         <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
-                                        <input id="customer_name" type="text" name="nm_customer_name" class="customer_name nm_customer_name form-control form-control-sm text-left" value="{{ $current->nm_customer->name }}">
-                                        <input id="customer_id" type="hidden" class="nm_customer_id" name="nm_customer_id" value="{{ $current->nm_customer->id }}">
+                                        <input id="customer_name" type="text" name="nm_customer_name" class="customer_name nm_customer_name form-control form-control-sm text-left" value="{{ $current->nm_customer !== null ? $current->nm_customer->name : "" }}">
+                                        <input id="customer_id" type="hidden" class="nm_customer_id" name="nm_customer_id" value="{{ $current->nm_customer !== null ? $current->nm_customer->id : ""}}">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">

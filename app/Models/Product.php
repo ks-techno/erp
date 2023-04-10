@@ -3,7 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductVariation;
+use App\Models\PropertyVariation;
+use App\Models\ProductVariationDtl;
 
 class Product extends Model
 {
@@ -35,6 +39,8 @@ class Product extends Model
         'user_id',
     ];
 
+    protected $appends = ['block'];
+
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }
@@ -53,5 +59,19 @@ class Product extends Model
     
     public function buyable_type(){
         return $this->belongsTo(BuyableType::class,'buyable_type_id','id');
+    }
+
+    public function getBlockAttribute()
+    {
+        $productVariation = ProductVariation::where('key_name', 'block')->first();
+
+        if ($productVariation) {
+            $propertyVariation = PropertyVariation::where('product_id', $this->id)
+                                    ->where('product_variation_id', $productVariation->id)
+                                    ->first();
+            return $propertyVariation ? $propertyVariation->value : null;
+        }
+
+        return null;
     }
 }

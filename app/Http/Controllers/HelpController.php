@@ -104,9 +104,8 @@ class HelpController extends Controller
             $product = $product->orWhere('name','like',"%$val%");
         }
 
-        $product = $product->select('id','code','name','default_sale_price')->get();
+        $product = $product->get();
         $data['property'] =  $product;
-        $data['current'] = Product::with('property_variation')->get();
         return view('helps.product_help',compact('data'));
     }
     

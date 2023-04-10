@@ -7,6 +7,7 @@ use App\Models\BookingFileStatus;
 use App\Models\Customer;
 use App\Models\Dealer;
 use App\Models\Product;
+use App\Models\Department;
 use App\Models\Project;
 use App\Models\PropertyPaymentMode;
 use App\Models\Sale;
@@ -157,7 +158,10 @@ class SaleInvoiceController extends Controller
             'customer_id' => ['required',Rule::notIn([0,'0'])],
             'seller_type' => ['required',Rule::in(['dealer','staff'])],
             'seller_id' => ['required',Rule::notIn([0,'0'])],
-            'currency_note_no'=>'required'
+            'currency_note_no'=>'required',
+            'sale_discount'=>'required',
+            'down_payment'=>'required',
+            'on_possession'=>'required',
         ],[
 //            'project_id.required' => 'Project is required',
 //            'project_id.not_in' => 'Project is required',
@@ -170,6 +174,9 @@ class SaleInvoiceController extends Controller
             'seller_id.required' => 'Seller is required',
             'seller_id.not_in' => 'Seller is required',
             'currency_note_no.required' => 'currency is required',
+            'sale_discount.required' => 'Sale Discount is required',
+            'down_payment.required' => 'Down Payment is required',
+            'on_possession.required' => 'On Possession is required',
         ]);
 
         if ($validator->fails()) {
@@ -429,6 +436,7 @@ class SaleInvoiceController extends Controller
 
             if($seller_type == 'staff'){
                 $data['seller'] = Staff::OrderByName()->get();
+                $data['departments'] = Department::OrderByName()->get();
             }
 
         }catch (Exception $e) {

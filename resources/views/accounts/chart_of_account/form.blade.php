@@ -28,6 +28,8 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <div class="radio-inline">
+                                            <input type="text" value="{{$data['list_url']}}" hidden name="redirect">
+                                            <input type="text" value="true" hidden name="isredirect">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="level" id="inlineRadio1" value="1" checked>
                                                 <label class="form-check-label" for="inlineRadio1">Level 1</label>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Accounts;
 
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Library\Utilities;
 use App\Models\ChartOfAccount;
@@ -92,7 +93,7 @@ class JournalController extends Controller
                     $row->date,
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                    $row->remarks,
+                    Str::limit($row->remarks, 20, '....'),
                     $row->prepared_by,
                 //    '<div class="signature-field"></div>',
                     $row->approved_by,
