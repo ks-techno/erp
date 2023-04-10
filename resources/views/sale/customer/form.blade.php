@@ -24,6 +24,8 @@
                         <div class="col-sm-6">
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
+                                <input type="text" value="{{$data['list_url']}}" hidden name="redirect">
+                                <input type="text" value="true" hidden name="isredirect">
                                     <label class="col-form-label">Name <span class="required">*</span></label>
                                 </div>
                                 <div class="col-sm-9">

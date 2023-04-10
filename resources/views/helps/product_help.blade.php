@@ -105,14 +105,7 @@
                         <td data-field="product_code" width="25%">{{$property->code}}</td>
                         
                         <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td>
-                        <td data-view="show" data-field="sale_price" width="25%">
-                        @foreach($data['current'] as $variation)
-                            @if($variation->product_variation_id == 8)
-                                @if($variation->product_id == $property->id)
-                                    {{ $variation->value }}
-                                @endif
-                            @endif
-                        @endforeach 
+                        <td data-view="show" data-field="sale_price" width="25%">{{$property->block}}
                         </td>                
                     </tr>
                     <tr class="d-none">

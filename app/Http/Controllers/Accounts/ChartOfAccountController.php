@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\URL;
 use App\Models\ChartOfAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -123,7 +124,7 @@ class ChartOfAccountController extends Controller
             'code' => 'required',
             'level' => 'required',
         ]);
-
+       
         if ($validator->fails()) {
             $data['validator_errors'] = $validator->errors();
             $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
@@ -154,7 +155,7 @@ class ChartOfAccountController extends Controller
                 $parent_account_id = $chart->id;
                 $parent_account_code = $request->parent_account;
             }
-
+            
             ChartOfAccount::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
@@ -174,10 +175,17 @@ class ChartOfAccountController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-       
-        $data['redirect'] = self::Constants()['list_url'];
+        if($request->isredirect == 'true'){
+            $data['redirect'] = $request->redirect;
+        }
+        else{
+            $data['redirect'] = self::Constants()['list_url'];
+        }
+        
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('accounts.chart-of-account.index');
+        //return $this->redirect()->route('accounts.chart-of-account.index');
+        
+        
     }
 
     /**

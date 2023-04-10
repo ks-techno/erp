@@ -50,7 +50,7 @@ class StaffController extends Controller
             $draw = 'all';
 
             $dataSql = Staff::with('project','department')->where(Utilities::CompanyProjectId())->orderByName();
-
+            
             $allData = $dataSql->get();
 
             $recordsTotal = count($allData);

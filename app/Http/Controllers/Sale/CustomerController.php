@@ -188,7 +188,13 @@ class CustomerController extends Controller
             return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
-        $data['redirect'] = self::Constants()['list_url'];
+        if($request->isredirect == 'true'){
+            $data['redirect'] = $request->redirect;
+        }
+        else{
+            $data['redirect'] = self::Constants()['list_url'];
+        }
+       
         return $this->jsonSuccessResponse($data, 'Successfully created');
         return $this->redirect()->route('customer.index');
     }
