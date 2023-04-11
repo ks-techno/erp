@@ -45,6 +45,28 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Change Password </label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control form-control-sm" value="" id="password" name="password" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Confirm Password </label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="password"  class="form-control form-control-sm" value="" id="password_confirmation" name="password_confirmation" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 @include('partials.address')
                             </div>

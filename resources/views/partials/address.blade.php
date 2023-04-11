@@ -1,5 +1,5 @@
 @php
-    $data['countries'] = \App\Models\Country::OrderByName()->get();
+    $data['countries'] = \App\Models\Country::OrderByName()->where('status', 1)->get();
     $country_id = isset($current->addresses->country_id)?$current->addresses->country_id:"";
     $region_id = isset($current->addresses->region_id)?$current->addresses->region_id:"";
     $city_id = isset($current->addresses->city_id)?$current->addresses->city_id:"";

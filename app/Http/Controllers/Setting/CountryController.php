@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -49,11 +50,6 @@ class CountryController extends Controller
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
-
-            $delete_per = false;
-            if(auth()->user()->isAbleTo(self::Constants()['delete'])){
-                $delete_per = true;
-            }
             $edit_per = false;
             if(auth()->user()->isAbleTo(self::Constants()['edit'])){
                 $edit_per = true;
@@ -63,17 +59,9 @@ class CountryController extends Controller
             foreach ($allData as $row) {
                 $entry_status = $this->getStatusTitle()[$row->status];
                 $urlEdit = route('setting.country.edit',$row->uuid);
-                $urlDel = route('setting.country.destroy',$row->uuid);
-
+               
                 $actions = '<div class="text-end">';
-                if($delete_per){
-                    $actions .= '<div class="d-inline-flex">';
-                    $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
-                    $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                    $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-                    $actions .= '</div>'; // end dropdown-menu
-                    $actions .= '</div>'; // end d-inline-flex
-                }
+                
                 if($edit_per){
                     $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="edit"></i></a>';
                 }
@@ -237,6 +225,12 @@ class CountryController extends Controller
         DB::beginTransaction();
         try {
 
+            $country = Country::where('uuid',$id)->first();
+
+            $addresses = Address::where('country_id', $country->id)->get();
+            if ($addresses->count() > 0 && !$request->has('country_status')) {
+                throw new Exception('The country cannot be deactivated as it is assigned to an address.');
+            }
             Country::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
@@ -256,6 +250,7 @@ class CountryController extends Controller
         return $this->jsonSuccessResponse($data, 'Successfully updated');
         return $this->redirect()->route('setting.country.index');
     }
+
 
     /**
      * Remove the specified resource from storage.

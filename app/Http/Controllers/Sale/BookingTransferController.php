@@ -23,7 +23,7 @@ class BookingTransferController extends Controller
     {
         $name = 'booking-transfer';
         return [
-            'title' => 'Booking Transfer',
+            'title' => 'Transfer',
             'list_url' => route('sale.booking-transfer.index'),
             'list' => "$name-list",
             'create' => "$name-create",

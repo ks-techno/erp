@@ -52,7 +52,7 @@ class ForgotPasswordController extends Controller
             $data['url'] = route('password.forgetPassword',$token);
             $data['email'] = $user->email;
 
-
+            
             Mail::to($data['email'])->send(new \App\Mail\ForgotEmail($data));
 
             // dd($response);

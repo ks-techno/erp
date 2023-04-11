@@ -431,7 +431,7 @@ class SaleInvoiceController extends Controller
         DB::beginTransaction();
         try{
             if($seller_type == 'dealer'){
-                $data['seller'] = Dealer::OrderByName()->get();
+                $data['seller'] = Dealer::OrderByName()->where('status', 1)->get();
             }
 
             if($seller_type == 'staff'){

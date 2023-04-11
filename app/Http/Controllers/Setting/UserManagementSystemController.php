@@ -95,6 +95,23 @@ class UserManagementSystemController extends Controller
                     ],
                 ]
             ],
+            //CRM
+            [
+                'name' => 'CRM',
+                'icon' => '',
+                'child' => [
+                    [
+                        'dname' => 'Product Inventory',
+                        'name' => 'product',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Customer',
+                        'name' => 'customer',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                ],
+            ],
             // Purchase
             [
                 'name' => 'Purchase',
@@ -103,11 +120,6 @@ class UserManagementSystemController extends Controller
                     [
                         'dname' => 'Inventory',
                         'name' => 'inventory',
-                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
-                    ],
-                    [
-                        'dname' => 'Product Inventory',
-                        'name' => 'product',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
@@ -158,17 +170,12 @@ class UserManagementSystemController extends Controller
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
-                        'dname' => 'Customer',
-                        'name' => 'customer',
-                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
-                    ],
-                    [
                         'dname' => 'Booking',
                         'name' => 'sale-invoice',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
-                        'dname' => 'Booking Transfer',
+                        'dname' => 'Transfer',
                         'name' => 'booking-transfer',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
