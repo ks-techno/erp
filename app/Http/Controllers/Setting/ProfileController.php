@@ -125,7 +125,7 @@ class ProfileController extends Controller
 
     }catch (Exception $e) {
         DB::rollback();
-        return $this->jsonErrorResponse($data, $e->getMessage());
+        return $this->jsonErrorResponse($data, 'Something went wrong');
     }
     DB::commit();
 

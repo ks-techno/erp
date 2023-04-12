@@ -302,7 +302,7 @@ class UserManagementSystemController extends Controller
         } catch (Exception $e) {
             DB::rollback();
             session()->flash('status', 'error');
-            session()->flash('message', $e->getMessage());
+            session()->flash('message', 'Something went wrong');
             return redirect()->back();
         }
         DB::commit();
