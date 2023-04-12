@@ -44,3 +44,6 @@ table.data-table>thead>tr>th {
     background-color:#f9f9f9;
     color:#000;
 }
+.border-right{
+    border-right: 1px solid #000;
+}
