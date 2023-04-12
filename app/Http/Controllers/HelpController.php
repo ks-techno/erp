@@ -18,7 +18,7 @@ class HelpController extends Controller
     public function chart($val = null)
     {
         $data = [];
-        $chart = ChartOfAccount::where('level',4)->orWhere('level', 3);
+        $chart = ChartOfAccount::Wherein('level', [3,4]);
         if(!empty($val)){
             $val = (string)$val;
             $chart = $chart->where('code','like',"%$val%");

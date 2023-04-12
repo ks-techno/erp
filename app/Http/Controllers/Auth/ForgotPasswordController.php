@@ -35,24 +35,18 @@ class ForgotPasswordController extends Controller
     public function sendResetLinkEmail(Request $request)
     {
         $this->validateEmail($request);
-
         $user = User::where('email', '=', $request->email)->first();
-
         if(isset($user->id)){
             $data = [];
             $token = Str::random(40);
-
             DB::table('password_resets')->insert([
                 'email' => $user->email,
                 'token' => $token,
                 'created_at' => date("Y-m-d H:i:s")
             ]);
-
             $data['name'] = ucwords(strtolower(strtoupper($user->name)));
             $data['url'] = route('password.forgetPassword',$token);
             $data['email'] = $user->email;
-
-            
             Mail::to($data['email'])->send(new \App\Mail\ForgotEmail($data));
 
             // dd($response);
