@@ -106,7 +106,7 @@ class CategoryController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['create'];
         $data['parent_category'] = Category::ParentCategory()->OrderByName()->get();
-        $data['category_types'] = CategoryType::OrderByName()->get();
+        $data['category_types'] = CategoryType::OrderByName()->where('status',1)->get();
         return view('purchase.category.create', compact('data'));
     }
 

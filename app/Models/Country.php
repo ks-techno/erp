@@ -27,4 +27,5 @@ class Country extends Model
     public function regions(){
         return $this->hasMany(Region::class,'country_id','id')->orderby('name');
     }
+    
 }

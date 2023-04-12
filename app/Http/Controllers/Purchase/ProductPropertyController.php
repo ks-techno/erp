@@ -128,7 +128,7 @@ class ProductPropertyController extends Controller
         ];
         $data['code'] = Utilities::documentCode($doc_data);
        // $data['project'] = Project::where(Utilities::CompanyId())->OrderByName()->get();
-        $data['buyable'] = BuyableType::OrderByName()->get();
+        $data['buyable'] = BuyableType::OrderByName()->where('status', 1)->get();
 
         return view('purchase.product_property.create', compact('data'));
     }
@@ -263,12 +263,6 @@ class ProductPropertyController extends Controller
 
             $data['current'] = Product::with('property_variation')->where('uuid',$id)->first();
             $data['property_values'] = [];
-
-
-            //testing product get Block
-            $block = $data['current']->getBlock();
-            
-
             if(!empty($data['current']->property_variation)){
                 foreach ($data['current']->property_variation as $property_variation){
                     $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;

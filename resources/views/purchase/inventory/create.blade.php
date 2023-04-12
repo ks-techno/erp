@@ -133,7 +133,7 @@
                                         <label class="col-form-label">Purchase Price </label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm" value="" id="default_purchase_price" name="default_purchase_price" />
+                                        <input type="number" class="form-control form-control-sm" value="" id="default_purchase_price" name="default_purchase_price" />
                                     </div>
                                 </div>
                                 <div class="mb-1 row">

@@ -18,7 +18,7 @@ class HelpController extends Controller
     public function chart($val = null)
     {
         $data = [];
-        $chart = ChartOfAccount::where('level',4);
+        $chart = ChartOfAccount::Wherein('level', [3,4]);
         if(!empty($val)){
             $val = (string)$val;
             $chart = $chart->where('code','like',"%$val%");
@@ -34,7 +34,7 @@ class HelpController extends Controller
     public function customer($val = null)
     {
         $data = [];
-        $customer = Customer::where('id', '<>', 0);
+        $customer = Customer::where('id', '<>', 0)->where('status', 1);
         if (!empty($val)) {
             $val = (string)$val;
             $customer = $customer->where('cnic_no', 'like', "%$val%");
@@ -51,7 +51,7 @@ class HelpController extends Controller
     {
         // dd('in old');
         $data = [];
-        $customer = Customer::where('id','<>',0);
+        $customer = Customer::where('id','<>',0)->where('status', 1);
         if(!empty($val)){
             $val = (string)$val;
             $customer = $customer->where('cnic_no','like',"%$val%");
@@ -78,7 +78,7 @@ class HelpController extends Controller
         DB::beginTransaction();
         try{
             if($seller_type == 'dealer'){
-                $data['seller'] = Dealer::OrderByName()->get();
+                $data['seller'] = Dealer::where('status', 1)->OrderByName()->get();
             }
 
             if($seller_type == 'staff'){
@@ -97,7 +97,7 @@ class HelpController extends Controller
         $sale = Sale::where('project_id',$request->project_id)->pluck('product_id')->unique()->toArray();
 
         $data = [];
-        $product = Product::whereNotIn('id',$sale)->where('product_form_type','property');
+        $product = Product::whereNotIn('id',$sale)->where('product_form_type','property')->where('status', 1);
         if(!empty($val)){
             $val = (string)$val;
             $product = $product->where('code','like',"%$val%");

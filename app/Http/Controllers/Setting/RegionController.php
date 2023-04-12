@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Setting;
 
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Address;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -279,7 +280,12 @@ class RegionController extends Controller
         $data = [];
         DB::beginTransaction();
         try{
+            $region = Region::where('uuid',$id)->first();
 
+            $addresses = Address::where('region_id', $region->id)->get();
+            if ($addresses->count() > 0 ) {
+                throw new Exception('The region cannot be deleted as it is assigned to an address.');
+            }
             Region::where('uuid',$id)->delete();
 
         }catch (Exception $e) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Setting;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Address;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -279,6 +280,12 @@ class CityController extends Controller
         DB::beginTransaction();
     
         try {
+            $city = City::where('uuid',$id)->first();
+
+            $addresses = Address::where('city_id', $city->id)->get();
+            if ($addresses->count() > 0 ) {
+                throw new Exception('The city cannot be deleted as it is assigned to an address.');
+            }
             City::where('uuid', $id)->delete();
             
         } catch (\Exception $e) {
