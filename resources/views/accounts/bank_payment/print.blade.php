@@ -1,11 +1,6 @@
 @extends('layouts.print_layout')
 @section('title', $data['title'])
 @section('style')
-<style>
-    .border-right{
-        border-right: 1px solid #000;
-    }
-</style>
 @endsection
 
 @section('content')
@@ -82,10 +77,10 @@
         <tr>
             <td colspan="6" class="border-right">Total in Words</td>
             <td class="text-right border-right">
-                {{ numberToWords($sum_debit) }}
+                {{ numberToWords($sum_debit) }} rupees only
             </td>
             <td class="text-right">
-            {{ numberToWords($sum_credit) }}
+            {{ numberToWords($sum_credit) }} rupees only
             </td>
         </tr>
         </tfoot>
