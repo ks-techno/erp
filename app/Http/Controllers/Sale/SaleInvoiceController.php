@@ -132,7 +132,7 @@ class SaleInvoiceController extends Controller
         $doc_data = [
             'model'             => 'Sale',
             'code_field'        => 'code',
-            'code_prefix'       => strtoupper('si'),
+            'code_prefix'       => strtoupper('pd'),
         ];
         $data['code'] = Utilities::documentCode($doc_data);
         $data['customer'] = Customer::get();

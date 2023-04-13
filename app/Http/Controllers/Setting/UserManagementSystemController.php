@@ -157,6 +157,11 @@ class UserManagementSystemController extends Controller
                         'name' => 'product-variation',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
+                    [
+                        'dname' => 'Purchase Demand',
+                        'name' => 'purchase-demand',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
                 ]
             ],
             // Sale

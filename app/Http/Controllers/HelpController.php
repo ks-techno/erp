@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ChartOfAccount;
 use App\Models\Customer;
+use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\ProductVariationDtl;
@@ -45,6 +46,21 @@ class HelpController extends Controller
         $data['customer'] =  $customer;
 
         return view('helps.customer_help', compact('data'));
+    }
+    public function supplier($val = null)
+    {
+        $data = [];
+        $supplier = Supplier::where('id', '<>', 0)->where('status', 1);
+        if (!empty($val)) {
+            $val = (string)$val;
+            $supplier = $supplier->where('contact_no', 'like', "%$val%");
+            $supplier = $supplier->orWhere('name', 'like', "%$val%");
+        }
+
+        $supplier = $supplier->select('id', 'contact_no', 'name')->get();
+        $data['supplier'] =  $supplier;
+
+        return view('helps.supplier_help', compact('data'));
     }
 
     public function oldCustomerHelp($val = null)
