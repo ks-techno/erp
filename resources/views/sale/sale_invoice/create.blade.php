@@ -316,7 +316,8 @@
 
 @section('pageJs')
     <script>
-        var current_project_id = '{{auth()->user()->project_id}}'
+        var current_project_id = '{{auth()->user()->project_id}}';
+        var product_form_type = 'property';
     </script>
     <script src="{{ asset('/pages/sale/sale_invoice/create.js') }}"></script>
     @yield('pageJsScript')

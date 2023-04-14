@@ -43,12 +43,13 @@ class PurchaseDemandController extends Controller
         $data['permission_list'] = self::Constants()['list'];
         $data['permission_create'] = self::Constants()['create'];
         if ($request->ajax()) {
+       
             $draw = 'all';
-
-            $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
-
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','remarks']);
-
+            
+            $dataSql = PurchaseDemand::with('satff')->Orderby('date','desc');
+            
+            $allData = $dataSql->get();
+           
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -65,11 +66,11 @@ class PurchaseDemandController extends Controller
                 $print_per = true;
             }
             $entries = [];
+            
             foreach ($allData as $row) {
-                $posted = $this->getPostedTitle()[$row->posted];
-                $urlEdit = route('accounts.journal.edit',$row->voucher_id);
-                $urlDel = route('accounts.journal.destroy',$row->voucher_id);
-                $urlPrint = route('accounts.journal.print',$row->voucher_id);
+                $urlEdit = route('purchase.purchase-demand.edit',$row->purchaseDemand_id);
+                $urlDel = route('purchase.purchase-demand.destroy',$row->purchaseDemand_id);
+                $urlPrint = route('purchase.purchase-demand.edit',$row->purchaseDemand_id);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -91,13 +92,9 @@ class PurchaseDemandController extends Controller
                 $actions .= '</div>'; //end main div
                 $entries[] = [
                     $row->date,
-                    $row->voucher_no,
-                    '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                    Str::limit($row->remarks, 20, '....'),
-                    $row->prepared_by,
-                //    '<div class="signature-field"></div>',
-                    $row->approved_by,
-                //    '<div class="signature-field"></div>',
+                    $row->purchaseDemand_id,
+                    Str::limit($row->notes, 20, '....'),
+                    $row->purchaseDemand_id,
                     $actions,
                 ];
             }
@@ -108,8 +105,8 @@ class PurchaseDemandController extends Controller
                 'data' => $entries,
             ];
             return response()->json($result);
+        
         }
-
         return view('purchase.purchase_demand.list');
     }
 
@@ -144,7 +141,10 @@ class PurchaseDemandController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-
+            'demandBy_id' => 'required',
+        ],
+        [
+            'demandBy_id.required' => 'Demand by is required',
         ]);
 
         if ($validator->fails()) {
@@ -159,60 +159,46 @@ class PurchaseDemandController extends Controller
         if(!isset($request->pd) || empty($request->pd)){
             return $this->jsonErrorResponse($data, 'Grid must be include one row');
         }
-
-        $total_debit = 0;
-        $total_credit = 0;
-        foreach ($request->pd as $pd) {
-            $total_debit += str_replace(',', '',($pd['egt_debit']));
-            $total_credit += str_replace(',', '',($pd['egt_credit']));
-        }
-        if(($total_debit != $total_credit) || (empty($total_debit) && empty($total_credit)) ){
-            return $this->jsonErrorResponse($data, 'debit credit must be equal');
-        }
-
         DB::beginTransaction();
         try {
-            $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
-            $voucher_no = self::documentCode(self::Constants()['type'],$max);
-            $voucher_id = self::uuid();
-
-            $posted = $request->current_action_id == 'post'?1:0;
+            $doc_data = [
+                'model'             => 'PurchaseDemand',
+                'code_field'        => 'purchaseDemand_id',
+                'code_prefix'       => strtoupper('pd'),
+            ];
+            $data['code'] = Utilities::demandCode($doc_data);
             $sr = 1;
             foreach ($request->pd as $pd){
-                $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
-                if(!empty($account)){
-                    Voucher::create([
-                        'voucher_id' => $voucher_id,
+                PurchaseDemand::create([
+                        'purchaseDemand_id' => $data['code'],
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
-                        'type' => self::Constants()['type'],
-                        'voucher_no' => $voucher_no,
                         'sr_no' => $sr,
-                        'chart_account_id' => $account->id,
-                        'chart_account_name' => $account->name,
-                        'chart_account_code' => $account->code,
-                        'debit' =>str_replace(',', '',($pd['egt_debit'])),
-                        'credit' =>str_replace(',', '',($pd['egt_credit'])),
-                        'description' => $pd['egt_description'],
-                        'remarks' => $request->remarks,
-                        'company_id' => auth()->user()->company_id,
-                        'project_id' => auth()->user()->project_id,
-                        'user_id' => auth()->user()->id,
-                        
-                         'posted' => $posted,
+                        'uom' => $pd['uom'],
+                        'packing' => $pd['packing'],
+                        'supplier_id' => $request->supplier_id,
+                        'demandBy_id' => $request->demandBy_id,
+                        'product_id' => $request->product_id,
+                        'physical_stock' => $pd['physical_stock'],
+                        'store_stock' => $pd['store_stock'],
+                        'reorder' => $pd['reorder'],
+                        'consumption' => $pd['consumption'],
+                        'quantity' => $pd['quantity'],
+                        'lpo_stock' => $pd['lpo_stock'],
+                        'notes' => $request->notes,
                     ]);
                     $sr = $sr + 1;
-                }
+               
             }
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong');
+            return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('accounts.journal.index');
+        return $this->redirect()->route('purchase.purchase_demand.index');
     }
 
     /**
@@ -260,7 +246,7 @@ class PurchaseDemandController extends Controller
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('accounts.journal.edit', compact('data'));
+        return view('purchase.purchase_demand.edit', compact('data'));
     }
 
     /**
@@ -346,7 +332,7 @@ class PurchaseDemandController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
-        return $this->redirect()->route('accounts.journal.index');
+        return $this->redirect()->route('purchase.purchase_demand.index');
     }
 
     /**
@@ -389,7 +375,7 @@ class PurchaseDemandController extends Controller
             abort('404');
         }
 
-        return view('accounts.journal.print', compact('data'));
+        return view('purchase.purchase_demand.print', compact('data'));
     }
 
        public function revertList(Request $request)
@@ -433,7 +419,7 @@ class PurchaseDemandController extends Controller
             return response()->json($result);
         }
 
-        return view('accounts.journal.revert_list', compact('data'));
+        return view('purchase.purchase_demand.revert_list', compact('data'));
     }
 
     public function revert($id){

@@ -29,4 +29,11 @@ class PurchaseDemand extends Model
         'lpo_stock',
         'notes',
     ];
+
+public function satff()
+{
+    return $this->belongsTo(Staff::class,'demandBy_id');
 }
+
+}
+

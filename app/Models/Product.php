@@ -48,7 +48,10 @@ class Product extends Model
     protected function scopeProductProperty($qry){
         return $qry->where('product_form_type','property');
     }
-
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
     protected function scopeProductInventory($qry){
         return $qry->where('product_form_type','inventory');
     }

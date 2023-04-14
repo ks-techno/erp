@@ -110,16 +110,17 @@ class HelpController extends Controller
     public function propertyProduct(Request $request)
     {
 
+        
         $sale = Sale::where('project_id',$request->project_id)->pluck('product_id')->unique()->toArray();
 
         $data = [];
-        $product = Product::whereNotIn('id',$sale)->where('product_form_type','property')->where('status', 1);
+        $product = Product::with('supplier')->whereNotIn('id',$sale)->where('product_form_type', $request->product_form_type)->where('status', 1);
         if(!empty($val)){
             $val = (string)$val;
             $product = $product->where('code','like',"%$val%");
             $product = $product->orWhere('name','like',"%$val%");
         }
-
+        
         $product = $product->get();
         $data['property'] =  $product;
         return view('helps.product_help',compact('data'));

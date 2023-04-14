@@ -80,35 +80,38 @@
                                                         <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="product_id" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
+                                                    <div class="input-group eg_help_block">
+                                                        <input id="product_name" type="text" class="product_name form-control form-control-sm text-left">
+                                                        <input id="product_id" type="hidden" name="product_id">
+                                                    </div>
                                                     </td>
                                                     <td>
-                                                    <input id="supplier_name" type="text" class="supplier_name form-control form-control-sm text-left">
-                                            <input id="supplier_id" type="hidden" name="supplier_id">
+                                                    <input id="supplier_name"  type="text" class="supplier_name form-control form-control-sm text-left">
+                                                    <input id="supplier_id" type="hidden" name="supplier_id">
                                                     </td>
                                                     <td>
-                                                        <input id="UOM" type="text" class="form-control form-control-sm">
+                                                        <input id="uom" name="uom" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="packing" type="text" class="form-control form-control-sm">
+                                                        <input id="packing" name="packing" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="physical_stock" type="text" class="form-control form-control-sm">
+                                                        <input id="physical_stock" name="physical_stock" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="store_stock" type="text" class="form-control form-control-sm">
+                                                        <input id="store_stock" name="store_stock" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="reorder" type="text" class="form-control form-control-sm">
+                                                        <input id="reorder" name="reorder" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="cosumption" type="text" class="form-control form-control-sm">
+                                                        <input id="consumption" name="consumption" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="quantity" type="text" class="form-control form-control-sm">
+                                                        <input id="quantity" name="quantity" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="lpo_stock" type="text" class="form-control form-control-sm">
+                                                        <input id="lpo_stock" name="lpo_stock" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td class="text-center">
                                                         <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
@@ -124,7 +127,7 @@
                                                 <tr class="egt_form_footer_total">
                                                     <td colspan="9" class="voucher-total-title">Total Quantity</td>
                                                     <td class="voucher-total-credit text-end">
-                                                        <input id="total_qty" name="total_qty" type="hidden" >
+                                                        <input id="total_qty" name="" type="hidden" >
                                                     </td>
                                                     
                                                 </tr>
@@ -168,8 +171,10 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('/pages/accounts/journal/create.js') }}"></script>
+<script src="{{ asset('/pages/purchase/purchase_demand/create.js') }}"></script>
     <script>
+         var current_project_id = '{{auth()->user()->project_id}}';
+         var product_form_type = 'inventory';
         var var_egt_fields = [
 
         ];
@@ -187,9 +192,7 @@
         var var_egt_readonly_fields = ['egt_chart_code','egt_chart_name'];
     </script>
     <script src="{{asset('/js/jquery-12.js')}}"></script>
-    <script src="{{asset('/pages/common/erp_grid.js')}}"></script>
-    <script src="{{asset('/pages/help/chart_help.js')}}"></script>
-    <script src="{{asset('/pages/help/supplier_help.js')}}"></script>
-    <script src="{{asset('/pages/common/account-calculations.js')}}"></script>
-    <script  src="{{asset('/pages/common/number-format.js')}}"></script>
+    <script src="{{asset('/pages/help/product_help.js')}}"></script>
+    <script src="{{asset('/pages/common/erp_grid_single.js')}}"></script>
+   
 @endsection
