@@ -41,7 +41,9 @@ class Customer extends Model
     }
 
     public function sales(){
-        return $this->hasMany(Sale::class,'customer_id');
+        return $this->hasMany(Sale::class,'customer_id')->with('product');
     }
-    
+    public function product(){
+        return $this->hasMany(Product::class,'id');
+    }
 }

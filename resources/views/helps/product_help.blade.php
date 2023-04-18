@@ -85,7 +85,7 @@
                 </tr>
                 @else
                 <tr>
-                    <th data-field="Product Code" width="25%">Registration No.</th>
+                    <th data-field="Product Code" width="25%">Property Type</th>
                     <th data-field="Product Name" width="50%">Plot Number</th>
                     <th data-field="Sale Price" width="25%">Block</th>
                 </tr>
@@ -115,8 +115,7 @@
                     </tr>
                    @else
                     <tr class="data-dtl">
-                        <td data-field="product_code" width="25%">{{$property->code}}</td>
-                        
+                    <td data-field="supplier_name">{{ isset($property->buyable_type) ? $property->buyable_type->name : '' }}</td>
                         <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td>
                         <td data-view="show" data-field="sale_price" width="25%">{{$property->block}}
                         </td>                
@@ -125,7 +124,7 @@
                     <tr class="d-none">
                         <td data-field="product_id">{{$property->id}}</td>
                         <td data-field="supplier_id">{{$property->supplier_id}}</td>
-                        <td data-field="supplier_name">{{$property->supplier->name}}</td>
+                        <td data-field="supplier_name">{{ isset($property->supplier) ? $property->supplier->name : '' }}</td>
                     </tr>
                     </tbody>
                 </table>

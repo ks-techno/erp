@@ -93,7 +93,7 @@ function funcGetProductDetail(product_id) {
                     var product = response.data['product'];
                     const salePrice = product.default_sale_price;
                     const supplierID = product.supplier_id;
-                    alert(supplierID);
+                    
                     $('form').find('#sale_price').val(salePrice);
                     $('form').find('#supplier_id').val(supplierID);
                 }else{

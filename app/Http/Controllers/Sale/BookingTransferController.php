@@ -237,7 +237,7 @@ class BookingTransferController extends Controller
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
             ]);
-
+            Sale::where('product_id',$request->product_id)->update(['customer_id' => $request->nm_customer_id]);
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, 'Something went wrong');
@@ -275,7 +275,9 @@ class BookingTransferController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
         if(BookingTransfer::where('uuid',$id)->exists()){
-            $data['current'] = BookingTransfer::where('uuid',$id)->with('nm_customer','om_customer','file_status')->first();
+            $data['current'] = BookingTransfer::where('uuid',$id)->with('nm_customer','om_customer','file_status','sales','product')->first();  
+            // $current = $data['current'];
+            // dd($current->sales->external_item_id );
         }else{
             abort('404');
         }
@@ -387,6 +389,7 @@ class BookingTransferController extends Controller
                     'user_id' => auth()->user()->id,
 
             ]);
+            Sale::where('product_id',$request->product_id)->update(['customer_id' => $request->nm_customer_id]);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -408,11 +411,12 @@ class BookingTransferController extends Controller
 
         DB::beginTransaction();
         try{
+            
             $data['customer'] = Customer::where('id',$customer_id)->with('sales')->first();
-
+        
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully get Customer', 200);

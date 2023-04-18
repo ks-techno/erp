@@ -76,4 +76,7 @@ class BookingTransfer extends Model
         return $this->belongsTo(Product::class,'product_id','id')
             ->with('buyable_type');
     }
+    public function sales(){
+        return $this->belongsTo(Sale::class,'booking_code','code');
+    }
 }

@@ -52,6 +52,10 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class,'id','product_id');
+    }
     protected function scopeProductInventory($qry){
         return $qry->where('product_form_type','inventory');
     }

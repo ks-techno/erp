@@ -49,7 +49,7 @@ class ProductPropertyController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
              
-             $dataSql = Product::with('buyable_type')->where('product_form_type','property')
+             $dataSql = Product::with('buyable_type','sale')->where('product_form_type','property')
             ->where(Utilities::CompanyProjectId())->orderByName();
             $allData = $dataSql->get();
             $recordsTotal = count($allData);
@@ -83,6 +83,11 @@ class ProductPropertyController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
+                if ($row->sale && $row->sale->product_id) {
+                    $booking_status = '<div class="text-center"><span class="badge rounded-pill badge-light-success">Booked</span></div>';
+                } else {
+                    $booking_status = '<div class="text-center"><span class="badge rounded-pill badge-light-danger">Not booked</span></div>';
+                }
                 
                 $rowBuyableType = $row->buyable_type;
                 $buyableTypeName = $rowBuyableType ? $rowBuyableType->name : '';
@@ -91,6 +96,7 @@ class ProductPropertyController extends Controller
                     $row->name,
                     $buyableTypeName,
                     $row->block,
+                    $booking_status,
                     '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
                     $actions,
                 ];

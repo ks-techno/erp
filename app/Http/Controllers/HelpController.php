@@ -114,7 +114,7 @@ class HelpController extends Controller
         $sale = Sale::where('project_id',$request->project_id)->pluck('product_id')->unique()->toArray();
 
         $data = [];
-        $product = Product::with('supplier')->whereNotIn('id',$sale)->where('product_form_type', $request->product_form_type)->where('status', 1);
+        $product = Product::with('supplier','buyable_type')->whereNotIn('id',$sale)->where('product_form_type', $request->product_form_type)->where('status', 1);
         if(!empty($val)){
             $val = (string)$val;
             $product = $product->where('code','like',"%$val%");

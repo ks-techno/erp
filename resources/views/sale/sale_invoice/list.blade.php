@@ -26,11 +26,11 @@
                                 <table class="datatables-ajax table table-responsive" data-url="{{route('sale.sale-invoice.index')}}">
                                     <thead>
                                     <tr>
-                                        <th class="cell-fit">Date</th>
-                                        <th class="cell-fit">Code</th>
+                                        <th class="cell-fit">Plot Number</th>
+                                        <th class="cell-fit">Block</th>
+                                        <th class="cell-fit">Property Type</th>
                                         <th class="cell-fit">Project</th>
                                         <th class="cell-fit">Customer</th>
-                                        <th class="cell-fit">Payment Mode</th>
                                         <th class="cell-fit"></th>
                                     </tr>
                                     </thead>

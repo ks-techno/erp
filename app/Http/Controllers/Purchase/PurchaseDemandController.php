@@ -70,7 +70,7 @@ class PurchaseDemandController extends Controller
             foreach ($allData as $row) {
                 $urlEdit = route('purchase.purchase-demand.edit',$row->purchaseDemand_id);
                 $urlDel = route('purchase.purchase-demand.destroy',$row->purchaseDemand_id);
-                $urlPrint = route('purchase.purchase-demand.edit',$row->purchaseDemand_id);
+                $urlPrint = route('purchase.purchase-demand.print',$row->purchaseDemand_id);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {

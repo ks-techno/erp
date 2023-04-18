@@ -35,6 +35,54 @@
         .right.fade.in .modal-dialog {
             right: 0;
         }
+        #sellerTable{
+            width: 450px;
+            position: absolute;
+            /* left: 8%;
+            top: 100%; */
+            height: 230px;
+        }
+        table{
+            background: #bbc8fd;
+                position: sticky;
+                width: 100% !important;
+                max-height: 100% !important;
+                overflow-y: scroll !important;
+                position: -webkit-sticky
+        }
+        #sellerTable .tr{
+            border: 2px solid #e6e8f3;
+        }
+        table>thead>tr>th {
+                background: #5578eb;
+                color: #fff !important;
+                border: 2px solid #e6e8f3;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+            }
+            tr:hover{
+                cursor: pointer;
+            }
+            table>tbody>tr>td:hover {
+                background: #dedede;
+            }
+            table>tbody>tr:hover {
+                background: #dedede;
+            }
+            table>tbody>tr>td{
+                /*white-space: nowrap;*/
+                text-overflow: ellipsis;
+                overflow: hidden;
+                border: 2px solid #e6e8f3;
+                font-weight: 400;
+                color: #212529;
+                font-size: 12px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+            }
+
 </style>
 @endsection
 
@@ -109,19 +157,19 @@
                                     <input type="hidden" class="form-control form-control-sm nm_membership_no" value="" id="nm_membership_no_input" name="nm_membership_no" />
                                     <p class="col-form-label nm_membership_no p-0 txt_color" id="nm_membership_no"></p>
                                 </div>
-
-                                <div class="col-sm-6">
-                                    <label class="col-form-label p-0">Registration No#</label>
-                                    <input type="hidden" class="form-control form-control-sm " value="" id="nm_registration_no_input" name="nm_registration_no" />
-                                    <p class="col-form-label nm_registration_no p-0 txt_color"></p>
-                                </div>
-                            </div>
-                            <div class="mb-1 row">
                                 <div class="col-sm-6">
                                     <label class="col-form-label p-0">CNIC No#</label>
                                     <input type="hidden" class="form-control form-control-sm cnic" value="" id="nm_cnic_no_input" name="nm_cnic_no" />
                                     <p class="col-form-label nm_cnic_no p-0 txt_color"></p>
                                 </div>
+                                <!-- <div class="col-sm-6">
+                                    <label class="col-form-label p-0">Registration No#</label>
+                                    <input type="hidden" class="form-control form-control-sm " value="" id="nm_registration_no_input" name="nm_registration_no" />
+                                    <p class="col-form-label nm_registration_no p-0 txt_color"></p>
+                                </div> -->
+                            </div>
+                            <div class="mb-1 row">
+                                
                                 <div class="col-sm-6">
                                     <label class="col-form-label p-0">Mobile No#</label>
                                     <input type="hidden" class="text-start form-control form-control-sm NumberValidate" value="" id="nm_mobile_no_input" name="nm_mobile_no" />
@@ -223,11 +271,11 @@
                                 </div>
                             </div>
                             <div class="mb-1 row">
-                                <div class="col-sm-6">
+                                <!-- <div class="col-sm-6">
                                     <label class="col-form-label p-0">Registration No#</label>
                                     <input type="hidden" class="form-control form-control-sm" value="" id="om_registration_no_input" name="om_registration_no" />
                                     <p class="col-form-label om_registration_no p-0 txt_color"></p>
-                                </div>
+                                </div> -->
                                 <div class="col-sm-6">
                                     <label class="col-form-label p-0">Mobile No#</label>
                                     <input type="hidden" class="text-start form-control form-control-sm NumberValidate" value="" id="om_mobile_no_input" name="om_mobile_no" />
@@ -308,8 +356,10 @@
                                 <div class="mb-1 row">
                                     <div class="col-sm-12">
                                         <label class="col-form-label p-0">Booking List <span class="required">*</span></label>
-                                        <select class="select2 form-select bookingList" id="booking_id" name="booking_id">
-                                        </select>
+                                        <input type="text" class="form-control form-control-sm text-left sellerList" id="booking_name" name="booking_name">
+                                        <input type="hidden" id="booking_id" name="booking_id">
+                                        <div id="sellerTable"></div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -320,11 +370,25 @@
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_booking_code_input" name="booking_code" />
                                         <p class="col-form-label om_booking_code p-0 txt_color"></p>
                                     </div>
+                                    
                                     <div class="col-sm-6">
-                                        <label class="col-form-label p-0">Product Name <span class="required">*</span></label>
+                                        <label class="col-form-label p-0">Plot Number </label>
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_product_name_input_id" name="product_id" />
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_product_name_input_name" name="product_name" />
                                         <p class="col-form-label om_product_name p-0 txt_color"></p>
+                                    </div>
+                                    
+                                </div>
+                                <div class="mb-1 row">
+                                <div class="col-sm-6">
+                                        <label class="col-form-label p-0">Down Payment</label>
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="om_down_payment_input" name="down_payment" />
+                                        <p class="col-form-label om_down_payment p-0 txt_color"></p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-form-label p-0">On Possession</label>
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="om_on_possession_input" name="on_possession" />
+                                        <p class="col-form-label om_on_possession p-0 txt_color"></p>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -333,9 +397,28 @@
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_file_status_input_id" name="file_status_id" />
                                         <p class="col-form-label om_file_status p-0 txt_color"></p>
                                     </div>
+                                     <div class="col-sm-6">
+                                        <label class="col-form-label p-0">Registration Number</label>
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="om_external_item_id_input_id" name="external_item_id" />
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="om_external_item_id_input_name" name="external_item_id" />
+                                        <p class="col-form-label om_external_item_id p-0 txt_color"></p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-sm-4">
+                                    <div class="col-sm-6 mb-1">
+                                        <label class="col-form-label p-0">Booking Price</label>
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="om_booked_price_input_id" name="booked_price" />
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="om_booked_price_input_name" name="booked_price" />
+                                        <p class="col-form-label om_booked_price p-0 txt_color"></p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-form-label p-0">Currency Note</label>
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="om_currency_note_no_input_id" name="currency_note_no" />
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="om_currency_note_no_input_name" name="currency_note_no" />
+                                        <p class="col-form-label om_currency_note_no p-0 txt_color"></p>
+                                    </div>
+                                    
                             </div>
                         </div>
                     </div>{{--end row--}}
@@ -493,6 +576,11 @@
                 var formData = {
                     customer_id : customer_id
                 };
+                var buyer = $('#om_customer_id').val();
+                var saller = $('#customer_id').val();
+                if(buyer==saller){
+                    ntoastr.error('Saller and Buyer can not be same');
+                }
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -505,16 +593,23 @@
                         if(response.status == 'success'){
                             var customer = response.data['customer'];
                             var sales = response.data['customer'].sales;
+                            var product = response.data['customer'].product;
                             var options = "<option value='0' selected>Select</option>";
                             var length = customer.length;
                             var sales_length = customer.sales.length;
 
-                            console.log(customer.sales[0]['code']);
+                            
+                            table = "<div class='table-wrapper'><table><thead><tr><th>Plot No.</th><th>Block</th></tr></thead><tbody>";
                             for(var i=0;i<sales_length;i++){
-                                if(customer.sales[i]['code']){
-                                    options += '<option value="'+customer.sales[i]['id']+'">'+customer.sales[i]['code']+'</option>';
-                                }
-                            }
+                                var products = sales[i].product;
+                                var product_length = sales[i].product.length;
+                            table += '<tr data-id="'+customer.sales[i]['id']+'" data-name="'+customer.sales[i]['code']+'"><td><b>'+sales[i].product.name+'</b></td><td><b>'+sales[i].product.block+'</b></td></tr>';
+                                   // options += '<option value="'+customer.sales[i]['id']+'">'+customer.sales[i]['code']+''+customer.product[i]['block']+'</option>';
+                                }   
+                            
+                                table += "</tbody></table>";
+                                $('#sellerTable').html(table);
+                            
                             $('form').find('.bookingList').html(options);
 
                             $('form').find('.om_membership_no').html(customer.membership_no);
@@ -619,10 +714,12 @@
         });
 
         //Booking Data
-        $(document).on('change','#booking_id',function(){
+        $(document).on('click','#sellerTable tbody tr',function(){
             var validate = true;
             var thix = $(this);
-            var val = thix.find('option:selected').val();
+            var val = $(this).attr('data-id');
+            //var val = $('#booking_id').val();
+           // var val = thix.find('option:selected').val();
             if(valueEmpty(val)){
                 ntoastr.error("Select New Booking");
                 validate = false;
@@ -643,8 +740,9 @@
                     success: function(response,data) {
                         if(response.status == 'success'){
                             var sales = response.data['sales'];
+                            var product = response.data['product'];
                             var length = sales.length;
-
+                            console.log(product);
                             $('form').find('.om_booking_code').html(sales.code);
                             $('form').find('#om_booking_id_input').val(sales.id);
                             $('form').find('#om_booking_code_input').val(sales.code);
@@ -653,6 +751,26 @@
                             $('form').find('#om_product_name_input_id').val(sales.product.id);
                             $('form').find('#om_product_name_input_name').val(sales.product.name);
 
+                            $('form').find('.om_booked_price').html(sales.booked_price);
+                            $('form').find('#om_booked_price_input_id').val(sales.booked_price);
+                            $('form').find('#om_booked_price_input_name').val(sales.booked_price);
+
+                            $('form').find('.om_down_payment').html(sales.down_payment);
+                            $('form').find('#om_down_payment_input_id').val(sales.down_payment);
+                            $('form').find('#om_down_payment_input_name').val(sales.down_payment);
+
+                            $('form').find('.om_on_possession').html(sales.on_possession);
+                            $('form').find('#om_on_possession_input_id').val(sales.on_possession);
+                            $('form').find('#om_on_possession_input_name').val(sales.on_possession);
+
+                            $('form').find('.om_external_item_id').html(sales.product.external_item_id);
+                            $('form').find('#om_external_item_id_input_id').val(sales.product.external_item_id);
+                            $('form').find('#om_external_item_id_input_name').val(sales.product.external_item_id);
+
+                            $('form').find('.om_currency_note_no').html(sales.currency_note_no);
+                            $('form').find('#om_currency_note_no_input_id').val(sales.currency_note_no);
+                            $('form').find('#om_currency_note_no_input_name').val(sales.currency_note_no);
+                            
                             $('form').find('.om_file_status').html(sales.file_status.name);
                             $('form').find('#om_file_status_input_id').val(sales.file_status.id);
 
@@ -668,6 +786,11 @@
         });
     </script>
     <script>
+        //  $(document).ready(function() {
+        //     $('#om_customer_name').on('change', function() {
+                
+        //     });
+        // });
         //Reset Image on Cross Click
         $(document).ready(function() {
             $('#nm_resetInput').on('click', function() {
@@ -679,6 +802,31 @@
             $('#om_resetInput').on('click', function() {
                 $('#om_image_url').val('');
             });
+        });
+        $(document).on('click','#sellerTable tbody tr',function(){
+        var id = $(this).attr('data-id');
+        var name = $(this).attr('data-name');
+        $('#booking_id').val(id);
+        $('#booking_name').val(name);
+        });
+        $(document).on('click','#sellerTable tbody tr',function(){
+        var id = $(this).attr('data-id');
+        var name = $(this).attr('data-name');
+        $('#booking_id').val(id);
+        $('#booking_name').val(name);
+        
+        if ($('#booking_name').val() == '') {
+            $('#sellerTable').show();
+        } else {
+            $('#sellerTable').hide();
+        }
+        });
+        $(document).on('change keyup','#booking_name',function(){
+        if ($(this).val() == '') {
+            $('#sellerTable').show();
+        } else {
+            $('#sellerTable').hide();
+        }
         });
 
     </script>
@@ -703,7 +851,44 @@
                 reader.readAsDataURL(e.target.files['0']);
             });
         });
-
+        $(document).on('keydown', function(e) {
+    if ($('.table-wrapper').length) {
+        
+        var inLineHelp = $('.table-wrapper');
+        var scrollHeight = inLineHelp.prop('scrollHeight');
+        var scrollTop = inLineHelp.scrollTop();
+        var lineHeight = parseInt(inLineHelp.css('line-height'));
+        var offsetTop = parseInt(inLineHelp.css('top'));
+        var keyCode = e.keyCode;
+        if (keyCode == 38) { // up arrow key
+            e.preventDefault();
+            //$('#egt_cheque_no').focus();
+            inLineHelp.scrollTop(scrollTop - lineHeight);
+            if (inLineHelp.scrollTop() == 0) {
+                inLineHelp.css('top', offsetTop + lineHeight + 'px');
+            }
+            var selectedRow = inLineHelp.find('.selected');
+            if (selectedRow.prev().length) {
+                selectedRow.removeClass('selected');
+                selectedRow.prev().addClass('selected');
+            }
+        } else if (keyCode == 40) { // down arrow key
+            e.preventDefault();
+            //$('#egt_cheque_no').focus();
+            inLineHelp.scrollTop(scrollTop + lineHeight);
+            if (inLineHelp.scrollTop() + inLineHelp.innerHeight() == scrollHeight) {
+                inLineHelp.css('top', offsetTop - lineHeight + 'px');
+            }
+            var selectedRow = inLineHelp.find('.selected');
+            if (selectedRow.next().length) {
+                selectedRow.removeClass('selected');
+                selectedRow.next().addClass('selected');
+            }
+        }
+        
+        
+    }
+});
     </script>
 @endsection
 
