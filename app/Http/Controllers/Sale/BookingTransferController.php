@@ -51,7 +51,7 @@ class BookingTransferController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = BookingTransfer::where(Utilities::CompanyId())->orderby('created_at','desc');
+            $dataSql = BookingTransfer::with('sales','product')->where(Utilities::CompanyId())->orderby('created_at','desc');
             $allData = $dataSql->get();
 
             $recordsTotal = count($allData);
@@ -99,6 +99,9 @@ class BookingTransferController extends Controller
                 $entries[] = [
                     date('d-m-Y',strtotime($row->date)),
                     $row->code,
+                    $row->product->name ?? null,
+                    $row->product->block,
+                    $row->product->buyable_type->name ?? null,
                     $actions,
                 ];
             }
