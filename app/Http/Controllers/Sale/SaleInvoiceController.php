@@ -99,7 +99,7 @@ class SaleInvoiceController extends Controller
                 $entries[] = [
                     $row->product->name,
                     $row->product->block,
-                    $row->product->buyable_type->name,
+                    $row->product->buyable_type->name ?? null,
                     $row->project->name,
                     $row->customer->name,
                     $actions,
