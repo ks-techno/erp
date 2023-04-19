@@ -114,7 +114,7 @@
                     <tbody>
                     <tr class="data-dtl">
                         <td data-view="show" data-field="chart_code" width="50%">{{$chart->code}}</td>
-                        <td data-field="chart_name" width="50%">{{$chart->name}}</td>
+                        <td data-field="chart_name" width="50%">({{$chart->name}})</td>
                     </tr>
                     <tr class="d-none">
                         <td data-field="chart_id">{{$chart->id}}</td>

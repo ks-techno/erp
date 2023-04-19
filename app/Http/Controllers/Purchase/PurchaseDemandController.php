@@ -43,13 +43,10 @@ class PurchaseDemandController extends Controller
         $data['permission_list'] = self::Constants()['list'];
         $data['permission_create'] = self::Constants()['create'];
         if ($request->ajax()) {
-       
             $draw = 'all';
-            
-            $dataSql = PurchaseDemand::with('satff')->Orderby('date','desc');
+            $dataSql = PurchaseDemand::Orderby('date','desc');
             
             $allData = $dataSql->get();
-           
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -70,7 +67,7 @@ class PurchaseDemandController extends Controller
             foreach ($allData as $row) {
                 $urlEdit = route('purchase.purchase-demand.edit',$row->purchaseDemand_id);
                 $urlDel = route('purchase.purchase-demand.destroy',$row->purchaseDemand_id);
-                $urlPrint = route('purchase.purchase-demand.print',$row->purchaseDemand_id);
+                $urlPrint = route('purchase.purchase-demand.edit',$row->purchaseDemand_id);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -107,7 +104,7 @@ class PurchaseDemandController extends Controller
             return response()->json($result);
         
         }
-        return view('purchase.purchase_demand.list');
+        return view('purchase.purchase_demand.list', compact('data'));
     }
 
     /**

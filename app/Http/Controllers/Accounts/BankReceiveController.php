@@ -123,6 +123,15 @@ class BankReceiveController extends Controller
         $data['permission'] = self::Constants()['create'];
         $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
         $data['voucher_no'] = self::documentCode(self::Constants()['type'],$max);
+        $chart = ChartOfAccount::Wherein('level', [3,4]);
+        if(!empty($val)){
+            $val = (string)$val;
+            $chart = $chart->where('code','like',"%$val%");
+            $chart = $chart->orWhere('name','like',"%$val%");
+        }
+
+        $chart = $chart->select('id','code','name')->get();
+        $data['chart'] =  $chart;
 
         return view('accounts.bank_receive.create', compact('data'));
     }
@@ -173,6 +182,7 @@ class BankReceiveController extends Controller
             $posted = $request->current_action_id == 'post'?1:0;
             $sr = 1;
             foreach ($request->pd as $pd){
+               
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
                     Voucher::create([
@@ -234,6 +244,15 @@ class BankReceiveController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
+        $chart = ChartOfAccount::Wherein('level', [3,4]);
+        if(!empty($val)){
+            $val = (string)$val;
+            $chart = $chart->where('code','like',"%$val%");
+            $chart = $chart->orWhere('name','like',"%$val%");
+        }
+
+        $chart = $chart->select('id','code','name')->get();
+        $data['chart'] =  $chart;
         if(Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->exists()){
 
             $data['current'] = Voucher::where('type',self::Constants()['type'])->where(['voucher_id'=>$id,'sr_no'=>1])->first();
