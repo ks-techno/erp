@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ChartOfAccount;
 use App\Models\Customer;
+use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\ProductVariationDtl;
@@ -45,6 +46,21 @@ class HelpController extends Controller
         $data['customer'] =  $customer;
 
         return view('helps.customer_help', compact('data'));
+    }
+    public function supplier($val = null)
+    {
+        $data = [];
+        $supplier = Supplier::where('id', '<>', 0)->where('status', 1);
+        if (!empty($val)) {
+            $val = (string)$val;
+            $supplier = $supplier->where('contact_no', 'like', "%$val%");
+            $supplier = $supplier->orWhere('name', 'like', "%$val%");
+        }
+
+        $supplier = $supplier->select('id', 'contact_no', 'name')->get();
+        $data['supplier'] =  $supplier;
+
+        return view('helps.supplier_help', compact('data'));
     }
 
     public function oldCustomerHelp($val = null)
@@ -94,16 +110,17 @@ class HelpController extends Controller
     public function propertyProduct(Request $request)
     {
 
+        
         $sale = Sale::where('project_id',$request->project_id)->pluck('product_id')->unique()->toArray();
 
         $data = [];
-        $product = Product::whereNotIn('id',$sale)->where('product_form_type','property')->where('status', 1);
+        $product = Product::with('supplier','buyable_type')->whereNotIn('id',$sale)->where('product_form_type', $request->product_form_type)->where('status', 1);
         if(!empty($val)){
             $val = (string)$val;
             $product = $product->where('code','like',"%$val%");
             $product = $product->orWhere('name','like',"%$val%");
         }
-
+        
         $product = $product->get();
         $data['property'] =  $product;
         return view('helps.product_help',compact('data'));

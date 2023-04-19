@@ -52,10 +52,9 @@ class SaleInvoiceController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode')->where(Utilities::CompanyId())->orderby('created_at','desc');
-
+            $dataSql = Sale::with('customer','project','property_payment_mode','product')->where(Utilities::CompanyId())->orderby('created_at','desc');
+            
             $allData = $dataSql->get();
-
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -98,11 +97,11 @@ class SaleInvoiceController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
-                    date('d-m-Y',strtotime($row->created_at)),
-                    $row->code,
+                    $row->product->name,
+                    $row->product->block,
+                    $row->product->buyable_type->name,
                     $row->project->name,
                     $row->customer->name,
-                    isset($row->property_payment_mode->name)?$row->property_payment_mode->name:"",
                     $actions,
                 ];
             }
@@ -132,7 +131,7 @@ class SaleInvoiceController extends Controller
         $doc_data = [
             'model'             => 'Sale',
             'code_field'        => 'code',
-            'code_prefix'       => strtoupper('si'),
+            'code_prefix'       => strtoupper('pd'),
         ];
         $data['code'] = Utilities::documentCode($doc_data);
         $data['customer'] = Customer::get();

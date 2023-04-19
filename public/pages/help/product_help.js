@@ -9,9 +9,13 @@ $(document).on('click','.data_tbody_row',function(e){
         var product_code = thix.find('td[data-field="product_code"]').text();
         var product_name = thix.find('td[data-field="product_name"]').text();
         var product_id = thix.find('td[data-field="product_id"]').text();
+        var supplier_id = thix.find('td[data-field="supplier_id"]').text();
+        var supplier_name= thix.find('td[data-field="supplier_name"]').text();
 
         $('form').find('#product_name').val(product_name);
         $('form').find('#product_id').val(product_id);
+        $('form').find('#supplier_id').val(supplier_id);
+        $('form').find('#supplier_name').val(supplier_name);
 
         if($('#form_type').val() !== undefined){
             if($('#form_type').val() == 'sale_invoice'){
@@ -27,7 +31,7 @@ $('#'+help_product_id).on('focusin keyup',function(e){
     $('#inLineHelp').remove();
     var validate = true;
     var project_id = current_project_id;
-
+    var set_product_form_type = product_form_type;
     if(valueEmpty(project_id)){
         ntoastr.error("First Select Any Project");
         validate = false;
@@ -43,7 +47,7 @@ $('#'+help_product_id).on('focusin keyup',function(e){
             eg_help_block.append('<div id="inLineHelp"></div>');
             var inLineHelp = eg_help_block.find('#inLineHelp');
             val = val.replace(/\s/g,'%20');
-            var setval = "?project_id="+project_id
+            var setval = "?project_id="+project_id+"&product_form_type="+set_product_form_type
             setval += "&search="+val
             var url2 = help_product_url +'/'+setval
             inLineHelp.load(url2);
@@ -88,7 +92,10 @@ function funcGetProductDetail(product_id) {
                 if(response.status == 'success'){
                     var product = response.data['product'];
                     const salePrice = product.default_sale_price;
+                    const supplierID = product.supplier_id;
+                    
                     $('form').find('#sale_price').val(salePrice);
+                    $('form').find('#supplier_id').val(supplierID);
                 }else{
                     ntoastr.error(response.message);
                 }

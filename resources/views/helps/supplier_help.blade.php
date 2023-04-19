@@ -1,4 +1,4 @@
-<div id="inLineHelp" data-id="product">
+<div id="inLineHelp" data-id="supplier">
     <div class="inLineHelp inline_help_table">
         <style>
 
@@ -33,6 +33,11 @@
             .data_tbody_row>table {
                 table-layout: fixed;
             }
+           /* for header fixed
+           .inline_help_table>.data_thead_row{
+                position: fixed;
+                width: 484px;
+            }*/
             .inline_help_table>.data_thead_row>table>thead>tr>th,
             .inline_help>.data_thead_row>table>thead>tr>th {
                 background: #5578eb;
@@ -75,60 +80,44 @@
                 cursor: pointer;
             }
         </style>
-        <div class="data_thead_row" id="productHelp">
+        <div class="data_thead_row" id="supplierHelp">
             <table border="1" class="" width="100%">
                 <thead>
-                @if($data['property'][0]->product_form_type=='inventory')
                 <tr>
-                    <th data-field="Product Code" width="25%">Code</th>
-                    <th data-field="Product Name" width="50%">Product Name</th>
-                </tr>
-                @else
-                <tr>
-                    <th data-field="Product Code" width="25%">Property Type</th>
-                    <th data-field="Product Name" width="50%">Plot Number</th>
-                    <th data-field="Sale Price" width="25%">Block</th>
+                    <th data-field="supplier Name" width="50%">Supplier Name</th>
+                    <th data-field="supplier Phone" width="50%">Supplier CNIC</th>
                 </tr>
                 </thead>
-                @endif
             </table>
         </div>
-        @if(count($data['property']) == 0)
+        @if(count($data['supplier']))
+        @foreach($data['supplier'] as $supplier)
             <div class="data_tbody_row">
                 <table border="1" class="val_table" width="100%">
                     <tbody>
                     <tr class="data-dtl">
-                        <td data-view="show">Data not found</td>
+                        <td data-field="supplier_name" width="50%">{{$supplier->name}}</td>
+                        <td data-view="show" data-field="supplier_phone" width="50%">{{$supplier->contact_no}}</td>
                     </tr>
-                    </tbody>
-                </table>
-            </div>
-        @endif
-        @foreach($data['property'] as $property)
-            <div class="data_tbody_row">
-                <table border="1" class="val_table" width="100%">
-                    <tbody>
-                    @if($property->product_form_type=='inventory')
-                    <tr class="data-dtl">
-                        <td data-field="product_code" width="25%">{{$property->code}}</td>
-                        <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td>               
-                    </tr>
-                   @else
-                    <tr class="data-dtl">
-                    <td data-field="supplier_name">{{ isset($property->buyable_type) ? $property->buyable_type->name : '' }}</td>
-                        <td data-view="show" data-field="product_name" width="50%">{{$property->name}}</td>
-                        <td data-view="show" data-field="sale_price" width="25%">{{$property->block}}
-                        </td>                
-                    </tr>
-                    @endif
                     <tr class="d-none">
-                        <td data-field="product_id">{{$property->id}}</td>
-                        <td data-field="supplier_id">{{$property->supplier_id}}</td>
-                        <td data-field="supplier_name">{{ isset($property->supplier) ? $property->supplier->name : '' }}</td>
+                        <td data-field="Supplier_id">{{$supplier->id}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         @endforeach
     </div>
+    @else
+    <div class="data_tbody_row">
+                <table border="1" class="val_table" width="100%">
+                    <tbody>
+                    <tr class="data-dtl">
+                        <td class="create_new" data-view="show" data-field="create_new_Supplier">Data Not Found
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+    @endif
+   
 </div>

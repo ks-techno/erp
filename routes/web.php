@@ -33,6 +33,7 @@ use App\Http\Controllers\Purchase\InventoryController;
 use App\Http\Controllers\Purchase\ProductPropertyController;
 use App\Http\Controllers\Purchase\BuyableTypeController;
 use App\Http\Controllers\Purchase\ProductVariationController;
+use App\Http\Controllers\Purchase\PurchaseDemandController;
 use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
 use App\Http\Controllers\Sale\SaleInvoiceController;
@@ -171,6 +172,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('manufacturer')->resource('manufacturer', ManufacturerController::class);
             Route::prefix('supplier')->resource('supplier', SupplierController::class);
             Route::prefix('inventory')->resource('inventory', InventoryController::class);
+            Route::prefix('purchase-demand')->resource('purchase-demand', PurchaseDemandController::class);
           
             Route::prefix('property-type')->resource('property-type', BuyableTypeController::class);
             Route::prefix('product-variation')->resource('product-variation', ProductVariationController::class);

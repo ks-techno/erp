@@ -265,6 +265,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('purchase-demand'.$sidebar_menu)
+                    <li class="{{ ($path == 'purchase/purchase-demand')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('purchase.purchase-demand.index') }}">
+                            <span class="menu-item text-truncate">Purchase Demand</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
             <li id="sale_nav" class="nav-item has-sub {{ ($prefix == '/sale')?'open':'' }} ">
