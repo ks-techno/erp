@@ -67,6 +67,15 @@
     </tbody>
     <tfoot>
         <tr>
+            <td colspan="4" class="border-right">Total in figures</td>
+            <td class="text-right border-right">
+                {{$sum_debit }}
+            </td>
+            <td class="text-right border-right">
+            {{ $sum_credit }}
+            </td>
+        </tr>
+        <tr>
             <td colspan="4" class="border-right">Total in Words</td>
             <td class="text-right border-right">
                 {{ numberToWords($sum_debit) }} rupees only

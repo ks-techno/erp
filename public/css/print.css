@@ -46,4 +46,5 @@ table.data-table>thead>tr>th {
 }
 .border-right{
     border-right: 1px solid #000;
+    border-bottom: 1px dotted #000;
 }

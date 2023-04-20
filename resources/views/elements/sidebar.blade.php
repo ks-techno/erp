@@ -198,6 +198,13 @@
                  </a>
              </li>
             @endpermission
+            @permission('booking-transfer'.$sidebar_menu)
+                    <li class="{{ ($path == 'sale/booking-transfer')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.booking-transfer.index') }}">
+                            <span class="menu-item text-truncate">Transfer</span>
+                        </a>
+                    </li>
+                    @endpermission
           </ul>
          </li>
 
@@ -294,13 +301,7 @@
                         </a>
                     </li>
                     @endpermission
-                    @permission('booking-transfer'.$sidebar_menu)
-                    <li class="{{ ($path == 'sale/booking-transfer')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('sale.booking-transfer.index') }}">
-                            <span class="menu-item text-truncate">Transfer</span>
-                        </a>
-                    </li>
-                    @endpermission
+                    
                 </ul>
             </li>
 
