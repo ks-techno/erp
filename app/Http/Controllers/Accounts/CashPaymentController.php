@@ -123,6 +123,15 @@ class CashPaymentController extends Controller
         $data['permission'] = self::Constants()['create'];
         $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
         $data['voucher_no'] = self::documentCode(self::Constants()['type'],$max);
+        $chart = ChartOfAccount::Wherein('level', [3,4]);
+        if(!empty($val)){
+            $val = (string)$val;
+            $chart = $chart->where('code','like',"%$val%");
+            $chart = $chart->orWhere('name','like',"%$val%");
+        }
+
+        $chart = $chart->select('id','code','name')->get();
+        $data['chart'] =  $chart;
 
         return view('accounts.cash_payment.create', compact('data'));
     }
@@ -233,7 +242,15 @@ class CashPaymentController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
+        $chart = ChartOfAccount::Wherein('level', [3,4]);
+        if(!empty($val)){
+            $val = (string)$val;
+            $chart = $chart->where('code','like',"%$val%");
+            $chart = $chart->orWhere('name','like',"%$val%");
+        }
 
+        $chart = $chart->select('id','code','name')->get();
+        $data['chart'] =  $chart;
         if(Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->exists()){
 
             $data['current'] = Voucher::where('type',self::Constants()['type'])->where(['voucher_id'=>$id,'sr_no'=>1])->first();

@@ -26,6 +26,13 @@
         .right.fade.in .modal-dialog {
             right: 0;
         }
+        .select2-container--classic .select2-dropdown, .select2-container--default .select2-dropdown {
+    border-color: #d8d6de;
+    z-index: 99999999;
+    position: fixed;
+    left: 27%;
+    top: 35%;
+}
     </style>
 @endsection
 
@@ -130,33 +137,12 @@
                                                         <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
-                                                    </td>
-                                                    <td>
-                                                        <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
-                                                    </td>
-                                                    <td>
-                                                        <input id="egt_description" type="text" class="form-control form-control-sm">
-                                                    </td>
-                                                    <td>
-                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm">
-                                                    </td>
-                                                    <td>
-                                                        <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm">
-                                                    </td>
-                                                    <!-- <td class="text-center">
-                                                        <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
-                                                            <i data-feather='plus'></i>
-                                                        </button>
-                                                    </td> -->
-                                                </tr>
-                                                <tr class="egt_form_header_input">
-                                                    <td>
-                                                        <input id="egt_sr_no" readonly type="text" class="form-control form-control-sm">
-                                                        <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
-                                                    </td>
-                                                    <td>
-                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
+                                                    <select class="select2 form-select" id="egt_chart_code" name="egt_chart_code">
+                                                    <option value="">Select Value</option>
+                                                    @foreach($data['chart'] as $chart)
+                                                    <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="({{$chart->name}})" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
+                                                    @endforeach
+                                                    </select>
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
@@ -176,6 +162,7 @@
                                                         </button>
                                                     </td>
                                                 </tr>
+                                                
                                                 </thead>
                                                 <tbody class="egt_form_body">
                                                 @if(isset( $data['dtl']) && count( $data['dtl']) > 0)
