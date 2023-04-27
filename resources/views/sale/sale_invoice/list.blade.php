@@ -30,6 +30,7 @@
                                         <th class="cell-fit">Block</th>
                                         <th class="cell-fit">Property Type</th>
                                         <th class="cell-fit">Project</th>
+                                        <th class="cell-fit">File Status</th>
                                         <th class="cell-fit">Customer</th>
                                         <th class="cell-fit"></th>
                                     </tr>

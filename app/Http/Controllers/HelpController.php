@@ -64,22 +64,25 @@ class HelpController extends Controller
     }
 
     public function oldCustomerHelp($val = null)
-    {
-        // dd('in old');
-        $data = [];
-        $customer = Customer::where('id','<>',0)->where('status', 1);
-        if(!empty($val)){
-            $val = (string)$val;
-            $customer = $customer->where('cnic_no','like',"%$val%");
-            $customer = $customer->orWhere('name','like',"%$val%");
-        }
-
-        $customer = $customer->select('id','cnic_no','name')->get();
-        //dd($chart);
-        $data['old_customer'] =  $customer;
-
-        return view('helps.old_customer_help',compact('data'));
+{
+    $data = [];
+    $customer = Customer::where('id', '<>', 0)
+                ->where('status', 1)
+                ->has('sales');
+    if(!empty($val)){
+        $val = (string)$val;
+        $customer = $customer->where(function ($query) use ($val) {
+            $query->where('cnic_no','like',"%$val%")
+                ->orWhere('name','like',"%$val%");
+        });
     }
+
+    $customer = $customer->select('id', 'cnic_no', 'name')->get();
+    $data['old_customer'] = $customer;
+
+    return view('helps.old_customer_help', compact('data'));
+}
+
     public function getSellerList(Request $request)
     {
 
