@@ -74,6 +74,15 @@
         @endif
     </tbody>
     <tfoot>
+    <tr>
+            <td colspan="6" class="border-right">Total in figures</td>
+            <td class="text-right border-right">
+                {{$sum_debit }}
+            </td>
+            <td class="text-right border-right">
+            {{ $sum_credit }}
+            </td>
+        </tr>
         <tr>
             <td colspan="6" class="border-right">Total in Words</td>
             <td class="text-right border-right">

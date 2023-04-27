@@ -48,7 +48,7 @@ class BankPaymentController extends Controller
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
 
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','remarks']);
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','debit','credit']);
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -90,11 +90,17 @@ class BankPaymentController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
+                $totalamount = 0;
+                $totalamount += $row->debit;
+                if($totalamount==0){
+                    $totalamount += $row->credit;
+                }
+                
                 $entries[] = [
                     $row->date,
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                    Str::limit($row->remarks, 20, '....'),
+                    $totalamount,
                     $actions,
                 ];
             }
