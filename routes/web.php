@@ -40,6 +40,7 @@ use App\Http\Controllers\Sale\SaleInvoiceController;
 use App\Http\Controllers\Sale\BookingTransferController;
 use App\Http\Controllers\Sale\OpenFileController;
 use App\Http\Controllers\Sale\RefundFileController;
+use App\Http\Controllers\Purchase\BookedPropertyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -163,7 +164,12 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         Route::prefix('product-property')->resource('product-property', ProductPropertyController::class);
-
+        Route::prefix('booked-property')->resource('booked-property', BookedPropertyController::class);
+        Route::prefix('booked-property')->name('booked-property.')->controller(BookedPropertyController::class)->group(function(){
+            Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+            Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+            Route::get('print/{id}', 'printView')->name('print');
+        });
         Route::prefix('purchase')->name('purchase.')->group(function () {
             Route::prefix('category_types')->resource('category_types', CategoryTypeController::class);
             Route::prefix('category')->resource('category', CategoryController::class);

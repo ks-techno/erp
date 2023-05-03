@@ -191,6 +191,13 @@
              </a>
          </li>
           @endpermission
+          @permission('booked-property'.$sidebar_menu)
+           <li class="{{ (request()->routeIs('booked-property.*')) ? 'active' : '' }}">
+             <a class="d-flex align-items-center" href="{{ route('booked-property.index') }}">
+                <span class="menu-item text-truncate">Booked Property</span>
+             </a>
+         </li>
+          @endpermission
             @permission('customer'.$sidebar_menu)
            <li class="{{ (request()->routeIs('customer.*')) ? 'active' : '' }}">
               <a class="d-flex align-items-center" href="{{ route('customer.index') }}">

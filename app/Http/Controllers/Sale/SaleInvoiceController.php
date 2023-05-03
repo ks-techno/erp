@@ -52,7 +52,7 @@ class SaleInvoiceController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->orderby('created_at','desc');
+            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->where('file_type',NULL)->orderby('created_at','desc');
             
             $allData = $dataSql->get();
             $recordsTotal = count($allData);

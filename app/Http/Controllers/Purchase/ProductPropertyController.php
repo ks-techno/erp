@@ -83,7 +83,7 @@ class ProductPropertyController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-                if ($row->sale && $row->sale->product_id) {
+                if ($row->sale && $row->sale->product_id && $row->sale->file_type==NULL) {
                     $booking_status = '<div class="text-center"><span class="badge rounded-pill badge-light-success">Booked</span></div>';
                 } else {
                     $booking_status = '<div class="text-center"><span class="badge rounded-pill badge-light-danger">Not booked</span></div>';

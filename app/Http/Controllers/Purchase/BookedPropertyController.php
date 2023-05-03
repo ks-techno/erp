@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Sale;
+namespace App\Http\Controllers\Purchase;
 
 use App\Library\Utilities;
 use App\Models\BookingFileStatus;
@@ -20,14 +20,14 @@ use Exception;
 use Illuminate\Validation\Rule;
 use Validator;
 
-class RefundFileController extends Controller
+class BookedPropertyController extends Controller
 {
     private static function Constants()
     {
-        $name = 'refund-file';
+        $name = 'booked-property';
         return [
-            'title' => 'Refund/Merge File',
-            'list_url' => route('sale.refund-file.index'),
+            'title' => 'Booked Property',
+            'list_url' => route('booked-property.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -49,13 +49,12 @@ class RefundFileController extends Controller
         $data['permission_list'] = self::Constants()['list'];
         $data['permission_create'] = self::Constants()['create'];
 
-       
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode','product')->where(Utilities::CompanyId())->where('file_type','merge')->orwhere('file_type','refund')->orderby('created_at','desc');   
+            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->where('file_type',NULL)->orderby('created_at','desc');
+            
             $allData = $dataSql->get();
-          
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -74,9 +73,9 @@ class RefundFileController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('sale.refund-file.edit',$row->uuid);
-                $urlDel = route('sale.refund-file.destroy',$row->uuid);
-                $urlPrint = route('sale.refund-file.print',$row->uuid);
+                $urlEdit = route('booked-property.edit',$row->uuid);
+                $urlDel = route('booked-property.destroy',$row->uuid);
+                $urlPrint = route('booked-property.print',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -102,7 +101,7 @@ class RefundFileController extends Controller
                     $row->product->block,
                     $row->product->buyable_type->name ?? null,
                     $row->project->name,
-                    $row->file_type,
+                    $row->file_status->name,
                     $row->customer->name,
                     $actions,
                 ];
@@ -116,7 +115,7 @@ class RefundFileController extends Controller
             return response()->json($result);
         }
 
-        return view('sale.refund_file.list', compact('data'));
+        return view('purchase.booked_property.list', compact('data'));
     }
 
     /**
@@ -133,7 +132,7 @@ class RefundFileController extends Controller
         $doc_data = [
             'model'             => 'Sale',
             'code_field'        => 'code',
-            'code_prefix'       => strtoupper('rf'),
+            'code_prefix'       => strtoupper('pd'),
         ];
         $data['code'] = Utilities::documentCode($doc_data);
         $data['customer'] = Customer::get();
@@ -141,7 +140,7 @@ class RefundFileController extends Controller
    //     $data['project'] = Project::get();
         $data['property'] = Product::ProductProperty()->get();
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
-        return view('sale.refund_file.create', compact('data'));
+        return view('sale.sale_invoice.create', compact('data'));
     }
 
     /**
@@ -153,12 +152,49 @@ class RefundFileController extends Controller
     public function store(Request $request)
     {
         $data = [];
+        $validator = Validator::make($request->all(), [
+           // 'project_id' => ['required',Rule::notIn([0,'0'])],
+            'product_id' => ['required',Rule::notIn([0,'0'])],
+            'customer_id' => ['required',Rule::notIn([0,'0'])],
+            'seller_type' => ['required',Rule::in(['dealer','staff'])],
+            'seller_id' => ['required',Rule::notIn([0,'0'])],
+            'currency_note_no'=>'required',
+            'sale_discount'=>'required',
+            'down_payment'=>'required',
+            'on_possession'=>'required',
+        ],[
+//            'project_id.required' => 'Project is required',
+//            'project_id.not_in' => 'Project is required',
+            'product_id.required' => 'Product is required',
+            'product_id.not_in' => 'Product is required',
+            'customer_id.required' => 'Customer is required',
+            'customer_id.not_in' => 'Customer is required',
+            'seller_type.required' => 'Seller type is required',
+            'seller_type.in' => 'Seller type is required',
+            'seller_id.required' => 'Seller is required',
+            'seller_id.not_in' => 'Seller is required',
+            'currency_note_no.required' => 'currency is required',
+            'sale_discount.required' => 'Sale Discount is required',
+            'down_payment.required' => 'Down Payment is required',
+            'on_possession.required' => 'On Possession is required',
+        ]);
+
+        if ($validator->fails()) {
+            $data['validator_errors'] = $validator->errors();
+            $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
+            $err = 'Fields are required';
+            foreach ($validator_errors as $key=>$valid_error){
+                $err = $valid_error[0];
+            }
+            return $this->jsonErrorResponse($data, $err);
+        }
+
         DB::beginTransaction();
         try{
             $doc_data = [
                 'model'             => 'Sale',
                 'code_field'        => 'code',
-                'code_prefix'       => strtoupper('rf'),
+                'code_prefix'       => strtoupper('si'),
             ];
             $code = Utilities::documentCode($doc_data);
             if($request->seller_type == 'staff'){
@@ -167,46 +203,42 @@ class RefundFileController extends Controller
             if($request->seller_type == 'dealer'){
                 $modal = Dealer::where('id',$request->seller_id)->first();
             }
-            $value = $request->input('booked_price');
-            $booked_price = null !== $value ? str_replace(',', '', $value) : 0;
-
-            $date = $request->date;
-            $formatted_date =  date('Y-m-d', strtotime($date));
-            $file_type = 'refund File';
             $sale = Sale::create([
                 'uuid' => self::uuid(),
                 'code' => $code,
-                'customer_id' => $request->om_customer_id,
+                'customer_id' => $request->customer_id,
                 'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
                 'project_id' => auth()->user()->project_id,
                 'product_id' => $request->product_id,
-                'property_payment_mode_id' => isset($request->property_payment_mode_id) ? 1 : 0,
+                'property_payment_mode_id' => $request->property_payment_mode_id,
                 'is_installment' => isset($request->is_installment)?1:0,
                 'is_booked' => isset($request->is_booked)?1:0,
                 'is_purchased' => isset($request->is_purchased)?1:0,
-                'sale_price'=> isset($request->sale_price) ? str_replace(',', '',((!is_null($request->sale_price))) ? $request->sale_price: 0) : 0,
+                'sale_price'=> str_replace(',', '',((!is_null($request->sale_price))) ? $request->sale_price: ""),
                 'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
-                'booked_price' => $booked_price,
-                'down_payment' =>  !empty($request->down_payment) ? str_replace(',', '',($request->down_payment)) : 0,
-                'on_balloting' => isset($request->on_balloting) ? $request->on_balloting : 0,
-                'no_of_bi_annual' => isset($request->no_of_bi_annual) ? $request->no_of_bi_annual : 0,
-                'installment_bi_annual' => isset($request->installment_bi_annual) ? $request->installment_bi_annual : 0,
-                'no_of_month' => isset($request->no_of_month) ? $request->no_of_month : 0,
-                'installment_amount_monthly' => isset($request->installment_amount_monthly) ? $request->installment_amount_monthly : 0,
-                'on_possession' => isset($request->on_possession) ? str_replace(',', '',($request->on_possession)) : 0,
-                'file_status_id' => isset($request->file_status_id) ? $request->file_status_id : 0,
-                'sale_discount' => isset($request->sale_discount) ? str_replace(',', '',($request->sale_discount)) : 0,
+                'booked_price' => str_replace(',', '',($request->input('booked_price'))),
+                'down_payment' => str_replace(',', '',($request->down_payment)),
+                'on_balloting' => $request->on_balloting,
+                'no_of_bi_annual' => $request->no_of_bi_annual,
+                'installment_bi_annual' => $request->installment_bi_annual,
+                'no_of_month' => $request->no_of_month,
+                'installment_amount_monthly' => $request->installment_amount_monthly,
+                'on_possession' => str_replace(',', '',($request->on_possession)),
+                'file_status_id' => $request->file_status_id,
+                'sale_discount' => str_replace(',', '',($request->sale_discount)),
                 'seller_commission_perc' => isset($modal->commission) ? $modal->commission : 0,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
-                'file_type' => $request->file_type,
-                'notes' => $request->notes,
-                'file_date' => isset($formatted_date) ? $formatted_date : '',
             ]);
-           
+
+            $saleSeller = new SaleSeller();
+            $saleSeller->sale_id = $sale->id;
+
+            $modal->sale_seller()->save($saleSeller);
+
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
@@ -242,9 +274,9 @@ class RefundFileController extends Controller
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
         $data['file_status'] = BookingFileStatus::where('status',1)->get();
         if(Sale::where('uuid',$id)->exists()){
-             
+
             $data['current'] = Sale::with('product','customer','dealer','staff')->where('uuid',$id)->first();
-        
+
         }else{
             abort('404');
         }
@@ -255,7 +287,7 @@ class RefundFileController extends Controller
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('sale.refund_file.edit', compact('data'));
+        return view('purchase.booked_property.edit', compact('data'));
     }
 
     /**
