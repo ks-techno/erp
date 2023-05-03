@@ -38,6 +38,8 @@ use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
 use App\Http\Controllers\Sale\SaleInvoiceController;
 use App\Http\Controllers\Sale\BookingTransferController;
+use App\Http\Controllers\Sale\OpenFileController;
+use App\Http\Controllers\Sale\RefundFileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -188,6 +190,18 @@ Route::group(['middleware' => 'auth'], function () {
                Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
                 Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
                 Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+                Route::get('print/{id}', 'printView')->name('print');
+            });
+            Route::prefix('open-file')->resource('open-file', OpenFileController::class);
+            Route::prefix('open-file')->name('open-file.')->controller(OpenFileController::class)->group(function(){
+                Route::post('get-customer-list', 'getCustomerList')->name('getCustomerList');
+                Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
+                Route::get('print/{id}', 'printView')->name('print');
+            });
+            Route::prefix('refund-file')->resource('refund-file', RefundFileController::class);
+            Route::prefix('refund-file')->name('refund-file.')->controller(RefundFileController::class)->group(function(){
+                Route::post('get-customer-list', 'getCustomerList')->name('getCustomerList');
+                Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
             });
             Route::prefix('booking-transfer')->resource('booking-transfer', BookingTransferController::class);
