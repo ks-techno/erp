@@ -36,6 +36,9 @@ class Sale extends Model
         'file_status_id',
         'sale_discount',
         'seller_commission_perc',
+        'file_type',
+        'file_date',
+        'notes',
     ];
 
     protected $morphClass = null;
@@ -46,6 +49,7 @@ class Sale extends Model
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');
     }
+    
     public function property_payment_mode(){
         return $this->belongsTo(PropertyPaymentMode::class,'property_payment_mode_id','id');
     }

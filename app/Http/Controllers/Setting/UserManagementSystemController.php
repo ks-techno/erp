@@ -110,6 +110,16 @@ class UserManagementSystemController extends Controller
                         'name' => 'customer',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
+                    [
+                        'dname' => 'Open File',
+                        'name' => 'open-file',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
+                        'dname' => 'Refund File',
+                        'name' => 'refund-file',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
                 ],
             ],
             // Purchase
