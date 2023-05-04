@@ -52,9 +52,9 @@ class SaleInvoiceController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->where('file_type',NULL)->orderby('created_at','desc');
-            
+            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->where('file_type',NULL)->orderby('created_at','desc')->distinct();
             $allData = $dataSql->get();
+            
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -203,42 +203,56 @@ class SaleInvoiceController extends Controller
             if($request->seller_type == 'dealer'){
                 $modal = Dealer::where('id',$request->seller_id)->first();
             }
-            $sale = Sale::create([
-                'uuid' => self::uuid(),
-                'code' => $code,
-                'customer_id' => $request->customer_id,
-                'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
-                'project_id' => auth()->user()->project_id,
-                'product_id' => $request->product_id,
-                'property_payment_mode_id' => $request->property_payment_mode_id,
-                'is_installment' => isset($request->is_installment)?1:0,
-                'is_booked' => isset($request->is_booked)?1:0,
-                'is_purchased' => isset($request->is_purchased)?1:0,
-                'sale_price'=> str_replace(',', '',((!is_null($request->sale_price))) ? $request->sale_price: ""),
-                'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
-                'booked_price' => str_replace(',', '',($request->input('booked_price'))),
-                'down_payment' => str_replace(',', '',($request->down_payment)),
-                'on_balloting' => $request->on_balloting,
-                'no_of_bi_annual' => $request->no_of_bi_annual,
-                'installment_bi_annual' => $request->installment_bi_annual,
-                'no_of_month' => $request->no_of_month,
-                'installment_amount_monthly' => $request->installment_amount_monthly,
-                'on_possession' => str_replace(',', '',($request->on_possession)),
-                'file_status_id' => $request->file_status_id,
-                'sale_discount' => str_replace(',', '',($request->sale_discount)),
-                'seller_commission_perc' => isset($modal->commission) ? $modal->commission : 0,
-                'company_id' => auth()->user()->company_id,
-                'user_id' => auth()->user()->id,
-            ]);
+            $requestdata = 
+                [
+                    'uuid' => self::uuid(),
+                    'code' => $code,
+                    'customer_id' => $request->customer_id,
+                    'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
+                    'project_id' => auth()->user()->project_id,
+                    'product_id' => $request->product_id,
+                    'property_payment_mode_id' => $request->property_payment_mode_id,
+                    'is_installment' => isset($request->is_installment)?1:0,
+                    'is_booked' => isset($request->is_booked)?1:0,
+                    'is_purchased' => isset($request->is_purchased)?1:0,
+                    'sale_price'=> str_replace(',', '',((!is_null($request->sale_price))) ? $request->sale_price: ""),
+                    'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
+                    'booked_price' => str_replace(',', '',($request->input('booked_price'))),
+                    'down_payment' => str_replace(',', '',($request->down_payment)),
+                    'on_balloting' => $request->on_balloting,
+                    'no_of_bi_annual' => $request->no_of_bi_annual,
+                    'installment_bi_annual' => $request->installment_bi_annual,
+                    'no_of_month' => $request->no_of_month,
+                    'installment_amount_monthly' => $request->installment_amount_monthly,
+                    'on_possession' => str_replace(',', '',($request->on_possession)),
+                    'file_status_id' => $request->file_status_id,
+                    'sale_discount' => str_replace(',', '',($request->sale_discount)),
+                    'seller_commission_perc' => isset($modal->commission) ? $modal->commission : 0,
+                    'company_id' => auth()->user()->company_id,
+                    'user_id' => auth()->user()->id,
+                    'file_type' => NULL,
+                ];
+            $prod_id = Sale::where('product_id', $request->product_id)->first();
+            
+            if($prod_id){
+                
+                $update = Sale::where('product_id',$request->product_id)
+                ->update($requestdata);
+            }
+            else{
+                $sale = Sale::create($requestdata);
+                dd($sale);
+                $saleSeller = new SaleSeller();
+                $saleSeller->sale_id = $sale->id;
+                $modal->sale_seller()->save($saleSeller);
 
-            $saleSeller = new SaleSeller();
-            $saleSeller->sale_id = $sale->id;
-
-            $modal->sale_seller()->save($saleSeller);
-
+            }
+            
+            createSaleHistory($requestdata);
+            
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong');
+            return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
@@ -334,8 +348,7 @@ class SaleInvoiceController extends Controller
 
         DB::beginTransaction();
         try{
-            Sale::where('uuid',$id)
-                ->update([
+            $requestdata = [
                 'customer_id' => $request->customer_id,
                 'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
                 'project_id' => auth()->user()->project_id,
@@ -358,8 +371,10 @@ class SaleInvoiceController extends Controller
                 'sale_discount' => str_replace(',', '',($request->sale_discount)),
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
-            ]);
-
+            ];
+            Sale::where('uuid',$id)
+                ->update($requestdata);
+            updateSaleHistory($requestdata,$id);
             $sale = Sale::where('uuid',$id)->first();
 
             $saleSeller = new SaleSeller();

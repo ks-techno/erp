@@ -172,8 +172,7 @@ class RefundFileController extends Controller
 
             $date = $request->date;
             $formatted_date =  date('Y-m-d', strtotime($date));
-            $file_type = 'refund File';
-            $sale = Sale::create([
+            $requestdata = [
                 'uuid' => self::uuid(),
                 'code' => $code,
                 'customer_id' => $request->om_customer_id,
@@ -202,8 +201,10 @@ class RefundFileController extends Controller
                 'file_type' => $request->file_type,
                 'notes' => $request->notes,
                 'file_date' => isset($formatted_date) ? $formatted_date : '',
-            ]);
-           
+            ];
+            $sale = Sale::where('product_id',$request->product_id)
+            ->update($requestdata);
+            createSaleHistory($requestdata);
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());

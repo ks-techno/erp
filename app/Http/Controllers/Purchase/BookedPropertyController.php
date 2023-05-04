@@ -52,7 +52,7 @@ class BookedPropertyController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->where('file_type',NULL)->orderby('created_at','desc');
+            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->orderby('created_at','desc');
             
             $allData = $dataSql->get();
             $recordsTotal = count($allData);
@@ -102,6 +102,7 @@ class BookedPropertyController extends Controller
                     $row->product->buyable_type->name ?? null,
                     $row->project->name,
                     $row->file_status->name,
+                    $row->file_type,
                     $row->customer->name,
                     $actions,
                 ];

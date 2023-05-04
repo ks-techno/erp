@@ -53,7 +53,7 @@ $(function () {
                         }
                     },
                     error: function(response,status) {
-                        // console.log(response.responseJSON);
+                        console.log(response.responseJSON);
                         if(response.responseJSON.message !== undefined){
                             
                             ntoastr.error(response.responseJSON.message);

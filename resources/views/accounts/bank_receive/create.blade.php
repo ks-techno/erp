@@ -180,8 +180,8 @@
                                                     <td>
                                                         <input id="egt_sr_no" readonly type="text"
                                                          class="form-control form-control-sm">
-                                                        <input id="chart_id" type="hidden"
-                                                        class="chart_id form-control form-control-sm">
+                                                        <!-- <input id="chart_id" type="hidden"
+                                                        class="chart_id form-control form-control-sm"> -->
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_code1" type="text"

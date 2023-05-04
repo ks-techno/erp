@@ -10,8 +10,8 @@ $(document).on('change','#egt_chart_code',function(e){
     $('#egt_chart_name1').val(chart_name);
     $('#egt_chart_code1').val(chart_code);
     $('#egt_chart_code').val(chart_code);
-    // $('#chart_id1').val(chart_id);
-    // $('#chart_id').val(chart_id);
+    //$('#chart_id1').val(chart_id);
+    $('#chart_id').val(chart_id);
 });
 
 

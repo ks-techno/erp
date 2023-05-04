@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Sale extends Model
 {
     use SoftDeletes;
-
     protected $fillable = [
         'uuid',
         'code',

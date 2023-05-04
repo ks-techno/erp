@@ -47,9 +47,9 @@ class BankPaymentController extends Controller
             $draw = 'all';
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
-
+            
             $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','debit','credit']);
-
+           
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -154,7 +154,7 @@ class BankPaymentController extends Controller
         $validator = Validator::make($request->all(), [
             //'payment_mode' => ['required',Rule::notIn([0,'0'])],
         ]);
-
+        
         if ($validator->fails()) {
             $data['validator_errors'] = $validator->errors();
             $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
@@ -177,16 +177,15 @@ class BankPaymentController extends Controller
         if(($total_debit != $total_credit) || (empty($total_debit) && empty($total_credit)) ){
             return $this->jsonErrorResponse($data, 'debit credit must be equal');
         }
-        
         DB::beginTransaction();
         try {
+            
             $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
             $voucher_no = self::documentCode(self::Constants()['type'],$max);
             $voucher_id = self::uuid();
             $posted = $request->current_action_id == 'post'?1:0;
             $sr = 1;
             foreach ($request->pd as $pd){
-               
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
                     Voucher::create([
@@ -221,9 +220,6 @@ class BankPaymentController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('accounts.bank-payment.index');
-        
-
     }
     
 

@@ -77,8 +77,9 @@ class Product extends Model
                                     ->where('product_variation_id', $productVariation->id)
                                     ->first();
             return $propertyVariation ? $propertyVariation->value : null;
+        }else {
+            return null;
         }
 
-        return null;
     }
 }
