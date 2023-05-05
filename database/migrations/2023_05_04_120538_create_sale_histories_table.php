@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('sale_histories', function (Blueprint $table) {
             $table->id();
             $table->string('uuid');
             $table->string('code');
@@ -24,12 +24,27 @@ return new class extends Migration
             $table->boolean('is_installment')->default(0);
             $table->boolean('is_booked')->default(0);
             $table->boolean('is_purchased')->default(0);
-            $table->float('sale_price');
-            $table->float('booked_price')->nullable();
-
+            $table->float('sale_price',15,3)->nullable();
+            $table->float('booked_price',15,3)->nullable();
+            $table->string('currency_note_no');
+            $table->float('down_payment')->nullable();
+            $table->float('on_balloting')->nullable();
+            $table->float('no_of_bi_annual')->nullable();
+            $table->float('installment_bi_annual')->nullable();
+            $table->float('no_of_month')->nullable();
+            $table->float('installment_amount_monthly')->nullable();
+            $table->float('on_possession')->nullable();
+            $table->unsignedBigInteger('file_status_id');
+            $table->float('sale_discount')->nullable();
+            $table->bigInteger('seller_commission_perc')->nullable();
+            $table->unsignedBigInteger('property_payment_mode_id');
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('file_type')->nullable();
+            $table->date('file_date')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
-            $table->softDeletes();
-            
+
             $table->foreign('customer_id')->references('id')->on('customers')
                 ->onUpdate('cascade')->onDelete('cascade');
 
@@ -38,8 +53,6 @@ return new class extends Migration
 
             $table->foreign('project_id')->references('id')->on('projects')
                 ->onUpdate('cascade')->onDelete('cascade');
-
-
         });
     }
 
@@ -50,6 +63,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('sale_histories');
     }
 };

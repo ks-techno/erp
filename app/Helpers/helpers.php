@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\ChartOfAccount;
+use App\Models\SaleHistory;
 
 if (!function_exists('numberToWords')) {
     function numberToWords($number) {
@@ -63,7 +64,7 @@ if (!function_exists('numberToWords')) {
             }
         } elseif ($number < 1000000) {
             $thousands = (int)($number / 1000);
-            $remainder = $number % 1000;
+            $remainder = $nPumber % 1000;
             $string = numberToWords($thousands) . ' thousand';
             if ($remainder) {
                 $string .= ' ';
@@ -147,5 +148,12 @@ function getDealerTypes() {
         'sub' => 'Sub Dealer',
     ];
 }
-
-
+function createSaleHistory(array $requestdata)
+    {
+        return SaleHistory::create($requestdata);
+    }
+    function updateSaleHistory(array $requestdata, $id)
+    {
+        return SaleHistory::where('uuid',$id)
+                            ->update($requestdata);
+    }

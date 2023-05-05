@@ -170,7 +170,7 @@ class OpenFileController extends Controller
             $date = $request->date;
             $formatted_date =  date('Y-m-d', strtotime($date));
             $file_type = 'Open File';
-            $sale = Sale::create([
+            $requestdata = [
                 'uuid' => self::uuid(),
                 'code' => $code,
                 'customer_id' => $request->om_customer_id,
@@ -198,11 +198,14 @@ class OpenFileController extends Controller
                 'user_id' => auth()->user()->id,
                 'file_type' => $file_type,
                 'file_date' => isset($formatted_date) ? $formatted_date : '',
-            ]);
+            ];
+            createSaleHistory($requestdata);
+            $sale = Sale::where('product_id',$request->product_id)
+            ->update($requestdata);
            
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong');
+            return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];

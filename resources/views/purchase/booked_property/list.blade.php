@@ -15,22 +15,24 @@
                                 <h4 class="card-title">{{$data['title']}}</h4>
                             </div>
                             <div class="card-link">
-                                @permission($data['permission_create'])
-                                <a href="{{route('product-property.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
-                                @endpermission
+                                <!-- @permission($data['permission_create'])
+                                <a href="{{route('sale.sale-invoice.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
+                                @endpermission -->
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="card-datatable">
                                 @permission($data['permission_list'])
-                                <table class="datatables-ajax table table-responsive" data-url="{{route('product-property.index')}}">
+                                <table class="datatables-ajax table table-responsive" data-url="{{route('booked-property.index')}}">
                                     <thead>
                                     <tr>
-                                        <th class="cell-fit">Code</th>
-                                        <th class="cell-fit">Plot No</th>
-                                        <th class="cell-fit">property type</th>
-                                        <th class="cell-fit">block</th>
-                                        <th class="cell-fit text-center">Status</th>
+                                        <th class="cell-fit">Plot Number</th>
+                                        <th class="cell-fit">Block</th>
+                                        <th class="cell-fit">Property Type</th>
+                                        <th class="cell-fit">Project</th>
+                                        <th class="cell-fit">Status</th>
+                                        <th class="cell-fit">File Status</th>
+                                        <th class="cell-fit">Customer</th>
                                         <th class="cell-fit"></th>
                                     </tr>
                                     </thead>

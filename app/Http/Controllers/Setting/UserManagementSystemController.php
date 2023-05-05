@@ -106,6 +106,11 @@ class UserManagementSystemController extends Controller
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
+                        'dname' => 'Booked Property',
+                        'name' => 'booked-property',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
                         'dname' => 'Customer',
                         'name' => 'customer',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
