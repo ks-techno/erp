@@ -103,6 +103,7 @@ class SaleInvoiceController extends Controller
                     $row->project->name,
                     $row->file_status->name,
                     $row->customer->name,
+                    $row->property_payment_mode->name ?? null,
                     $actions,
                 ];
             }

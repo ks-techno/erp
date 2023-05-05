@@ -231,8 +231,9 @@ class JournalController extends Controller
                         'company_id' => auth()->user()->company_id,
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
-                        
                          'posted' => $posted,
+                         'total_debit' => $total_debit,
+                        'total_credit' => $total_credit,
                     ]);
                     $sr = $sr + 1;
                 }
@@ -375,6 +376,8 @@ class JournalController extends Controller
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
                         'posted' => $posted,
+                        'total_debit' => $total_debit,
+                        'total_credit' => $total_credit,
                     ]);
                     $sr = $sr + 1;
                 }
@@ -443,7 +446,7 @@ class JournalController extends Controller
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->onlyTrashed()->distinct()->orderby('date','desc');
 
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','remarks']);
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','total_debit']);
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -461,7 +464,7 @@ class JournalController extends Controller
                     $row->date,
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                    $row->remarks,
+                    $row->total_debit,
                     $actions,
                 ];
             }

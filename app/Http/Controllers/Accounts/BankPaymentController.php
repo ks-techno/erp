@@ -37,7 +37,7 @@ class BankPaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+     public function index(Request $request)
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
@@ -47,9 +47,9 @@ class BankPaymentController extends Controller
             $draw = 'all';
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
-            
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','debit','credit']);
-           
+
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','total_debit']);
+
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -61,28 +61,18 @@ class BankPaymentController extends Controller
             if(auth()->user()->isAbleTo(self::Constants()['edit'])){
                 $edit_per = true;
             }
-            $print_per = false;
-            if(auth()->user()->isAbleTo(self::Constants()['print'])){
-                $print_per = true;
-            }
             $entries = [];
             foreach ($allData as $row) {
                 $posted = $this->getPostedTitle()[$row->posted];
                 $urlEdit = route('accounts.bank-payment.edit',$row->voucher_id);
                 $urlDel = route('accounts.bank-payment.destroy',$row->voucher_id);
-                $urlPrint = route('accounts.bank-payment.print',$row->voucher_id);
 
                 $actions = '<div class="text-end">';
-                if($delete_per || $print_per) {
+                if($delete_per) {
                     $actions .= '<div class="d-inline-flex">';
                     $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                    if($print_per) {
-                        $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
-                    }
-                    if($delete_per) {
-                        $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-                    }
+                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
                     $actions .= '</div>'; // end dropdown-menu
                     $actions .= '</div>'; // end d-inline-flex
                 }
@@ -90,17 +80,12 @@ class BankPaymentController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-                $totalamount = 0;
-                $totalamount += $row->debit;
-                if($totalamount==0){
-                    $totalamount += $row->credit;
-                }
-                
+
                 $entries[] = [
                     $row->date,
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                    $totalamount,
+                    $row->total_debit,
                     $actions,
                 ];
             }
@@ -188,6 +173,7 @@ class BankPaymentController extends Controller
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
+                    
                     Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
@@ -208,6 +194,8 @@ class BankPaymentController extends Controller
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
                         'posted' => $posted,
+                        'total_debit' => $total_debit,
+                        'total_credit' => $total_credit,
                     ]);
                     $sr = $sr + 1;
                 }
@@ -358,6 +346,8 @@ class BankPaymentController extends Controller
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
                         'posted' => $posted,
+                        'total_debit' => $total_debit,
+                        'total_credit' => $total_credit,
                     ]);
                     $sr = $sr + 1;
                 }

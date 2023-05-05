@@ -130,7 +130,7 @@
                                         <label class="col-form-label">Project <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="project_id" name="project_id">
+                                        <select class="select2 form-select"  id="project_id" name="project_id">
                                             <option value="0" selected>Select</option>
                                             @foreach($data['project'] as $project)
                                                 <option value="{{$project->id}}" {{$current->project_id == $project->id?"selected":""}}> {{$project->name}} </option>
@@ -145,7 +145,7 @@
                                     <div class="col-sm-9">
                                         <div class="input-group eg_help_block">
                                             <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
-                                            <input id="product_name" type="text" value="{{isset($current->product->name)?$current->product->name:""}}" class="product_name form-control form-control-sm text-left">
+                                            <input id="product_name" readonly type="text" value="{{isset($current->product->name)?$current->product->name:""}}" class="product_name form-control form-control-sm text-left">
                                             <input id="product_id" type="hidden" name="product_id" value="{{$current->product_id}}">
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@
                                     <div class="col-sm-9">
                                         <div class="input-group eg_help_block">
                                             <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
-                                            <input id="customer_name" type="text" value="{{isset($current->customer->name)?$current->customer->name:""}}" class="customer_name form-control form-control-sm text-left">
+                                            <input id="customer_name" readonly type="text" value="{{isset($current->customer->name)?$current->customer->name:""}}" class="customer_name form-control form-control-sm text-left">
                                             <input id="customer_id" type="hidden" name="customer_id" value="{{$current->customer_id}}">
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@
                                         <label class="col-form-label">Seller Type <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="seller_type" name="seller_type">
+                                        <select class="select2   form-select" disabled id="seller_type" name="seller_type">
                                             <option value="0" selected>Select</option>
                                             <option value="dealer" {{ $current->sale_by_staff == 0?"selected":""}}>Dealer</option>
                                             <option value="staff" {{ $current->sale_by_staff == 1?"selected":""}}>Staff</option>
@@ -196,7 +196,7 @@
                                         <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
                                         <input type="text" class="form-control form-control-sm text-left sellerList" id="seller_name" value="" name="seller_name">
                                         <input type="hidden" id="seller_id" value="" name="seller_id" >
-                                        <div id="sellerTable"></div>
+                                        <div id="sellerTable" readonly></div>
                                     </div>
                                 </div>
 
@@ -220,7 +220,7 @@
                                         <label class="col-form-label p-0">Payment Mode</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="select2 form-select" id="property_payment_mode_id" name="property_payment_mode_id">
+                                        <select disabled class="select2 form-select" id="property_payment_mode_id" name="property_payment_mode_id">
                                             @foreach($data['property_payment_mode'] as $property_payment_mode)
                                                 <option value="{{$property_payment_mode->id}}" data-slug="{{$property_payment_mode->slug}}" {{$current->property_payment_mode_id == $property_payment_mode->id?"selected":""}}> {{$property_payment_mode->name}} </option>
                                             @endforeach
@@ -240,7 +240,7 @@
                                         <label class="col-form-label p-0">Sale Discount</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->sale_discount)}}"  id="sale_discount" name="sale_discount">
+                                        <input type="text" readonly class="form-control form-control-sm FloatValidate" value="{{number_format($current->sale_discount)}}"  id="sale_discount" name="sale_discount">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -248,7 +248,7 @@
                                         <label class="col-form-label">Booking Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->booked_price)}}" id="booked_price" name="booked_price">
+                                        <input type="text" readonly class="form-control form-control-sm FloatValidate" value="{{number_format($current->booked_price)}}" id="booked_price" name="booked_price">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -256,7 +256,7 @@
                                         <label class="col-form-label p-0">Down Payment</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->down_payment)}}" id="down_payment" name="down_payment" aria-invalid="false">
+                                        <input type="text"readonly class="form-control form-control-sm FloatValidate" value="{{number_format($current->down_payment)}}" id="down_payment" name="down_payment" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div id="installments_block" style="display: none">
@@ -265,7 +265,7 @@
                                             <label class="col-form-label p-0">On Balloting</label>
                                         </div>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control form-control-sm FloatValidate" id="on_balloting" name="on_balloting" aria-invalid="false">
+                                            <input type="text"readonly class="form-control form-control-sm FloatValidate" id="on_balloting" name="on_balloting" aria-invalid="false">
                                         </div>
                                     </div>
                                     <div class="mb-1 row">
@@ -275,7 +275,7 @@
                                                     <label class="col-form-label p-0">No. Of Bi-Annual</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->no_of_bi_annual}}" id="no_of_bi_annual" name="no_of_bi_annual" aria-invalid="false">
+                                                    <input type="text" readonly class="form-control form-control-sm FloatValidate" value="{{$current->no_of_bi_annual}}" id="no_of_bi_annual" name="no_of_bi_annual" aria-invalid="false">
                                                 </div>
                                             </div>
                                         </div>
@@ -285,7 +285,7 @@
                                                     <label class="col-form-label">Installments</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->installment_bi_annual}}" id="installment_bi_annual" name="installment_bi_annual" aria-invalid="false">
+                                                    <input type="text"readonly class="form-control form-control-sm FloatValidate" value="{{$current->installment_bi_annual}}" id="installment_bi_annual" name="installment_bi_annual" aria-invalid="false">
                                                 </div>
                                             </div>
                                         </div>
@@ -297,7 +297,7 @@
                                                     <label class="col-form-label p-0">No. of Month</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->no_of_month}}" id="no_of_month" name="no_of_month" aria-invalid="false">
+                                                    <input type="text"readonly class="form-control form-control-sm FloatValidate" value="{{$current->no_of_month}}" id="no_of_month" name="no_of_month" aria-invalid="false">
                                                 </div>
                                             </div>
                                         </div>
@@ -307,7 +307,7 @@
                                                     <label class="col-form-label">Installments</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm FloatValidate" value="{{$current->installment_amount_monthly}}" id="installment_amount_monthly" name="installment_amount_monthly" aria-invalid="false">
+                                                    <input type="text"readonly class="form-control form-control-sm FloatValidate" value="{{$current->installment_amount_monthly}}" id="installment_amount_monthly" name="installment_amount_monthly" aria-invalid="false">
                                                 </div>
                                             </div>
                                         </div>
@@ -318,7 +318,7 @@
                                         <label class="col-form-label">On Possession</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->on_possession)}}" id="on_possession" name="on_possession" aria-invalid="false">
+                                        <input type="text" readonly class="form-control form-control-sm FloatValidate" value="{{number_format($current->on_possession)}}" id="on_possession" name="on_possession" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -326,7 +326,7 @@
                                         <label class="col-form-label">Currency Note No.<span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm" value="{{$current->currency_note_no}}" id="currency_note_no" name="currency_note_no">
+                                        <input type="text" readonly class="form-control form-control-sm" value="{{$current->currency_note_no}}" id="currency_note_no" name="currency_note_no">
                                     </div>
                                 </div>
                             </div>
