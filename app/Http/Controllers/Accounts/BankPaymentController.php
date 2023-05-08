@@ -61,18 +61,29 @@ class BankPaymentController extends Controller
             if(auth()->user()->isAbleTo(self::Constants()['edit'])){
                 $edit_per = true;
             }
+            $print_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['print'])){
+                $print_per = true;
+            }
             $entries = [];
             foreach ($allData as $row) {
                 $posted = $this->getPostedTitle()[$row->posted];
                 $urlEdit = route('accounts.bank-payment.edit',$row->voucher_id);
                 $urlDel = route('accounts.bank-payment.destroy',$row->voucher_id);
+                $urlPrint = route('accounts.bank-payment.print',$row->voucher_id);
+
 
                 $actions = '<div class="text-end">';
-                if($delete_per) {
+                if($delete_per || $print_per) {
                     $actions .= '<div class="d-inline-flex">';
                     $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    if($print_per) {
+                        $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
+                    }
+                    if($delete_per) {
+                        $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    }
                     $actions .= '</div>'; // end dropdown-menu
                     $actions .= '</div>'; // end d-inline-flex
                 }
