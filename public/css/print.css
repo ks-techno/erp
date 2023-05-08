@@ -17,7 +17,7 @@ body{
 .heading{font-size:12px; font-weight:bold; padding:2px;}
 .info-block{margin: 10px 0;vertical-align: top;}
 .heading-block{display: inline-block; vertical-align: top;}
-.normal-block{width: 50%; display: inline-block;}
+.normal-block{width: 50%; display: inline-block; padding: 2px;}
 .info-table{border: 1px solid; margin: 20px 0;}
 .info-table>tbody>tr>td{vertical-align: top;word-break: break-all;}
 .sign-line{width:70%;text-align:center;}
@@ -47,4 +47,9 @@ table.data-table>thead>tr>th {
 .border-right{
     border-right: 1px solid #000;
     border-bottom: 1px dotted #000;
+}
+@media print {
+    a[href]:after {
+        content: none !important;
+    }
 }

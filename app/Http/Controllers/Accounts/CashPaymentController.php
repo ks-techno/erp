@@ -47,7 +47,7 @@ class CashPaymentController extends Controller
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
 
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','debit','credit']);
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','total_debit']);
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
