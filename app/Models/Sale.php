@@ -38,6 +38,9 @@ class Sale extends Model
         'file_type',
         'file_date',
         'notes',
+        'installment_start_time',
+        'installment_end_time',
+        'installment_type'
     ];
 
     protected $morphClass = null;

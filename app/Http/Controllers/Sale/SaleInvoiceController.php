@@ -232,6 +232,9 @@ class SaleInvoiceController extends Controller
                     'company_id' => auth()->user()->company_id,
                     'user_id' => auth()->user()->id,
                     'file_type' => NULL,
+                    'installment_start_time' => $request->installment_start_time,
+                    'installment_end_time' => $request->installment_end_time,
+                    'installment_type' => $request->installment_type,
                 ];
             $prod_id = Sale::where('product_id', $request->product_id)->first();
             
@@ -242,7 +245,7 @@ class SaleInvoiceController extends Controller
             }
             else{
                 $sale = Sale::create($requestdata);
-                dd($sale);
+               
                 $saleSeller = new SaleSeller();
                 $saleSeller->sale_id = $sale->id;
                 $modal->sale_seller()->save($saleSeller);
@@ -372,6 +375,9 @@ class SaleInvoiceController extends Controller
                 'sale_discount' => str_replace(',', '',($request->sale_discount)),
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
+                'installment_start_time' => $request->installment_start_time,
+                'installment_end_time' => $request->installment_end_time,
+                'installment_type' => $request->installment_type,
             ];
             Sale::where('uuid',$id)
                 ->update($requestdata);
@@ -396,7 +402,7 @@ class SaleInvoiceController extends Controller
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong');
+            return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
