@@ -49,14 +49,15 @@ class ProductPropertyController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
              
-            $dataSql = Product::with('buyable_type','sale')
+            $dataSql = Product::with(['buyable_type', 'sale'])
             ->where('product_form_type', 'property')
             ->where(Utilities::CompanyProjectId())
-            ->whereHas('sale', function ($query) {
+            ->orwhereHas('sale', function ($query) {
                 $query->whereNotNull('file_type');
             })
             ->orderBy('name')
-           ;
+            ;
+           
 
             $allData = $dataSql->get();
             $recordsTotal = count($allData);

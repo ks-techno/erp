@@ -37,6 +37,8 @@ class Voucher extends Model
         'prepared_by',
         'approved_by',
         'posted',
+        'total_debit',
+        'total_credit',
     ];
 
 }

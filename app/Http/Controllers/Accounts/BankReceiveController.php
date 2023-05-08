@@ -47,7 +47,7 @@ class BankReceiveController extends Controller
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
 
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','debit','credit']);
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','total_debit']);
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -99,7 +99,7 @@ class BankReceiveController extends Controller
                     $row->date,
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                    $totalamount,
+                    $row->$total_debit,
                     $actions,
                 ];
             }
@@ -210,6 +210,8 @@ class BankReceiveController extends Controller
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
                         'posted' => $posted,
+                        'total_debit' => $total_debit,
+                        'total_credit' => $total_credit,
                     ]);
                     $sr = $sr + 1;
                 }
@@ -356,6 +358,8 @@ class BankReceiveController extends Controller
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
                         'posted' => $posted,
+                        'total_debit' => $total_debit,
+                        'total_credit' => $total_credit,
                     ]);
                     $sr = $sr + 1;
                 }

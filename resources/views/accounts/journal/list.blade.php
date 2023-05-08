@@ -30,7 +30,7 @@
                                     <th class="">Date</th>
                                     <th class="">Voucher No</th>
                                     <th class="cell-fit text-center">status</th>
-                                    <th class="cell-fit">Total</th>
+                                    <th class="cell-fit">Total Amount</th>
                                     <th class="cell-fit">Prepared By</th>
                                     <th class="cell-fit">Approved By</th>
                                     <th class=""></th>
