@@ -14,7 +14,7 @@
 <table class="info-table" width="100%">
     <tbody>
         <tr>
-            <td width="10%">
+            <td width="20%">
                 <div class="info-block">
                     <span class="heading heading-block">Code :</span>
                     <span class="normal normal-block">{{$current->voucher_no}}</span>
@@ -24,7 +24,7 @@
                     <span class="normal-block">{{date('Y-m-d',strtotime($current->date))}}</span>
                 </div>
             </td>
-            <td width="33.33%">
+            <td width="13.33%">
             </td>
             <td width="33.33%">
                 <div class="info-block">

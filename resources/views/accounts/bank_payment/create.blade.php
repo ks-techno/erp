@@ -185,9 +185,12 @@
                                                          class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_code1" type="text"
-                                                         class="chart_code form-control form-control-sm text-left"
-                                                         >
+                                                    <select class="select2 form-select" id="egt_chart_code" name="egt_chart_code">
+                                                    <option value="">Select Value</option>
+                                                    @foreach($data['chart'] as $chart)
+                                                    <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="({{$chart->name}})" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
+                                                    @endforeach
+                                                    </select>
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_name1" type="text"
@@ -300,7 +303,7 @@
             }
 
         ];
-        var var_egt_readonly_fields = ['egt_chart_code','egt_chart_name'];
+        var var_egt_readonly_fields = ['egt_chart_name'];
     </script>
     <script src="{{asset('/js/jquery-12.js')}}"></script>
     <script src="{{asset('/pages/common/erp_grid.js')}}"></script>

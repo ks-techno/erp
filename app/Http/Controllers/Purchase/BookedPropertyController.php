@@ -100,10 +100,10 @@ class BookedPropertyController extends Controller
                     $row->product->name,
                     $row->product->block,
                     $row->product->buyable_type->name ?? null,
-                    $row->project->name,
-                    $row->file_status->name,
+                    $row->project->name ?? null,
+                    $row->file_status->name ?? null,
                     $row->file_type,
-                    $row->customer->name,
+                    $row->customer->name ?? null,
                     $actions,
                 ];
             }

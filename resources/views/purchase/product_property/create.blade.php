@@ -143,7 +143,7 @@
                                 variations_list += '<div class="col-sm-2">\n' +
                                     '  <label class="col-form-label">'+thix_item['product_variation']['display_title']+'</label>\n' +
                                     '  </div>' +
-                                    '  <div class="col-sm-4">\n' +
+                                    '  <div class="col-sm-4 mb-1">\n' +
                                     '  <input type="text" class="form-control form-control-sm" value="" id="'+thix_item['product_variation']['key_name']+'" name="pv['+input_item+']" />\n' +
                                     '  </div>';
                             }
@@ -154,10 +154,10 @@
                                 var key_name = thix_item['product_variation']['key_name'];
                                 var value = thix_item['value'];
                                 variations_list += '<div class="mb-1 row">\n' +
-                                    '    <div class="col-sm-4">\n' +
+                                    '    <div class="col-sm-2">\n' +
                                     '    <label class="col-form-label">'+thix_item['product_variation']['display_title']+'</label>\n' +
                                     '   </div>\n' +
-                                    '   <div class="col-sm-8">\n' +
+                                    '   <div class="col-sm-8 mb-1">\n' +
                                     '     <div class="form-check form-check-warning form-switch">\n' +
                                     '        <input type="checkbox" class="form-check-input" id="'+key_name+'"  value="'+value+'" name="pv['+yes_no_item+']">\n' +
                                     '        <label class="form-check-label mb-50" for="'+key_name+'" ></label>' +
@@ -184,7 +184,7 @@
                                     '   <div class="col-sm-4">\n' +
                                     '   <label class="col-form-label">'+title+'</label>\n' +
                                     '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' +radio_opt +
+                                    '  <div class="col-sm-8 mb-1">\n' +radio_opt +
                                     ' </div>\n' +
                                     ' </div>';
                             }
@@ -204,7 +204,7 @@
                                 variations_list += '<div class="col-sm-2">\n' +
                                     '  <label class="col-form-label">'+title+'</label>\n' +
                                     '  </div>' +
-                                    '  <div class="col-sm-4">\n' +
+                                    '  <div class="col-sm-4 mb-1">\n' +
                                     '  <select class="select2 form-select" id="'+key_name+'" name="pv['+select_item+']">\n' +
                                     '  <option value="0" selected>Select</option>\n' + select_opt +
                                     '  </select>\n' +
@@ -227,10 +227,10 @@
                                         '  </div>';
                                 }
                                 variations_list += '<div class="mb-1 row">\n' +
-                                    '   <div class="col-sm-4">\n' +
+                                    '   <div class="col-sm-2">\n' +
                                     '  <label class="col-form-label">'+title+'</label>\n' +
                                     '  </div>\n' +
-                                    '  <div class="col-sm-8">\n' + checkbox_opt+
+                                    '  <div class="col-sm-8 mb-1">\n' + checkbox_opt+
                                     '  </div>\n' +
                                     '</div>';
                             }

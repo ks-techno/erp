@@ -16,6 +16,12 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/print.css')}}">
     <!-- END: Custom CSS-->
     @yield('style')
+    <style media="print">
+ @page {
+  size: auto;
+  margin: 0;
+       }
+</style>
 </head>
 <!-- END: Head-->
 
@@ -28,7 +34,8 @@
             <div class="fz-26">@yield('page_title')</div>
         </td>
         <td class="text-center" width="50%">
-            <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24" style="height: 60px">
+        <img src="{{ asset('assets/images/logo.png') }}" alt="logo" style="height:100px;">
+            <!-- <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24" style="height: 60px">
                 <defs>
                     <lineargradient id="linearGradient-1" x1="100%" y1="10.5120544%" x2="50%" y2="89.4879456%">
                         <stop stop-color="#000000" offset="0%"></stop>
@@ -50,7 +57,7 @@
                         </g>
                     </g>
                 </g>
-            </svg>
+            </svg> -->
             <div class="fz-26 pt-15">{{auth()->user()->project->name}}</div>
         </td>
     </tr>

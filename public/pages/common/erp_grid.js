@@ -101,12 +101,21 @@ function add_row(thix, num_rows = 2){
         }
         for(var i=0;i < egt_readonly_fields.length; i++){
             var sel_field = lastTr.find('input[data-id='+egt_readonly_fields[i]+']');
-            sel_field.attr('readonly',true);
+            sel_field.attr('',true);
         }
 
         trLength++;
+
+        if(n == 1){
+            var lastTr = $('.egt_form_body>tr:last-child');
+            var lastTrInputs = lastTr.find('input');
+            var lastTrSelects = lastTr.find('select');
+            lastTrInputs.val('');
+            lastTrSelects.val('');
+        }
     }
 }
+
 function updateKeys(){
     var total_length = $('.egt_form_body>tr').length + 1;
     var nameAttrPrefix = 'pd';
