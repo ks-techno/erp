@@ -157,3 +157,23 @@ function createSaleHistory(array $requestdata)
         return SaleHistory::where('uuid',$id)
                             ->update($requestdata);
     }
+    function getParticulars() {
+        return [
+            '1' => 'Down Payment',
+            '2' => 'Instalments',
+            '3' => 'Instalment on Balloting',
+            '4' => 'Instalment on Possession',
+            '5' => 'Location Charges',
+            '6' => 'Extra Covered Area',
+            '7' => 'Cost Esclation',
+            '8' => 'Sub-Division Fee',
+            '9' => 'Possession Fee',
+            '10' => 'Map Approval',
+            '11' => 'Lesco Charges',
+            '12' => 'Security & Maintenance',
+            '13' => 'Restoration Charges',
+            '14' => 'Merging Fee',
+            '15' => 'Transfer Fee',
+            '16' => 'Other Charges',
+        ];
+    }

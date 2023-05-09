@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <select class="select2 form-select" id="company_id" name="company_id">
-                                            <option value="0" selected>Select</option>
+                                            <option value="" selected>Select</option>
                                             @foreach($data['companies'] as $company)
                                                 <option value="{{$company->id}}"> {{$company->name}} </option>
                                             @endforeach

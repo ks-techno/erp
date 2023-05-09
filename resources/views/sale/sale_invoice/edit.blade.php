@@ -269,6 +269,18 @@
                                         </div>
                                     </div>
                                     <div class="mb-1 row">
+                                        <div class="col-sm-3">
+                                            <label class="col-form-label p-0">Installment Type</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <select class="select2 form-select" id="installment_type" name="installment_type">
+                                            <option value="0" <?php if ($current->installment_type == "0") { echo "selected"; } ?>>Select</option>
+                                            <option value="Monthly" <?php if ($current->installment_type == "Monthly") { echo "selected"; } ?> data-slug="Monthly">Monthly</option>
+                                            <option value="Bi-Annual" <?php if ($current->installment_type == "Bi-Annual") { echo "selected"; } ?> data-slug="Bi-Annual">Bi-Annual</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 row" id="biannual_block" style="display: none">
                                         <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-sm-6 pr-0">
@@ -290,7 +302,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mb-1 row">
+                                    <div class="mb-1 row" id="monthly_block" style="display: none">
                                         <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-sm-6">
@@ -311,6 +323,26 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label p-0">Installment Start Time</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="installment_start_time" value="{{$current->installment_start_time}}" name="installment_start_time" 
+                                                    class="form-control form-control-sm flatpickr-basic flatpickr-input"
+                                                    placeholder="YYYY-MM-DD" value="{{date('Y-m-d')}}" />
+                                             </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label p-0">Installment End Date</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="installment_end_time" name="installment_end_time"
+                                                    class="form-control form-control-sm" readonly="readonly" value="{{$current->installment_end_time}}"
+                                                    placeholder="YYYY-MM-DD" value="" />
+                                                </div>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -464,6 +496,52 @@ $(document).on('change keyup','#seller_name',function(){
         var slug = $('#property_payment_mode_id').find('option:selected').attr('data-slug');
         if(slug == 'installment'){
             $('#installments_block').show();
+        }
+        $(document).on('change','#installment_type',function(){
+           var slug = $(this).find('option:selected').attr('data-slug');
+           $('#monthly_block').hide();
+           $('#monthly_block').find('input').val("");
+           $('#biannual_block').hide();
+           $('#biannual_block').find('input').val("");
+           if(slug == 'Monthly'){
+                $('#monthly_block').show();
+                $('#biannual_block').hide()
+           }
+           if(slug == 'Bi-Annual'){
+                $('#biannual_block').show();
+                $('#monthly_block').hide();
+           }
+        })
+        var slug = $('#installment_type').find('option:selected').attr('data-slug');
+        if(slug == 'Monthly'){
+                $('#monthly_block').show();
+                $('#biannual_block').hide()
+           }
+           if(slug == 'Bi-Annual'){
+                $('#biannual_block').show();
+                $('#monthly_block').hide();
+           }
+        $(document).on('change keyup', '#installment_start_time,#no_of_month,#no_of_bi_annual', function() {
+        var start_date = $('#installment_start_time').val();
+        var installment_type = $('#installment_type').val();
+        var end_date;
+
+        if (installment_type == 'Monthly') {
+            var no_of_month = parseInt($('#no_of_month').val());
+            end_date = new Date(start_date);
+            end_date.setMonth(end_date.getMonth() + no_of_month);
+        }
+        if (installment_type == 'Bi-Annual') {
+            var no_of_bi_annual = parseInt($('#no_of_bi_annual').val());
+            end_date = new Date(start_date);
+            end_date.setMonth(end_date.getMonth() + (no_of_bi_annual * 12));
+        }
+        
+        var formatted_end_date = end_date.getFullYear() + '-' + padNumber(end_date.getMonth() + 1) + '-' + padNumber(end_date.getDate());
+        $('#installment_end_time').val(formatted_end_date);
+        });
+        function padNumber(number) {
+        return (number < 10 ? '0' : '') + number;
         }
 
         $(document).on('keydown', function(e) {
