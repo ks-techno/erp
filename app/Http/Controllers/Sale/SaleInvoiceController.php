@@ -79,8 +79,8 @@ class SaleInvoiceController extends Controller
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
-                    $actions .= '<div class="d-inline-flex">';
-                    $actions .= '<a class="pe-25 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
+                    $actions .= '<div class="d-inline-flex" style="margin-left:-15px;">';
+                    $actions .= '<a class="p-25 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
                     if($print_per) {
                         $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
