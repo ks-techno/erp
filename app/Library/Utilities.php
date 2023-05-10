@@ -3,7 +3,9 @@ namespace App\Library;
 
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Models\ChartOfAccount;
+use Illuminate\Support\Carbon;
 use App\Models\PurchaseDemand;
+use App\Models\ChallanForm;
 use Webpatser\Uuid\Uuid;
 
 class Utilities
@@ -18,7 +20,31 @@ class Utilities
             'project_id'=>auth()->user()->project_id,
         ];
     }
+    public static function challanCode($doc_data){
+        $model = $doc_data['model'];
+        $code_field = $doc_data['code_field'];
+        $code_prefix = $doc_data['code_prefix'];
+        $form_type_field = isset($doc_data['form_type_field'])?$doc_data['form_type_field']:"";
+        $form_type_value = isset($doc_data['form_type_value'])?$doc_data['form_type_value']:"";
 
+        $modelN = 'App\Models\\'.$model;
+        if (!empty($form_type_field) && !empty($form_type_value)){
+            $max = $modelN::where($form_type_field,$form_type_value)->max($code_field);
+        }else {
+            $max = $modelN::max($code_field);
+        }
+        if (!empty($max)){
+            $max = explode('-',$max);
+            $max = end($max);
+            $max = $max+1;
+        }else {
+            $max = 1;
+        }
+        $currentDate = Carbon::now()->format('Ymd');
+        $new_code= sprintf("%'05d", $max);
+        $code = strtoupper($code_prefix)."-".$currentDate."-".$new_code;
+        return $code;
+    }
     public static function documentCode($doc_data){
         $model = $doc_data['model'];
         $code_field = $doc_data['code_field'];

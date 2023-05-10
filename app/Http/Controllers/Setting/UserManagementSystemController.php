@@ -199,6 +199,11 @@ class UserManagementSystemController extends Controller
                         'name' => 'booking-transfer',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
+                    [
+                        'dname' => 'Challan Form',
+                        'name' => 'challan-form',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
                 ]
             ],
             // HR
