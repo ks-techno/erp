@@ -41,6 +41,7 @@ use App\Http\Controllers\Sale\BookingTransferController;
 use App\Http\Controllers\Sale\OpenFileController;
 use App\Http\Controllers\Sale\RefundFileController;
 use App\Http\Controllers\Purchase\BookedPropertyController;
+use App\Http\Controllers\Sale\ChallanFormController;
 
 /*
 |--------------------------------------------------------------------------
@@ -196,6 +197,12 @@ Route::group(['middleware' => 'auth'], function () {
                Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
                 Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
                 Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+                Route::get('print/{id}', 'printView')->name('print');
+            });
+            Route::prefix('challan-form')->resource('challan-form', ChallanFormController::class);
+            Route::prefix('challan-form')->name('challan-form.')->controller(ChallanFormController::class)->group(function(){
+                Route::post('get-customer-list', 'getCustomerList')->name('getCustomerList');
+                Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
             });
             Route::prefix('open-file')->resource('open-file', OpenFileController::class);

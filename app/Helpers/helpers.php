@@ -148,6 +148,13 @@ function getDealerTypes() {
         'sub' => 'Sub Dealer',
     ];
 }
+function getpaymentModes($property_payment_mode_id) {
+    $paymentModes = [
+        '1' => 'Cash',
+        '2' => 'Bank',
+    ];
+    return $paymentModes[$property_payment_mode_id];
+}
 function createSaleHistory(array $requestdata)
     {
         return SaleHistory::create($requestdata);

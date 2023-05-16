@@ -55,10 +55,7 @@ class ProductPropertyController extends Controller
             ->orwhereHas('sale', function ($query) {
                 $query->whereNotNull('file_type');
             })
-            ->orderBy('name')
-            ;
-           
-
+            ->orderBy('name');
             $allData = $dataSql->get();
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -71,7 +68,6 @@ class ProductPropertyController extends Controller
                 $edit_per = true;
             }
             $entries = [];
-            
             foreach ($allData as $row) {
                 $getdat='';
                 $entry_status = $this->getStatusTitle()[$row->status];

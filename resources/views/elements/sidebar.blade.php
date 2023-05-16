@@ -322,6 +322,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('challan-form'.$sidebar_menu)
+                    <li class="{{ ($path == 'sale/challan-form')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.challan-form.index') }}">
+                            <span class="menu-item text-truncate">Challan Form</span>
+                        </a>
+                    </li>
+                    @endpermission
                     
                 </ul>
             </li>
