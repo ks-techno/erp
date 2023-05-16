@@ -42,6 +42,7 @@ use App\Http\Controllers\Sale\OpenFileController;
 use App\Http\Controllers\Sale\RefundFileController;
 use App\Http\Controllers\Purchase\BookedPropertyController;
 use App\Http\Controllers\Sale\ChallanFormController;
+use App\Http\Controllers\Accounts\ChallanVoucherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,6 +139,12 @@ Route::group(['middleware' => 'auth'], function () {
             });
             Route::prefix('journal')->resource('journal', JournalController::class);
 
+            Route::prefix('challan-voucher')->name('challan-voucher.')->controller(ChallanVoucherController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
+            Route::prefix('challan-voucher')->resource('challan-voucher', ChallanVoucherController::class);
         });
             
         Route::prefix('company')->resource('company', CompanyController::class);

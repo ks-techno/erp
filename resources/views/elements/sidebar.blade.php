@@ -175,6 +175,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('challan-voucher'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/challan-voucher')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.challan-voucher.index') }}">
+                            <span class="menu-item text-truncate">Challan Voucher</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
 
