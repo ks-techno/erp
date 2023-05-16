@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ChallanPrticular extends Model
+class ChallanParticular extends Model
 {
     use SoftDeletes;
     use HasFactory;
@@ -15,10 +15,14 @@ class ChallanPrticular extends Model
     protected $fillable = [
         'id',
         'challan_id',
-        'paarticular_id',
+        'particular_id',
+        'amount',
     ];
 
     public function challan(){
         return $this->belongsTo(ChallanForm::class,'challan_id','id');
+    }
+    public function particular(){
+        return $this->belongsTo(Particulars::class,'particular_id','id');
     }
 }

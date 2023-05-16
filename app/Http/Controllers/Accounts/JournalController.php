@@ -427,6 +427,7 @@ class JournalController extends Controller
         if(Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->exists()){
 
             $data['current'] = Voucher::where('type',self::Constants()['type'])->where(['voucher_id'=>$id,'sr_no'=>1])->first();
+            
             $data['dtl'] = Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->get();
 
         }else{

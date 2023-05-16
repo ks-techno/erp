@@ -45,4 +45,7 @@ class ChallanForm extends Model
         return $this->belongsTo(Product::class,'product_id','id')
             ->with('buyable_type');
     }
+    public function challan_particluar(){
+        return $this->belongsTo(ChallanParticular::class,'id','challan_id');
+    }
 }

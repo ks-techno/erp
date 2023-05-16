@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('challan_particular', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('challan_id');
-            $table->unsignedBigInteger('paarticular_id');
+            $table->unsignedBigInteger('particular_id');
+            $table->string('amount');
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('challan_id')->references('id')->on('challan_form')
             ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('paarticular_id')->references('id')->on('particulars')
+            $table->foreign('particular_id')->references('id')->on('particulars')
             ->onUpdate('cascade')->onDelete('cascade');
 
         });

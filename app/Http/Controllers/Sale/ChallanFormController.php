@@ -55,7 +55,7 @@ class ChallanFormController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->where('file_type',NULL)->orderby('created_at','desc')->distinct();
+            $dataSql = ChallanForm::with('customer','project','product','file_status')->orderby('created_at','desc');
             $allData = $dataSql->get();
             
             $recordsTotal = count($allData);
@@ -76,9 +76,10 @@ class ChallanFormController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('sale.sale-invoice.edit',$row->uuid);
-                $urlDel = route('sale.sale-invoice.destroy',$row->uuid);
-                $urlPrint = route('sale.sale-invoice.print',$row->uuid);
+                $posted = $this->getPostedTitle()[$row->status];
+                $urlEdit = route('sale.challan-form.edit',$row->uuid);
+                $urlDel = route('sale.challan-form.destroy',$row->uuid);
+                $urlPrint = route('sale.challan-form.print',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -100,13 +101,11 @@ class ChallanFormController extends Controller
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
+                    $row->challan_no,
                     $row->product->name,
                     $row->product->block,
-                    $row->product->buyable_type->name ?? null,
-                    $row->project->name,
-                    $row->file_status->name,
                     $row->customer->name,
-                    $row->property_payment_mode->name ?? null,
+                    '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
                     $actions,
                 ];
             }
@@ -119,7 +118,7 @@ class ChallanFormController extends Controller
             return response()->json($result);
         }
 
-        return view('sale.sale_invoice.list', compact('data'));
+        return view('sale.challan_form.list', compact('data'));
     }
 
     /**
@@ -143,7 +142,6 @@ class ChallanFormController extends Controller
         $data['file_status'] = BookingFileStatus::where('status',1)->get();
         $data['property'] = Product::ProductProperty()->get();
         $data['particulars'] = Particulars::where('is_Active',1)->get();
-        $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
         return view('sale.challan_form.create', compact('data'));
     }
 
@@ -154,12 +152,13 @@ class ChallanFormController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+      
         $data = [];
         $validator = Validator::make($request->all(), [
            // 'project_id' => ['required',Rule::notIn([0,'0'])],
            // 'product_id' => ['required',Rule::notIn([0,'0'])],
-            'customer_id' => ['required',Rule::notIn([0,'0'])],
+           // 'customer_id' => ['required',Rule::notIn([0,'0'])],
             //'seller_type' => ['required',Rule::in(['dealer','staff'])],
             //'seller_id' => ['required',Rule::notIn([0,'0'])],
         ],[
@@ -167,8 +166,8 @@ class ChallanFormController extends Controller
 //            'project_id.not_in' => 'Project is required',
             //'product_id.required' => 'Product is required',
            // 'product_id.not_in' => 'Product is required',
-            'customer_id.required' => 'Customer is required',
-            'customer_id.not_in' => 'Customer is required',
+            // 'customer_id.required' => 'Customer is required',
+            // 'customer_id.not_in' => 'Customer is required',
            
         ]);
 
@@ -200,40 +199,35 @@ class ChallanFormController extends Controller
             foreach ($request->pd as $pd) {
                 $total_amount += str_replace(',', '',($pd['ch_chart_amount']));
             }
-            dd($total_amount);
+            
             $posted = $request->current_action_id == 'post'?1:0;
             $requestdata = 
                 [
                     'uuid' => self::uuid(),
-                    'code' => $code,
-                    'customer_id' => $request->customer_id,
+                    'challan_no' => $data['code'],
+                    'customer_id' => $request->om_customer_id,
                     'project_id' => auth()->user()->project_id,
                     'product_id' => $request->product_id,
                     'property_payment_mode_id' => $request->property_payment_mode_id,
+                    'cheque_no' => $request->cheque_no,
+                    'cheque_date' => $request->cheque_date,
                     'user_id' => auth()->user()->id,
                     'status' => $posted,
                     'is_active' => 1,
                     'total_amount' => $total_amount,
                 ];
-            $sale = challan_form::create($requestdata);
-            $prod_id = challan_form::where('product_id', $request->product_id)->first();
-            
-            if($prod_id){
-                
-                $update = Sale::where('product_id',$request->product_id)
-                ->update($requestdata);
-            }
-            else{
-                $sale = Sale::create($requestdata);
+            $sale = ChallanForm::create($requestdata);
+            $form_id = $sale->id;
+            $sr = 1;
+            foreach ($request->pd as $pd){
                
-                $saleSeller = new SaleSeller();
-                $saleSeller->sale_id = $sale->id;
-                $modal->sale_seller()->save($saleSeller);
-
+                ChallanParticular::create([
+                        'challan_id' => $form_id,
+                        'particular_id' => $pd['chart_id1'],
+                        'amount' => $pd['ch_chart_amount'],
+                    ]);
+                    $sr = $sr + 1;
             }
-            
-            createSaleHistory($requestdata);
-            
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
@@ -241,7 +235,7 @@ class ChallanFormController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('sale.sale-invoice.index');
+        return $this->redirect()->route('sale.challan-form.index');
 }
 
     /**
@@ -285,7 +279,7 @@ class ChallanFormController extends Controller
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('sale.sale_invoice.edit', compact('data'));
+        return view('sale.challan_form.edit', compact('data'));
     }
 
     /**
@@ -408,15 +402,16 @@ class ChallanFormController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['permission'] = self::Constants()['print'];
 
-        if(Sale::where('uuid',$id)->exists()){
-
-            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode','file_status')->where('uuid',$id)->first();
-
+        if(ChallanForm::where('uuid',$id)->exists()){
+            $data['current'] = ChallanForm::with('challan_particluar','customer','project','product')->where('uuid',$id)->first();
+          
+            $data['particulars'] = ChallanParticular::with('particular')->where('challan_id',$data['current']->id)->get();
+           
         }else{
             abort('404');
         }
  //       dd($data['current']->product->toArray());
-        return view('sale.sale_invoice.print', compact('data'));
+        return view('sale.challan_form.print', compact('data'));
     }
 
     public function getSellerList(Request $request)

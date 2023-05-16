@@ -2,9 +2,6 @@
 @section('title', $data['title'])
 @section('style')
 <style>
-    #add-row {
-  margin-top: 10px;
-}
     .new_member_and_nominee{
         padding-bottom:1px !important;
     }
@@ -85,23 +82,19 @@
                 padding-bottom: 5px;
                 padding-left: 5px;
             }
-            .select2-container--classic .select2-dropdown, .select2-container--default .select2-dropdown {
+ .select2-container--classic .select2-dropdown, .select2-container--default .select2-dropdown {
     border-color: #d8d6de;
     z-index: 99999999;
     position: fixed;
     left: 27%;
-    top: 84%;
+    top: 80%;
 }
-
 </style>
 @endsection
 
 @section('content')
-@php
-    $entry_date = date('Y-m-d');
-@endphp
-<form id="challan_form_create" class="challan_form_create" action="{{route('sale.challan-form.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
-    <input type="hidden" id="form_type" value="challan_form">
+<form id="challan_forom_create" class="challan_forom_create" action="{{route('sale.challan-form.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <input type="hidden" id="form_type" value="booking_transfer">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -116,12 +109,36 @@
                             <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
-                </div>
+                    </div>
                
                 <div class="card-body mt-2 new_member_and_nominee">
                     <div class="row">
                         <div class="col-sm-4">
-                            <h4>{{$data['code']}} </h4>
+                            <h4>{{$data['code']}}</h4>
+                            <input type="text" value="{{$data['code']}}" name="challan_code" hidden>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                        <label class="col-form-label p-0">Payment Mode <span class="required">*</span></label>
+                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select">
+                                    <option value="">Select payment Mode</option>
+                                        @foreach (getpaymentModes() as $key => $value)
+                                            <option value="{{ $key }}" data-slug="{{$key}}">{{ $value }}</option>
+                                        @endforeach
+                                        </select>
+                        </div>
+                    </div>
+                    <div class="row" style="display:none" id="cheque_block" >
+                        <div class="col-sm-4">
+                        <label class="col-form-label p-0">Cheque Number <span class="required">*</span></label>
+                        <input type="text" class="form-control form-control-sm FloatValidate" id="cheque_no" name="cheque_no" aria-invalid="false">
+                        </div>
+                        <div class="col-sm-4">
+                        <label class="col-form-label p-0">Cheque Number <span class="required">*</span></label>
+                        <input type="text" id="cheque_date" name="cheque_date"
+                        class="form-control form-control-sm flatpickr-basic flatpickr-input"
+                        placeholder="YYYY-MM-DD" value="" />
                         </div>
                     </div>
                   
@@ -151,6 +168,11 @@
                                 </div>
                             </div>
                             <div class="mb-1 row">
+                                <!-- <div class="col-sm-6">
+                                    <label class="col-form-label p-0">Registration No#</label>
+                                    <input type="hidden" class="form-control form-control-sm" value="" id="om_registration_no_input" name="om_registration_no" />
+                                    <p class="col-form-label om_registration_no p-0 txt_color"></p>
+                                </div> -->
                                 <div class="col-sm-6">
                                     <label class="col-form-label p-0">Mobile No#</label>
                                     <input type="hidden" class="text-start form-control form-control-sm NumberValidate" value="" id="om_mobile_no_input" name="om_mobile_no" />
@@ -362,6 +384,7 @@
                                 </div>
                             </div>
                         </div>
+
                 </div>
             </div>
         </div>
@@ -380,13 +403,14 @@
 @endsection
 
 @section('pageJs')
-    <script src="{{ asset('/pages/sale/refund_file/create.js') }}"></script>
-
+<script src="{{ asset('/pages/sale/challan_form/create.js') }}"></script> 
 @endsection
 
 @section('script')
+
     <script src="{{ asset('/pages/help/customer_help.js')}}"></script>
     <script src="{{ asset('/pages/help/old_customer_help.js') }}"></script>
+    <script src="{{ asset('/pages/help/challan_help.js') }}"></script>
     <script src="{{ asset('/js/jquery-inputmask.js') }}"></script>
     <script>
         $(".cnic").inputmask({
@@ -526,7 +550,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     type: "POST",
-                    url: '{{ route('sale.booking-transfer.getCustomerList') }}',
+                    url: '{{ route('sale.open-file.getCustomerList') }}',
                     dataType	: 'json',
                     data        : formData,
                     success: function(response,data) {
@@ -802,7 +826,7 @@
         var keyCode = e.keyCode;
         if (keyCode == 38) { // up arrow key
             e.preventDefault();
-            //$('#ch_cheque_no').focus();
+            //$('#egt_cheque_no').focus();
             inLineHelp.scrollTop(scrollTop - lineHeight);
             if (inLineHelp.scrollTop() == 0) {
                 inLineHelp.css('top', offsetTop + lineHeight + 'px');
@@ -814,7 +838,7 @@
             }
         } else if (keyCode == 40) { // down arrow key
             e.preventDefault();
-            //$('#ch_cheque_no').focus();
+            //$('#egt_cheque_no').focus();
             inLineHelp.scrollTop(scrollTop + lineHeight);
             if (inLineHelp.scrollTop() + inLineHelp.innerHeight() == scrollHeight) {
                 inLineHelp.css('top', offsetTop - lineHeight + 'px');
@@ -829,8 +853,16 @@
         
     }
 });
+$(document).on('change','#property_payment_mode_id',function(){
+           var slug = $(this).find('option:selected').attr('data-slug');
+            $('#cheque_block').hide();
+            $('#cheque_block').find('input').val("");
+           if(slug == '2'){
+                $('#cheque_block').show();
+           }
+        })
     </script>
-   <script>
+     <script>
         var var_ch_fields = [
 
         ];
