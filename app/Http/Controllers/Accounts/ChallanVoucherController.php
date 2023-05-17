@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Sale;
+namespace App\Http\Controllers\Accounts;
 
 use App\Library\Utilities;
 use App\Models\BookingFileStatus;
@@ -23,14 +23,14 @@ use Exception;
 use Illuminate\Validation\Rule;
 use Validator;
 
-class ChallanFormController extends Controller
+class ChallanVoucherController extends Controller
 {
     private static function Constants()
     {
-        $name = 'challan-form';
+        $name = 'challan-voucher';
         return [
-            'title' => 'Challan Form',
-            'list_url' => route('sale.challan-form.index'),
+            'title' => 'Challan Voucher',
+            'list_url' => route('accounts.challan-voucher.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -55,7 +55,7 @@ class ChallanFormController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = ChallanForm::with('customer','project','product','file_status')->orderby('created_at','desc');
+            $dataSql = ChallanForm::with('customer','project','product','file_status')->where('status', 1)->orderby('created_at','desc');
             $allData = $dataSql->get();
             
             $recordsTotal = count($allData);
@@ -77,9 +77,9 @@ class ChallanFormController extends Controller
             $entries = [];
             foreach ($allData as $row) {
                 $posted = $this->getPostedTitle()[$row->status];
-                $urlEdit = route('sale.challan-form.edit',$row->uuid);
-                $urlDel = route('sale.challan-form.destroy',$row->uuid);
-                $urlPrint = route('sale.challan-form.print',$row->uuid);
+                $urlEdit = route('accounts.challan-voucher.edit',$row->uuid);
+                $urlDel = route('accounts.challan-voucher.destroy',$row->uuid);
+                $urlPrint = route('accounts.challan-voucher.print',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -96,7 +96,7 @@ class ChallanFormController extends Controller
                     $actions .= '</div>'; // end d-inline-flex
                 }
                 if($edit_per){
-                    $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="edit"></i></a>';
+                    $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="plus"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
 
@@ -118,7 +118,7 @@ class ChallanFormController extends Controller
             return response()->json($result);
         }
 
-        return view('sale.challan_form.list', compact('data'));
+        return view('accounts.challan_voucher.list', compact('data'));
     }
 
     /**
@@ -235,7 +235,7 @@ class ChallanFormController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('sale.challan-form.index');
+        return $this->redirect()->route('accounts.challan-voucher.index');
 }
 
     /**
@@ -281,7 +281,7 @@ class ChallanFormController extends Controller
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('sale.challan_form.edit', compact('data'));
+        return view('accounts.challan_voucher.edit', compact('data'));
     }
 
     /**

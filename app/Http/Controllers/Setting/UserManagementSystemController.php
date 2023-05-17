@@ -93,6 +93,11 @@ class UserManagementSystemController extends Controller
                         'name' => 'journal',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
+                    [
+                        'dname' => 'Challan Voucher',
+                        'name' => 'challan-voucher',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
                 ]
             ],
             //CRM
