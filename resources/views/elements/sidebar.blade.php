@@ -24,7 +24,9 @@
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
-            <li class="nav-item me-auto"><a class="navbar-brand" href="javascript:;"><span class="brand-logo">
+            <li class="nav-item me-auto"><a class="navbar-brand navbar-brand mx-4 mt-0" href="javascript:;">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="logo" style="height:100px;">
+                <!-- <span class="brand-logo">
                             <svg viewbox="0 0 139 95" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">
                                 <defs>
@@ -75,8 +77,8 @@
                                     </g>
                                 </g>
                             </svg>
-                        </span>
-                    <h2 class="brand-text">KSD</h2>
+                        </span> -->
+                    <!-- <h2 class="brand-text">KSD</h2> -->
                     </a>
                 </li>
             <li class="nav-item nav-toggle">
@@ -227,11 +229,11 @@
                     </li>
                     @endpermission
             @permission('refund-file'.$sidebar_menu)
-                    <li class="{{ ($path == 'sale/refund-file')?'active':'' }}">
+                    <!-- <li class="{{ ($path == 'sale/refund-file')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.refund-file.index') }}">
                             <span class="menu-item text-truncate">Refund File</span>
                         </a>
-                    </li>
+                    </li> -->
                     @endpermission
           </ul>
          </li>

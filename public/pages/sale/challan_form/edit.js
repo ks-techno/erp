@@ -1,7 +1,7 @@
 $(function () {
     'use strict';
 
-    var pageLoginForm = $('#sale_invoice_edit');
+    var pageLoginForm = $('#challan_form_edit');
 
     // jQuery Validation
     // --------------------------------------------------------------------

@@ -383,12 +383,12 @@
                                     <div class="col-sm-6">
                                             <label class="col-form-label p-0">Down Payment</label>
                                             <input type="hidden" class="form-control form-control-sm" value="" id="om_down_payment_input" name="down_payment" />
-                                            <p class="col-form-label om_down_payment p-0 txt_color">{{ $current->sales->down_payment}}</p>
+                                            <p class="col-form-label om_down_payment p-0 txt_color">{{ isset($current->sales->down_payment) ? $current->sales->down_payment : ''}}</p>
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="col-form-label p-0">On Possession</label>
                                             <input type="hidden" class="form-control form-control-sm" value="" id="om_on_possession_input" name="on_possession" />
-                                            <p class="col-form-label om_on_possession p-0 txt_color">{{ $current->sales->on_possession}}</p>
+                                            <p class="col-form-label om_on_possession p-0 txt_color">{{ isset($current->sales->on_possession) ? $current->sales->on_possession: ''}}</p>
                                         </div>
                                     </div>
                                     <div class="mb-1 row">
@@ -401,7 +401,7 @@
                                         <label class="col-form-label p-0">Registration Number</label>
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_external_item_id_input_id" name="external_item_id" />
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_external_item_id_input_name" name="external_item_id" />
-                                        <p class="col-form-label om_external_item_id p-0 txt_color">{{ $current->product->external_item_id }}</p>
+                                        <p class="col-form-label om_external_item_id p-0 txt_color">{{ isset($current->product->external_item_id) ? $current->product->external_item_id : '' }}</p>
                                     </div>
                                     </div>
                                 </div>
@@ -410,13 +410,13 @@
                                         <label class="col-form-label p-0">Booking Price</label>
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_booked_price_input_id" name="booked_price" />
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_booked_price_input_name" name="booked_price" />
-                                        <p class="col-form-label om_booked_price p-0 txt_color">{{ $current->sales->booked_price}}</p>
+                                        <p class="col-form-label om_booked_price p-0 txt_color">{{ isset($current->sales->booked_price) ? $current->sales->booked_price : ""}}</p>
                                     </div>
                                     <div class="col-sm-6">
                                         <label class="col-form-label p-0">Currency Note</label>
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_currency_note_no_input_id" name="currency_note_no" />
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_currency_note_no_input_name" name="currency_note_no" />
-                                        <p class="col-form-label om_currency_note_no p-0 txt_color">{{ $current->sales->on_possession}}</p>
+                                        <p class="col-form-label om_currency_note_no p-0 txt_color">{{ isset($current->sales->on_possession) ? $current->sales->on_possession : ''}}</p>
                                     </div>
                                 </div>
                             </div>

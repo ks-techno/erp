@@ -12,7 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - {{ config('app.name', 'KSD') }}</title>
     <link rel="apple-touch-icon" href="{{asset('assets/images/ico/apple-icon-120.png')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/ico/favicon.ico')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/icon.png')}}">
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('css/print.css')}}">
     <!-- END: Custom CSS-->
@@ -58,7 +58,7 @@
     <tbody>
         <tr style="border:none;">
         <td width="70%" style="border:none;">
-            <div class="fz-22">@yield('title')</div>
+            <div class="fz-22">@yield('title')</div><sub>Customer Copy</sub>
         </td>
         <td class="text-center" width="30%" style="border:none;">
         <img src="{{ asset('assets/images/logo.png') }}" alt="logo" style="height:80px; margin-top: 6px;">
@@ -138,7 +138,7 @@
     <tbody>
         <tr style="border:none;">
         <td width="70%" style="border:none;">
-            <div class="fz-22">@yield('title')</div>
+            <div class="fz-22">@yield('title')</div><sub>Bank Copy</sub>
         </td>
         <td class="text-center" width="30%" style="border:none;">
         <img src="{{ asset('assets/images/logo.png') }}" alt="logo" style="height:80px; margin-top: 6px;">
@@ -218,7 +218,7 @@
     <tbody>
         <tr style="border:none;">
         <td width="70%" style="border:none;">
-            <div class="fz-22">@yield('title')</div>
+            <div class="fz-22">@yield('title')</div><sub>Accounts Copy</sub>
         </td>
         <td class="text-center" width="30%" style="border:none;">
         <img src="{{ asset('assets/images/logo.png') }}" alt="logo" style="height:80px; margin-top: 6px;">

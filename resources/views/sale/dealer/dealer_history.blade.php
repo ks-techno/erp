@@ -45,7 +45,7 @@
                             {{ $innerQry->file_status->name }}
                         </td>
                         <td class="dtl-contents" align="center">
-                            {{ $innerQry->property_payment_mode->name }}
+                            {{ isset($innerQry->property_payment_mode->name) ? $innerQry->property_payment_mode->name : 'Default Value' }}
                         </td>
                         <td class="dtl-contents" align="center">
                             {{ number_format($innerQry->sale_price,0) }}

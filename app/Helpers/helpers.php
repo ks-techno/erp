@@ -64,7 +64,7 @@ if (!function_exists('numberToWords')) {
             }
         } elseif ($number < 1000000) {
             $thousands = (int)($number / 1000);
-            $remainder = $nPumber % 1000;
+            $remainder = $number % 1000;
             $string = numberToWords($thousands) . ' thousand';
             if ($remainder) {
                 $string .= ' ';

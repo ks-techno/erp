@@ -103,7 +103,6 @@ class RefundFileController extends Controller
                     $row->product->buyable_type->name ?? null,
                     $row->project->name,
                     $row->file_type,
-                    $row->customer->name,
                     $actions,
                 ];
             }

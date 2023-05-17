@@ -508,18 +508,20 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     type: "POST",
-                    url: '{{ route('sale.booking-transfer.getCustomerList') }}',
+                    url: '{{ route('sale.booking-transfer.getRefundCustomerList') }}',
                     dataType	: 'json',
                     data        : formData,
                     success: function(response,data) {
                         if(response.status == 'success'){
+                            if(response.data['customer'] == null ){
+                                ntoastr.error('No Property Available for refund');
+                            }
                             var customer = response.data['customer'];
                             var sales = response.data['customer'].sales;
                             var product = response.data['customer'].product;
                             var options = "<option value='0' selected>Select</option>";
                             var length = customer.length;
                             var sales_length = customer.sales.length;
-
                             
                             table = "<div class='table-wrapper'><table><thead><tr><th>Plot No.</th><th>Block</th></tr></thead><tbody>";
                             for(var i=0;i<sales_length;i++){
@@ -582,7 +584,7 @@
                         }
                     },
                     error: function(response,status) {
-                        ntoastr.error('server error..404');
+                        ntoastr.error('server error.404');
                     }
                 });
             }
