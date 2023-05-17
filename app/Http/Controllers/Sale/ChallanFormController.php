@@ -275,12 +275,15 @@ class ChallanFormController extends Controller
             abort('404');
         }
         $data['view'] = false;
-        if(isset($request->view)){
+        $data['posted'] = false;
+        if($data['current']->posted == 1){
+            $data['posted'] = true;
+        }
+        if(isset($request->view) || $data['current']->posted == 1){
             $data['view'] = true;
             $data['permission'] = self::Constants()['view'];
             $data['permission_edit'] = self::Constants()['edit'];
         }
-
         return view('sale.challan_form.edit', compact('data'));
     }
 

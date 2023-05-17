@@ -82,12 +82,23 @@
                         
                     </div>
                     <div class="card-link">
-                        <button type="submit" name="current_action_id" value="store" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save as Draft</button>
-                            <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
-                            <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                            @if($data['view'])
+                                @if(!$data['posted'])
+                                @permission($data['permission_edit'])
+                           
+                                <a href="{{route('sale.challan-form.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                               
+                                @endpermission
+                                @endif
+                                 @else
+                                 
+                        <button type="submit" name="current_action_id" value="update" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                                <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
+                        <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                       @endif
                         </div>
-                    </div>
-               
+                     </div>
                 <div class="card-body mt-2 new_member_and_nominee">
                     <div class="row">
                         <div class="col-sm-4">
@@ -312,25 +323,52 @@
                                                     <th width="22%">Amount</th>
                                                     <th width="13%" class="text-center">Action</th>
                                                 </tr>
-                                                @foreach($data['particulars'] as $particular)
-       
-                                                    <tr>
+                                                <tr class="ch_form_header_input">
                                                     <td>
                                                         <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
                                                         <input id="chart_id1" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
-                                                         <td >{{$particular->particular->name}}</td>
-                                                        <td >{{$particular->amount}}</td>
+                                                    <td>
+                                                    <select class="select2 form-select" id="ch_chart_code" name="ch_chart_code">
+                                                    <option value="">Select Value</option>
+                                                    particulars
+                                                    @foreach($data['particulars'] as $particular)
+                                                    <option value="{{$particular->id}}" data-chart-id="{{$particular->id}}" data-chart-name="({{$particular->name}})"> {{$particular->name}}</option>
+                                                    @endforeach
+                                                    </select>
+                                                    </td>
+                                                    <td>
+                                                        <input id="ch_chart_amount" type="text" class="chart_name form-control form-control-sm" >
+                                                    </td>
+                                                    
+                                                   
                                                     <td class="text-center">
                                                         <button type="button" id="ch_add" class="ch_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
                                                         </button>
                                                     </td>
-                                                    @endforeach
                                                 </tr>
-                                                
                                                 </thead>
                                                 <tbody class="ch_form_body">
+                                                @foreach($data['particulars'] as $particular)
+       
+       <tr>
+       <td>
+           <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
+           <input id="chart_id1" type="hidden" class="chart_id form-control form-control-sm">
+       </td>
+            <td >{{$particular->particular->name}}</td>
+           <td >{{$particular->amount}}</td>
+       
+       <td class="text-center">
+                   <div class="egt_btn-group">
+                       <button type="button" class="btn btn-danger btn-sm egt_del">
+                           <i data-feather="trash-2"></i>
+                       </button>
+                   </div>
+               </td>
+       @endforeach
+   </tr>
                                                 </tbody>
                                                 <tfoot class="ch_form_footer">
                                                 <tr class="ch_form_footer_total">
@@ -364,7 +402,7 @@
 @endsection
 
 @section('pageJs')
-    <script src="{{ asset('/pages/sale/refund_file/edit.js') }}"></script>
+    <script src="{{ asset('/pages/sale/challan_form/edit.js') }}"></script>
     <script src="{{ asset('/pages/help/customer_help.js')}}"></script>
     <script src="{{ asset('/pages/help/old_customer_help.js') }}"></script>
 

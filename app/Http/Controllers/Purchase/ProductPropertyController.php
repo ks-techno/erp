@@ -52,10 +52,16 @@ class ProductPropertyController extends Controller
             $dataSql = Product::with(['buyable_type', 'sale'])
             ->where('product_form_type', 'property')
             ->where(Utilities::CompanyProjectId())
-            ->orwhereHas('sale', function ($query) {
-                $query->whereNotNull('file_type');
+            ->where(function ($query) {
+                $query->whereHas('sale', function ($subquery) {
+                    $subquery->whereNotNull('file_type');
+                })
+                ->orWhereDoesntHave('sale');
             })
             ->orderBy('name');
+        
+    
+            // dd($dataSql->toSql());       
             $allData = $dataSql->get();
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);

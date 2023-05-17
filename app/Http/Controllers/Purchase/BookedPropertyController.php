@@ -52,7 +52,7 @@ class BookedPropertyController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->orderby('created_at','desc');
+            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->whereNull('file_type')->orderby('created_at','desc');
             
             $allData = $dataSql->get();
             $recordsTotal = count($allData);
@@ -80,7 +80,7 @@ class BookedPropertyController extends Controller
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
                     $actions .= '<div class="d-inline-flex">';
-                    $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
+                    $actions .= '<a class="p-25 ml-x dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
                     if($print_per) {
                         $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
@@ -102,7 +102,6 @@ class BookedPropertyController extends Controller
                     $row->product->buyable_type->name ?? null,
                     $row->project->name ?? null,
                     $row->file_status->name ?? null,
-                    $row->file_type,
                     $row->customer->name ?? null,
                     $actions,
                 ];

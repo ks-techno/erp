@@ -220,13 +220,14 @@ Route::group(['middleware' => 'auth'], function () {
             });
             Route::prefix('refund-file')->resource('refund-file', RefundFileController::class);
             Route::prefix('refund-file')->name('refund-file.')->controller(RefundFileController::class)->group(function(){
-                Route::post('get-customer-list', 'getCustomerList')->name('getCustomerList');
+                Route::post('get-refund-customer-list', 'getRefundCustomerList')->name('getRefundCustomerList');
                 Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
             });
             Route::prefix('booking-transfer')->resource('booking-transfer', BookingTransferController::class);
             Route::prefix('booking-transfer')->name('booking-transfer.')->controller(BookingTransferController::class)->group(function(){
                 Route::post('get-customer-list', 'getCustomerList')->name('getCustomerList');
+                Route::post('get-refund-customer-list', 'getRefundCustomerList')->name('getRefundCustomerList');
                 Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
             });

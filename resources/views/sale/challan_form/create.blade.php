@@ -93,7 +93,7 @@
 @endsection
 
 @section('content')
-<form id="challan_forom_create" class="challan_forom_create" action="{{route('sale.challan-form.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+<form id="challan_form_create" class="challan_form_create" action="{{route('sale.challan-form.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" id="form_type" value="booking_transfer">
     @csrf
     <div class="row">
@@ -403,11 +403,11 @@
 @endsection
 
 @section('pageJs')
-<script src="{{ asset('/pages/sale/challan_form/create.js') }}"></script> 
+
 @endsection
 
 @section('script')
-
+    <script src="{{ asset('/pages/sale/challan_form/create.js') }}"></script>
     <script src="{{ asset('/pages/help/customer_help.js')}}"></script>
     <script src="{{ asset('/pages/help/old_customer_help.js') }}"></script>
     <script src="{{ asset('/pages/help/challan_help.js') }}"></script>

@@ -100,7 +100,7 @@ class BookingTransferController extends Controller
                     date('d-m-Y',strtotime($row->date)),
                     $row->code,
                     $row->product->name ?? null,
-                    $row->product->block,
+                    $row->product->block ?? null,
                     $row->product->buyable_type->name ?? null,
                     $actions,
                 ];
@@ -424,7 +424,29 @@ class BookingTransferController extends Controller
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully get Customer', 200);
     }
+    public function getRefundCustomerList(Request $request)
+    {
 
+        $data = [];
+        $customer_id = isset($request->customer_id)?$request->customer_id:"";
+
+        DB::beginTransaction();
+        try{
+            
+            $data['customer'] = Customer::where('id', $customer_id)
+            ->with(['sales' => function ($query) {
+                $query->whereNull('file_type');
+            }])
+            ->first();
+        
+        
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, 'Successfully get Customer', 200);
+    }
     public function getBookingDtl(Request $request)
     {
         $data = [];

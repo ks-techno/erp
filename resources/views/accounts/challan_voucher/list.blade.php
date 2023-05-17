@@ -16,7 +16,7 @@
                             </div>
                             <div class="card-link">
                                 @permission($data['permission_create'])
-                                <a href="{{route('sale.challan-form.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
+                                <!-- <a href="{{route('sale.challan-form.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a> -->
                                 @endpermission
                             </div>
                         </div>
