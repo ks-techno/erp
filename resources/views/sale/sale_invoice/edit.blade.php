@@ -248,7 +248,7 @@
                                         <label class="col-form-label">Booking Price</label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->booked_price)}}" id="booked_price" name="booked_price">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" value="{{number_format($current->booked_price)}}" id="booked_price" name="booked_price" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
