@@ -23,7 +23,7 @@
                         <div class="card-body">
                             <div class="card-datatable">
                                 @permission($data['permission_list'])
-                                <table class="datatables-ajax table table-responsive" data-url="{{route('accounts.challan-voucher.index')}}">
+                                <table class="datatables-ajax table table-responsive" data-url="{{route('accounts.submitted-challan.index')}}">
                                     <thead>
                                     <tr>
                                         <th class="cell-fit">Challan Number</th>

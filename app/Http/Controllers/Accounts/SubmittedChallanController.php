@@ -23,14 +23,14 @@ use Exception;
 use Illuminate\Validation\Rule;
 use Validator;
 
-class ChallanVoucherController extends Controller
+class SubmittedChallanController extends Controller
 {
     private static function Constants()
     {
-        $name = 'challan-voucher';
+        $name = 'submitted-challan';
         return [
-            'title' => 'Challan Voucher',
-            'list_url' => route('accounts.challan-voucher.index'),
+            'title' => 'Submitted Challan',
+            'list_url' => route('accounts.submitted-challan.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -77,9 +77,10 @@ class ChallanVoucherController extends Controller
             $entries = [];
             foreach ($allData as $row) {
                 $posted = $this->getPostedTitle()[$row->status];
-                $urlEdit = route('accounts.challan-voucher.edit',$row->uuid);
-                $urlDel = route('accounts.challan-voucher.destroy',$row->uuid);
-                $urlPrint = route('accounts.challan-voucher.print',$row->uuid);
+                $urlAdd = route('accounts.submitted-challan.create',$row->uuid);
+                $urlEdit = route('accounts.submitted-challan.edit',$row->uuid);
+                $urlDel = route('accounts.submitted-challan.destroy',$row->uuid);
+                $urlPrint = route('accounts.submitted-challan.print',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -118,7 +119,7 @@ class ChallanVoucherController extends Controller
             return response()->json($result);
         }
 
-        return view('accounts.challan_voucher.list', compact('data'));
+        return view('accounts.submitted_challan.list', compact('data'));
     }
 
     /**
@@ -235,7 +236,7 @@ class ChallanVoucherController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('accounts.challan-voucher.index');
+        return $this->redirect()->route('accounts.submitted-challan.index');
 }
 
     /**
@@ -270,20 +271,38 @@ class ChallanVoucherController extends Controller
             $data['current'] = ChallanForm::with('challan_particluar','customer','project','product','file_status')->where('uuid',$id)->first();
           
             $data['particulars'] = ChallanParticular::with('particular')->where('challan_id',$data['current']->id)->get();
+            $data['particular'] = Particulars::where('is_Active',1)->get();
            
         }else{
             abort('404');
         }
         $data['view'] = false;
-        if(isset($request->view)){
+        $data['posted'] = false;
+        if($data['current']->posted == 1){
+            $data['posted'] = true;
+        }
+        if(isset($request->view) || $data['current']->posted == 1){
             $data['view'] = true;
             $data['permission'] = self::Constants()['view'];
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('accounts.challan_voucher.edit', compact('data'));
+        return view('accounts.submitted_challan.edit', compact('data'));
     }
 
+
+    public function voucherCreate(Request $request, $id){
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['edit'];
+
+        return view('accounts.submitted_challan.createVoucher', compact('data'));
+    }
+    public function storeVoucher(Request $request, $id){
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['edit'];
+
+        return view('accounts.submitted_challan.createVoucher', compact('data'));
+    }
     /**
      * Update the specified resource in storage.
      *

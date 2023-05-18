@@ -220,7 +220,6 @@ class ChallanFormController extends Controller
             $form_id = $sale->id;
             $sr = 1;
             foreach ($request->pd as $pd){
-               
                 ChallanParticular::create([
                         'challan_id' => $form_id,
                         'particular_id' => $pd['chart_id1'],
@@ -270,7 +269,8 @@ class ChallanFormController extends Controller
             $data['current'] = ChallanForm::with('challan_particluar','customer','project','product','file_status')->where('uuid',$id)->first();
           
             $data['particulars'] = ChallanParticular::with('particular')->where('challan_id',$data['current']->id)->get();
-           
+            $data['particular'] = Particulars::where('is_Active',1)->get();
+
         }else{
             abort('404');
         }
@@ -297,25 +297,26 @@ class ChallanFormController extends Controller
     public function update(Request $request, $id)
     {
         $data = [];
+        
         $validator = Validator::make($request->all(), [
             //'project_id' => ['required',Rule::notIn([0,'0'])],
-            'product_id' => ['required',Rule::notIn([0,'0'])],
-            'customer_id' => ['required',Rule::notIn([0,'0'])],
-            'seller_type' => ['required',Rule::in(['dealer','staff'])],
-            'seller_id' => ['required',Rule::notIn([0,'0'])],
-            'currency_note_no'=>'required'
+            // 'product_id' => ['required',Rule::notIn([0,'0'])],
+            // 'customer_id' => ['required',Rule::notIn([0,'0'])],
+            // 'seller_type' => ['required',Rule::in(['dealer','staff'])],
+            // 'seller_id' => ['required',Rule::notIn([0,'0'])],
+            // 'currency_note_no'=>'required'
         ],[
             //'project_id.required' => 'Project is required',
             //'project_id.not_in' => 'Project is required',
-            'product_id.required' => 'Product is required',
-            'product_id.not_in' => 'Product is required',
-            'customer_id.required' => 'Customer is required',
-            'customer_id.not_in' => 'Customer is required',
-            'seller_type.required' => 'Seller type is required',
-            'seller_type.in' => 'Seller type is required',
-            'seller_id.required' => 'Seller is required',
-            'seller_id.not_in' => 'Seller is required',
-            'currency_note_no.required'=>'currency is required'
+            // 'product_id.required' => 'Product is required',
+            // 'product_id.not_in' => 'Product is required',
+            // 'customer_id.required' => 'Customer is required',
+            // 'customer_id.not_in' => 'Customer is required',
+            // 'seller_type.required' => 'Seller type is required',
+            // 'seller_type.in' => 'Seller type is required',
+            // 'seller_id.required' => 'Seller is required',
+            // 'seller_id.not_in' => 'Seller is required',
+            // 'currency_note_no.required'=>'currency is required'
         ]);
 
         if ($validator->fails()) {
@@ -326,59 +327,44 @@ class ChallanFormController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('sale.sale-invoice.index');
+            return $this->redirect()->route('sale.challan-form.index');
         }
 
         DB::beginTransaction();
         try{
-            $requestdata = [
-                'customer_id' => $request->customer_id,
-                'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
-                'project_id' => auth()->user()->project_id,
-                'product_id' => $request->product_id,
-                'property_payment_mode_id' => $request->property_payment_mode_id,
-                'is_installment' => isset($request->is_installment)?1:0,
-                'is_booked' => isset($request->is_booked)?1:0,
-                'is_purchased' => isset($request->is_purchased)?1:0,
-                'sale_price' => str_replace(',', '',($request->sale_price)),
-                'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
-                'booked_price' => str_replace(',', '',($request->booked_price)),
-                'down_payment' => str_replace(',', '',($request->down_payment)),
-                'on_balloting' => $request->on_balloting,
-                'no_of_bi_annual' => $request->no_of_bi_annual,
-                'installment_bi_annual' => $request->installment_bi_annual,
-                'no_of_month' => $request->no_of_month,
-                'installment_amount_monthly' => $request->installment_amount_monthly,
-                'on_possession' => str_replace(',', '',($request->on_possession)),
-                'file_status_id' => $request->file_status_id,
-                'sale_discount' => str_replace(',', '',($request->sale_discount)),
-                'company_id' => auth()->user()->company_id,
-                'user_id' => auth()->user()->id,
-                'installment_start_time' => $request->installment_start_time,
-                'installment_end_time' => $request->installment_end_time,
-                'installment_type' => $request->installment_type,
-            ];
-            Sale::where('uuid',$id)
-                ->update($requestdata);
-            updateSaleHistory($requestdata,$id);
-            $sale = Sale::where('uuid',$id)->first();
-
-            $saleSeller = new SaleSeller();
-            $saleSeller->sale_sellerable_id = $request->seller_id;
-
-
-            if($request->seller_type == 'staff'){
-                $saleSeller->sale_sellerable_type = 'App\Models\Staff';
-               // dd($saleSeller->toArray());
-                $sale->dealer()->update($saleSeller->toArray());
+            $total_amount = 0;
+            foreach ($request->pd as $pd) {
+                $total_amount += str_replace(',', '',($pd['ch_chart_amount']));
             }
-            if($request->seller_type == 'dealer'){
-                $saleSeller->sale_sellerable_type = 'App\Models\Dealer';
-                $sale->dealer()->update($saleSeller->toArray());
+            
+            $posted = $request->current_action_id == 'post'?1:0;
+            $requestdata = 
+                [
+                    'uuid' => $id,
+                    'customer_id' => $request->om_customer_id,
+                    'project_id' => auth()->user()->project_id,
+                    'product_id' => $request->product_id,
+                    'property_payment_mode_id' => $request->property_payment_mode_id,
+                    'cheque_no' => $request->cheque_no,
+                    'cheque_date' => $request->cheque_date,
+                    'user_id' => auth()->user()->id,
+                    'status' => $posted,
+                    'is_active' => 1,
+                    'total_amount' => $total_amount,
+                ];
+            $sale = ChallanForm::where('uuid',$id)
+            ->update($requestdata);
+           $chalan_id = $request->form_id;
+            DB::select("delete FROM `challan_particular` where challan_id = '$chalan_id'");
+            $sr = 1;
+            foreach ($request->pd as $pd){
+                ChallanParticular::create([
+                        'challan_id' => $chalan_id,
+                        'particular_id' => $pd['chart_id1'],
+                        'amount' => $pd['ch_chart_amount'],
+                    ]);
+                    $sr = $sr + 1;
             }
-
-
-
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
