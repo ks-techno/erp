@@ -216,7 +216,7 @@
                                         <label class="col-form-label">Booking Price<span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" id="booked_price" name="booked_price"  aria-invalid="false">
+                                        <input type="text" class="form-control form-control-sm FloatValidate" id="booked_price" name="booked_price"  aria-invalid="false" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
