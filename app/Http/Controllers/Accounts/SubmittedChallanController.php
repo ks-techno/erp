@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Validation\Rule;
 use Validator;
+use App\Models\ChartOfAccount;
+use App\Models\Voucher;
 
 class SubmittedChallanController extends Controller
 {
@@ -293,10 +295,35 @@ class SubmittedChallanController extends Controller
 
     public function voucherCreate(Request $request, $id){
         $data['title'] = self::Constants()['title'];
+        $data['id'] = $id;
         $data['permission'] = self::Constants()['edit'];
-
+        $data['list_url'] = self::Constants()['list_url'];
+        if(ChallanForm::where('uuid',$id)->exists()){
+            $data['current'] = ChallanForm::with('challan_particluar','customer','project','product','file_status')->where('uuid',$id)->first();
+          
+            $data['particulars'] = ChallanParticular::with('particular')->where('challan_id',$data['current']->id)->get();
+            $data['particular'] = Particulars::where('is_Active',1)->get();
+           
+        }else{
+            abort('404');
+        }
+        if($data['current']->property_payment_mode_id== 1){
+            $type = 'CRV';
+        }
+        else{
+            $type = 'BRV';
+        }
+        $max = Voucher::withTrashed()->where('type',$type)->max('voucher_no');
+        $data['voucher_no'] = self::documentCode($type,$max);
+        
         return view('accounts.submitted_challan.createVoucher', compact('data'));
     }
+
+    public function voucherStore(Request $request, $id){
+
+
+    }
+
     public function storeVoucher(Request $request, $id){
         $data['title'] = self::Constants()['title'];
         $data['permission'] = self::Constants()['edit'];

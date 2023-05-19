@@ -179,7 +179,6 @@ class BankReceiveController extends Controller
 
         DB::beginTransaction();
         try {
-//dd("sef");
             $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
             $voucher_no = self::documentCode(self::Constants()['type'],$max);
             $voucher_id = self::uuid();
@@ -215,7 +214,15 @@ class BankReceiveController extends Controller
                     ]);
                     $sr = $sr + 1;
                 }
+                $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+            
+                $reqArray[] = $req;
             }
+            Utilities::createLedger($reqArray);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -261,7 +268,6 @@ class BankReceiveController extends Controller
         $chart = $chart->select('id','code','name')->get();
         $data['chart'] =  $chart;
         if(Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->exists()){
-
             $data['current'] = Voucher::where('type',self::Constants()['type'])->where(['voucher_id'=>$id,'sr_no'=>1])->first();
             $data['dtl'] = Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->get();
 
@@ -363,8 +369,15 @@ class BankReceiveController extends Controller
                     ]);
                     $sr = $sr + 1;
                 }
+                $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+            
+                $reqArray[] = $req;
             }
-
+            Utilities::UpdateLedger($reqArray);
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, 'Something went wrong');

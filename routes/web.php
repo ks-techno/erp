@@ -144,6 +144,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('revert-list', 'revertList')->name('revertList');
                 Route::post('revert/{id}', 'revert')->name('revert');
                 Route::get('voucherCreate/{id}', 'voucherCreate')->name('voucherCreate');
+                Route::post('storeVoucher/{id}', 'storeVoucher')->name('storeVoucher');
             });
             Route::prefix('submitted-challan')->resource('submitted-challan', SubmittedChallanController::class);
         });

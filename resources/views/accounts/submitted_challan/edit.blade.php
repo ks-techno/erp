@@ -86,7 +86,7 @@
                                 @if(!$data['posted'])
                                 @permission($data['permission_edit'])
                            
-                                <a href="{{route('sale.submitted-challan.voucherCreate',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create Voucher</a>
+                                <a href="{{route('accounts.submitted-challan.voucherCreate',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create Voucher</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                                
                                 @endpermission

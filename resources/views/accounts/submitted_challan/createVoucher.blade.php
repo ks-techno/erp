@@ -39,7 +39,7 @@
 @section('content')
     @permission($data['permission'])
     <form id="bank_payment_create" class="bank_payment_create"
-     action=""
+     action="{{route('accounts.submitted-challan.storeVoucher',$data['id'])}}"
       method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
@@ -51,10 +51,7 @@
                             </div>
                             
                         <div class="card-link">
-                        <button type="submit" name="current_action_id" value="store"
-                         class="btn btn-success btn-sm waves-effect waves-float waves-light">Save as Draft</button>
-                            <button type="submit" name="current_action_id" value="post"
-                             class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
+                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Create</button>
                             <a href="{{$data['list_url']}}"
                             class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>

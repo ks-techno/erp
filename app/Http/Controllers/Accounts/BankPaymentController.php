@@ -185,7 +185,7 @@ class BankPaymentController extends Controller
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
                     
-                    Voucher::create([
+                $form_create = Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
@@ -210,7 +210,15 @@ class BankPaymentController extends Controller
                     ]);
                     $sr = $sr + 1;
                 }
+                $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+            
+                $reqArray[] = $req;
             }
+            Utilities::createLedger($reqArray);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -337,7 +345,7 @@ class BankPaymentController extends Controller
                 
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-                    Voucher::create([
+                $form_create = Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
@@ -362,11 +370,18 @@ class BankPaymentController extends Controller
                     ]);
                     $sr = $sr + 1;
                 }
+                $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+            
+                $reqArray[] = $req;
             }
-
+            Utilities::UpdateLedger($reqArray);
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong');
+            return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
 

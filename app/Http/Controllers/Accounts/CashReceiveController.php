@@ -211,7 +211,15 @@ class CashReceiveController extends Controller
                     ]);
                     $sr = $sr + 1;
                 }
+                $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+            
+                $reqArray[] = $req;
             }
+            Utilities::createLedger($reqArray);
 
         }catch (Exception $e) {
             DB::rollback();
@@ -358,7 +366,15 @@ class CashReceiveController extends Controller
                     ]);
                     $sr = $sr + 1;
                 }
+                $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+            
+                $reqArray[] = $req;
             }
+            Utilities::UpdateLedger($reqArray);
 
         }catch (Exception $e) {
             DB::rollback();
