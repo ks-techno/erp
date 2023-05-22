@@ -81,7 +81,7 @@
                     <!-- <h2 class="brand-text">KSD</h2> -->
                     </a>
                 </li>
-            <li class="nav-item nav-toggle">
+            <!-- <li class="nav-item nav-toggle">
                 <a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse">
                     <i class="d-block d-xl-none text-primary toggle-icon font-medium-4"
                      data-feather="x"></i>
@@ -89,7 +89,7 @@
                      data-feather="disc" data-ticon="disc">
                     </i>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
     <div class="shadow-bottom"></div>
@@ -105,28 +105,32 @@
                     <span class="menu-title text-truncate" data-i18n="Dashboards">Home</span>
                 </a>
             </li>
+            
             @endpermission
             @permission('company'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'setting/company')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('company.index') }}">
                     <i data-feather='briefcase'></i>
-                    <span class="menu-item text-truncate">Company</span>
+                    <span class="menu-title text-truncate">Company</span>
                 </a>
             </li>
+
             @endpermission
             @permission('project'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'setting/project')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('project.index') }}">
                     <i data-feather='aperture'></i>
-                    <span class="menu-item text-truncate">Project</span>
+                    <span class="menu-title text-truncate">Project</span>
                 </a>
             </li>
+
             @endpermission
             <li id="accounts_nav" class="nav-item has-sub {{ ($prefix == '/accounts')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='book-open'></i>
                     <span class="menu-title text-truncate">Accounts</span>
                 </a>
+
                 <ul class="menu-content" id="accounts_nav_ul">
                     @permission('chart-of-account-tree'.$sidebar_menu)
                     <li class="{{ ($path == 'accounts/chart-of-account-tree')?'active':'' }}">
