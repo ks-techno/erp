@@ -143,7 +143,15 @@ class CustomerController extends Controller
 
         DB::beginTransaction();
         try {
-
+            $req = [
+                'name' => $request->name,
+                'level' => 4,
+                'parent_account' => '06-03-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
             $dealer = Customer::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
@@ -164,7 +172,9 @@ class CustomerController extends Controller
                 'company_id' => auth()->user()->company_id,
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
+                'COAID' => $r,
             ]);
+            
             $data['id'] = $dealer->id;
             $data['name'] = $dealer->name;
             $r = self::insertAddress($request,$dealer);
@@ -172,20 +182,9 @@ class CustomerController extends Controller
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
             }
-
-            $req = [
-                'name' => $request->name,
-                'level' => 4,
-                'parent_account' => '06-03-0001-0000',
-            ];
-            $r = Utilities::createCOA($req);
-
-            if(isset($r['status']) && $r['status'] == 'error'){
-                return $this->jsonErrorResponse($data, $r['message']);
-            }
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong');
+            return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
         if($request->isredirect == 'true'){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Purchase;
 use App\Http\Controllers\Controller;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
+use App\Library\Utilities;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Exception;
@@ -136,7 +137,15 @@ class ManufacturerController extends Controller
 
         DB::beginTransaction();
         try {
-
+            $req = [
+                'name' => $request->name,
+                'level' => 4,
+                'parent_account' => '06-03-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
             $manufacturer = Manufacturer::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
@@ -146,6 +155,7 @@ class ManufacturerController extends Controller
                 'company_id' => auth()->user()->company_id,
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
+                'COAID' => $r,
             ]);
 
             $r = self::insertAddress($request,$manufacturer);

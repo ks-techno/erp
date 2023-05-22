@@ -111,7 +111,7 @@ class Utilities
         if(!empty($parent_account_dtl)){
             $code = ChartOfAccountController::coaDisplayMaxCode($level,$parent_account);
             try{
-                ChartOfAccount::create([
+               $COA_form = ChartOfAccount::create([
                     'uuid' => Uuid::generate()->string,
                     'name' => ucwords(strtolower(strtoupper(trim($name)))),
                     'code' => $code,
@@ -124,10 +124,13 @@ class Utilities
                     'project_id' => auth()->user()->project_id,
                     'user_id' => auth()->user()->id,
                 ]);
+                $account_id = $COA_form->id;
+                return $account_id;
             }catch (\Exception $e){
                 return ['status'=>'error', 'message'=>'Chart of Account not created.'];
             }
         }else{
+           
             return ['status'=>'error', 'message'=>'Parent Code not Found.'];
         }
 

@@ -154,7 +154,12 @@ class StaffController extends Controller
             }
         DB::beginTransaction();
         try {
-
+            $req = [
+                'name' => $request->name,
+                'level' => 4,
+                'parent_account' => '03-04-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
             $staff = Staff::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
@@ -165,6 +170,7 @@ class StaffController extends Controller
                 'department_id' => $request->department_id,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
+                'COAID' => $r,
             ]);
 
             $r = self::insertAddress($request,$staff);
@@ -173,12 +179,7 @@ class StaffController extends Controller
                 return $this->jsonErrorResponse($data, $r['message']);
                
             }
-            $req = [
-                'name' => $request->name,
-                'level' => 4,
-                'parent_account' => '03-04-0001-0000',
-            ];
-            $r = Utilities::createCOA($req);
+            
 
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);    

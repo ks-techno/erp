@@ -89,6 +89,9 @@
     left: 27%;
     top: 80%;
 }
+.table:not(.table-dark):not(.table-light) thead:not(.table-dark) th, .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th{
+    color: #0f0e1c !important;
+}
 </style>
 @endsection
 

@@ -137,24 +137,6 @@ class SupplierController extends Controller
 
         DB::beginTransaction();
         try {
-
-            $supplier = Supplier::create([
-                'uuid' => self::uuid(),
-                'name' => self::strUCWord($request->name),
-                'contact_no' => $request->contact_no,
-                'email' => $request->email,
-                'status' => isset($request->status) ? "1" : "0",
-                'company_id' => auth()->user()->company_id,
-                'project_id' => auth()->user()->project_id,
-                'user_id' => auth()->user()->id,
-            ]);
-
-            $r = self::insertAddress($request,$supplier);
-
-            if(isset($r['status']) && $r['status'] == 'error'){
-                return $this->jsonErrorResponse($data, $r['message']);
-            }
-
             $req = [
                 'name' => $request->name,
                 'level' => 4,
@@ -165,6 +147,25 @@ class SupplierController extends Controller
             if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
             }
+            $supplier = Supplier::create([
+                'uuid' => self::uuid(),
+                'name' => self::strUCWord($request->name),
+                'contact_no' => $request->contact_no,
+                'email' => $request->email,
+                'status' => isset($request->status) ? "1" : "0",
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
+                'COAID' => $r,
+            ]);
+
+            $r = self::insertAddress($request,$supplier);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
+
+           
 
         }catch (Exception $e) {
             DB::rollback();

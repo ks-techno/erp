@@ -415,7 +415,11 @@ class BookingTransferController extends Controller
         DB::beginTransaction();
         try{
             
-            $data['customer'] = Customer::where('id',$customer_id)->with('sales')->first();
+            $data['customer'] = Customer::where('id', $customer_id)
+            ->with(['sales' => function ($query) {
+                $query->whereNull('file_type');
+            }])
+            ->first();
         
         }catch (Exception $e) {
             DB::rollback();

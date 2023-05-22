@@ -14,11 +14,7 @@
                             <div class="card-left-side">
                                 <h4 class="card-title">{{$data['title']}}</h4>
                             </div>
-                            <div class="card-link">
-                                @permission($data['permission_create'])
-                                <!-- <a href="{{route('sale.challan-form.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a> -->
-                                @endpermission
-                            </div>
+                            
                         </div>
                         <div class="card-body">
                             <div class="card-datatable">
@@ -47,6 +43,7 @@
 @endsection
 
 @section('pageJs')
+<script src="{{ asset('/pages/accounts/submitted_challan/create.js') }}"></script>
 @endsection
 
 @section('script')

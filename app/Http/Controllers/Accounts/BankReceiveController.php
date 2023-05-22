@@ -47,7 +47,7 @@ class BankReceiveController extends Controller
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
 
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','total_debit']);
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','total_credit']);
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -99,7 +99,7 @@ class BankReceiveController extends Controller
                     $row->date,
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                    $row->$total_debit,
+                    $row->total_credit ?? null,
                     $actions,
                 ];
             }

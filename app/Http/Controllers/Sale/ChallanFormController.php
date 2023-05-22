@@ -270,7 +270,7 @@ class ChallanFormController extends Controller
           
             $data['particulars'] = ChallanParticular::with('particular')->where('challan_id',$data['current']->id)->get();
             $data['particular'] = Particulars::where('is_Active',1)->get();
-
+           
         }else{
             abort('404');
         }

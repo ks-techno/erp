@@ -68,7 +68,7 @@
             $url = route('sale.challan-form.update',$data['id']);
         }
     @endphp
-    <form id="challan_form_edit" class="challan_form_edit" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="challan_vocuher_create" class="challan_vocuher_create" action="{{isset($url)?$url:""}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @if(!$data['view'])
             @csrf
             @method('patch')
@@ -110,11 +110,12 @@
                     <div class="row">
                         <div class="col-sm-4">
                         <label class="col-form-label p-0">Payment Mode <span class="required">*</span></label>
-                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select">
-                                        @foreach (getpaymentModes() as $key => $value)
-                                        <option value="{{ $key }}" data-slug="{{$key}}" {{ $current->property_payment_mode_id === $value ? 'selected' : '' }}>{{ $value }}</option>
+                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select" disabled>
+                                        @foreach (getpaymentModes() as $value => $label)
+                                            <option value="{{ $value }}" data-slug="{{ $value }}" {{ $current->property_payment_mode_id === $value ? 'selected' : '' }}>{{ $label }}</option>
                                         @endforeach
                                         </select>
+                                        
                         
                         </div>
                     </div>
@@ -356,10 +357,10 @@
                                                     <tr>
                                                     <td>
                                                         <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
-                                                        <input id="chart_id1" type="hidden" class="chart_id form-control form-control-sm">
+                                                        <input id="ch_chart_code" value="{{$particular->id}}" hidden class="chart_id form-control form-control-sm">
                                                     </td>
-                                                            <td ><option value="{{$particular->id}} ? 'selected' : ''" data-chart-id="{{$particular->id}}" data-chart-name="({{$particular->name}})"> {{$particular->name}}</option></td>
-                                                        <td> <input id="ch_chart_amount" type="text" class="chart_name form-control form-control-sm" value="{{$particular->amount}}"></td>
+                                                            <td ><input id="ch_chart_name" type="text" class="chart_name form-control form-control-sm" value="{{$particular->particular->name}}" readonly> </td>
+                                                        <td> <input id="ch_chart_amount" type="text" class="chart_name form-control form-control-sm" value="{{$particular->amount}}" readonly></td>
                                                     
                                                     <td class="text-center">
                                                                 <div class="egt_btn-group">
@@ -403,7 +404,8 @@
 @endsection
 
 @section('pageJs')
-    <script src="{{ asset('/pages/sale/challan_form/edit.js') }}"></script>
+<script src="{{ asset('/pages/accounts/submitted_challan/create.js') }}"></script>
+   
     <script src="{{ asset('/pages/common/challan-calculations.js') }}"></script>
     <script src="{{ asset('/pages/help/challan_help.js') }}"></script>
     <script src="{{ asset('/pages/help/customer_help.js')}}"></script>
@@ -789,7 +791,11 @@
            if(slug == '2'){
                 $('#cheque_block').show();
            }
-        })
+        });
+        var slug = $('#property_payment_mode_id').find('option:selected').attr('data-slug');
+        if(slug == '2'){
+                $('#cheque_block').show();
+           }
     </script>
 
     <script type="text/javascript">

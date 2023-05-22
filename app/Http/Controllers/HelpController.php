@@ -68,7 +68,7 @@ class HelpController extends Controller
     $data = [];
     $customer = Customer::where('id', '<>', 0)
                 ->where('status', 1)
-                ->has('sales');
+                ->has('availableSales');
     if(!empty($val)){
         $val = (string)$val;
         $customer = $customer->where(function ($query) use ($val) {

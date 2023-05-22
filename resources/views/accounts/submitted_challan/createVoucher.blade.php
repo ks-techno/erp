@@ -38,7 +38,7 @@
 
 @section('content')
     @permission($data['permission'])
-    <form id="bank_payment_create" class="bank_payment_create"
+    <form id="challan_vocuher_create" class="challan_vocuher_create"
      action="{{route('accounts.submitted-challan.storeVoucher',$data['id'])}}"
       method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
@@ -58,8 +58,32 @@
                         </div>
                     <div class="card-body mt-2">
                         <div class="mb-1 row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-4">
                                 <h6>{{$data['voucher_no']}}</h6>
+                            </div>
+                            <div class="col-sm-4">
+                            <label class="col-form-label">Code <span class="required">*</span></label>
+                            <input type="text" class="form-control form-control-sm" value="{{ $data['chart_of_account_data']->code }}" id="chart_account_code" name="chart_account_code" readonly="">
+                            <input type="text" class="form-control form-control-sm" value="{{ $data['chart_of_account_data']->id }}" id="chart_account_id" name="chart_account_id" readonly="" hidden>
+                            </div>
+                            <div class="col-sm-4">
+                            <label class="col-form-label">Name <span class="required">*</span></label>
+                            <input type="text" class="form-control form-control-sm" value="{{ $data['chart_of_account_data']->name }}" id="chart_account_name" name="chart_account_name" readonly="">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-1">
+                        <h6>Challan Details</h6>
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Challan No. <span class="required">*</span></label>
+                            <input type="text" class="form-control form-control-sm" value="{{ $data['current']->challan_no }}" id="challan_no" name="challan_no" readonly="">
+                            <input type="text" class="form-control form-control-sm" value="{{ $data['current']->id }}" id="challan_no" name="challan_no" readonly="" hidden>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Challan No. <span class="required">*</span></label>
+                            <input type="text" class="form-control form-control-sm" value="{{ $data['current']->challan_no }}" id="challan_no" name="challan_no" readonly="">
+                            <input type="text" class="form-control form-control-sm" value="{{ $data['current']->id }}" id="challan_no" name="challan_no" readonly="" hidden>
                             </div>
                         </div>
                        
@@ -84,7 +108,7 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('/pages/accounts/bank_payment/create.js') }}"></script>
+<script src="{{ asset('/pages/accounts/submitted_challan/create.js') }}"></script>
     <script>
         var var_egt_fields = [
 
