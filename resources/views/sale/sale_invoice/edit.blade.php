@@ -181,21 +181,34 @@
                                     @php
                                         $sellers = [];
                                         $selected_seller = [];
+                                        $selected_seller_name = "";
                                         if($current->sale_by_staff == 1){
                                             $sellers = App\Models\Staff::OrderByName()->get();
                                             $selected_seller = isset($current->staff->sale_sellerable_id)?$current->staff->sale_sellerable_id:"";
+                                            if (!empty($selected_seller)) {
+                                            $seller = App\Models\Staff::find($selected_seller);
+                                            if ($seller) {
+                                                $selected_seller_name = $seller->name;
+                                            }
                                         }
+                                             }
                                         if($current->sale_by_staff == 0){
                                             $sellers = App\Models\Dealer::OrderByName()->get();
                                             $selected_seller = isset($current->dealer->sale_sellerable_id)?$current->dealer->sale_sellerable_id:"";
+                                            if (!empty($selected_seller)) {
+                                            $seller = App\Models\Dealer::find($selected_seller);
+                                            if ($seller) {
+                                                $selected_seller_name = $seller->name;
+                                            }
+                                        }
                                         }
                                     @endphp
                                     
                                     <div class="col-sm-9">
                                     <div class="input-group">
                                         <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
-                                        <input type="text" class="form-control form-control-sm text-left sellerList" id="seller_name" value="" name="seller_name">
-                                        <input type="hidden" id="seller_id" value="" name="seller_id" >
+                                        <input type="text" class="form-control form-control-sm text-left sellerList" id="seller_name" value="{{ $selected_seller_name}}" name="seller_name">
+                                        <input type="hidden" id="seller_id" value="{{ $selected_seller}}" name="seller_id" >
                                         <div id="sellerTable"></div>
                                     </div>
                                 </div>

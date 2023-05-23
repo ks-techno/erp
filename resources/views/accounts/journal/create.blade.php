@@ -26,12 +26,8 @@
         .right.fade.in .modal-dialog {
             right: 0;
         }
-        .select2-container--classic .select2-dropdown, .select2-container--default .select2-dropdown {
-    border-color: #d8d6de;
-    z-index: 99999999;
-    position: fixed;
-    left: 27%;
-    top: 35%;
+        .table-scroll{
+    overflow: visible !important;
 }
     </style>
 @endsection
@@ -150,8 +146,12 @@
                                                         <input id="egt_sr_no" readonly type="text" class="form-control form-control-sm">
                                                         <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
-                                                    <td>
-                                                        <input id="egt_chart_code1" type="text" class="chart_code form-control form-control-sm text-left" >
+                                                    <td> <select class="select2 form-select" id="egt_chart_code" name="egt_chart_code">
+                                                    <option value="">Select Value</option>
+                                                    @foreach($data['chart'] as $chart)
+                                                    <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="({{$chart->name}})" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
+                                                    @endforeach
+                                                    </select>
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_name1" type="text" class="chart_name form-control form-control-sm" readonly>
