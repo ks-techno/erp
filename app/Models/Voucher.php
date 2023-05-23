@@ -39,6 +39,7 @@ class Voucher extends Model
         'posted',
         'total_debit',
         'total_credit',
+        'challan_id',
     ];
 
 }

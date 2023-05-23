@@ -104,14 +104,15 @@
                         <div class="col-sm-4">
                             <h4>{{$current->challan_no}}</h4>
                             <input type="text" value="{{$current->challan_no}}" name="challan_code" hidden>
+                            <input type="text" value="{{$current->id}}" name="form_id" hidden>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-4">
                         <label class="col-form-label p-0">Payment Mode <span class="required">*</span></label>
-                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select">
-                                        @foreach (getpaymentModes() as $key => $value)
-                                        <option value="{{ $key }}" data-slug="{{$key}}" {{ $current->property_payment_mode_id === $value ? 'selected' : '' }}>{{ $value }}</option>
+                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select" disabled>
+                                        @foreach (getpaymentModes() as $value => $label)
+                                            <option value="{{ $value }}" data-slug="{{ $value }}" {{ $current->property_payment_mode_id === $value ? 'selected' : '' }}>{{ $label }}</option>
                                         @endforeach
                                         </select>
                         
@@ -140,7 +141,7 @@
                                     <div class="input-group eg_help_block">
                                         <span class="input-group-text om_addon_remove" id="om_addon_remove"><i data-feather='minus-circle'></i></span>
                                         <input id="om_customer_name" name="om_customer_name" type="text" class="om_customer_name form-control form-control-sm text-left" value="{{ $current->customer->name}}">
-                                        <input id="om_customer_id" type="hidden" class="om_customer_id" name="om_customer_id" value="{{ $current->om_customer_id}}">
+                                        <input id="om_customer_id" type="hidden" class="om_customer_id" name="om_customer_id" value="{{ $current->customer_id}}">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -248,7 +249,7 @@
                                             <label class="col-form-label p-0">Booking List</label>
                                           
                                                 <input type="text" class="form-control form-control-sm text-left sellerList" id="booking_name" value="{{ $current->product->code }}" name="booking_name">
-                                                <input type="hidden" id="booking_id" name="booking_id" value="{{ $current->product->id }}">
+                                                <input type="hidden" id="booking_id" name="product_id" value="{{ $current->product->id }}">
                                                 
 
                                         <div id="sellerTable"></div>
@@ -266,7 +267,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="col-form-label p-0">Plot Numner</label>
-                                            <input type="hidden" class="form-control form-control-sm" value="{{ $current->product->product_id}}" id="om_product_name_input_id" name="product_id" />
+                                            <input type="hidden" class="form-control form-control-sm" value="{{ $current->product->id}}" id="om_product_name_input_id" name="product_id" />
                                             <input type="hidden" class="form-control form-control-sm" value="{{ $current->product->name}}" id="om_product_name_input_name" name="product_name" />
                                             <p class="col-form-label om_product_name p-0 txt_color">{{ $current->product->name}}</p>
                                         </div>
@@ -331,9 +332,9 @@
                                                     <td>
                                                     <select class="select2 form-select" id="ch_chart_code" name="ch_chart_code">
                                                     <option value="">Select Value</option>
-                                                    particulars
-                                                    @foreach($data['particulars'] as $particular)
-                                                    <option value="{{$particular->id}}" data-chart-id="{{$particular->id}}" data-chart-name="({{$particular->name}})"> {{$particular->name}}</option>
+                                                    
+                                                    @foreach($data['particular'] as $particulars)
+                                                    <option value="{{$particulars->id}}" data-chart-id="{{$particulars->id}}" data-chart-name="({{$particulars->name}})"> {{$particulars->name}}</option>
                                                     @endforeach
                                                     </select>
                                                     </td>
@@ -352,23 +353,23 @@
                                                 <tbody class="ch_form_body">
                                                 @foreach($data['particulars'] as $particular)
        
-       <tr>
-       <td>
-           <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
-           <input id="chart_id1" type="hidden" class="chart_id form-control form-control-sm">
-       </td>
-            <td >{{$particular->particular->name}}</td>
-           <td >{{$particular->amount}}</td>
-       
-       <td class="text-center">
-                   <div class="egt_btn-group">
-                       <button type="button" class="btn btn-danger btn-sm egt_del">
-                           <i data-feather="trash-2"></i>
-                       </button>
-                   </div>
-               </td>
-       @endforeach
-   </tr>
+                                                    <tr>
+                                                    <td>
+                                                        <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
+                                                        <input id="ch_chart_code" value="{{$particular->id}}" hidden class="chart_id form-control form-control-sm">
+                                                    </td>
+                                                            <td ><input id="ch_chart_name" type="text" class="chart_name form-control form-control-sm" value="{{$particular->particular->name}}" readonly> </td>
+                                                        <td> <input id="ch_chart_amount" type="text" class="chart_name form-control form-control-sm" value="{{$particular->amount}}" readonly></td>
+                                                    
+                                                    <td class="text-center">
+                                                                <div class="egt_btn-group">
+                                                                    <button type="button" class="btn btn-danger btn-sm egt_del">
+                                                                        <i data-feather="trash-2"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                    @endforeach
+                                                </tr>
                                                 </tbody>
                                                 <tfoot class="ch_form_footer">
                                                 <tr class="ch_form_footer_total">
@@ -381,7 +382,7 @@
                                                     </td>
                                                     <td class="voucher-total-credit text-end">
                                                         <span id="tot_credit"></span>
-                                                        {{$current->total_amount}}
+                                                        
                                                     </td>
                                                     
                                                 </tr>
@@ -403,8 +404,11 @@
 
 @section('pageJs')
     <script src="{{ asset('/pages/sale/challan_form/edit.js') }}"></script>
+    <script src="{{ asset('/pages/common/challan-calculations.js') }}"></script>
+    <script src="{{ asset('/pages/help/challan_help.js') }}"></script>
     <script src="{{ asset('/pages/help/customer_help.js')}}"></script>
     <script src="{{ asset('/pages/help/old_customer_help.js') }}"></script>
+    
 
 @endsection
 
@@ -785,7 +789,12 @@
            if(slug == '2'){
                 $('#cheque_block').show();
            }
-        })
+        });
+        var slug = $('#property_payment_mode_id').find('option:selected').attr('data-slug');
+        if(slug == '2'){
+                $('#cheque_block').show();
+           }
+
     </script>
 
     <script type="text/javascript">
@@ -811,5 +820,6 @@
         });
 
     </script>
+    <script src="{{asset('/pages/common/challen_table.js')}}"></script>
 
 @endsection

@@ -89,6 +89,9 @@
     left: 27%;
     top: 80%;
 }
+.table:not(.table-dark):not(.table-light) thead:not(.table-dark) th, .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th{
+    color: #0f0e1c !important;
+}
 </style>
 @endsection
 
@@ -333,6 +336,10 @@
                                                     <th width="22%">Amount</th>
                                                     <th width="13%" class="text-center">Action</th>
                                                 </tr>
+                                               
+                                                
+                                                </thead>
+                                                <tbody class="ch_form_body">
                                                 <tr class="ch_form_header_input">
                                                     <td>
                                                         <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
@@ -348,28 +355,20 @@
                                                     </select>
                                                     </td>
                                                     <td>
-                                                        <input id="ch_chart_amount" type="text" class="chart_name form-control form-control-sm" >
+                                                        <input id="ch_chart_amount" type="text" class="chart_name chart_amount form-control form-control-sm" >
                                                     </td>
-                                                    
-                                                   
                                                     <td class="text-center">
                                                         <button type="button" id="ch_add" class="ch_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
                                                         </button>
                                                     </td>
                                                 </tr>
-                                                
-                                                </thead>
-                                                <tbody class="ch_form_body">
                                                 </tbody>
                                                 <tfoot class="ch_form_footer">
                                                 <tr class="ch_form_footer_total">
                                                     <td class="voucher-total-title">Total</td>
                                                     
-                                                    
-                                                    <td class="voucher-total-debit text-end">
-                                                        <span id="tot_debit"></span>
-                                                        <input id="tot_voucher_debit" name="tot_voucher_debit" type="hidden" >
+                                                    <td class="">
                                                     </td>
                                                     <td class="voucher-total-credit text-end">
                                                         <span id="tot_credit"></span>
@@ -408,6 +407,7 @@
 
 @section('script')
     <script src="{{ asset('/pages/sale/challan_form/create.js') }}"></script>
+    <script src="{{ asset('/pages/common/challan-calculations.js') }}"></script>
     <script src="{{ asset('/pages/help/customer_help.js')}}"></script>
     <script src="{{ asset('/pages/help/old_customer_help.js') }}"></script>
     <script src="{{ asset('/pages/help/challan_help.js') }}"></script>

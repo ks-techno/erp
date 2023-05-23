@@ -6,6 +6,8 @@ use App\Models\ChartOfAccount;
 use Illuminate\Support\Carbon;
 use App\Models\PurchaseDemand;
 use App\Models\ChallanForm;
+use App\Models\Ledgers;
+use Illuminate\Support\Facades\DB;
 use Webpatser\Uuid\Uuid;
 
 class Utilities
@@ -109,7 +111,7 @@ class Utilities
         if(!empty($parent_account_dtl)){
             $code = ChartOfAccountController::coaDisplayMaxCode($level,$parent_account);
             try{
-                ChartOfAccount::create([
+               $COA_form = ChartOfAccount::create([
                     'uuid' => Uuid::generate()->string,
                     'name' => ucwords(strtolower(strtoupper(trim($name)))),
                     'code' => $code,
@@ -122,14 +124,52 @@ class Utilities
                     'project_id' => auth()->user()->project_id,
                     'user_id' => auth()->user()->id,
                 ]);
+                $account_id = $COA_form->id;
+                return $account_id;
             }catch (\Exception $e){
                 return ['status'=>'error', 'message'=>'Chart of Account not created.'];
             }
         }else{
+           
             return ['status'=>'error', 'message'=>'Parent Code not Found.'];
         }
 
     }
+
+    public static function createLedger($reqArray)
+    {
+        foreach ($reqArray as $req) {
+           
+            $payment_id = $req['payment_id'];
+            $voucher_id = $req['voucher_id'];
+            $COAID = $req['COAID'];
+           
+            if (!empty($req)) {
+                try {
+                    Ledgers::create([
+                        'payment_id' => $payment_id,
+                        'COAID' => $COAID,
+                        'voucher_id' => $voucher_id,
+                        'company_id' => auth()->user()->company_id,
+                        'user_id' => auth()->user()->id,
+                    ]);
+                } catch (Exception $e) {
+                    return $this->jsonErrorResponse($data, $e->getMessage());
+                }
+            } else {
+                return ['status' => 'success', 'message' => 'Ledger Created'];
+            }
+        }
+    }
+    public static function updateLedger($reqArray)
+    {
+        foreach ($reqArray as $req) {
+        $voucher_id = $req['voucher_id'];
+        DB::select("delete FROM `ledgers` where voucher_id = '$voucher_id'");
+        }
+            self::createLedger($reqArray);
+        
+    }     
 
     public static function NumFormat($num){
         return number_format($num,3,'.','');

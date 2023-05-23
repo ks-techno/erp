@@ -20,6 +20,7 @@ class Staff extends Model
         'company_id',
         'project_id',
         'user_id',
+        'COAID',
     ];
 
     public function addresses(){

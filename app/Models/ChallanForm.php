@@ -48,4 +48,7 @@ class ChallanForm extends Model
     public function challan_particluar(){
         return $this->belongsTo(ChallanParticular::class,'id','challan_id');
     }
+    public function vouchers(){
+        return $this->belongsTo(Voucher::class,'id','challan_id');
+    }
 }

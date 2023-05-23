@@ -94,8 +94,8 @@ class UserManagementSystemController extends Controller
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
-                        'dname' => 'Challan Voucher',
-                        'name' => 'challan-voucher',
+                        'dname' => 'Submitted Challan',
+                        'name' => 'submitted-challan',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                 ]
