@@ -225,13 +225,7 @@
                         </a>
                     </li>
                     @endpermission
-            @permission('open-file'.$sidebar_menu)
-                    <!-- <li class="{{ ($path == 'sale/open-file')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('sale.open-file.index') }}">
-                            <span class="menu-item text-truncate">Open File</span>
-                        </a>
-                    </li> -->
-                    @endpermission
+     
             @permission('refund-file'.$sidebar_menu)
                     <li class="{{ ($path == 'sale/refund-file')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.refund-file.index') }}">

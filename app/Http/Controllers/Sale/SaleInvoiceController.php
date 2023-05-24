@@ -294,7 +294,7 @@ class SaleInvoiceController extends Controller
         if(Sale::where('uuid',$id)->exists()){
 
             $data['current'] = Sale::with('product','customer','dealer','staff')->where('uuid',$id)->first();
-            
+           
         }else{
             abort('404');
         }

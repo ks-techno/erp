@@ -55,10 +55,11 @@
                 padding-bottom: 5px;
                 padding-left: 5px;
             }
-
+            .table:not(.table-dark):not(.table-light) thead:not(.table-dark) th, .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th{
+    color: #0f0e1c !important;
+}
 </style>
 @endsection
-
 @section('content')
     @permission($data['permission'])
     @php
@@ -351,15 +352,16 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody class="ch_form_body">
+                                                
                                                 @foreach($data['particulars'] as $particular)
        
                                                     <tr>
                                                     <td>
-                                                        <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
-                                                        <input id="ch_chart_code" value="{{$particular->id}}" hidden class="chart_id form-control form-control-sm">
+                                                        <input data-id="ch_sr_no" name="ch_sr_no" readonly type="text" value="{{$loop->iteration}}" class="form-control form-control-sm">
+                                                        <input data-id="chart_id1" name="pd[{{$loop->iteration}}]chart_id1" value="{{$particular->particular->id}}" hidden class="chart_id form-control form-control-sm">
                                                     </td>
-                                                            <td ><input id="ch_chart_name" type="text" class="chart_name form-control form-control-sm" value="{{$particular->particular->name}}" readonly> </td>
-                                                        <td> <input id="ch_chart_amount" type="text" class="chart_name form-control form-control-sm" value="{{$particular->amount}}" readonly></td>
+                                                            <td ><input data-id="ch_chart_name" name="pd[{{$loop->iteration}}]ch_chart_name" type="text" class="chart_name form-control form-control-sm" value="{{$particular->particular->name}}" readonly> </td>
+                                                        <td> <input data-id="ch_chart_amount" type="number" name="pd[{{$loop->iteration}}]ch_chart_amount" class="chart_amount form-control form-control-sm" value="{{$particular->amount}}" readonly></td>
                                                     
                                                     <td class="text-center">
                                                                 <div class="egt_btn-group">
@@ -820,6 +822,24 @@
         });
 
     </script>
+    <script>
+        var var_ch_fields = [
+
+        ];
+        var var_ch_required_fields = [
+            {
+                'id' : 'ch_chart_name',
+                'message' : 'Account Name is required'
+            },
+            {
+                'id' : 'ch_amount',
+                'message' : 'Amount is required'
+            }
+
+        ];
+        var var_ch_readonly_fields = ['ch_chart_code','ch_chart_name'];
+    </script>
+    <script src="{{asset('/js/jquery-12.js')}}"></script>
     <script src="{{asset('/pages/common/challen_table.js')}}"></script>
 
 @endsection
