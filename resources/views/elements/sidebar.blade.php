@@ -108,7 +108,7 @@
             
             @endpermission
             @permission('company'.$sidebar_menu)
-            <li class="nav-item {{ ($path == 'setting/company')?'active':'' }}">
+            <li class="nav-item {{ ($path == 'company/')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('company.index') }}">
                     <i data-feather='briefcase'></i>
                     <span class="menu-title text-truncate">Company</span>
@@ -117,7 +117,7 @@
 
             @endpermission
             @permission('project'.$sidebar_menu)
-            <li class="nav-item {{ ($path == 'setting/project')?'active':'' }}">
+            <li class="nav-item {{ ($path == 'project/')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('project.index') }}">
                     <i data-feather='aperture'></i>
                     <span class="menu-title text-truncate">Project</span>
@@ -184,7 +184,7 @@
                     @permission('challan-voucher'.$sidebar_menu)
                     <li class="{{ ($path == 'accounts/challan-voucher')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('accounts.challan-voucher.index') }}">
-                            <span class="menu-item text-truncate">Challan Voucher</span>
+                            <span class="menu-item text-truncate"> Submitted Challan</span>
                         </a>
                     </li>
                     @endpermission
@@ -318,7 +318,7 @@
             <li id="sale_nav" class="nav-item has-sub {{ ($prefix == '/sale')?'open':'' }} ">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='shopping-cart'></i>
-                    <span class="menu-title text-truncate">Sale</span>
+                    <span class="menu-title text-truncate">Sales</span>
                 </a>
                 <ul class="menu-content" id="sale_nav_ul">
                     @permission('dealer'.$sidebar_menu)
@@ -371,13 +371,13 @@
             <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>
-                    <span class="menu-title text-truncate">Setting</span>
+                    <span class="menu-title text-truncate">Settings</span>
                 </a>
                 <ul class="menu-content" id="setting_nav_ul">
                     @permission('user'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/user')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user.index') }}">
-                            <span class="menu-item text-truncate">User</span>
+                            <span class="menu-item text-truncate">Users</span>
                         </a>
                     </li>
                     @endpermission
@@ -405,7 +405,7 @@
                     @permission('user-management'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/user-management')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user-management.create') }}">
-                            <span class="menu-item text-truncate">User Permission</span>
+                            <span class="menu-item text-truncate">User Permissions</span>
                         </a>
                     </li>
                     @endpermission
