@@ -207,7 +207,7 @@
                                     <div class="col-sm-9">
                                     <div class="input-group">
                                         <span class="input-group-text" id="addon_remove"><i data-feather='minus-circle'></i></span>
-                                        <input type="text" class="form-control form-control-sm text-left sellerList" id="seller_name" value="{{$selected_seller_name}}" name="seller_name">
+                                        <input type="text" class="form-control form-control-sm text-left sellerList" id="seller_name" value="{{$selected_seller_name}}" name="seller_name" readonly>
                                         <input type="hidden" id="seller_id" value="{{$selected_seller}}" name="seller_id" >
                                         <div id="sellerTable" readonly></div>
                                     </div>

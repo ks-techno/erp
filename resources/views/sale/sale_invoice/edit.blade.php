@@ -227,7 +227,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                    </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3 pr-0">
                                         <label class="col-form-label p-0">Payment Mode</label>

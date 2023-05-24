@@ -155,6 +155,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('staff')->resource('staff', StaffController::class);
 
         Route::prefix('setting')->name('setting.')->group(function () {
+           
             Route::prefix('country')->resource('country', CountryController::class);
             Route::prefix('region')->resource('region', RegionController::class);
             Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){

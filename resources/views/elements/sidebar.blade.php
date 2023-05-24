@@ -107,7 +107,7 @@
             </li>
             @endpermission
             @permission('company'.$sidebar_menu)
-            <li class="nav-item {{ ($path == 'setting/company')?'active':'' }}">
+            <li class="nav-item {{ ($path == 'company/')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('company.index') }}">
                     <i data-feather='briefcase'></i>
                     <span class="menu-item text-truncate">Company</span>
@@ -115,7 +115,7 @@
             </li>
             @endpermission
             @permission('project'.$sidebar_menu)
-            <li class="nav-item {{ ($path == 'setting/project')?'active':'' }}">
+            <li class="nav-item {{ ($path == 'project/')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('project.index') }}">
                     <i data-feather='aperture'></i>
                     <span class="menu-item text-truncate">Project</span>

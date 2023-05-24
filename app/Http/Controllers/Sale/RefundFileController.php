@@ -168,7 +168,7 @@ class RefundFileController extends Controller
             }
             $value = $request->input('booked_price');
             $booked_price = null !== $value ? str_replace(',', '', $value) : 0;
-
+            
             $date = $request->date;
             $formatted_date =  date('Y-m-d', strtotime($date));
             $requestdata = [
@@ -190,6 +190,7 @@ class RefundFileController extends Controller
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
                 'file_type' => $request->file_type,
+                'refund_type' => $request->refund_type,
                 'notes' => $request->notes,
                 'file_date' => isset($formatted_date) ? $formatted_date : '',
             ];
