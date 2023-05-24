@@ -787,13 +787,13 @@ input:focus ~ .bg-secondary {
   background: rgba(40, 199, 111, 0.6); }
 
 .btn-success {
-  border-color: #28c76f !important;
-  background-color: #28c76f !important;
+  border-color: #22292f!important;
+  background-color: #22292f!important;
   color: #fff !important; }
 
 .btn-success:focus, .btn-success:active, .btn-success.active {
   color: #fff;
-  background-color: #24b263 !important; }
+  background-color: #22292f!important; }
 
 .btn-success:hover:not(.disabled):not(:disabled) {
   box-shadow: 0 8px 25px -8px #28c76f; }
