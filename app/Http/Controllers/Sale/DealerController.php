@@ -138,6 +138,16 @@ class DealerController extends Controller
      
         DB::beginTransaction();
         try {
+            $req = [
+                'name' => $request->name,
+                'level' => 4,
+                'parent_account' => '03-03-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
             $dealer = Dealer::create([
                 'uuid' => self::uuid(),
@@ -152,21 +162,13 @@ class DealerController extends Controller
                 'company_id' => auth()->user()->company_id,
                 'project_id' => auth()->user()->project_id,
                 'user_id' => auth()->user()->id,
+                'COAID' => $r,
             ]);
              $r = self::insertAddress($request,$dealer);
          if(isset($r['status']) && $r['status'] == 'error'){
                 return $this->jsonErrorResponse($data, $r['message']);
             }
-             $req = [
-                'name' => $request->name,
-                'level' => 4,
-                'parent_account' => '03-03-0001-0000',
-            ];
-            $r = Utilities::createCOA($req);
-
-            if(isset($r['status']) && $r['status'] == 'error'){
-                return $this->jsonErrorResponse($data, $r['message']);
-            }
+             
         }
         catch (Exception $e) {
             DB::rollback();

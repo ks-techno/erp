@@ -26,12 +26,8 @@
         .right.fade.in .modal-dialog {
             right: 0;
         }
-        .select2-container--classic .select2-dropdown, .select2-container--default .select2-dropdown {
-    border-color: #d8d6de;
-    z-index: 99999999;
-    position: fixed;
-    left: 27%;
-    top: 35%;
+        .table-scroll{
+    overflow: visible !important;
 }
     </style>    
 @endsection

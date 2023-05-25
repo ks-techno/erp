@@ -181,10 +181,10 @@
                         </a>
                     </li>
                     @endpermission
-                    @permission('challan-voucher'.$sidebar_menu)
-                    <li class="{{ ($path == 'accounts/challan-voucher')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('accounts.challan-voucher.index') }}">
-                            <span class="menu-item text-truncate"> Submitted Challan</span>
+                    @permission('submitted-challan'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/submitted-challan')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.submitted-challan.index') }}">
+                            <span class="menu-item text-truncate">Submitted Challan</span>
                         </a>
                     </li>
                     @endpermission
@@ -225,13 +225,7 @@
                         </a>
                     </li>
                     @endpermission
-            @permission('open-file'.$sidebar_menu)
-                    <!-- <li class="{{ ($path == 'sale/open-file')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('sale.open-file.index') }}">
-                            <span class="menu-item text-truncate">Open File</span>
-                        </a>
-                    </li> -->
-                    @endpermission
+     
             @permission('refund-file'.$sidebar_menu)
                     <li class="{{ ($path == 'sale/refund-file')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.refund-file.index') }}">

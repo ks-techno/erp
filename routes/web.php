@@ -42,7 +42,7 @@ use App\Http\Controllers\Sale\OpenFileController;
 use App\Http\Controllers\Sale\RefundFileController;
 use App\Http\Controllers\Purchase\BookedPropertyController;
 use App\Http\Controllers\Sale\ChallanFormController;
-use App\Http\Controllers\Accounts\ChallanVoucherController;
+use App\Http\Controllers\Accounts\SubmittedChallanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,12 +139,14 @@ Route::group(['middleware' => 'auth'], function () {
             });
             Route::prefix('journal')->resource('journal', JournalController::class);
 
-            Route::prefix('challan-voucher')->name('challan-voucher.')->controller(ChallanVoucherController::class)->group(function(){
+            Route::prefix('submitted-challan')->name('submitted-challan.')->controller(SubmittedChallanController::class)->group(function(){
                 Route::get('print/{id}', 'printView')->name('print');
                 Route::get('revert-list', 'revertList')->name('revertList');
                 Route::post('revert/{id}', 'revert')->name('revert');
+                Route::get('voucherCreate/{id}', 'voucherCreate')->name('voucherCreate');
+                Route::post('storeVoucher/{id}', 'storeVoucher')->name('storeVoucher');
             });
-            Route::prefix('challan-voucher')->resource('challan-voucher', ChallanVoucherController::class);
+            Route::prefix('submitted-challan')->resource('submitted-challan', SubmittedChallanController::class);
         });
             
         Route::prefix('company')->resource('company', CompanyController::class);
@@ -153,6 +155,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('staff')->resource('staff', StaffController::class);
 
         Route::prefix('setting')->name('setting.')->group(function () {
+           
             Route::prefix('country')->resource('country', CountryController::class);
             Route::prefix('region')->resource('region', RegionController::class);
             Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){

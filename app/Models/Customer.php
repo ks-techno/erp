@@ -30,6 +30,7 @@ class Customer extends Model
         'nominee_relation',
         'nominee_contact_no',
         'nominee_cnic_no',
+        'COAID',
     ];
 
     public function addresses(){
@@ -42,6 +43,10 @@ class Customer extends Model
 
     public function sales(){
         return $this->hasMany(Sale::class,'customer_id')->with('product');
+    }
+
+    public function availableSales() {
+        return $this->sales()->where('file_type', null);
     }
     public function product(){
         return $this->hasMany(Product::class,'id');

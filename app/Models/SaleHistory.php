@@ -39,6 +39,7 @@ class SaleHistory extends Model
         'notes',
         'installment_start_time',
         'installment_end_time',
-        'installment_type'
+        'installment_type',
+        'refund_type',
     ];
 }

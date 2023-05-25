@@ -26,12 +26,8 @@
         .right.fade.in .modal-dialog {
             right: 0;
         }
-        .select2-container--classic .select2-dropdown, .select2-container--default .select2-dropdown {
-    border-color: #d8d6de;
-    z-index: 99999999;
-    position: fixed;
-    left: 27%;
-    top: 35%;
+        .table-scroll{
+    overflow: visible !important;
 }
     </style>
 @endsection
@@ -117,10 +113,10 @@
                                                 <tr class="egt_form_header_input">
                                                     <td>
                                                         <input id="egt_sr_no" readonly type="text" class="form-control form-control-sm">
-                                                        <input id="chart_id1" type="hidden" class="chart_id form-control form-control-sm">
+                                                        <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                    <select class="select2 form-select" id="egt_chart_code" name="egt_chart_code">
+                                                    <select class="select2 egt_chart_code form-select" name="egt_chart_code">
                                                     <option value="">Select Value</option>
                                                     @foreach($data['chart'] as $chart)
                                                     <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="({{$chart->name}})" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
@@ -139,22 +135,28 @@
                                                     <td>
                                                         <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
-                                                    <!-- <td class="text-center">
+                                                    <td class="text-center">
                                                         <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
                                                         </button>
-                                                    </td> -->
+                                                    </td>
                                                 </tr>
+
                                                 <tr class="egt_form_header_input">
                                                     <td>
                                                         <input id="egt_sr_no" readonly type="text" class="form-control form-control-sm">
                                                         <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_code1" type="text" class="chart_code form-control form-control-sm text-left" >
+                                                    <select class="select2 egt_chart_code form-select" name="egt_chart_code">
+                                                    <option value="">Select Value</option>
+                                                    @foreach($data['chart'] as $chart)
+                                                    <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="({{$chart->name}})" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
+                                                    @endforeach
+                                                    </select>
                                                     </td>
                                                     <td>
-                                                        <input id="egt_chart_name1" type="text" class="chart_name form-control form-control-sm" readonly>
+                                                        <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
                                                     </td>
                                                     <td>
                                                         <input id="egt_description" type="text" class="form-control form-control-sm">
@@ -166,8 +168,8 @@
                                                         <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
                                                     <td class="text-center">
-                                                        <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
-                                                            <i data-feather='plus'></i>
+                                                        <button type="button" class="egt_add btn btn-danger btn-sm">
+                                                            <i data-feather='trash-2'></i>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -250,7 +252,7 @@
 
 @section('script')
 <script src="{{ asset('/pages/accounts/journal/create.js') }}"></script>
-    <script>
+   <script>
         var var_egt_fields = [
 
         ];
@@ -265,7 +267,7 @@
             }
 
         ];
-        var var_egt_readonly_fields = ['egt_chart_code','egt_chart_name'];
+        var var_egt_readonly_fields = ['egt_chart_name'];
     </script>
     <script src="{{asset('/js/jquery-12.js')}}"></script>
     <script src="{{asset('/pages/common/erp_grid.js')}}"></script>

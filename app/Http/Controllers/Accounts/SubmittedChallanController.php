@@ -22,15 +22,17 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Validation\Rule;
 use Validator;
+use App\Models\ChartOfAccount;
+use App\Models\Voucher;
 
-class ChallanVoucherController extends Controller
+class SubmittedChallanController extends Controller
 {
     private static function Constants()
     {
-        $name = 'challan-voucher';
+        $name = 'submitted-challan';
         return [
-            'title' => 'Challan Voucher',
-            'list_url' => route('accounts.challan-voucher.index'),
+            'title' => 'Submitted Challan',
+            'list_url' => route('accounts.submitted-challan.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -55,9 +57,8 @@ class ChallanVoucherController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = ChallanForm::with('customer','project','product','file_status')->where('status', 1)->orderby('created_at','desc');
+            $dataSql = ChallanForm::with('vouchers','customer','project','product','file_status')->where('status', 1)->orderby('created_at','desc');
             $allData = $dataSql->get();
-            
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -76,10 +77,12 @@ class ChallanVoucherController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
+               
                 $posted = $this->getPostedTitle()[$row->status];
-                $urlEdit = route('accounts.challan-voucher.edit',$row->uuid);
-                $urlDel = route('accounts.challan-voucher.destroy',$row->uuid);
-                $urlPrint = route('accounts.challan-voucher.print',$row->uuid);
+                $urlAdd = route('accounts.submitted-challan.voucherCreate',$row->uuid);
+                $urlEdit = route('accounts.submitted-challan.edit',$row->uuid);
+                $urlDel = route('accounts.submitted-challan.destroy',$row->uuid);
+                $urlPrint = route('accounts.submitted-challan.print',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -96,7 +99,13 @@ class ChallanVoucherController extends Controller
                     $actions .= '</div>'; // end d-inline-flex
                 }
                 if($edit_per){
+                    if($row->vouchers != null){
+                        $actions .= '<a href="' . $urlPrint . '" target="_blank" class="item-edit"><i data-feather="eye" class="me-50"></i></a>';
+                    }
+                    else{
                     $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="plus"></i></a>';
+
+                    }
                 }
                 $actions .= '</div>'; //end main div
 
@@ -118,7 +127,7 @@ class ChallanVoucherController extends Controller
             return response()->json($result);
         }
 
-        return view('accounts.challan_voucher.list', compact('data'));
+        return view('accounts.submitted_challan.list', compact('data'));
     }
 
     /**
@@ -235,7 +244,7 @@ class ChallanVoucherController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('accounts.challan-voucher.index');
+        return $this->redirect()->route('accounts.submitted-challan.index');
 }
 
     /**
@@ -270,20 +279,73 @@ class ChallanVoucherController extends Controller
             $data['current'] = ChallanForm::with('challan_particluar','customer','project','product','file_status')->where('uuid',$id)->first();
           
             $data['particulars'] = ChallanParticular::with('particular')->where('challan_id',$data['current']->id)->get();
+            $data['particular'] = Particulars::where('is_Active',1)->get();
            
         }else{
             abort('404');
         }
         $data['view'] = false;
-        if(isset($request->view)){
+        $data['posted'] = false;
+        if($data['current']->posted == 1){
+            $data['posted'] = true;
+        }
+        if(isset($request->view) || $data['current']->posted == 1){
             $data['view'] = true;
             $data['permission'] = self::Constants()['view'];
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('accounts.challan_voucher.edit', compact('data'));
+        return view('accounts.submitted_challan.edit', compact('data'));
     }
 
+
+    public function voucherCreate(Request $request, $id){
+        $data['permission_list'] = self::Constants()['list'];
+        $data['title'] = self::Constants()['title'];
+        $data['id'] = $id;
+        $data['permission'] = self::Constants()['edit'];
+        $data['list_url'] = self::Constants()['list_url'];
+        if(ChallanForm::where('uuid',$id)->exists()){
+            $challandata = ChallanForm::with('customer')->where('uuid',$id)->first();
+            $account = ChartOfAccount::where('id',$challandata->customer->COAID)->first();
+        }else{
+            abort('404');
+        }
+        if($challandata->property_payment_mode_id== 1){
+            $type = 'CRV';
+        }
+        else{
+            $type = 'BRV';
+        }
+        $max = Voucher::withTrashed()->where('type',$type)->max('voucher_no');
+        $voucher_no = self::documentCode($type,$max);
+        $voucher_id = self::uuid();
+        try{
+            Voucher::create([
+                'voucher_id' => $voucher_id,
+                'uuid' => self::uuid(),
+                'date' => date('Y-m-d'),
+                'type' => $type,
+                'voucher_no' => $voucher_no,
+                'sr_no' => '1',
+                'chart_account_id' => $account->id,
+                'chart_account_name' => $account->name,
+                'chart_account_code' => $account->code,
+                'credit' =>str_replace(',', '',($challandata->total_amount)),
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
+                'posted' => '1',
+                'total_credit' => $challandata->total_amount,
+                'challan_id' => $challandata->id,
+            ]);
+        }
+        catch (Exception $e) {
+            DB::rollback();
+            return view('accounts.submitted_challan.list', compact('data'));
+        }
+        return view('accounts.submitted_challan.list', compact('data'));
+    }
     /**
      * Update the specified resource in storage.
      *

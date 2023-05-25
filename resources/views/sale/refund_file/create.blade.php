@@ -143,11 +143,24 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="col-sm-12">
-                                    <select class="select2 form-select" id="file_type" name="file_type">
+                                    <select class="select2 form-select"  id="file_type" name="file_type">
                                             <option value="" selected>Select File Type </option>
-                                            <option value="Refund"> Refund File </option>
-                                            <option value="Merge"> Merge File </option>
+                                            <option data-slug="Refund" value="Refund"> Refund File </option>
+                                            <option data-slug="Merge" value="Merge"> Merge File </option>
                                     </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2" id="refund_type" style="display: none" >
+                                <div class="col-sm-4">
+                                    <label class="col-form-label p-0">Refund Type:</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="col-sm-12">
+                                    <input type="radio" id="cancel" name="refund_type" value="Cancel">
+                                    <label for="cancel">Cancel</label><br>
+                                    <input type="radio" id="withdrawal" name="refund_type" value="Withdrawal"> 
+                                    <label for="withdrawal">Withdrawal</label><br>
                                     </div>
                                 </div>
                             </div>
@@ -289,6 +302,7 @@
                                 <div class="mb-1 row">
                                     <div class="col-sm-6">
                                         <label class="col-form-label p-0">Booking Code</label>
+                                        <input type="hidden" class="form-control form-control-sm" value="" id="property_payment_mode_id" name="property_payment_mode_id" />
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_booking_code_input" name="booking_code" />
                                         <p class="col-form-label om_booking_code p-0 txt_color"></p>
                                     </div>
@@ -670,7 +684,7 @@
                             $('form').find('.om_booking_code').html(sales.code);
                             $('form').find('#om_booking_id_input').val(sales.id);
                             $('form').find('#om_booking_code_input').val(sales.code);
-
+                            $('form').find('#property_payment_mode_id').val(sales.property_payment_mode_id);
                             $('form').find('.om_product_name').html(sales.product.name);
                             $('form').find('#om_product_name_input_id').val(sales.product.id);
                             $('form').find('#om_product_name_input_name').val(sales.product.name);
@@ -813,6 +827,13 @@
         
     }
 });
+$(document).on('change','#file_type',function(){
+           var slug = $(this).find('option:selected').attr('data-slug');
+            $('#refund_type').hide();
+           if(slug == 'Refund'){
+                $('#refund_type').show()
+           }
+        });
     </script>
 @endsection
 

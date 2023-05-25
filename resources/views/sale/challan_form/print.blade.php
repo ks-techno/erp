@@ -114,6 +114,32 @@
                   
                 </tr>
         @endforeach
+
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
         </table>
         <table width="100%" class="data-table tbl-booking">
         <tr>
@@ -193,7 +219,33 @@
                     <td  width="30%">{{$particular->amount}}</td>
                   
                 </tr>
-        @endforeach
+                @endforeach
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+       
         </table>
         <table width="100%" class="data-table tbl-booking">
         <tr>
@@ -274,6 +326,31 @@
                   
                 </tr>
         @endforeach
+        <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
+                <tr>
+                    <td width="70%"></td>
+                    <td  width="30%"></td>
+                  
+                </tr>
         </table>
         <table width="100%" class="data-table tbl-booking">
         <tr>

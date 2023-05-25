@@ -46,8 +46,7 @@ class JournalController extends Controller
             $draw = 'all';
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
-
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','debit','credit']);
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','total_debit']);
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -99,7 +98,7 @@ class JournalController extends Controller
                     $row->date,
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                   $totalamount,
+                   $row->total_debit,
                     $row->prepared_by,
                 //    '<div class="signature-field"></div>',
                     $row->approved_by,
@@ -214,7 +213,7 @@ class JournalController extends Controller
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-                    Voucher::create([
+                $form_create=   Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
@@ -237,11 +236,25 @@ class JournalController extends Controller
                     ]);
                     $sr = $sr + 1;
                 }
+                $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+            
+                $reqArray[] = $req;
             }
+            Utilities::createLedger($reqArray);
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong');
+            return $this->jsonErrorResponse($data, $e->getMessage()
+
+
+
+
+
+        );
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
@@ -358,7 +371,7 @@ class JournalController extends Controller
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-                    Voucher::create([
+                $form_create =    Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
@@ -381,7 +394,15 @@ class JournalController extends Controller
                     ]);
                     $sr = $sr + 1;
                 }
+                $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+            
+                $reqArray[] = $req;
             }
+            Utilities::UpdateLedger($reqArray);
 
         }catch (Exception $e) {
             DB::rollback();

@@ -168,7 +168,7 @@ class RefundFileController extends Controller
             }
             $value = $request->input('booked_price');
             $booked_price = null !== $value ? str_replace(',', '', $value) : 0;
-
+            
             $date = $request->date;
             $formatted_date =  date('Y-m-d', strtotime($date));
             $requestdata = [
@@ -182,22 +182,15 @@ class RefundFileController extends Controller
                 'is_installment' => isset($request->is_installment)?1:0,
                 'is_booked' => isset($request->is_booked)?1:0,
                 'is_purchased' => isset($request->is_purchased)?1:0,
-                'sale_price'=> isset($request->sale_price) ? str_replace(',', '',((!is_null($request->sale_price))) ? $request->sale_price: 0) : 0,
                 'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
                 'booked_price' => $booked_price,
-                'down_payment' =>  !empty($request->down_payment) ? str_replace(',', '',($request->down_payment)) : 0,
-                'on_balloting' => isset($request->on_balloting) ? $request->on_balloting : 0,
-                'no_of_bi_annual' => isset($request->no_of_bi_annual) ? $request->no_of_bi_annual : 0,
-                'installment_bi_annual' => isset($request->installment_bi_annual) ? $request->installment_bi_annual : 0,
-                'no_of_month' => isset($request->no_of_month) ? $request->no_of_month : 0,
-                'installment_amount_monthly' => isset($request->installment_amount_monthly) ? $request->installment_amount_monthly : 0,
-                'on_possession' => isset($request->on_possession) ? str_replace(',', '',($request->on_possession)) : 0,
                 'file_status_id' => isset($request->file_status_id) ? $request->file_status_id : 0,
                 'sale_discount' => isset($request->sale_discount) ? str_replace(',', '',($request->sale_discount)) : 0,
                 'seller_commission_perc' => isset($modal->commission) ? $modal->commission : 0,
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
                 'file_type' => $request->file_type,
+                'refund_type' => $request->refund_type,
                 'notes' => $request->notes,
                 'file_date' => isset($formatted_date) ? $formatted_date : '',
             ];
@@ -326,6 +319,10 @@ class RefundFileController extends Controller
                 'sale_discount' => str_replace(',', '',($request->sale_discount)),
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
+                'file_type' => $request->file_type,
+                'refund_type' => $request->refund_type,
+                'notes' => $request->notes,
+                'file_date' => isset($formatted_date) ? $formatted_date : '',
             ]);
 
             $sale = Sale::where('uuid',$id)->first();
