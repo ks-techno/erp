@@ -52,7 +52,7 @@ class SaleInvoiceController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->where('file_type',NULL)->orderby('created_at','desc')->distinct();
+            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->orderby('created_at','desc')->distinct();
             $allData = $dataSql->get();
             
             $recordsTotal = count($allData);
@@ -95,13 +95,16 @@ class SaleInvoiceController extends Controller
                     $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-
+                $get_fileType = $row->file_type;
+                if($row->file_type == null){
+                    $get_fileType = 'Booked';
+                }
                 $entries[] = [
                     $row->product->name,
                     $row->product->block,
                     $row->product->buyable_type->name ?? null,
                     $row->project->name,
-                    $row->file_status->name,
+                    $get_fileType,
                     $row->customer->name,
                     $row->property_payment_mode->name ?? null,
                     $actions,

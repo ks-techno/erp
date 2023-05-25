@@ -189,7 +189,7 @@ class BankReceiveController extends Controller
                
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-                    Voucher::create([
+                $form_create =    Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
@@ -344,7 +344,7 @@ class BankReceiveController extends Controller
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-                    Voucher::create([
+                    $form_create =    Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),

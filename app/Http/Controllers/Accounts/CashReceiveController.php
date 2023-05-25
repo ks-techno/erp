@@ -47,7 +47,7 @@ class CashReceiveController extends Controller
 
             $dataSql = Voucher::where('type',self::Constants()['type'])->distinct()->orderby('date','desc');
 
-            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','debit','credit']);
+            $allData = $dataSql->get(['voucher_id','voucher_no','date','posted','total_credit']);
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -99,7 +99,7 @@ class CashReceiveController extends Controller
                     $row->date,
                     $row->voucher_no,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
-                    $totalamount,
+                    $row->total_credit,
                     $actions,
                 ];
             }
@@ -188,7 +188,7 @@ class CashReceiveController extends Controller
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-                     Voucher::create([
+                $form_create =  Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
@@ -343,7 +343,7 @@ class CashReceiveController extends Controller
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-                    Voucher::create([
+                $form_create = Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
