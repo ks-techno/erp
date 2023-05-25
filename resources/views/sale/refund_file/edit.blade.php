@@ -134,10 +134,23 @@
                                     <div class="col-sm-12">
                                     <select class="select2 form-select" id="file_type" name="file_type">
                                         <option value="" selected>Select File Type </option>
-                                        <option value="Refund" {{ $current->file_type == 'Refund' ? 'selected' : '' }}> Refund File </option>
-                                        <option value="Merge" {{ $current->file_type == 'Merge' ? 'selected' : '' }}> Merge File </option>
+                                        <option value="Refund" data-slug="Refund" {{ $current->file_type == 'Refund' ? 'selected' : '' }}> Refund File </option>
+                                        <option value="Merge" data-slug="Merge" {{ $current->file_type == 'Merge' ? 'selected' : '' }}> Merge File </option>
                                     </select>
 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2" id="refund_type" style="display: none" >
+                                <div class="col-sm-4">
+                                    <label class="col-form-label p-0">Refund Type:</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="col-sm-12">
+                                    <input type="radio" id="cancel" name="refund_type" value="Cancel" {{ ($current->refund_type =='Cancel')? "checked" : "" }}>
+                                    <label for="cancel">Cancel</label><br>
+                                    <input type="radio" id="withdrawal" name="refund_type" value="Withdrawal" {{ ($current->refund_type =='Withdrawal')? "checked" : "" }}> 
+                                    <label for="withdrawal">Withdrawal</label><br>
                                     </div>
                                 </div>
                             </div>
@@ -748,7 +761,17 @@
                 reader.readAsDataURL(e.target.files['0']);
             });
         });
-
+        $(document).on('change','#file_type',function(){
+           var slug = $(this).find('option:selected').attr('data-slug');
+            $('#refund_type').hide();
+           if(slug == 'Refund'){
+                $('#refund_type').show()
+           }
+        });
+        var slug = $('#file_type').find('option:selected').attr('data-slug');
+        if(slug == 'Refund'){
+            $('#refund_type').show()
+        }
     </script>
 
 @endsection

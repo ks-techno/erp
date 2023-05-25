@@ -509,7 +509,7 @@ $(document).on('change keyup','#seller_name',function(){
         var slug = $('#property_payment_mode_id').find('option:selected').attr('data-slug');
         if(slug == 'installment'){
             $('#installments_block').show();
-        }
+        }  
         $(document).on('change','#installment_type',function(){
            var slug = $(this).find('option:selected').attr('data-slug');
            $('#monthly_block').hide();

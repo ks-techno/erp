@@ -157,7 +157,7 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="col-sm-12">
-                                    <input type="radio" id="cancel" name="refund_type" value="Cancel" checked>
+                                    <input type="radio" id="cancel" name="refund_type" value="Cancel">
                                     <label for="cancel">Cancel</label><br>
                                     <input type="radio" id="withdrawal" name="refund_type" value="Withdrawal"> 
                                     <label for="withdrawal">Withdrawal</label><br>
@@ -830,11 +830,10 @@
 $(document).on('change','#file_type',function(){
            var slug = $(this).find('option:selected').attr('data-slug');
             $('#refund_type').hide();
-            $('#refund_type').find('input').val("");
            if(slug == 'Refund'){
                 $('#refund_type').show()
            }
-        })
+        });
     </script>
 @endsection
 

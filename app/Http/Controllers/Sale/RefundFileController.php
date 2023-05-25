@@ -319,6 +319,10 @@ class RefundFileController extends Controller
                 'sale_discount' => str_replace(',', '',($request->sale_discount)),
                 'company_id' => auth()->user()->company_id,
                 'user_id' => auth()->user()->id,
+                'file_type' => $request->file_type,
+                'refund_type' => $request->refund_type,
+                'notes' => $request->notes,
+                'file_date' => isset($formatted_date) ? $formatted_date : '',
             ]);
 
             $sale = Sale::where('uuid',$id)->first();
