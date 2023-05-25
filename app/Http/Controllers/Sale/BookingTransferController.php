@@ -504,4 +504,11 @@ class BookingTransferController extends Controller
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
 
     }
-}
+    public function printResults(Request $request)
+    {
+        $data['title'] = self::Constants()['title'];
+        
+        $data['property'] = BookingTransfer::with('nm_customer','sales','product')->where(Utilities::CompanyId())->orderby('created_at','desc')->get();
+        return view('sale.booking_transfer.printResults',compact('data'));
+    }
+} 

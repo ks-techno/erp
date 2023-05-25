@@ -468,4 +468,11 @@ class BookedPropertyController extends Controller
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully get product detail', 200);
     }
+    public function printResults(Request $request)
+    {
+        $data['title'] = self::Constants()['title'];
+        
+        $data['property'] = Sale::with('customer','project','property_payment_mode','product','dealer','staff')->where(Utilities::CompanyId())->whereNull('file_type')->orderby('created_at','desc')->get();
+        return view('sale.refund_file.printResults',compact('data'));
+    }
 }
