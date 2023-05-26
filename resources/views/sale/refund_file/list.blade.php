@@ -16,6 +16,7 @@
                             </div>
                             <div class="card-link">
                                 @permission($data['permission_create'])
+                                <a href="{{route('refund-file-print')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Print</a>
                                 <a href="{{route('sale.refund-file.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
                                 @endpermission
                             </div>

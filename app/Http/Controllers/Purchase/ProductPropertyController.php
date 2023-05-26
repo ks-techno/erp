@@ -33,6 +33,7 @@ class ProductPropertyController extends Controller
             'edit' => "$name-edit",
             'delete' => "$name-delete",
             'view' => "$name-view",
+            'print' => "$name-print"
         ];
     }
     /**
@@ -46,6 +47,7 @@ class ProductPropertyController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['permission_list'] = self::Constants()['list'];
         $data['permission_create'] = self::Constants()['create'];
+        $data['print'] = self::Constants()['print'];
         if ($request->ajax()) {
             $draw = 'all';
              
@@ -72,6 +74,10 @@ class ProductPropertyController extends Controller
             $edit_per = false;
             if(auth()->user()->isAbleTo(self::Constants()['edit'])){
                 $edit_per = true;
+            }
+            $print_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['print'])){
+                $print_per = true;
             }
             $entries = [];
             foreach ($allData as $row) {
@@ -421,5 +427,16 @@ class ProductPropertyController extends Controller
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
+    }
+    public function printView()
+    {
+        $data['title'] = self::Constants()['title'];
+        
+        $data['property'] = Product::with(['buyable_type'])
+        ->where('product_form_type', 'property')
+        ->where(Utilities::CompanyProjectId())
+        ->orderBy('name')->get();
+    
+    return view('purchase.product_property.print',compact('data'));
     }
 }

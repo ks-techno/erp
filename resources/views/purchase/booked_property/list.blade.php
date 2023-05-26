@@ -14,10 +14,11 @@
                             <div class="card-left-side">
                                 <h4 class="card-title">{{$data['title']}}</h4>
                             </div>
-                            <div class="card-link">
-                                <!-- @permission($data['permission_create'])
-                                <a href="{{route('sale.sale-invoice.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
-                                @endpermission -->
+                            <div class="card-link">                                
+                                 @permission($data['permission_create'])
+                            <a href="{{route('booked-proprty-print')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Print</a>
+                                <!-- <a href="{{route('sale.sale-invoice.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a> -->
+                                @endpermission
                             </div>
                         </div>
                         <div class="card-body">
