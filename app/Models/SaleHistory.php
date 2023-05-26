@@ -41,5 +41,44 @@ class SaleHistory extends Model
         'installment_end_time',
         'installment_type',
         'refund_type',
+        'sale_sellerable_id',
+        'sale_sellerable_type',
     ];
+
+    protected $morphClass = null;
+
+    public function project(){
+        return $this->belongsTo(Project::class,'project_id','id');
+    }
+    public function customer(){
+        return $this->belongsTo(Customer::class,'customer_id','id');
+    }
+    
+    public function property_payment_mode(){
+        return $this->belongsTo(PropertyPaymentMode::class,'property_payment_mode_id','id');
+    }
+    public function file_status(){
+        return $this->belongsTo(BookingFileStatus::class,'file_status_id','id');
+    }
+    public function product(){
+        return $this->belongsTo(Product::class,'product_id','id')
+            ->with('buyable_type');
+    }
+
+    public function getMorphClass()
+    {
+        return $this->morphClass ?: static::class;
+    }
+    public function dealer()
+    {
+        $this->morphClass = 'App\Models\Dealer';
+        return $this->morphOne(SaleSeller::class,'sale_sellersable','sale_sellerable_type','sale_id','id')
+            ->with('dealer');
+    }
+    public function staff()
+    {
+        $this->morphClass = 'App\Models\Staff';
+        return $this->morphOne(SaleSeller::class,'sale_sellersable','sale_sellerable_type','sale_id','id')
+            ->with('staff');
+    }
 }

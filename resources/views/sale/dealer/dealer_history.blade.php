@@ -10,12 +10,13 @@
                     $variationQry = App\Models\ProductVariation::get();
                 @endphp
                     <tr>
-                        <th width="100%" class="dtl-head text-center" align="center" colspan="6" style="background-color:#90EE90;">Product Detail</th>
+                        <th width="100%" class="dtl-head text-center" align="center" colspan="7" style="background-color:#90EE90;">Product Detail</th>
                         <!--<th width="70%" class="dtl-head text-center" align="center" colspan="6" rowspan="2" style="background-color:#FFA500;">Property Detail</th> -->
                     </tr>
                     <tr>
                         <th width="6%" class="dtl-head text-center" align="center">Sr#</th>
                         <th width="10%" class="dtl-head text-center" align="center">Booking No</th>
+                        <th width="10%" class="dtl-head text-center" align="center">Status</th>
                         <th width="10%" class="dtl-head text-center" align="center">File Status</th>
                         <th width="10%" class="dtl-head text-center" align="center">Payment Mode</th>
                         <th width="10%" class="dtl-head text-center" align="center">Sale Price</th>
@@ -24,39 +25,44 @@
                 </thead>
 	            <tbody>
                 @php
-                // dd($current);
+                 //dd($current);
+                 $currentType = 'App\Models\Dealer';
+                 $innerQry = App\Models\SaleHistory::where('sale_sellerable_id',$current->id)->where('sale_by_staff','0')->with('property_payment_mode', 'file_status','product')->get();
                     $outerQry = App\Models\SaleSeller::where('sale_sellerable_id',$current->id)->get();
-                    // dd($outerQry);
+                    //dd($innerQry->toSql());
                     $innervariationQry = App\Models\ProductVariation::get();
                     $i=1;
                 @endphp
-                @foreach($outerQry as $value)
+                @foreach($innerQry as $value)
                 @php
-                    $innerQry = App\Models\Sale::where('id',$value['sale_id'])->with('property_payment_mode', 'file_status','product')->first();
-                @endphp
+                   
+                    @endphp
                     <tr>
                         <td class="dtl-contents" align="center">
                             {{ $i }}
                         </td>
                         <td class="dtl-contents" align="center">
-                            {{ $innerQry->code }}
+                            {{ $value->code }}
                         </td>
                         <td class="dtl-contents" align="center">
-                            {{ $innerQry->file_status->name }}
+                            {{ $value->file_status->name }}
+                        </td>
+                        <td class="dtl-contents" align="center">
+                        {{ isset($value->file_type) ? $value->file_type : 'Booked' }}
                         </td>
                         <td class="dtl-contents" align="center">
                           
-                            {{ isset($innerQry->property_payment_mode->name) ? $innerQry->property_payment_mode->name : '' }}
+                            {{ isset($value->property_payment_mode->name) ? $value->property_payment_mode->name : '' }}
                         </td>
                         <td class="dtl-contents" align="center">
-                            {{ number_format($innerQry->sale_price,0) }}
+                            {{ number_format($value->sale_price,0) }}
                         </td>
                         <td class="dtl-contents" align="center">
-                            {{ number_format($innerQry->booked_price,0) }}
+                            {{ number_format($value->booked_price,0) }}
                         </td>
                         <!--<td class="dtl-contents" align="left">
                         @php
-                        $prod = $innerQry->product_id;
+                        $prod = $value->product_id;
 
                         $sql = "SELECT p.id p_id,p.code p_code,p.name p_name,p.buyable_type_id,pvs.value,pvs.product_variation_id,pv.display_title,pvs.sr_no FROM products p
                                 left join property_variations pvs on pvs.product_id = p.id

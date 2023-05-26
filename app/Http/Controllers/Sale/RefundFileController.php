@@ -440,4 +440,21 @@ class RefundFileController extends Controller
         $data['property'] = Sale::with('customer','project','property_payment_mode','product','dealer','staff')->where(Utilities::CompanyId())->where('file_type','merge')->orwhere('file_type','refund')->orderby('created_at','desc')->get();
         return view('sale.refund_file.printResults',compact('data'));
     }
+    public function formprint($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['print'];
+
+        if(Sale::where('uuid',$id)->exists()){
+
+            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode','file_status')->where('uuid',$id)->first();
+
+        }else{
+            abort('404');
+        }
+ //       dd($data['current']->product->toArray());
+        return view('sale.refund_file.formPrint', compact('data'));
+    }
 }

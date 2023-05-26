@@ -23,9 +23,9 @@ class BookingFileStatusSeeder extends Seeder
         BookingFileStatus::truncate();
         $data_file_status = [
             ['name'=>'Active','slug'=>'active','default'=>1],
-            ['name'=>'Block','slug'=>'block','default'=>0],
+            ['name'=>'Blocked','slug'=>'blocked','default'=>0],
             ['name'=>'Cancelled','slug'=>'cancelled','default'=>0],
-            // ['name'=>'Buyback','slug'=>'buyback','default'=>0],
+            ['name'=>'Legal Issue','slug'=>'legal_issue','default'=>0],
             // ['name'=>'Defaulted','slug'=>'defaulted','default'=>0],
         ];
         $comp = Company::first();

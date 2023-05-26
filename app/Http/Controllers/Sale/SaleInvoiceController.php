@@ -203,9 +203,11 @@ class SaleInvoiceController extends Controller
             $code = Utilities::documentCode($doc_data);
             if($request->seller_type == 'staff'){
                 $modal = Staff::where('id',$request->seller_id)->first();
+                $sellarable_type = 'App\Models\Staff';
             }
             if($request->seller_type == 'dealer'){
                 $modal = Dealer::where('id',$request->seller_id)->first();
+                $sellarable_type = 'App\Models\Dealer';
             }
             $requestdata = 
                 [
@@ -245,17 +247,25 @@ class SaleInvoiceController extends Controller
                 
                 $update = Sale::where('product_id',$request->product_id)
                 ->update($requestdata);
+                $modelarray = [
+                    'sale_sellerable_id' => $request->seller_id,
+                    'sale_sellerable_type' => $sellarable_type
+                ];
             }
             else{
                 $sale = Sale::create($requestdata);
                
                 $saleSeller = new SaleSeller();
                 $saleSeller->sale_id = $sale->id;
-                $modal->sale_seller()->save($saleSeller);
+                $responsemodel = $modal->sale_seller()->save($saleSeller);
+                $modelarray = [
+                    'sale_sellerable_id' => $responsemodel->sale_sellerable_id,
+                    'sale_sellerable_type' => $responsemodel->sale_sellerable_type
+                ];
 
             }
-            
-            createSaleHistory($requestdata);
+            $mergarray = array_merge($requestdata,$modelarray);
+            createSaleHistory( $mergarray);
             
         }catch (Exception $e) {
             DB::rollback();
@@ -384,7 +394,7 @@ class SaleInvoiceController extends Controller
             ];
             Sale::where('uuid',$id)
                 ->update($requestdata);
-            updateSaleHistory($requestdata,$id);
+           
             $sale = Sale::where('uuid',$id)->first();
 
             $saleSeller = new SaleSeller();
@@ -400,6 +410,12 @@ class SaleInvoiceController extends Controller
                 $saleSeller->sale_sellerable_type = 'App\Models\Dealer';
                 $sale->dealer()->update($saleSeller->toArray());
             }
+            $modelarray = [
+                'sale_sellerable_id' => $request->seller_id,
+                'sale_sellerable_type' => $saleSeller->sale_sellerable_type
+            ];
+            $mergarray = array_merge($requestdata,$modelarray);
+            updateSaleHistory($mergarray,$id);
 
 
 

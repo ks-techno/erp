@@ -17,7 +17,7 @@
                             </div>
                             <div class="card-link">
                                 @permission($data['print'])
-                                <a href="{{route('product-property-print')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Print</a>
+                                <a href="{{route('product-property-print')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light" target="_blank">Print</a>
                                 @endpermission
                                 @permission($data['permission_create'])
                                 <a href="{{route('product-property.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>

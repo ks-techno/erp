@@ -472,7 +472,7 @@ class BookedPropertyController extends Controller
     {
         $data['title'] = self::Constants()['title'];
         
-        $data['property'] = Sale::with('customer','project','property_payment_mode','product','dealer','staff')->where(Utilities::CompanyId())->whereNull('file_type')->orderby('created_at','desc')->get();
-        return view('sale.refund_file.printResults',compact('data'));
+        $data['property'] = Sale::with('customer','project','property_payment_mode','product','dealer','staff','file_status')->where(Utilities::CompanyId())->whereNull('file_type')->orderby('created_at','desc')->get();
+        return view('purchase.booked_property.printResults',compact('data'));
     }
 }
