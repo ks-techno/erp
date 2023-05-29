@@ -15,16 +15,15 @@
 // });
 
 
-
 var url = '/help/chart';
 var id = 'egt_chart_code';
 
-$(document).on('click','.data_tbody_row',function(e){
+$(document).on('change','.egt_form_header_input',function(e){
     var thix = $(this);
-    console.log(this);
-    var chart_code = thix.find('td[data-field="chart_code"]').text();
-    var chart_name = thix.find('td[data-field="chart_name"]').text();
-    var chart_id = thix.find('td[data-field="chart_id"]').text();
+    var selectedOption = $(this).find(':selected');
+    var chart_code = selectedOption.data('chart-code');
+    var chart_name = selectedOption.data('chart-name');
+    var chart_id = selectedOption.data('chart-id');
     var create_new_customer = thix.find('td').attr('data-field');
     if(create_new_customer == 'create_new_customer'){
         $('#createNewCustomer').modal('show')
@@ -36,7 +35,25 @@ $(document).on('click','.data_tbody_row',function(e){
         
     
 });
-$('.'+id).keyup(function(e){
+$(document).on('change','.egt_form_header_input_2nd',function(e){
+    var thix = $(this);
+   
+    var selectedOption = $(this).find(':selected');
+    var chart_code1 = selectedOption.data('chart-code1');
+
+    var chart_name1 = selectedOption.data('chart-name1');
+    var chart_id1 = selectedOption.data('chart-id1');
+    var create_new_customer = thix.find('td').attr('data-field');
+    if(create_new_customer == 'create_new_customer'){
+        $('#createNewCustomer').modal('show')
+    }
+            $('.egt_form_header_input_2nd').find('.chart_code1').val(chart_code1);
+            $('.egt_form_header_input_2nd').find('.chart_name1').val(chart_name1);
+            $('.egt_form_header_input_2nd').find('.chart_id1').val(chart_id1);
+        
+    
+});
+$('#'+id).keyup(function(e){
     console.log(e)
     var thix = $(this);
     var val = thix.val();

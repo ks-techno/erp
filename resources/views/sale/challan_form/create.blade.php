@@ -318,24 +318,20 @@
                     </div>{{--end row--}}
                     <hr>
                     <div class="form-group row mb-2">
-                            <div class="col-lg-12">
-                                <div id="erp_grid_table" class="ch">
+                    <div class="col-lg-12">
+                                <div id="erp_grid_table" class="egt">
                                     <div class="erp_form___block">
                                         <div class="table-scroll form_input__block">
-                                            <table class="ch_form_table table table-bordered">
-                                                <thead class="ch_form_header">
-                                                <tr class="ch_form_header_title">
-                                                    <th width="7%">Sr</th>
+                                            <table class="egt_form_table table table-bordered">
+                                                <thead class="egt_form_header">
+                                                <tr class="egt_form_header_title">
+                                                    <th width="2%">Sr</th>
                                                     <th width="20%">Particulars</th>
                                                     <th width="22%">Amount</th>
                                                     <th width="13%" class="text-center">Action</th>
                                                 </tr>
-                                               
-                                                
-                                                </thead>
-                                                <tbody class="ch_form_body">
-                                                <tr class="ch_form_header_input">
-                                                    <td>
+                                                <tr class="egt_form_header_input">
+                                                <td>
                                                         <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
                                                         <input id="chart_id1" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
@@ -349,7 +345,7 @@
                                                     </select>
                                                     </td>
                                                     <td>
-                                                        <input id="ch_chart_amount" type="text" class="chart_name chart_amount form-control form-control-sm" >
+                                                        <input id="ch_chart_amount" type="number" class="chart_name chart_amount form-control form-control-sm" >
                                                     </td>
                                                     <td class="text-center">
                                                         <button type="button" id="ch_add" class="ch_add btn btn-primary btn-sm">
@@ -357,18 +353,22 @@
                                                         </button>
                                                     </td>
                                                 </tr>
+                                                </thead>
+                                                <tbody class="egt_form_body">
                                                 </tbody>
-                                                <tfoot class="ch_form_footer">
-                                                <tr class="ch_form_footer_total">
+                                                <tfoot class="egt_form_footer">
+                                                <tr class="egt_form_footer_total">
                                                     <td class="voucher-total-title">Total</td>
-                                                    
-                                                    <td class="">
+                                                   
+                                                    <td class="voucher-total-debit text-end">
+                                                        <span id="tot_debit"></span>
+                                                        <input id="tot_voucher_debit" name="tot_voucher_debit" type="hidden" >
                                                     </td>
                                                     <td class="voucher-total-credit text-end">
                                                         <span id="tot_credit"></span>
                                                         <input id="tot_voucher_credit" name="tot_voucher_credit" type="hidden" >
                                                     </td>
-                                                    
+                                                    <td></td>
                                                 </tr>
                                                 </tfoot>
                                             </table>

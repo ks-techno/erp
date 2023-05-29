@@ -35,7 +35,7 @@ $(document).on('click','.egt_del',function(){
     updateKeys();
     grid_fun();
 });
-function add_row(thix, num_rows = 2){
+function add_row(thix, num_rows = 1){
     var tr = thix.parents('tr');
     var tds = "";
     var nameAttrPrefix = 'pd';
@@ -99,10 +99,7 @@ function add_row(thix, num_rows = 2){
                 sel_field.attr('data-url',egt_fields[i].data_url);
             }
         }
-        for(var i=0;i < egt_readonly_fields.length; i++){
-            var sel_field = lastTr.find('input[data-id='+egt_readonly_fields[i]+']');
-            sel_field.attr('',true);
-        }
+        
 
         trLength++;
 
