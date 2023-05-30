@@ -34,7 +34,7 @@ class ChallanForm extends Model
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');
     }
-    
+
     public function property_payment_mode(){
         return $this->belongsTo(PropertyPaymentMode::class,'property_payment_mode_id','id');
     }
@@ -50,5 +50,8 @@ class ChallanForm extends Model
     }
     public function vouchers(){
         return $this->belongsTo(Voucher::class,'id','challan_id');
+    }
+    public function buyable_type(){
+        return $this->belongsTo(BuyableType::class,'buyable_type_id','id');
     }
 }

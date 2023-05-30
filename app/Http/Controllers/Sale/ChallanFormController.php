@@ -55,9 +55,9 @@ class ChallanFormController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = ChallanForm::with('customer','project','product','file_status')->orderby('created_at','desc');
+            $dataSql = ChallanForm::with('customer','project','product','file_status','buyable_type')->orderby('created_at','desc');
             $allData = $dataSql->get();
-            
+           
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -103,7 +103,8 @@ class ChallanFormController extends Controller
                 $entries[] = [
                     $row->challan_no,
                     $row->product->name,
-                    $row->product->block,
+                    $row->product->buyable_type->name,
+                    $row->property_payment_mode->name,
                     $row->customer->name,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
                     $actions,

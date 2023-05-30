@@ -148,7 +148,7 @@
         </tr>
         <tr>
         <td class="text-left"><b>Total Amount (In words)</b></td>
-        <td class="text-right">{{numberToWords(isset($current->total_amount)?$current->total_amount:"")}}</td>
+        <td class="text-right">{{numberToWords(isset($current->total_amount)?$current->total_amount:"")}} rupees only</td>
         </tr>
         </table>
         <table class="mt-10" width="100%" valign="bottom">
@@ -254,7 +254,7 @@
         </tr>
         <tr>
         <td class="text-left"><b>Total Amount (In words)</b></td>
-        <td class="text-right">{{numberToWords(isset($current->total_amount)?$current->total_amount:"")}}</td>
+        <td class="text-right">{{numberToWords(isset($current->total_amount)?$current->total_amount:"")}} rupees only</td>
         </tr>
         </table>
         <table class="mt-10" width="100%" valign="bottom">
@@ -359,7 +359,7 @@
         </tr>
         <tr>
         <td class="text-left"><b>Total Amount (In words)</b></td>
-        <td class="text-right">{{numberToWords(isset($current->total_amount)?$current->total_amount:"")}}</td>
+        <td class="text-right">{{numberToWords(isset($current->total_amount)?$current->total_amount:"")}} rupees only</td>
         </tr>
         </table>
         <table class="mt-10" width="100%" valign="bottom">
