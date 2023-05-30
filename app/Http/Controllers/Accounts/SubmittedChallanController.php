@@ -307,6 +307,7 @@ class SubmittedChallanController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         if(ChallanForm::where('uuid',$id)->exists()){
             $challandata = ChallanForm::with('customer')->where('uuid',$id)->first();
+           
             $account = ChartOfAccount::where('id',$challandata->customer->COAID)->first();
         }else{
             abort('404');
@@ -319,6 +320,7 @@ class SubmittedChallanController extends Controller
         }
         $max = Voucher::withTrashed()->where('type',$type)->max('voucher_no');
         $voucher_no = self::documentCode($type,$max);
+       
         $voucher_id = self::uuid();
         try{
             Voucher::create([

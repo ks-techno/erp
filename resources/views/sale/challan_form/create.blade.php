@@ -319,12 +319,12 @@
                     <hr>
                     <div class="form-group row mb-2">
                     <div class="col-lg-12">
-                                <div id="erp_grid_table" class="egt">
+                                <div id="erp_grid_table" class="ch">
                                     <div class="erp_form___block">
                                         <div class="table-scroll form_input__block">
                                             <table class="egt_form_table table table-bordered">
                                                 <thead class="egt_form_header">
-                                                <tr class="egt_form_header_title">
+                                                <tr class="ch_form_header_title">
                                                     <th width="2%">Sr</th>
                                                     <th width="20%">Particulars</th>
                                                     <th width="22%">Amount</th>
@@ -354,10 +354,10 @@
                                                     </td>
                                                 </tr>
                                                 </thead>
-                                                <tbody class="egt_form_body">
+                                                <tbody class="ch_form_body">
                                                 </tbody>
-                                                <tfoot class="egt_form_footer">
-                                                <tr class="egt_form_footer_total">
+                                                <tfoot class="ch_form_footer">
+                                                <tr class="ch_form_footer_total">
                                                     <td class="voucher-total-title">Total</td>
                                                    
                                                     <td class="voucher-total-debit text-end">
@@ -820,7 +820,7 @@
         var keyCode = e.keyCode;
         if (keyCode == 38) { // up arrow key
             e.preventDefault();
-            //$('#egt_cheque_no').focus();
+            //$('#ch_cheque_no').focus();
             inLineHelp.scrollTop(scrollTop - lineHeight);
             if (inLineHelp.scrollTop() == 0) {
                 inLineHelp.css('top', offsetTop + lineHeight + 'px');
@@ -832,7 +832,7 @@
             }
         } else if (keyCode == 40) { // down arrow key
             e.preventDefault();
-            //$('#egt_cheque_no').focus();
+            //$('#ch_cheque_no').focus();
             inLineHelp.scrollTop(scrollTop + lineHeight);
             if (inLineHelp.scrollTop() + inLineHelp.innerHeight() == scrollHeight) {
                 inLineHelp.css('top', offsetTop - lineHeight + 'px');
