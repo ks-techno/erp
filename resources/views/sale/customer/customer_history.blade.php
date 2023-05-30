@@ -10,12 +10,14 @@
                     $variationQry = App\Models\ProductVariation::get();
                 @endphp
                     <tr>
-                        <th width="100%" class="dtl-head text-center" align="center" colspan="6" style="background-color:black; color:white;">Product Detail</th>
-                        <!--<th width="70%" class="dtl-head text-center" align="center" colspan="6" rowspan="2" style="background-color:#FFA500;">Property Detail</th> -->
+
+                        <th width="100%" class="dtl-head text-center" align="center" colspan="7" style="background-color:#90EE90;">Product Detail</th>
+
                     </tr>  
                     <tr>
                         <th width="6%" class="dtl-head text-center" align="center">Sr#</th>
                         <th width="10%" class="dtl-head text-center" align="center">Booking No</th>
+                        <th width="10%" class="dtl-head text-center" align="center">Status</th>
                         <th width="10%" class="dtl-head text-center" align="center">File Status</th>
                         <th width="10%" class="dtl-head text-center" align="center">Payment Mode</th>
                         <th width="10%" class="dtl-head text-center" align="center">Sale Price</th>
@@ -24,7 +26,7 @@
                 </thead>
 	            <tbody>
                 @php
-                    $outerQry = App\Models\Views\ViewCustomerHistory::where('customer_id',$current->id)->get();
+                    $outerQry = App\Models\Sale::where('customer_id',$current->id)->with('property_payment_mode', 'file_status','product')->get();
                     $innervariationQry = App\Models\ProductVariation::get();
                     $i=1;
                 @endphp
@@ -34,13 +36,19 @@
                                 {{ $i }}
                             </td>
                             <td class="dtl-contents" align="center">
-                                {{ $value['sale_code'] }}
+                                {{ $value['code'] }}
                             </td>  
                             <td class="dtl-contents" align="center">
-                                {{ $value['file_status_name'] }}
+                            {{ isset($value->file_status->name) ? $value->file_status->name : '' }}
+
+                            </td> 
+                            <td class="dtl-contents" align="center">
+                            {{ isset($value->file_type) ? $value->file_type : 'Booked' }}
+
                             </td>  
                             <td class="dtl-contents" align="center">
-                                {{ $value['payment_mode_name'] }}
+                            {{ isset($value->property_payment_mode->name) ? $value->property_payment_mode->name : '' }}
+
                             </td>  
                             <td class="dtl-contents" align="center">
                                 {{ number_format($value['sale_price'],0) }}

@@ -24,10 +24,10 @@
     <thead>
         <tr>
             <th  class="text-left">Code</th>
-            <th class="text-left">File Type</th>
+            <th class="text-left">Status</th>
+            <th class="text-left">File Status</th>
             <th  class="text-left">Customer</th>
             <th class="text-left">Membership No.</th>
-            <th  class="text-left">CNIC No.</th>
             <th  class="text-left">Plot No.</th>
             <th  class="text-left">Sale Price</th>
             <th class="text-left">Reg. No.</th>
@@ -40,10 +40,10 @@
     @foreach($data['property'] as $property)
         <tr>
             <td>{{isset($property->code)?$property->code:""}}</td>
+            <td>{{isset($property->file_status->name)?$property->file_status->name:""}}</td>
             <td>{{isset($property->file_type)?$property->file_type:""}}</td>
             <td>{{isset($property->customer->name)?$property->customer->name:""}}</td>
             <td>{{isset($property->customer->membership_no)?$property->customer->membership_no:""}}</td>
-            <td>{{isset($property->customer->cnic_no)?$property->customer->cnic_no:""}}</td>
             <td>{{isset($property->product->name)?$property->product->name:""}}</td>
             <td>{{isset($property->product->default_sale_price)?$property->product->default_sale_price:""}}</td>
             <td>{{isset($property->product->external_item_id)?$property->product->external_item_id:""}}</td>

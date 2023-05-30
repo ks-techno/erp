@@ -236,6 +236,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('get-refund-customer-list', 'getRefundCustomerList')->name('getRefundCustomerList');
                 Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
+                Route::get('formprint/{id}', 'formPrint')->name('formprint');
             });
             Route::prefix('booking-transfer')->resource('booking-transfer', BookingTransferController::class);
             Route::prefix('booking-transfer')->name('booking-transfer.')->controller(BookingTransferController::class)->group(function(){

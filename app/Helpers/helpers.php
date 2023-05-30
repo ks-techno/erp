@@ -155,8 +155,9 @@ function getpaymentModes() {
     ];
 }
 function createSaleHistory(array $requestdata)
-    {
-        return SaleHistory::create($requestdata);
+    {   
+        $historyID = SaleHistory::create($requestdata);
+        return $historyID;
     }
     function updateSaleHistory(array $requestdata, $id)
     {

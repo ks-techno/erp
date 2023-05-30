@@ -14,6 +14,7 @@ class ParticularsSeeder extends Seeder
      */
     public function run()
     {
+        Particulars::truncate();
         $particulars = [
                         [  'name' => 'Down Payment',   ],
                         [  'name' => 'Instalments',   ],

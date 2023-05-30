@@ -18,7 +18,7 @@
                             </div>
                             <div class="card-link">
                                 @permission($data['permission_create'])
-                                <a href="{{route('transfer-proprty-print')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Print</a>
+                                <a href="{{route('transfer-proprty-print')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light" target="_blank">Print</a>
                                 <a href="{{route('sale.booking-transfer.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
                                 @endpermission
                             </div>

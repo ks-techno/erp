@@ -82,15 +82,9 @@
                 padding-bottom: 5px;
                 padding-left: 5px;
             }
- .select2-container--classic .select2-dropdown, .select2-container--default .select2-dropdown {
-    border-color: #d8d6de;
-    z-index: 99999999;
-    position: fixed;
-    left: 27%;
-    top: 80%;
-}
-.table:not(.table-dark):not(.table-light) thead:not(.table-dark) th, .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th{
-    color: #0f0e1c !important;
+ 
+.table-scroll{
+    overflow: visible !important;
 }
 </style>
 @endsection
