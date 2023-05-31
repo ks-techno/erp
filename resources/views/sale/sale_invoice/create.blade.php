@@ -171,18 +171,7 @@
                                 </div>
                                 </div>
                             <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3 pr-0">
-                                        <label class="col-form-label p-0">File Status</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select class="select2 form-select" id="file_status_id" name="file_status_id">
-                                            @foreach($data['file_status'] as $file_status)
-                                                <option value="{{$file_status->id}}" data-slug="{{$file_status->slug}}"> {{$file_status->name}} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+                                
                                 <div class="mb-1 row">
                                     <div class="col-sm-3 pr-0">
                                         <label class="col-form-label p-0">Payment Mode</label>

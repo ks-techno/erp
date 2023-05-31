@@ -196,9 +196,10 @@ class ChallanFormController extends Controller
             if($request->seller_type == 'dealer'){
                 $modal = Dealer::where('id',$request->seller_id)->first();
             }
+           
             $total_amount = 0;
             foreach ($request->pd as $pd) {
-                $total_amount += str_replace(',', '',($pd['ch_chart_amount']));
+                $total_amount += str_replace(',', '',($pd['egt_chart_amount']));
             }
             
             $posted = $request->current_action_id == 'post'?1:0;
@@ -223,8 +224,8 @@ class ChallanFormController extends Controller
             foreach ($request->pd as $pd){
                 ChallanParticular::create([
                         'challan_id' => $form_id,
-                        'particular_id' => $pd['chart_id1'],
-                        'amount' => $pd['ch_chart_amount'],
+                        'particular_id' => $pd['chart_id'],
+                        'amount' => $pd['egt_chart_amount'],
                     ]);
                     $sr = $sr + 1;
             }
@@ -334,8 +335,9 @@ class ChallanFormController extends Controller
         DB::beginTransaction();
         try{
             $total_amount = 0;
+         
             foreach ($request->pd as $pd) {
-                $total_amount += str_replace(',', '',($pd['ch_chart_amount']));
+                $total_amount += str_replace(',', '',($pd['egt_chart_amount']));
             }
             
             $posted = $request->current_action_id == 'post'?1:0;
@@ -355,14 +357,16 @@ class ChallanFormController extends Controller
                 ];
             $sale = ChallanForm::where('uuid',$id)
             ->update($requestdata);
+            
            $chalan_id = $request->form_id;
-            DB::select("delete FROM `challan_particular` where challan_id = '$chalan_id'");
+           
+            DB::select("delete FROM `challan_particular` where challan_id = '$request->form_id'");
             $sr = 1;
             foreach ($request->pd as $pd){
                 ChallanParticular::create([
-                        'challan_id' => $chalan_id,
-                        'particular_id' => $pd['chart_id1'],
-                        'amount' => $pd['ch_chart_amount'],
+                        'challan_id' => $request->form_id,
+                        'particular_id' => $pd['chart_id'],
+                        'amount' => $pd['egt_chart_amount'],
                     ]);
                     $sr = $sr + 1;
             }

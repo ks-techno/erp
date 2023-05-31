@@ -57,7 +57,7 @@ class SubmittedChallanController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = ChallanForm::with('vouchers','customer','project','product','file_status')->where('status', 1)->orderby('created_at','desc');
+            $dataSql = ChallanForm::with('vouchers','customer','project','product','file_status','buyable_type')->where('status', 1)->orderby('created_at','desc');
             $allData = $dataSql->get();
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
@@ -103,7 +103,7 @@ class SubmittedChallanController extends Controller
                         $actions .= '<a href="' . $urlPrint . '" target="_blank" class="item-edit"><i data-feather="eye" class="me-50"></i></a>';
                     }
                     else{
-                    $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="plus"></i></a>';
+                    $actions .= '<a href="'.$urlAdd.'" class="item-edit"><i data-feather="plus"></i></a>';
 
                     }
                 }
@@ -112,7 +112,8 @@ class SubmittedChallanController extends Controller
                 $entries[] = [
                     $row->challan_no,
                     $row->product->name,
-                    $row->product->block,
+                    $row->product->buyable_type->name,
+                    $row->property_payment_mode->name,
                     $row->customer->name,
                     '<div class="text-center"><span class="badge rounded-pill ' . $posted['class'] . '">' . $posted['title'] . '</span></div>',
                     $actions,

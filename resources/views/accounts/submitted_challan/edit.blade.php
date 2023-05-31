@@ -382,7 +382,7 @@
                                                         <input id="tot_voucher_debit" name="tot_voucher_debit" type="hidden" >
                                                     </td>
                                                     <td class="voucher-total-credit text-end">
-                                                        <span id="tot_credit"></span>
+                                                        <span id="">{{format_number($current->total_amount)}}</span>
                                                         
                                                     </td>
                                                     

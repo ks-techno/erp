@@ -55,6 +55,9 @@
                 padding-bottom: 5px;
                 padding-left: 5px;
             }
+            .table-scroll{
+    overflow: visible !important;
+}
             .table:not(.table-dark):not(.table-light) thead:not(.table-dark) th, .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th{
     color: #0f0e1c !important;
 }
@@ -111,7 +114,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                         <label class="col-form-label p-0">Payment Mode <span class="required">*</span></label>
-                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select" disabled>
+                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select" >
                                         @foreach (getpaymentModes() as $value => $label)
                                             <option value="{{ $value }}" data-slug="{{ $value }}" {{ $current->property_payment_mode_id === $value ? 'selected' : '' }}>{{ $label }}</option>
                                         @endforeach
@@ -314,85 +317,94 @@
                     <hr>
                     <div class="form-group row mb-2">
                             <div class="col-lg-12">
-                                <div id="erp_grid_table" class="ch">
+                            <div id="erp_grid_table" class="egt">
                                     <div class="erp_form___block">
                                         <div class="table-scroll form_input__block">
-                                            <table class="ch_form_table table table-bordered">
-                                                <thead class="ch_form_header">
-                                                <tr class="ch_form_header_title">
+                                            <table class="egt_form_table table table-bordered">
+                                                <thead class="egt_form_header">
+                                                <tr class="egt_form_header_title">
                                                     <th width="7%">Sr</th>
                                                     <th width="20%">Particulars</th>
                                                     <th width="22%">Amount</th>
+                                                    
                                                     <th width="13%" class="text-center">Action</th>
                                                 </tr>
-                                                <tr class="ch_form_header_input">
+                                                <tr class="egt_form_header_input">
                                                     <td>
-                                                        <input id="ch_sr_no" readonly type="text" class="form-control form-control-sm">
-                                                        <input id="chart_id1" type="hidden" class="chart_id form-control form-control-sm">
+                                                        <input id="egt_sr_no" readonly type="text"
+                                                        class="form-control form-control-sm">
+                                                        <input id="chart_id" type="hidden"
+                                                         class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
                                                     <select class="select2 form-select" id="ch_chart_code" name="ch_chart_code">
                                                     <option value="">Select Value</option>
-                                                    
+                                                   
                                                     @foreach($data['particular'] as $particulars)
                                                     <option value="{{$particulars->id}}" data-chart-id="{{$particulars->id}}" data-chart-name="({{$particulars->name}})"> {{$particulars->name}}</option>
                                                     @endforeach
                                                     </select>
                                                     </td>
                                                     <td>
-                                                        <input id="ch_chart_amount" type="text" class="chart_name form-control form-control-sm" >
+                                                        <input id="egt_chart_amount" type="number"
+                                                         class="chart_amount form-control form-control-sm">
                                                     </td>
-                                                    
-                                                   
-                                                    <td class="text-center">
-                                                        <button type="button" id="ch_add" class="ch_add btn btn-primary btn-sm">
+                                                    <td><button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
-                                                        </button>
-                                                    </td>
+                                                        </button></td>
                                                 </tr>
                                                 </thead>
-                                                <tbody class="ch_form_body">
-                                                
+                                                <tbody class="egt_form_body">
+                                                     
                                                 @foreach($data['particulars'] as $particular)
        
-                                                    <tr>
-                                                    <td>
-                                                        <input data-id="ch_sr_no" name="ch_sr_no" readonly type="text" value="{{$loop->iteration}}" class="form-control form-control-sm">
-                                                        <input data-id="chart_id1" name="pd[{{$loop->iteration}}]chart_id1" value="{{$particular->particular->id}}" hidden class="chart_id form-control form-control-sm">
-                                                    </td>
-                                                            <td ><input data-id="ch_chart_name" name="pd[{{$loop->iteration}}]ch_chart_name" type="text" class="chart_name form-control form-control-sm" value="{{$particular->particular->name}}" readonly> </td>
-                                                        <td> <input data-id="ch_chart_amount" type="number" name="pd[{{$loop->iteration}}]ch_chart_amount" class="chart_amount form-control form-control-sm" value="{{$particular->amount}}" readonly></td>
-                                                    
-                                                    <td class="text-center">
-                                                                <div class="egt_btn-group">
-                                                                    <button type="button" class="btn btn-danger btn-sm egt_del">
-                                                                        <i data-feather="trash-2"></i>
-                                                                    </button>
-                                                                </div>
+       <tr>
+       <td class="handle">
+                                                                <i data-feather="move" class="handle egt_handle"></i>
+                                                                <input type="text" data-id="egt_sr_no"
+                                                                name="pd[{{$loop->iteration}}][egt_sr_no]"
+                                                                 value="{{$loop->iteration}}"
+                                                                 class="form-control form-control-sm" readonly>
+                                                                <input type="hidden" data-id="chart_id"
+                                                                 name="pd[{{$loop->iteration}}][chart_id]"
+                                                                value="{{$particular->id}}"
+                                                                 class="chart_id form-control form-control-sm">
                                                             </td>
-                                                    @endforeach
-                                                </tr>
+               <td ><input data-id="ch_chart_name" name="pd[{{$loop->iteration}}][egt_chart_name]" type="text" class="chart_name form-control form-control-sm" value="{{$particular->particular->name}}" readonly> </td>
+           <td> <input data-id="ch_chart_amount" type="number" name="pd[{{$loop->iteration}}][egt_chart_amount]" class="chart_amount form-control form-control-sm" value="{{$particular->amount}}" readonly></td>
+       
+       <td class="text-center">
+                   <div class="egt_btn-group">
+                       <button type="button" class="btn btn-danger btn-sm egt_del">
+                           <i data-feather="trash-2"></i>
+                       </button>
+                   </div>
+               </td>
+       @endforeach
+   </tr>
                                                 </tbody>
-                                                <tfoot class="ch_form_footer">
-                                                <tr class="ch_form_footer_total">
+                                                <tfoot class="egt_form_footer">
+                                                <tr class="egt_form_footer_total">
                                                     <td class="voucher-total-title">Total</td>
-                                                    
-                                                    
+                                                   
                                                     <td class="voucher-total-debit text-end">
                                                         <span id="tot_debit"></span>
-                                                        <input id="tot_voucher_debit" name="tot_voucher_debit" type="hidden" >
+                                                        <input id="tot_voucher_debit"
+                                                         name="tot_voucher_debit" type="hidden" >
                                                     </td>
                                                     <td class="voucher-total-credit text-end">
                                                         <span id="tot_credit"></span>
-                                                        
+                                                        <input id="tot_voucher_credit"
+                                                         name="tot_voucher_credit" type="hidden" >
                                                     </td>
-                                                    
+                                                    <td></td>
                                                 </tr>
                                                 </tfoot>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
 

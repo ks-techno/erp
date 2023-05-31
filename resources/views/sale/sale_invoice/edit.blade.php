@@ -185,16 +185,20 @@
                                         if($current->sale_by_staff == 1){
                                             $sellers = App\Models\Staff::OrderByName()->get();
                                             $selected_seller = isset($current->staff->sale_sellerable_id)?$current->staff->sale_sellerable_id:"";
+                                            
                                             if (!empty($selected_seller)) {
                                             $seller = App\Models\Staff::find($selected_seller);
                                             if ($seller) {
                                                 $selected_seller_name = $seller->name;
+                                                
                                             }
-                                        }
+                                            }
                                              }
                                         if($current->sale_by_staff == 0){
                                             $sellers = App\Models\Dealer::OrderByName()->get();
+                                            
                                             $selected_seller = isset($current->dealer->sale_sellerable_id)?$current->dealer->sale_sellerable_id:"";
+                                           
                                             if (!empty($selected_seller)) {
                                             $seller = App\Models\Dealer::find($selected_seller);
                                             if ($seller) {
@@ -202,6 +206,7 @@
                                             }
                                         }
                                         }
+                                       
                                     @endphp
                                     
                                     <div class="col-sm-9">
@@ -216,18 +221,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3 pr-0">
-                                        <label class="col-form-label p-0">File Status</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select class="select2 form-select" id="file_status_id" name="file_status_id">
-                                            @foreach($data['file_status'] as $file_status)
-                                                <option value="{{$file_status->id}}" data-slug="{{$file_status->slug}}" {{$current->file_status_id == $file_status->id?"selected":""}}> {{$file_status->name}} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    </div>
+                               
                                 <div class="mb-1 row">
                                     <div class="col-sm-3 pr-0">
                                         <label class="col-form-label p-0">Payment Mode</label>
