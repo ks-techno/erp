@@ -87,7 +87,7 @@
                     </div>
                     <div class="card-link">
                             @if($data['view'])
-                                @if(!$data['posted'])
+                                @if(!$data['status'])
                                 @permission($data['permission_edit'])
                            
                                 <a href="{{route('sale.challan-form.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
@@ -367,7 +367,7 @@
                                                                  class="form-control form-control-sm" readonly>
                                                                 <input type="hidden" data-id="chart_id"
                                                                  name="pd[{{$loop->iteration}}][chart_id]"
-                                                                value="{{$particular->id}}"
+                                                                value="{{$particular->particular_id}}"
                                                                  class="chart_id form-control form-control-sm">
                                                             </td>
                <td ><input data-id="ch_chart_name" name="pd[{{$loop->iteration}}][egt_chart_name]" type="text" class="chart_name form-control form-control-sm" value="{{$particular->particular->name}}" readonly> </td>

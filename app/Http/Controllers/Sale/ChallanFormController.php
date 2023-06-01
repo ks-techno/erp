@@ -277,11 +277,11 @@ class ChallanFormController extends Controller
             abort('404');
         }
         $data['view'] = false;
-        $data['posted'] = false;
-        if($data['current']->posted == 1){
-            $data['posted'] = true;
+        $data['status'] = false;
+        if($data['current']->status == 1){
+            $data['status'] = true;
         }
-        if(isset($request->view) || $data['current']->posted == 1){
+        if(isset($request->view) || $data['current']->status == 1){
             $data['view'] = true;
             $data['permission'] = self::Constants()['view'];
             $data['permission_edit'] = self::Constants()['edit'];
@@ -335,7 +335,7 @@ class ChallanFormController extends Controller
         DB::beginTransaction();
         try{
             $total_amount = 0;
-         
+            
             foreach ($request->pd as $pd) {
                 $total_amount += str_replace(',', '',($pd['egt_chart_amount']));
             }
