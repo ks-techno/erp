@@ -324,7 +324,7 @@ class SubmittedChallanController extends Controller
        
         $voucher_id = self::uuid();
         try{
-            Voucher::create([
+            $form_create =  Voucher::create([
                 'voucher_id' => $voucher_id,
                 'uuid' => self::uuid(),
                 'date' => date('Y-m-d'),
@@ -342,6 +342,13 @@ class SubmittedChallanController extends Controller
                 'total_credit' => $challandata->total_amount,
                 'challan_id' => $challandata->id,
             ]);
+             $req = [
+                    'payment_id' => $form_create->id,
+                    'COAID' => $account->id,
+                    'voucher_id' => $voucher_id,
+                ];
+                $reqArray[] = $req;
+            Utilities::createLedger($reqArray);
         }
         catch (Exception $e) {
             DB::rollback();
