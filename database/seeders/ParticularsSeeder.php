@@ -1,12 +1,13 @@
 <?php
 
 namespace Database\Seeders;
-
+use App\Models\Particulars;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
 class ParticularsSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      *
@@ -33,7 +34,6 @@ class ParticularsSeeder extends Seeder
                         [  'name' => 'Transfer Fee',   ],
                         [  'name' => 'Other Charges',   ],
                     ];
-
         DB::table('particulars')->insert($particulars);
     }
 }

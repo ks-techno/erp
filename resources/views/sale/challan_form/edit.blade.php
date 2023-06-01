@@ -347,7 +347,7 @@
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_amount" type="number"
-                                                         class="chart_amount form-control form-control-sm">
+                                                         class="chart_amount credit form-control form-control-sm">
                                                     </td>
                                                     <td><button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
@@ -371,7 +371,7 @@
                                                                  class="chart_id form-control form-control-sm">
                                                             </td>
                <td ><input data-id="ch_chart_name" name="pd[{{$loop->iteration}}][egt_chart_name]" type="text" class="chart_name form-control form-control-sm" value="{{$particular->particular->name}}" readonly> </td>
-           <td> <input data-id="ch_chart_amount" type="number" name="pd[{{$loop->iteration}}][egt_chart_amount]" class="chart_amount form-control form-control-sm" value="{{$particular->amount}}" readonly></td>
+           <td> <input data-id="ch_chart_amount" type="number" name="pd[{{$loop->iteration}}][egt_chart_amount]" class="chart_amount credit form-control form-control-sm" value="{{$particular->amount}}" readonly></td>
        
        <td class="text-center">
                    <div class="egt_btn-group">
@@ -388,7 +388,7 @@
                                                     <td class="voucher-total-title">Total</td>
                                                    
                                                     <td class="voucher-total-debit text-end">
-                                                        <span id="tot_debit"></span>
+                                                       
                                                         <input id="tot_voucher_debit"
                                                          name="tot_voucher_debit" type="hidden" >
                                                     </td>

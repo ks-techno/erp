@@ -248,13 +248,7 @@ class JournalController extends Controller
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage()
-
-
-
-
-
-        );
+            return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
