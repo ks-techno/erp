@@ -352,13 +352,13 @@
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_amount" type="number"
-                                                         class="chart_amount form-control form-control-sm">
+                                                         class="credit form-control form-control-sm">
                                                     </td>
                                                     <td><button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
                                                         </button></td>
                                                 </tr>
-                                                </thead>
+                            </thead>
                                                 <tbody class="egt_form_body">
                                                 </tbody>
                                                 <tfoot class="egt_form_footer">
@@ -366,7 +366,7 @@
                                                     <td class="voucher-total-title">Total</td>
                                                    
                                                     <td class="voucher-total-debit text-end">
-                                                        <span id="tot_debit"></span>
+                                                        
                                                         <input id="tot_voucher_debit"
                                                          name="tot_voucher_debit" type="hidden" >
                                                     </td>

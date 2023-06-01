@@ -175,7 +175,7 @@ class RefundFileController extends Controller
                 'uuid' => self::uuid(),
                 'code' => $code,
                 'customer_id' => $request->om_customer_id,
-                'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
+                
                 'project_id' => auth()->user()->project_id,
                 'product_id' => $request->product_id,
                 'property_payment_mode_id' => isset($request->property_payment_mode_id) ? 1 : 0,
@@ -298,7 +298,7 @@ class RefundFileController extends Controller
             Sale::where('uuid',$id)
                 ->update([
                 'customer_id' => $request->customer_id,
-                'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
+                
                 'project_id' => auth()->user()->project_id,
                 'product_id' => $request->product_id,
                 'property_payment_mode_id' => $request->property_payment_mode_id,
