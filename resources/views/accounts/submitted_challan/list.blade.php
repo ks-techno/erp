@@ -24,7 +24,8 @@
                                     <tr>
                                         <th class="cell-fit">Challan Number</th>
                                         <th class="cell-fit">Plot Number</th>
-                                        <th class="cell-fit">Block</th>
+                                        <th class="cell-fit">Property Type</th>
+                                        <th class="cell-fit">Paymnet Mode</th>
                                         <th class="cell-fit">Customer</th>
                                         <th class="cell-fit">File Status</th>
                                         <th class="cell-fit"></th>

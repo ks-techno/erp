@@ -302,23 +302,23 @@ class BookedPropertyController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             //'project_id' => ['required',Rule::notIn([0,'0'])],
-            'product_id' => ['required',Rule::notIn([0,'0'])],
-            'customer_id' => ['required',Rule::notIn([0,'0'])],
-            'seller_type' => ['required',Rule::in(['dealer','staff'])],
-            'seller_id' => ['required',Rule::notIn([0,'0'])],
-            'currency_note_no'=>'required'
+            // 'product_id' => ['required',Rule::notIn([0,'0'])],
+            // 'customer_id' => ['required',Rule::notIn([0,'0'])],
+            // 'seller_type' => ['required',Rule::in(['dealer','staff'])],
+            // 'seller_id' => ['required',Rule::notIn([0,'0'])],
+            // 'currency_note_no'=>'required'
         ],[
             //'project_id.required' => 'Project is required',
             //'project_id.not_in' => 'Project is required',
-            'product_id.required' => 'Product is required',
-            'product_id.not_in' => 'Product is required',
-            'customer_id.required' => 'Customer is required',
-            'customer_id.not_in' => 'Customer is required',
-            'seller_type.required' => 'Seller type is required',
-            'seller_type.in' => 'Seller type is required',
-            'seller_id.required' => 'Seller is required',
-            'seller_id.not_in' => 'Seller is required',
-            'currency_note_no.required'=>'currency is required'
+            // 'product_id.required' => 'Product is required',
+            // 'product_id.not_in' => 'Product is required',
+            // 'customer_id.required' => 'Customer is required',
+            // 'customer_id.not_in' => 'Customer is required',
+            // 'seller_type.required' => 'Seller type is required',
+            // 'seller_type.in' => 'Seller type is required',
+            // 'seller_id.required' => 'Seller is required',
+            // 'seller_id.not_in' => 'Seller is required',
+            // 'currency_note_no.required'=>'currency is required'
         ]);
 
         if ($validator->fails()) {
@@ -336,28 +336,7 @@ class BookedPropertyController extends Controller
         try{
             Sale::where('uuid',$id)
                 ->update([
-                'customer_id' => $request->customer_id,
-                'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
-                'project_id' => auth()->user()->project_id,
-                'product_id' => $request->product_id,
-                'property_payment_mode_id' => $request->property_payment_mode_id,
-                'is_installment' => isset($request->is_installment)?1:0,
-                'is_booked' => isset($request->is_booked)?1:0,
-                'is_purchased' => isset($request->is_purchased)?1:0,
-                'sale_price' => str_replace(',', '',($request->sale_price)),
-                'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
-                'booked_price' => str_replace(',', '',($request->booked_price)),
-                'down_payment' => str_replace(',', '',($request->down_payment)),
-                'on_balloting' => $request->on_balloting,
-                'no_of_bi_annual' => $request->no_of_bi_annual,
-                'installment_bi_annual' => $request->installment_bi_annual,
-                'no_of_month' => $request->no_of_month,
-                'installment_amount_monthly' => $request->installment_amount_monthly,
-                'on_possession' => str_replace(',', '',($request->on_possession)),
                 'file_status_id' => $request->file_status_id,
-                'sale_discount' => str_replace(',', '',($request->sale_discount)),
-                'company_id' => auth()->user()->company_id,
-                'user_id' => auth()->user()->id,
             ]);
 
             $sale = Sale::where('uuid',$id)->first();

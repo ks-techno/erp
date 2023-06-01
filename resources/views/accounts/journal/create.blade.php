@@ -119,7 +119,7 @@
                                                     <select class="select2 egt_chart_code form-select" name="egt_chart_code">
                                                     <option value="">Select Value</option>
                                                     @foreach($data['chart'] as $chart)
-                                                    <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="({{$chart->name}})" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
+                                                    <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="{{$chart->name}}" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
                                                     @endforeach
                                                     </select>
                                                     </td>
@@ -151,7 +151,7 @@
                                                     <select class="select2 egt_chart_code form-select" name="egt_chart_code1">
                                                     <option value="">Select Value</option>
                                                     @foreach($data['chart'] as $chart)
-                                                    <option value="{{$chart->id}}" data-chart-id1="{{$chart->id}}" data-chart-name1="({{$chart->name}})" data-chart-code1="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
+                                                    <option value="{{$chart->id}}" data-chart-id1="{{$chart->id}}" data-chart-name1="{{$chart->name}}" data-chart-code1="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
                                                     @endforeach
                                                     </select>
                                                     </td>

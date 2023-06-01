@@ -86,6 +86,9 @@
 .table-scroll{
     overflow: visible !important;
 }
+.table:not(.table-dark):not(.table-light) thead:not(.table-dark) th, .table:not(.table-dark):not(.table-light) tfoot:not(.table-dark) th{
+    color: #0f0e1c !important;
+}
 </style>
 @endsection
 
@@ -319,12 +322,72 @@
                     <hr>
                     <div class="form-group row mb-2">
                     <div class="col-lg-12">
-                                <div id="erp_grid_table" class="egt">
+                    <div id="erp_grid_table" class="egt">
                                     <div class="erp_form___block">
                                         <div class="table-scroll form_input__block">
                                             <table class="egt_form_table table table-bordered">
                                                 <thead class="egt_form_header">
                                                 <tr class="egt_form_header_title">
+                                                    <th width="7%">Sr</th>
+                                                    <th width="20%">Particulars</th>
+                                                    <th width="22%">Amount</th>
+                                                    
+                                                    <th width="13%" class="text-center">Action</th>
+                                                </tr>
+                                                <tr class="egt_form_header_input">
+                                                    <td>
+                                                        <input id="egt_sr_no" readonly type="text"
+                                                        class="form-control form-control-sm">
+                                                        <input id="chart_id" type="hidden"
+                                                         class="chart_id form-control form-control-sm">
+                                                    </td>
+                                                    <td>
+                                                    <select class="select2 form-select" id="ch_chart_code" name="ch_chart_code">
+                                                    <option value="">Select Value</option>
+                                                    particulars
+                                                    @foreach($data['particulars'] as $particular)
+                                                    <option value="{{$particular->id}}" data-chart-id="{{$particular->id}}" data-chart-name="({{$particular->name}})"> {{$particular->name}}</option>
+                                                    @endforeach
+                                                    </select>
+                                                    </td>
+                                                    <td>
+                                                        <input id="egt_chart_amount" type="number"
+                                                         class="chart_amount form-control form-control-sm">
+                                                    </td>
+                                                    <td><button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
+                                                            <i data-feather='plus'></i>
+                                                        </button></td>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="egt_form_body">
+                                                </tbody>
+                                                <tfoot class="egt_form_footer">
+                                                <tr class="egt_form_footer_total">
+                                                    <td class="voucher-total-title">Total</td>
+                                                   
+                                                    <td class="voucher-total-debit text-end">
+                                                        <span id="tot_debit"></span>
+                                                        <input id="tot_voucher_debit"
+                                                         name="tot_voucher_debit" type="hidden" >
+                                                    </td>
+                                                    <td class="voucher-total-credit text-end">
+                                                        <span id="tot_credit"></span>
+                                                        <input id="tot_voucher_credit"
+                                                         name="tot_voucher_credit" type="hidden" >
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div id="erp_grid_table" class="ch">
+                                    <div class="erp_form___block">
+                                        <div class="table-scroll form_input__block">
+                                            <table class="egt_form_table table table-bordered">
+                                                <thead class="egt_form_header">
+                                                <tr class="ch_form_header_title">
                                                     <th width="2%">Sr</th>
                                                     <th width="20%">Particulars</th>
                                                     <th width="22%">Amount</th>
@@ -354,10 +417,10 @@
                                                     </td>
                                                 </tr>
                                                 </thead>
-                                                <tbody class="egt_form_body">
+                                                <tbody class="ch_form_body">
                                                 </tbody>
-                                                <tfoot class="egt_form_footer">
-                                                <tr class="egt_form_footer_total">
+                                                <tfoot class="ch_form_footer">
+                                                <tr class="ch_form_footer_total">
                                                     <td class="voucher-total-title">Total</td>
                                                    
                                                     <td class="voucher-total-debit text-end">
@@ -374,7 +437,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
@@ -820,7 +883,7 @@
         var keyCode = e.keyCode;
         if (keyCode == 38) { // up arrow key
             e.preventDefault();
-            //$('#egt_cheque_no').focus();
+            //$('#ch_cheque_no').focus();
             inLineHelp.scrollTop(scrollTop - lineHeight);
             if (inLineHelp.scrollTop() == 0) {
                 inLineHelp.css('top', offsetTop + lineHeight + 'px');
@@ -832,7 +895,7 @@
             }
         } else if (keyCode == 40) { // down arrow key
             e.preventDefault();
-            //$('#egt_cheque_no').focus();
+            //$('#ch_cheque_no').focus();
             inLineHelp.scrollTop(scrollTop + lineHeight);
             if (inLineHelp.scrollTop() + inLineHelp.innerHeight() == scrollHeight) {
                 inLineHelp.css('top', offsetTop - lineHeight + 'px');
