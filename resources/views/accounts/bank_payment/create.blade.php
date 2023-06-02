@@ -131,7 +131,7 @@
                                                     </td>
                                                     <td>
                                                     
-                                                    <select class="select2 egt_chart_code form-select" name="egt_chart_code">
+                                                    <select class="select2 egt_chart_code form-select" name="egt_chart_code" id="egt_chart_code">
                                                     <option value="">Select Value</option>
                                                     @foreach($data['chart'] as $chart)
                                                     <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="{{$chart->name}}" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
@@ -178,7 +178,7 @@
                                                          class="chart_id1 form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                    <select class="select2 egt_chart_code form-select" name="egt_chart_code1">
+                                                    <select class="select2 egt_chart_code form-select" name="egt_chart_code1" id="egt_chart_code">
                                                     <option value="">Select Value</option>
                                                     @foreach($data['chart'] as $chart)
                                                     <option value="{{$chart->id}}" data-chart-id1="{{$chart->id}}" data-chart-name1="{{$chart->name}}" data-chart-code1="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
@@ -212,9 +212,9 @@
                                                          class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);" >
                                                     </td>
                                                     <td class="text-center">
-                                                        <button type="button" id="egt_add"
-                                                         class="egt_add btn btn-primary btn-sm">
-                                                            <i data-feather='plus'></i>
+                                                        <button type="button" id="egt_del"
+                                                         class="btn btn-danger btn-sm egt_del">
+                                                            <i data-feather='trash-2'></i>
                                                         </button>
                                                     </td>
                                                 </tr>
