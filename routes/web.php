@@ -74,7 +74,10 @@ Route::prefix('password')->name('password.')->group(function () {
     Route::post('reset', [ResetPasswordController::class, 'reset'])->name('update');
 
 });
+
 Route::group(['middleware' => 'auth'], function () {
+Route::get('logintest', [HomeController::class, 'logintest'])->name('logintest');
+
     Route::get('/project-list', [HomeController::class,'projectList'])->name('projectList');
     Route::post('/store-default-project', [HomeController::class,'defaultProjectStore'])->name('defaultProjectStore');
     Route::group(['middleware' => ['checkProject']], function () {

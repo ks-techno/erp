@@ -194,7 +194,7 @@ class PurchaseDemandController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Purchase Demand Successfully created');
         return $this->redirect()->route('purchase.purchase_demand.index');
     }
 

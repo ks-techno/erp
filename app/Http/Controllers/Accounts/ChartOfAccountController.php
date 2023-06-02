@@ -182,7 +182,7 @@ class ChartOfAccountController extends Controller
             $data['redirect'] = self::Constants()['list_url'];
         }
         
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Chart of Acccount Created Successfully');
         //return $this->redirect()->route('accounts.chart-of-account.index');
         
         

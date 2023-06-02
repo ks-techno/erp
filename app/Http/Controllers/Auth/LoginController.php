@@ -46,7 +46,7 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->EntryStatus()->first();
 
         if(empty($user)){
-            return $this->jsonErrorResponse([], "User not found.");
+            return $this->jsonErrorResponse([], "Invalid Email.");
         }
 
         $this->validateLogin($request);
@@ -105,6 +105,6 @@ class LoginController extends Controller
 
     protected function sendFailedLoginResponse(Request $request)
     {
-        return $this->jsonErrorResponse([], "The given data was invalid.");
+        return $this->jsonErrorResponse([], " Invalid Password.");
     }
 }

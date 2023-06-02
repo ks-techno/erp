@@ -157,7 +157,7 @@ class DepartmentController extends Controller
               
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Department Successfully created');
         return $this->redirect()->route('department.index');
        }
 

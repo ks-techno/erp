@@ -52,7 +52,7 @@
                                 
                                 <div class="mb-1 row">
                                     <div class="col-sm-4">
-                                        <label class="col-form-label">Sale Price </label>
+                                        <label class="col-form-label">Sale Price <span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="number" class="form-control form-control-sm" value="" id="default_sale_price" name="default_sale_price" />

@@ -156,9 +156,11 @@ class ProductPropertyController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'default_sale_price' => 'required'
          //   'project_id' => ['required',Rule::notIn([0,'0'])],
         ],[
             'name.required' => 'Name is required',
+            'default_sale_price.required' => 'Name is required',
 //            'project_id.required' => 'Project is required',
 //            'project_id.not_in' => 'Project is required',
         ]);
@@ -242,7 +244,7 @@ class ProductPropertyController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Product Inventory Created Successfully.');
         return $this->redirect()->route('product-property.index');
     }
 
@@ -397,7 +399,7 @@ class ProductPropertyController extends Controller
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->jsonSuccessResponse($data, ' Product Inventory Successfully updated');
         return $this->redirect()->route('product-property.index');
     }
 
@@ -420,6 +422,6 @@ class ProductPropertyController extends Controller
             return $this->jsonErrorResponse($data, 'Something went wrong', 200);
         }
         DB::commit();
-        return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
+        return $this->jsonSuccessResponse($data, ' Product Inventory Successfully deleted', 200);
     }
 }

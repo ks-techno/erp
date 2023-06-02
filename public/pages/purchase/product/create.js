@@ -45,7 +45,10 @@ $(function () {
                     required: true,
                     valueNotEquals: "0",
                 },
-                
+                default_sale_price: {
+                    required: true,
+                    
+                },
             },
             submitHandler: function (form) {
                 pageLoginForm.find(":submit").prop('disabled', true);

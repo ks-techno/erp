@@ -22,11 +22,11 @@
                                 <table class="datatables-ajax table table-responsive" data-url="{{route('accounts.submitted-challan.index')}}">
                                     <thead>
                                     <tr>
-                                        <th class="cell-fit">Challan Number</th>
+                                        <th class="cell-fit">Challan ID</th>
                                         <th class="cell-fit">Plot Number</th>
                                         <th class="cell-fit">Block</th>
                                         <th class="cell-fit">Customer</th>
-                                        <th class="cell-fit">File Status</th>
+                                        <th class="cell-fit">Status</th>
                                         <th class="cell-fit"></th>
                                     </tr>
                                     </thead>

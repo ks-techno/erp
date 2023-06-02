@@ -247,7 +247,7 @@ class BookingTransferController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Successfully Transfered.');
         return $this->redirect()->route('sale.booking-transfer.index');
 
     }
@@ -401,7 +401,7 @@ class BookingTransferController extends Controller
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->jsonSuccessResponse($data, 'Transfer Process Successfully updated');
         return $this->redirect()->route('sale.booking-transfer.index');
 
     }

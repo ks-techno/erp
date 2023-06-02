@@ -194,7 +194,7 @@ class CustomerController extends Controller
             $data['redirect'] = self::Constants()['list_url'];
         }
        
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Customer Created Successfully ');
         return $this->redirect()->route('customer.index');
     }
 
@@ -304,7 +304,7 @@ class CustomerController extends Controller
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->jsonSuccessResponse($data, 'Customer Successfully updated');
         return $this->redirect()->route('customer.index');
     }
 
@@ -327,6 +327,6 @@ class CustomerController extends Controller
             return $this->jsonErrorResponse($data, 'Something went wrong', 200);
         }
         DB::commit();
-        return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
+        return $this->jsonSuccessResponse($data, ' Customer Successfully deleted', 200);
     }
 }

@@ -26,7 +26,7 @@
                                 <table class="datatables-ajax table table-responsive" data-url="{{route('sale.challan-form.index')}}">
                                     <thead>
                                     <tr>
-                                        <th class="cell-fit">Challan Number</th>
+                                        <th class="cell-fit">Challan ID</th>
                                         <th class="cell-fit">Plot Number</th>
                                         <th class="cell-fit">Block</th>
                                         <th class="cell-fit">Customer</th>

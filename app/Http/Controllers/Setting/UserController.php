@@ -181,7 +181,7 @@ class UserController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'User Successfully created');
         return $this->redirect()->route('setting.user.index');
     }
 

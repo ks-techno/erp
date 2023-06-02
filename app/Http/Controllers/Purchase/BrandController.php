@@ -149,7 +149,7 @@ class BrandController extends Controller
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Brand Created Successfully ');
         return $this->redirect()->route('purchase.brand.index');
     }
 

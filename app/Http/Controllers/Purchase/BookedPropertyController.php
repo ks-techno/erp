@@ -242,7 +242,7 @@ class BookedPropertyController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Booked Property Successfully created');
         return $this->redirect()->route('sale.sale-invoice.index');
 }
 
@@ -320,7 +320,6 @@ class BookedPropertyController extends Controller
             'seller_id.not_in' => 'Seller is required',
             'currency_note_no.required'=>'currency is required'
         ]);
-
         if ($validator->fails()) {
             $data['validator_errors'] = $validator->errors();
             $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
@@ -384,7 +383,7 @@ class BookedPropertyController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-         return $this->jsonSuccessResponse($data, 'Successfully updated');
+         return $this->jsonSuccessResponse($data, 'Booked Property Successfully updated');
          return $this->redirect()->route('sale.sale-invoice.index');
         }
 

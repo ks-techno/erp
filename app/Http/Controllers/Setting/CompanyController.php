@@ -222,6 +222,10 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'country_id' => 'required'
+        ]
+        ,[
+            
+            'name.required'=>'name is required',
         ]);
        
         if ($validator->fails()) {
@@ -234,6 +238,7 @@ class CompanyController extends Controller
             return $this->jsonErrorResponse($data, $err);
             
         }
+
 
         DB::beginTransaction();
         try {

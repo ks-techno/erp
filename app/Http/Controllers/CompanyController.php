@@ -159,7 +159,7 @@ class CompanyController extends Controller
         }
         DB::commit();
 
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Company Successfully created');
     }
 
     /**

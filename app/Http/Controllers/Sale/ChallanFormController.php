@@ -233,7 +233,7 @@ class ChallanFormController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Challan Form Created Successfully ');
         return $this->redirect()->route('sale.challan-form.index');
 }
 

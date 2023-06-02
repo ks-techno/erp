@@ -148,7 +148,7 @@ class BuyableTypeController extends Controller{
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Property Type Successfully created');
         return $this->redirect()->route('purchase.property-type.index');
     }
 

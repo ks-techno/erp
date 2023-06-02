@@ -164,7 +164,7 @@ class CityController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'City Successfully created');
         return $this->redirect()->route('setting.city.index');
     }
 

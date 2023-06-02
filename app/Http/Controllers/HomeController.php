@@ -31,7 +31,11 @@ class HomeController extends Controller
         $data['permission'] = 'home-view';
         return view('home',compact('data'));
     }
-
+    public function logintest()
+    {
+        
+        return view('auth.logintest');
+    }
     public function projectList(Request $request)
     {
         $data = User::with('projects')->where('id',auth()->user()->id)->first();

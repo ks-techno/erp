@@ -173,7 +173,7 @@ class SupplierController extends Controller
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->jsonSuccessResponse($data, 'Supplier Successfully created');
         return $this->redirect()->route('purchase.supplier.index');
        
     }
