@@ -340,6 +340,8 @@ class SubmittedChallanController extends Controller
                 'user_id' => auth()->user()->id,
                 'posted' => '1',
                 'total_credit' => $challandata->total_amount,
+                'cheque_no' => $challandata->cheque_no,
+                'cheque_date' => $challandata->cheque_date,
                 'challan_id' => $challandata->id,
             ]);
              $req = [
