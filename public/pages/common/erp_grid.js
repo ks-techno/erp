@@ -29,13 +29,29 @@ $(document).on('click','#egt_add',function(){
     add_row(thix);
     formClear();
     grid_fun();
+    console.log(add_row());
+});
+$(document).on('click','#egt_add',function(){
+    var thix = $(this);
+    for(var i=0;i < egt_required_fields.length; i++){
+        var rf_val = $('#'+egt_required_fields[i].id).val();
+        if(rf_val == ""){
+            alert(egt_required_fields[i].message);
+            return false;
+        }
+    }
+    add_row(thix);
+    formClear();
+    grid_fun();
+    console.log(add_row());
+    
 });
 $(document).on('click','.egt_del',function(){
     $(this).parents("tr").remove();
     updateKeys();
     grid_fun();
 });
-function add_row(thix, num_rows = 1){
+function add_row(thix, num_rows = 2){
     var tr = thix.parents('tr');
     var tds = "";
     var nameAttrPrefix = 'pd';
@@ -77,6 +93,7 @@ function add_row(thix, num_rows = 1){
                 if(childEle.nodeName == "SELECT"){
                     var val =  tr.find('select#'+childEle.id).val();
                     childEle.value = val;
+                    selectElement.val(val).prop('disabled', false);
                 }
                 if(childEle.nodeName == "INPUT"){
 
@@ -104,11 +121,7 @@ function add_row(thix, num_rows = 1){
         trLength++;
 
         if(n == 1){
-            var lastTr = $('.egt_form_body>tr:last-child');
-            var lastTrInputs = lastTr.find('input');
-            var lastTrSelects = lastTr.find('select');
-            lastTrInputs.val('');
-            lastTrSelects.val('');
+          
         }
     }
 }
@@ -133,6 +146,7 @@ function updateKeys(){
                 var data_id = $(this).attr('data-id');
                 $(this).attr('name',nameAttrPrefix+'['+j+'][action]');
             });
+           
             $($(td).find('select')).each(function(){
                 var data_id = $(this).attr('data-id');
                 $(this).attr('name',nameAttrPrefix+'['+j+']['+data_id+']');
@@ -148,12 +162,15 @@ function table_td_sortable(){
             updateKeys();
         }
     });
-    $( ".egt_form_body>tr" ).disableSelection();
+    
 }
 function formClear(){
     $('.egt_form_table .egt_form_header').find('input').val("");
     $('.egt_form_table .egt_form_header').find('input[type="radio"]').prop('checked', false);
-    $('.egt_form_table .egt_form_header').find('select').prop('selectedIndex',0);
+    $('.egt_form_table .egt_form_header').find('select').each(function() {
+        $(this).val(null).trigger('change');
+      });
+      
 }
 
 function grid_fun(){
