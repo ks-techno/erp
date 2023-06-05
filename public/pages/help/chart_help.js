@@ -35,24 +35,23 @@ $(document).on('change','.egt_form_header_input',function(e){
         
     
 });
-$(document).on('change','.egt_form_body',function(e){
-    var thix = $(this);
-    
+$(document).on('change', '.egt_form_body', function(e) {
     var selectedOption = $(this).find(':selected');
     var chart_code = selectedOption.data('chart-code');
     var chart_name = selectedOption.data('chart-name');
     var chart_id = selectedOption.data('chart-id');
-    var create_new_customer = thix.find('td').attr('data-field');
-    if(create_new_customer == 'create_new_customer'){
-        $('#createNewCustomer').modal('show')
-    }
-       
-            $('.egt_form_header_input').find('.chart_code').val(chart_code);
-            $('.egt_form_header_input').find('.chart_name').val(chart_name);
-            $('.egt_form_header_input').find('.chart_id').val(chart_id);
-        
-    
-});
+
+    var thix = $(this);
+    var row = thix.parents('tr');;
+  
+    var chartCodeElement = row.find('.chart_code');
+    var chartNameElement = row.find('.chart_name');
+    var chartIdElement = row.find('.chart_id');
+    chartCodeElement.val(chart_code);
+    chartNameElement.val(chart_name);
+    chartIdElement.val(chart_id);
+    alert(chart_id);
+  });
 
 $(document).on('change','.egt_form_header_input_2nd',function(e){
     var thix = $(this);

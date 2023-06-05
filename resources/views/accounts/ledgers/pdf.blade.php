@@ -34,7 +34,7 @@
             <div class="fz-26">@yield('page_title')</div>
         </td>
         <td class="text-center" width="50%">
-        <img src="{{ asset('assets/images/logo.png') }}" alt="logo" style="height:100px;">
+        <img src="https://dev.ks-technologies.net/assets/images/logo.png" alt="logo" style="height:100px;">
         
             <!-- <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24" style="height: 60px">
                 <defs>
@@ -65,7 +65,29 @@
     </tbody>
 </table>
 
-@yield('content')
+<table class="data-table tbl-booking" width="100%" border="1">
+    <thead>
+        
+        <tr>
+            <th  class="text-left">Date</th>
+            <th class="text-left">Voucher Number</th>
+            <th class="text-left">Type</th>
+            <th class="text-left">Total Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach($data['results'] as $result)
+    
+    <tr>
+        <td class="text-left">{{isset($result->voucher->date) ? $result->voucher->date : ""}}</td>
+        <td class="text-left">{{isset($result->voucher->voucher_no) ? $result->voucher->voucher_no : ""}}</td>
+        <td class="text-left">{{isset($result->voucher->type) ? $result->voucher->type : ""}}</td>
+        <td class="text-left">{{isset($result->voucher->total_credit) ? $result->voucher->total_credit : ""}}</td>
+    </tr>
+@endforeach
+
+    </tbody>
+</table>
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('assets/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
@@ -82,3 +104,23 @@
 <!-- END: Body-->
 
 </html>
+
+@section('style')
+    <style>
+        table.tbl-booking>thead>tr>th{
+            height: 30px;
+            vertical-align: middle;
+        }
+        table.tbl-booking>tbody>tr>td{
+            height: 50px;
+            vertical-align: top;
+            padding-top: 5px;
+            vertical-align: middle;
+            text-align = center;
+        }
+        
+    </style>
+@endsection
+
+@section('script')
+@endsection

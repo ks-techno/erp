@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserPermissionSeeder::class);
         $this->call(ChartOfAccountSeeder::class);
         $this->call(BookingFileStatusSeeder::class);
+        $this->call(ParticularsSeeder::class);
         
         // \App\Models\User::factory(10)->create();
 
