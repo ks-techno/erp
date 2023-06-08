@@ -50,7 +50,7 @@ $(document).on('change', '.egt_form_body', function(e) {
     chartCodeElement.val(chart_code);
     chartNameElement.val(chart_name);
     chartIdElement.val(chart_id);
-    alert(chart_id);
+   
   });
 
 $(document).on('change','.egt_form_header_input_2nd',function(e){

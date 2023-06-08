@@ -1,6 +1,29 @@
 @extends('layouts.datatable')
 @section('title', $data['title'])
 @section('style')
+ <!-- BEGIN: Vendor CSS-->
+ <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/vendors.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/forms/select/select2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/pickers/pickadate/pickadate.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/extensions/toastr.min.css')}}">
+    <!-- END: Vendor CSS-->
+    @yield('themeStyle')
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap-extended.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/colors.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/components.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/themes/dark-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/themes/bordered-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/themes/semi-dark-layout.css')}}">
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/plugins/extensions/ext-component-toastr.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/core/menu/menu-types/vertical-menu.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/plugins/forms/form-validation.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/plugins/forms/pickers/form-pickadate.css')}}">
 @endsection
 @php
     $entry_date = date('Y-m-d');
@@ -22,25 +45,32 @@
                         </div>
                        
                     </div>
+                    <form id ="ledger_create" action="{{route('accounts.ledgers.index')}}"
+                        method="get" enctype="multipart/form-data" autocomplete="off">
+                            @csrf
                     <div class="row mb-1 mt-2 mx-3">
                             <div class="col-sm-3">
-                            <label class="col-form-label p-0 ">Vocuher Type: <span class="required">*</span></label>
-                            <select name="voucher_type" id="voucher_type" class="form-select select2">
-                                    <option value="">Select Vocuher Type</option>
-                                        @foreach (getvoucherTypes() as $key => $value)
-                                            <option value="{{ $key }}" data-slug="{{$key}}">{{ $value }}</option>
-                                        @endforeach
-                                        </select>
+                            <label class="col-form-label p-0 ">Account Type: <span class="required">*</span></label>
+                            <select class="select2 chart_code form-select" name="chart_code" id="chart_code">
+                                <option value="">Select Value</option>
+                                @foreach($data['chart'] as $chart)
+                                <option value="{{$chart->id}}"> {{$chart->code}} - ({{$chart->name}})</option>
+                                @endforeach
+                            </select>
                             </div>
                             <div class="col-sm-3">
-                            <label class="col-form-label p-0">Entry Date: <span class="required">*</span></label>
-                            <input type="text" id="entry_date" name="date" class="form-control form-control-sm" value="{{date('d-m-Y', strtotime($entry_date))}}" />
+                            <label class="col-form-label p-0">Start Date: <span class="required">*</span></label>
+                            <input type="text" id="start_date" name="start_date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="" />
+                            </div>
+                            <div class="col-sm-3">
+                            <label class="col-form-label p-0">End Date: <span class="required">*</span></label>
+                            <input type="text" id="end_date" name="end_date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="" />
                             </div>
                             <div class="col-sm-3 mt-2">
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Search</button>
-
+                            <button type="submit" value="get" class="btn btn-success btn-sm waves-effect waves-float waves-light">Search</button>
                             </div>
                         </div>
+                        </form>
                         <hr>
                     <div class="card-body">
                         <div class="card-datatable">
@@ -48,13 +78,13 @@
                             <table class="datatables-ajax table table-responsive" data-url="{{route('accounts.ledgers.index')}}">
                                 <thead>
                                 <tr>
+                                    <th class="cell-fit">Account Name</th>
+                                    <th class="cell-fit">Account Code</th>
                                     <th class="cell-fit">Date</th>
-                                    <th class="cell-fit">Voucher No</th>
-                                    <th class="cell-fit ">Type</th>
-
-                                    <th class="cell-fit text-center">Status</th>
+                                    <th class="cell-fit ">Debit</th>
+                                    <th class="cell-fit text-center">Credit</th>
                                     <th class="cell-fit">Total Amount</th>
-                                    <th class="cell-fit"></th>
+                                    <th class="cell-fit">Total Amount (In words)</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -73,5 +103,68 @@
 @endsection
 
 @section('script')
+<!-- BEGIN: Page Vendor JS-->
+<script src="{{asset('assets/vendors/js/forms/repeater/jquery.repeater.min.js')}}"></script>
+<script src="{{asset('assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
+<script src="{{asset('assets/vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
+<script src="{{asset('assets/vendors/js/pickers/pickadate/picker.js')}}"></script>
+<script src="{{asset('assets/vendors/js/pickers/pickadate/picker.date.js')}}"></script>
+<script src="{{asset('assets/vendors/js/pickers/pickadate/picker.time.js')}}"></script>
+<script src="{{asset('assets/vendors/js/pickers/pickadate/legacy.js')}}"></script>
+<script src="{{asset('assets/vendors/js/pickers/flatpickr/flatpickr.min.js')}}"></script>
+<script src="{{asset('assets/vendors/js/extensions/toastr.min.js')}}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="{{asset('assets/js/core/app-menu.js')}}"></script>
+<script src="{{asset('assets/js/core/app.js')}}"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="{{asset('assets/js/scripts/forms/form-validation.js')}}"></script>
+<script src="{{asset('assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+<script>
+$(document).ready(function() {
+  $('#ledger_create').submit(function(e) {
+    e.preventDefault(); // Prevent the form from submitting normally
+    
+    // Get the form data
+    var formData = $(this).serialize();
+    
+    // Send the AJAX request
+    $.ajax({
+      url: $(this).attr('action'),
+      type: 'GET',
+      data: formData,
+      dataType: 'json',
+      success: function(response) {
+        // Handle the response from the server
+        console.log(response);
+        
+        // Clear the existing table body
+        var tableBody = $('.datatables-ajax tbody');
+        tableBody.empty();
+        
+        // Populate the table body with the received data
+        $.each(response.data, function(index, row) {
+          var newRow = $('<tr>');
+          newRow.append('<td>' + row[0] + '</td>');
+          newRow.append('<td>' + row[1] + '</td>');
+          newRow.append('<td>' + row[2] + '</td>');
+          newRow.append('<td>' + row[3] + '</td>');
+          newRow.append('<td>' + row[4] + '</td>');
+          newRow.append('<td>' + row[5] + '</td>');
+          newRow.append('<td>' + row[6] + '</td>');
+          tableBody.append(newRow);
+        });
+      },
+      error: function(xhr, status, error) {
+        // Handle the error
+        console.log(error);
+      }
+    });
+  });
+});
+</script>
 
 @endsection

@@ -40,6 +40,8 @@ $(document).on('click','#egt_add',function(){
             return false;
         }
     }
+
+    console.log(thix);
     add_row(thix);
     formClear();
     grid_fun();
@@ -52,12 +54,14 @@ $(document).on('click','.egt_del',function(){
     grid_fun();
 });
 function add_row(thix, num_rows = 2){
-    var tr = thix.parents('tr');
+    console.log(thix);
+    var tr = thix;
     var tds = "";
     var nameAttrPrefix = 'pd';
     var trLength = $('.egt_form_body>tr').length + 1;
     var total_tds_length =  tr.find('td').length;
 
+    console.log(tr);
     for(var n = 0; n < num_rows; n++){
         $('.egt_form_body').append('<tr></tr>');
         var lastTr = $('.egt_form_body>tr:last-child');

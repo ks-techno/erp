@@ -174,7 +174,7 @@ scrollbar styling
             colWidth.push(eqWidth);
         }
     }
-    console.log(colWidth);
+    // console.log(colWidth);
     //   var colWidth = [86,120,120,100,50,100,100,100,100,120,110,100,100,100,120,50];
     //   var colHide = [6,7];
     $('#pageUserSettingSaveNONE').click(function(){
@@ -275,7 +275,7 @@ scrollbar styling
         });
         colWidth[colWidth.length-1] = 45;
         giveTableWidth = 1;
-        console.log(colWidth);
+        // console.log(colWidth);
         hiddenFiledsCount();
         $( "table.egt_form_table" ).colResizable({
           /*  headerOnly: true,*/
