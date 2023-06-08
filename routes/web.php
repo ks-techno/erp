@@ -43,6 +43,7 @@ use App\Http\Controllers\Sale\RefundFileController;
 use App\Http\Controllers\Purchase\BookedPropertyController;
 use App\Http\Controllers\Sale\ChallanFormController;
 use App\Http\Controllers\Accounts\SubmittedChallanController;
+use App\Http\Controllers\Reports\DayBookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,14 +149,14 @@ Route::group(['middleware' => 'auth'], function () {
             });
             Route::prefix('submitted-challan')->resource('submitted-challan', SubmittedChallanController::class);
         });
-            
+
         Route::prefix('company')->resource('company', CompanyController::class);
         Route::prefix('project')->resource('project', ProjectController::class);
         Route::prefix('department')->resource('department', DepartmentController::class);
         Route::prefix('staff')->resource('staff', StaffController::class);
 
         Route::prefix('setting')->name('setting.')->group(function () {
-           
+
             Route::prefix('country')->resource('country', CountryController::class);
             Route::prefix('region')->resource('region', RegionController::class);
             Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){
@@ -165,12 +166,17 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('city')->name('city.')->controller(CityController::class)->group(function(){
                 Route::post('get-city-by-region', 'getCityByRegion')->name('getCityByRegion');
             });
-           
+
             Route::prefix('user')->resource('user', UserController::class);
                 Route::prefix('user-management')->name('user-management.')->group(function () {
                 Route::get('form/{id?}', [UserManagementSystemController::class, 'create'])->name('create');
                 Route::post('form/{id?}', [UserManagementSystemController::class, 'store'])->name('store');
             });
+
+        });
+
+        Route::prefix('reports')->name('reports.')->group(function(){
+            Route::get('day-book', [DayBookController::class, 'index'])->name('day-book');
 
         });
 
@@ -202,7 +208,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('supplier')->resource('supplier', SupplierController::class);
             Route::prefix('inventory')->resource('inventory', InventoryController::class);
             Route::prefix('purchase-demand')->resource('purchase-demand', PurchaseDemandController::class);
-          
+
             Route::prefix('property-type')->resource('property-type', BuyableTypeController::class);
             Route::prefix('product-variation')->resource('product-variation', ProductVariationController::class);
             Route::prefix('product-variation')->name('product-variation.')->controller(ProductVariationController::class)->group(function(){

@@ -61,7 +61,7 @@
                                 @endpermission
                                 @endif
                                  @else
-                                 
+
                         <button type="submit" name="current_action_id" value="update" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
                                 <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
                         <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
@@ -74,12 +74,14 @@
                                 <h6>{{$current->voucher_no}}</h6>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Date <span class="required">*</span></label>
                                     </div>
+
                                     <div class="col-sm-9">
                                         <input type="text" id="date" name="date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="{{date('Y-m-d')}}" />
                                     </div>
@@ -88,6 +90,7 @@
                             <div class="col-sm-4">
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-lg-12 text-end">
                                 <div class="data_entry_header">
@@ -158,7 +161,7 @@
                                                         </button>
                                                     </td>
                                                 </tr>
-                                                
+
                                                 </thead>
                                                 <tbody class="egt_form_body">
                                                 @if(isset( $data['dtl']) && count( $data['dtl']) > 0)
@@ -244,7 +247,7 @@
     @endpermission
 @endsection
 @section('pageJs')
-    
+
 @endsection
 
 @section('script')

@@ -11,11 +11,13 @@
                         <span class="user-name fw-bolder">{{auth()->user()->name}}</span>
                         <span class="user-status">Admin</span>
                     </div>
+
                     <span class="avatar">
-                        <img class="round" src="{{asset('assets/images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40">
+                        <img class="round" src="{{asset('assets/avatar-image.png')}}" alt="avatar" height="40" width="40">
                         <span class="avatar-status-online"></span>
                     </span>
                 </a>
+                
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                     <a class="dropdown-item" href="{{route('profile.edit')}}"><i class="me-50" data-feather="user"></i> Profile</a>
                     <div class="dropdown-divider"></div>
@@ -32,3 +34,4 @@
     </div>
 </nav>
 <!-- END: Header-->
+
