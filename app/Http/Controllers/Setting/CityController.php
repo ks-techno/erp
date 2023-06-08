@@ -5,20 +5,29 @@ namespace App\Http\Controllers\Setting;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Address;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class CityController extends Controller
 {
 
     private static function Constants()
     {
+        $name = 'city';
+
         return [
             'title' => 'City',
             'list_url' => route('setting.city.index'),
+            'list' => "$name-list",
+            'create' => "$name-create",
+            'edit' => "$name-edit",
+            'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -31,6 +40,8 @@ class CityController extends Controller
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
+        $data['permission_list'] = self::Constants()['list'];
+        $data['permission_create'] = self::Constants()['create'];
         if ($request->ajax()) {
             $draw = 'all';
 
@@ -40,20 +51,31 @@ class CityController extends Controller
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
-
+            $delete_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['delete'])){
+                $delete_per = true;
+            }
+            $edit_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['edit'])){
+                $edit_per = true;
+            }
             $entries = [];
             foreach ($allData as $row) {
                 $urlEdit = route('setting.city.edit',$row->uuid);
                 $urlDel = route('setting.city.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
-                $actions .= '<div class="d-inline-flex">';
-                $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
-                $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-                $actions .= '</div>'; // end dropdown-menu
-                $actions .= '</div>'; // end d-inline-flex
-                $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="edit"></i></a>';
+                if($delete_per) {
+                    $actions .= '<div class="d-inline-flex">';
+                    $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
+                    $actions .= '<div class="dropdown-menu dropdown-menu-end">';
+                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    $actions .= '</div>'; // end dropdown-menu
+                    $actions .= '</div>'; // end d-inline-flex
+                }
+                if($edit_per) {
+                    $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
+                }
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
@@ -85,6 +107,7 @@ class CityController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['create'];
         $data['countries'] = Country::with('regions')->OrderByName()->get();
        // dd($data['countries']->toArray());
         return view('setting.city.create', compact('data'));
@@ -101,8 +124,13 @@ class CityController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'region_id' => 'required'
+            'name' => 'required|unique:cities,name,NULL,id,deleted_at,NULL',
+            'region_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name already exists',
+            'region_id.required' => 'Region is required',
+            'region_id.not_in' => 'Region is required',
         ]);
 
         if ($validator->fails()) {
@@ -125,15 +153,19 @@ class CityController extends Controller
                 'name' => self::strUCWord($request->name),
                 'country_id' => $region->country_id,
                 'region_id' => $request->region_id,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
-
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        $data['redirect'] = self::Constants()['list_url'];
+        return $this->jsonSuccessResponse($data, 'City Successfully created');
+        return $this->redirect()->route('setting.city.index');
     }
 
     /**
@@ -153,12 +185,13 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['edit'];
         $data['countries'] = Country::with('regions')->OrderByName()->get();
         if(City::where('uuid',$id)->exists()){
 
@@ -168,6 +201,12 @@ class CityController extends Controller
             abort('404');
         }
 
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
+        }
         return view('setting.city.edit', compact('data'));
     }
 
@@ -181,10 +220,16 @@ class CityController extends Controller
 
     public function update(Request $request, $id)
     {
+        $ignoreId = City::where('uuid',$id)->first();
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'region_id' => 'required'
+            'name' => ["required",Rule::unique('cities')->ignore($ignoreId->id)],
+            'region_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name already exists',
+            'region_id.required' => 'Region is required',
+            'region_id.not_in' => 'Region is required',
         ]);
 
         if ($validator->fails()) {
@@ -195,6 +240,7 @@ class CityController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+           
         }
 
         DB::beginTransaction();
@@ -206,16 +252,20 @@ class CityController extends Controller
                 'name' => self::strUCWord($request->name),
                 'country_id' => $region->country_id,
                 'region_id' => $request->region_id,
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('setting.city.index');
     }
 
     /**
@@ -228,16 +278,39 @@ class CityController extends Controller
     {
         $data = [];
         DB::beginTransaction();
-        try{
+    
+        try {
+            $city = City::where('uuid',$id)->first();
 
-            City::where('uuid',$id)->delete();
-
-        }catch (Exception $e) {
+            $addresses = Address::where('city_id', $city->id)->get();
+            if ($addresses->count() > 0 ) {
+                throw new Exception('The city cannot be deleted as it is assigned to an address.');
+            }
+            City::where('uuid', $id)->delete();
+            
+        } catch (\Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
         }
+    
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
+    
 
+    public function getCityByRegion(Request $request)
+    {
+        $data = [];
+        DB::beginTransaction();
+        try{
+
+            $data['cities'] = City::where(['region_id'=>$request->region_id,'country_id'=>$request->country_id])->get();
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, '', 200);
+    }
 }

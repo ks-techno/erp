@@ -12,7 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - {{ config('app.name', 'KSD') }}</title>
     <link rel="apple-touch-icon" href="{{asset('assets/images/ico/apple-icon-120.png')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/ico/favicon.ico')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/icon.png')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
@@ -22,7 +22,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/css/extensions/toastr.min.css')}}">
     <!-- END: Vendor CSS-->
-
+    @yield('themeStyle')
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap-extended.css')}}">
@@ -44,7 +44,18 @@
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
     <!-- END: Custom CSS-->
-
+    @if(isset($data['view']) && $data['view'])
+        <style>
+            input[type='text'],.select2 {
+                pointer-events:none !important;
+                color:#000 !important;
+                background:#F5F5F5 !important;
+            }
+            .select2-selection{
+                background:#F5F5F5 !important;
+            }
+        </style>
+    @endif
     @yield('style')
 </head>
 <!-- END: Head-->
@@ -65,7 +76,9 @@
 </div>
 <!-- END: Content-->
 
-
+<script>
+    var routeGetProductDetail = '{{ route('sale.sale-invoice.getProductDetail') }}';
+</script>
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('assets/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
@@ -90,6 +103,10 @@
 <!-- BEGIN: Page JS-->
 <script src="{{asset('assets/js/scripts/forms/form-validation.js')}}"></script>
 <script src="{{asset('assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+
+
+@include('layouts.pageSetting')
+
 @yield('pageJs')
 <!-- END: Page JS-->
 
@@ -104,7 +121,150 @@
             });
         }
     })
+    function valueEmpty(val){
+        if(val == 0 || val == undefined || val == "" || val == null || val == NaN || val == 'NaN' || !val){
+            return true;
+        }
+        return false;
+    }
+
+    $(document).on('change','.countryList',function(){
+        var validate = true;
+        var thix = $(this);
+        var val = thix.find('option:selected').val();
+        if(valueEmpty(val)){
+            $('form').find('.cityList').html("<option value='0' selected>Select</option>");
+            $('form').find('.regionList').html("<option value='0' selected>Select</option>");
+            validate = false;
+            return false;
+        }
+        if(validate){
+            var formData = {
+                country_id : val
+            };
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('setting.region.getRegionsByCountry') }}',
+                dataType	: 'json',
+                data        : formData,
+                success: function(response,data) {
+                    if(response.status == 'success'){
+                        var regions = response.data['regions'];
+                        var length = regions.length;
+                        var options = "<option value='0' selected>Select</option>";
+                        for(var i=0;i<length;i++){
+                            if(regions[i]['name']){
+                                options += '<option value="'+regions[i]['id']+'">'+regions[i]['name']+'</option>';
+                            }
+                        }
+                        $('form').find('.regionList').html(options);
+                    }else{
+                        ntoastr.error(response.message);
+                    }
+                },
+                error: function(response,status) {
+                    ntoastr.error('server error..404');
+                }
+            });
+        }
+    });
+    $(document).on('change','.regionList',function(){
+        var validate = true;
+        var thix = $(this);
+        var val = thix.find('option:selected').val();
+        var country_id = $('form').find('.countryList option:selected').val();
+        if(valueEmpty(country_id)){
+            ntoastr.error("Select country");
+            validate = false;
+            return false;
+        }
+        if(valueEmpty(val)){
+            $('form').find('.cityList').html("<option value='0' selected>Select</option>");
+            validate = false;
+            return false;
+        }
+        if(validate){
+            var formData = {
+                country_id : country_id,
+                region_id : val
+            };
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('setting.city.getCityByRegion') }}',
+                dataType	: 'json',
+                data        : formData,
+                success: function(response,data) {
+                    if(response.status == 'success'){
+                        var cities = response.data['cities'];
+                        var length = cities.length;
+                        var options = "<option value='0' selected>Select</option>";
+                        for(var i=0;i<length;i++){
+                            if(cities[i]['name']){
+                                options += '<option value="'+cities[i]['id']+'">'+cities[i]['name']+'</option>';
+                            }
+                        }
+                        $('form').find('.cityList').html(options);
+                    }else{
+                        ntoastr.error(response.message);
+                    }
+                },
+                error: function(response,status) {
+                    ntoastr.error('server error..404');
+                }
+            });
+        }
+    });
+    $(document).on('change','.parentCategoryList',function(){
+        var validate = true;
+        var thix = $(this);
+        var val = thix.find('option:selected').val();
+        if(valueEmpty(val)){
+            ntoastr.error("Select country");
+            validate = false;
+            return false;
+        }
+        if(validate){
+            var formData = {
+                parent_id : val
+            };
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('purchase.category.getChildByParentCategory') }}',
+                dataType	: 'json',
+                data        : formData,
+                success: function(response,data) {
+                    if(response.status == 'success'){
+                        var child = response.data['child'];
+                        var length = child.length;
+                        var options = "<option value='0' selected>Select</option>";
+                        for(var i=0;i<length;i++){
+                            if(child[i]['name']){
+                                options += '<option value="'+child[i]['id']+'">'+child[i]['name']+'</option>';
+                            }
+                        }
+                        $('form').find('.childCategoryList').html(options);
+                    }else{
+                        ntoastr.error(response.message);
+                    }
+                },
+                error: function(response,status) {
+                    ntoastr.error('server error..404');
+                }
+            });
+        }
+    });
 </script>
+
+<script src="{{asset('/pages/common/validateInputFields.js')}}"></script>
 </body>
 <!-- END: Body-->
 

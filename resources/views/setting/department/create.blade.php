@@ -4,17 +4,20 @@
 @endsection
 
 @section('content')
-    <form id="department_create" class="department_create" action="{{route('setting.department.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    @permission($data['permission'])
+    <form id="department_create" class="department_create" action="{{route('department.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
-                            <h4 class="card-title">{{$data['title']}}</h4>
-                            <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
+                          
+                           <a href="{{$data['list_url']}}" class="card-title" >{{$data['title']}}</a>
+                            
                         </div>
                         <div class="card-link">
+                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
                             <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                         </div>
                     </div>
@@ -36,6 +39,7 @@
             </div>
         </div>
     </form>
+    @endpermission
 @endsection
 
 @section('pageJs')

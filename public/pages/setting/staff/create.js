@@ -6,6 +6,10 @@ $(function () {
     // jQuery Validation
     // --------------------------------------------------------------------
     if (pageLoginForm.length) {
+        $.validator.addMethod("valueNotEquals", function(value, element, arg){
+            return arg !== value;
+        }, "This field is required");
+
         pageLoginForm.validate({
             /*
             * ? To enable validation onkeyup
@@ -23,8 +27,25 @@ $(function () {
                 },
                 project_id: {
                     required: true,
+                    valueNotEquals: "0",
                 },
                 department_id: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                country_id: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                region_id: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                city_id: {
+                    required: true,
+                    valueNotEquals: "0",
+                },
+                cnic_no: {
                     required: true,
                 },
             },
@@ -50,7 +71,7 @@ $(function () {
                             setTimeout(function () {
                                 $("form").find(":submit").prop('disabled', false);
                             }, 2000);
-                            location.reload();
+                            window.location.href = response['data']['redirect'];
                         }else{
                             ntoastr.error(response.message);
                             setTimeout(function () {

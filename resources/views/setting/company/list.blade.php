@@ -14,13 +14,16 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                         </div>
-                        <div class="card-link">
-                            <a href="{{route('setting.company.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
-                        </div>
+                        {{--<div class="card-link">
+                            @permission($data['permission_create'])
+                            <a href="{{route('company.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
+                            @endpermission
+                        </div>--}}
                     </div>
                     <div class="card-body">
                         <div class="card-datatable">
-                            <table class="datatables-ajax table table-responsive" data-url="{{route('setting.company.index')}}">
+                            @permission($data['permission_list'])
+                            <table class="datatables-ajax table table-responsive" data-url="{{route('company.index')}}">
                                 <thead>
                                 <tr>
                                     <th class="cell-fit">Name</th>
@@ -31,6 +34,7 @@
                                 </tr>
                                 </thead>
                             </table>
+                            @endpermission
                         </div>
                     </div>
                 </div>

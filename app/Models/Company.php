@@ -18,10 +18,11 @@ class Company extends Model
         'country_id',
     ];
 
+    public function addresses(){
+        return $this->morphOne(Address::class, 'addressable');
+    }
+
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
-    }
-    public function country(){
-        return $this->belongsTo(Country::class);
     }
 }

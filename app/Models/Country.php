@@ -14,13 +14,18 @@ class Country extends Model
         'uuid',
         'name',
         'default_country',
-        'country_status',
+        'status',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
-
+    protected $dates = ['deleted_at']; // indicate that this model uses soft deletes
+    
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }
     public function regions(){
         return $this->hasMany(Region::class,'country_id','id')->orderby('name');
     }
+    
 }

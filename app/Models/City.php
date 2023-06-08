@@ -15,6 +15,9 @@ class City extends Model
         'name',
         'country_id',
         'region_id',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){
@@ -22,9 +25,13 @@ class City extends Model
     }
 
     public function country(){
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class)->withDefault([
+            'name' => 'No country'
+        ]);
     }
     public function region(){
-        return $this->belongsTo(Region::class);
+        return $this->belongsTo(Region::class)->withDefault([
+            'name' => 'No region'
+        ]);
     }
 }

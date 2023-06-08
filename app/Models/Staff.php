@@ -14,19 +14,35 @@ class Staff extends Model
         'uuid',
         'name',
         'contact_no',
+        'cnic_no',
         'address',
-        'project_id',
         'department_id',
+        'company_id',
+        'project_id',
+        'user_id',
+        'COAID',
     ];
+
+    public function addresses(){
+        return $this->morphOne(Address::class, 'addressable');
+    }
+
+    public function sale_seller(){
+        return $this->morphOne(SaleSeller::class, 'sale_sellerable');
+    }
 
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }
 
     public function project(){
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class)->withDefault([
+            'name' => 'No project'
+        ]);
     }
     public function department(){
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Department::class)->withDefault([
+            'name' => 'No department'
+        ]);
     }
 }

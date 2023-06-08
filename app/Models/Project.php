@@ -15,11 +15,12 @@ class Project extends Model
         'name',
         'contact_no',
         'company_id',
-        'country_id',
-        'region_id',
-        'city_id',
-        'address',
+        'user_id',
     ];
+
+    public function addresses(){
+        return $this->morphOne(Address::class, 'addressable');
+    }
 
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
@@ -39,5 +40,9 @@ class Project extends Model
 
     public function regions(){
         return $this->hasMany(Region::class)->with('cities')->OrderByName();
+    }
+
+    public function users(){
+        return $this->belongsToMany(User::class,'user_project');
     }
 }

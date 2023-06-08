@@ -14,13 +14,19 @@ class Region extends Model
         'uuid',
         'name',
         'country_id',
+        'company_id',
+        'project_id',
+        'user_id',
     ];
+    protected $dates = ['deleted_at'];
 
     protected function scopeOrderByName($qry,$dir = 'asc'){
         return $qry->orderby('name',$dir);
     }
     public function country(){
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class)->withDefault([
+            'name' => 'No country'
+        ]);;
     }
     public function cities(){
         return $this->hasMany(City::class)->OrderByName();

@@ -12,7 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - {{ config('app.name', 'KSD') }}</title>
     <link rel="apple-touch-icon" href="{{asset('assets/images/ico/apple-icon-120.png')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/ico/favicon.ico')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/icon.png')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
@@ -44,6 +44,12 @@
     <!-- END: Custom CSS-->
 
     @yield('style')
+
+    <style>
+        .datatables-ajax>tbody>tr:hover {
+            background: #f0f8ff;
+        }
+    </style>
 
     <script>
         let cd = console.log;
@@ -94,6 +100,7 @@
 <!-- BEGIN: Page JS-->
 <script src="{{ asset('/pages/datatable/list.js?v=1') }}"></script>
 <script src="{{ asset('/pages/datatable/data-delete.js?v=1') }}"></script>
+<script src="{{ asset('/pages/datatable/data-revert.js?v=1') }}"></script>
 @yield('pageJs')
 <!-- END: Page JS-->
 
@@ -108,12 +115,29 @@
             });
         }
     })
+
+    function valueEmpty(val){
+        if(val == 0 || val == undefined || val == "" || val == null || val == NaN || val == 'NaN' || !val){
+            return true;
+        }
+        return false;
+    }
     $(function () {
         $("#modal_md").on("hidden.bs.modal", function (e) {
             console.log("Modal hidden");
             $('#modal_md').find('.modal-content').html(spinner);
         });
     });
+    $(document).on('click','.datatables-ajax>tbody>tr>td',function(){
+        var thix = $(this);
+        if(thix.find('a.item-edit').length == 0){
+            var tr = thix.parents('tr');
+            var edit_url = tr.find('a.item-edit').attr('href');
+            if(!valueEmpty(edit_url)){
+                location.href = edit_url+'?view=true'
+            }
+        }
+    })
 </script>
 </body>
 <!-- END: Body-->

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
+use App\Library\Utilities;
+use App\Models\Address;
 use App\Models\City;
 use App\Models\Company;
 use App\Models\Country;
@@ -21,9 +23,15 @@ class StaffController extends Controller
 
     private static function Constants()
     {
+        $name = 'staff';
         return [
             'title' => 'Staff',
-            'list_url' => route('setting.staff.index'),
+            'list_url' => route('staff.index'),
+            'list' => "$name-list",
+            'create' => "$name-create",
+            'edit' => "$name-edit",
+            'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -36,35 +44,48 @@ class StaffController extends Controller
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
+        $data['permission_list'] = self::Constants()['list'];
+        $data['permission_create'] = self::Constants()['create'];
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Staff::with('project','department')->where('id','<>',0)->orderByName();
-
+            $dataSql = Staff::with('project','department')->where(Utilities::CompanyProjectId())->orderByName();
+            
             $allData = $dataSql->get();
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
+            $delete_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['delete'])){
+                $delete_per = true;
+            }
+            $edit_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['edit'])){
+                $edit_per = true;
+            }
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.staff.edit',$row->uuid);
-                $urlDel = route('setting.staff.destroy',$row->uuid);
+                $urlEdit = route('staff.edit',$row->uuid);
+                $urlDel = route('staff.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
-                $actions .= '<div class="d-inline-flex">';
-                $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
-                $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-                $actions .= '</div>'; // end dropdown-menu
-                $actions .= '</div>'; // end d-inline-flex
-                $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="edit"></i></a>';
+                if($delete_per) {
+                    $actions .= '<div class="d-inline-flex">';
+                    $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
+                    $actions .= '<div class="dropdown-menu dropdown-menu-end">';
+                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    $actions .= '</div>'; // end dropdown-menu
+                    $actions .= '</div>'; // end d-inline-flex
+                }
+                if($edit_per) {
+                    $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
+                }
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
                     $row->name,
                     $row->contact_no,
-                    $row->address,
                     $row->project->name,
                     $row->department->name,
                     $actions,
@@ -92,6 +113,7 @@ class StaffController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['create'];
         $data['projects'] = Project::OrderByName()->get();
         $data['departments'] = Department::OrderByName()->get();
         return view('setting.staff.create', compact('data'));
@@ -108,8 +130,16 @@ class StaffController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'project_id' => ['required',Rule::notIn([0,'0'])],
-            'department_id' => ['required',Rule::notIn([0,'0'])]
+            'cnic_no' => 'required',
+          //  'project_id' => ['required',Rule::notIn([0,'0'])],
+            'department_id' => ['required',Rule::notIn([0,'0'])],
+        ],[
+            'name.required' => 'Name is required',
+            'cnic_no.required' => 'CNIC NO is required',
+            //'project_id.required' => 'Project is required',
+            //'project_id.not_in' => 'Project is required',
+            'department_id.required' => 'Department is required',
+            'department_id.not_in' => 'Department is required',
         ]);
 
         if ($validator->fails()) {
@@ -119,28 +149,51 @@ class StaffController extends Controller
             foreach ($validator_errors as $key=>$valid_error){
                 $err = $valid_error[0];
             }
+            
             return $this->jsonErrorResponse($data, $err);
-        }
-
+            }
         DB::beginTransaction();
         try {
-
-            Staff::create([
+            $req = [
+                'name' => $request->name,
+                'level' => 4,
+                'parent_account' => '03-04-0001-0000',
+            ];
+            $r = Utilities::createCOA($req);
+            $staff = Staff::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
+                'cnic_no' => $request->cnic_no,
                 'contact_no' => $request->contact_no,
-                'address' => $request->address,
-                'project_id' => $request->project_id,
+                /*'address' => $request->address,*/
+                'project_id' => auth()->user()->project_id,
                 'department_id' => $request->department_id,
+                'company_id' => auth()->user()->company_id,
+                'user_id' => auth()->user()->id,
+                'COAID' => $r,
             ]);
 
-        }catch (Exception $e) {
+            $r = self::insertAddress($request,$staff);
+           
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+               
+            }
+            
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);    
+            }
+           }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
+
+           
         }
         DB::commit();
-
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+         $data['redirect'] = self::Constants()['list_url'];
+        return $this->jsonSuccessResponse($data, 'Staff Created Successfully ');
+        return $this->redirect()->route('staff.index');
     }
 
     /**
@@ -160,20 +213,29 @@ class StaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['projects'] = Project::OrderByName()->get();
-        $data['departments'] = Department::OrderByName()->get();;
+        $data['permission'] = self::Constants()['edit'];
+      //  $data['projects'] = Project::OrderByName()->get();
+        $data['departments'] = Department::OrderByName()->get();
+
         if(Staff::where('uuid',$id)->exists()){
 
-            $data['current'] = Staff::where('uuid',$id)->first();
+            $data['current'] = Staff::with('addresses')->where('uuid',$id)->first();
+
 
         }else{
             abort('404');
+        }
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
         }
 
         return view('setting.staff.edit', compact('data'));
@@ -192,8 +254,16 @@ class StaffController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'project_id' => ['required',Rule::notIn([0,'0'])],
+            'cnic_no' => 'required',
+          //  'project_id' => ['required',Rule::notIn([0,'0'])],
             'department_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'cnic_no.required' => 'CNIC NO is required',
+          //  'project_id.required' => 'Project is required',
+          //  'project_id.not_in' => 'Project is required',
+            'department_id.required' => 'Department is required',
+            'department_id.not_in' => 'Department is required',
         ]);
 
         if ($validator->fails()) {
@@ -212,19 +282,30 @@ class StaffController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'contact_no' => $request->contact_no,
-                    'address' => $request->address,
-                    'project_id' => $request->project_id,
+                    'cnic_no' => $request->cnic_no,
+                   // 'address' => $request->address,
+                    'project_id' => auth()->user()->project_id,
                     'department_id' => $request->department_id,
+                    'company_id' => auth()->user()->company_id,
+                    'user_id' => auth()->user()->id,
                 ]);
+            $staff = Staff::where('uuid',$id)->first();
+
+            $r = self::insertAddress($request,$staff);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('staff.index');
     }
 
     /**
@@ -243,7 +324,7 @@ class StaffController extends Controller
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);

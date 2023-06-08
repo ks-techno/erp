@@ -4,6 +4,30 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <script>
+		window.onload=function(){
+			document.getElementById('loader').style.display="none";
+			document.getElementById('content').style.display="block";
+		};
+		</script>
+
+		<style>
+
+		#content{display:none;}
+		#content img{width:100%;}
+		#loader{
+			position: absolute;
+			margin: auto;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			width: 400px;
+			height: 400px;
+		}
+		#loader img{width:400px;}
+
+		</style>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -20,6 +44,19 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+<div id="loader">
+			<img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/1c221769321565.5b7d0cbe74850.gif"/>
+		</div>
+
+		<div id="content">
+		
+			<img src="https://i.pinimg.com/originals/cb/16/bb/cb16bb284a2a80c75041c80ba63e62d3.jpg"/>
+			
+			<img src="https://webneel.com/wallpaper/sites/default/files/images/08-2018/3-nature-wallpaper-mountain.jpg"/>
+			
+			<img src="https://wallpapercave.com/wp/wp2634222.jpg"/>
+		
+		</div>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

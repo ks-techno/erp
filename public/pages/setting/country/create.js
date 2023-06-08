@@ -44,7 +44,7 @@ $(function () {
                             setTimeout(function () {
                                 $("form").find(":submit").prop('disabled', false);
                             }, 2000);
-                            location.reload();
+                            window.location.href = response['data']['redirect'];
                         }else{
                             ntoastr.error(response.message);
                             setTimeout(function () {

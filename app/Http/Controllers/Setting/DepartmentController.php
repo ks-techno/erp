@@ -15,9 +15,15 @@ class DepartmentController extends Controller
 
     private static function Constants()
     {
+        $name = 'department';
         return [
             'title' => 'Department',
-            'list_url' => route('setting.department.index'),
+            'list_url' => route('department.index'),
+            'list' => "$name-list",
+            'create' => "$name-create",
+            'edit' => "$name-edit",
+            'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -30,6 +36,8 @@ class DepartmentController extends Controller
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
+        $data['permission_list'] = self::Constants()['list'];
+        $data['permission_create'] = self::Constants()['create'];
         if ($request->ajax()) {
             $draw = 'all';
 
@@ -40,19 +48,31 @@ class DepartmentController extends Controller
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
+            $delete_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['delete'])){
+                $delete_per = true;
+            }
+            $edit_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['edit'])){
+                $edit_per = true;
+            }
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.department.edit',$row->uuid);
-                $urlDel = route('setting.department.destroy',$row->uuid);
+                $urlEdit = route('department.edit',$row->uuid);
+                $urlDel = route('department.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
-                $actions .= '<div class="d-inline-flex">';
-                $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
-                $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-                $actions .= '</div>'; // end dropdown-menu
-                $actions .= '</div>'; // end d-inline-flex
-                $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="edit"></i></a>';
+                if($delete_per) {
+                    $actions .= '<div class="d-inline-flex">';
+                    $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
+                    $actions .= '<div class="dropdown-menu dropdown-menu-end">';
+                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    $actions .= '</div>'; // end dropdown-menu
+                    $actions .= '</div>'; // end d-inline-flex
+                }
+                if($edit_per) {
+                    $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
+                }
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
@@ -82,8 +102,11 @@ class DepartmentController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['create'];
 
         return view('setting.department.create', compact('data'));
+        
+           
     }
 
     /**
@@ -105,26 +128,38 @@ class DepartmentController extends Controller
             $err = 'Fields are required';
             foreach ($validator_errors as $key=>$valid_error){
                 $err = $valid_error[0];
+               
             }
             return $this->jsonErrorResponse($data, $err);
-        }
-
+          
+             }
+             
+      
         DB::beginTransaction();
         try {
-
-            Department::create([
+                Department::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
+                'status' => isset($request->status) ? "1" : "0",
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
             ]);
-
-        }catch (Exception $e) {
-            DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+         
+           
         }
+        catch (Exception $e) {
+            
+            DB::rollback();
+            
+            return $this->jsonErrorResponse($data, 'Something went wrong');
+              }
+              
         DB::commit();
-
-        return $this->jsonSuccessResponse($data, 'Successfully created');
-    }
+        $data['redirect'] = self::Constants()['list_url'];
+        return $this->jsonSuccessResponse($data, 'Department Successfully created');
+        return $this->redirect()->route('department.index');
+       }
 
     /**
      * Display the specified resource.
@@ -143,12 +178,13 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['edit'];
         if(Department::where('uuid',$id)->exists()){
 
             $data['current'] = Department::where('uuid',$id)->first();
@@ -157,6 +193,12 @@ class DepartmentController extends Controller
             abort('404');
         }
 
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
+        }
         return view('setting.department.edit', compact('data'));
     }
 
@@ -183,6 +225,7 @@ class DepartmentController extends Controller
             }
             return $this->jsonErrorResponse($data, $err);
         }
+       
 
         DB::beginTransaction();
         try {
@@ -190,16 +233,21 @@ class DepartmentController extends Controller
             Department::where('uuid',$id)
                 ->update([
                     'name' => self::strUCWord($request->name),
+                    'status' => isset($request->status) ? "1" : "0",
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
                 ]);
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('department.index');
     }
 
     /**
@@ -218,7 +266,7 @@ class DepartmentController extends Controller
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);

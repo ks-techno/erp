@@ -16,9 +16,15 @@ class CompanyController extends Controller
 
     private static function Constants()
     {
+        $name = 'company';
         return [
             'title' => 'Company',
-            'list_url' => route('setting.company.index'),
+            'list_url' => route('company.index'),
+            'list' => "$name-list",
+            'create' => "$name-create",
+            'edit' => "$name-edit",
+            'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -31,36 +37,54 @@ class CompanyController extends Controller
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
+        $data['permission_list'] = self::Constants()['list'];
+        $data['permission_create'] = self::Constants()['create'];
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Company::with('country')->where('id','<>',0)->orderByName();
+            $dataSql = Company::with('addresses')->where('id','<>',0)->orderByName();
 
             $allData = $dataSql->get();
 
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
+            $delete_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['delete'])){
+                $delete_per = true;
+            }
+            $edit_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['edit'])){
+                $edit_per = true;
+            }
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('setting.company.edit',$row->uuid);
-                $urlDel = route('setting.company.destroy',$row->uuid);
+                $urlEdit = route('company.edit',$row->uuid);
+                $urlDel = route('company.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
-                $actions .= '<div class="d-inline-flex">';
-                $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
-                $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-                $actions .= '</div>'; // end dropdown-menu
-                $actions .= '</div>'; // end d-inline-flex
-                $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="edit"></i></a>';
+                if($delete_per) {
+                    $actions .= '<div class="d-inline-flex">';
+                    $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
+                    $actions .= '<div class="dropdown-menu dropdown-menu-end">';
+                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    $actions .= '</div>'; // end dropdown-menu
+                    //test
+                    $actions .= '</div>'; // end d-inline-flex
+                }
+                if($edit_per) {
+                    $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
+                }
                 $actions .= '</div>'; //end main div
-
+                $country = "";
+                if(!empty($row->addresses) && isset($row->addresses->country->name)) {
+                    $country = $row->addresses->country->name;
+                }
                 $entries[] = [
                     $row->name,
                     $row->contact_no,
-                    $row->country->name,
-                    $row->address,
+                    $country,
+                    $row->addresses->address ?? "",
                     $actions,
                 ];
             }
@@ -86,7 +110,7 @@ class CompanyController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::OrderByName()->get();
+        $data['permission'] = self::Constants()['create'];
         return view('setting.company.create', compact('data'));
     }
 
@@ -113,12 +137,13 @@ class CompanyController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            return $this->redirect()->route('company.index');
         }
 
         DB::beginTransaction();
         try {
 
-            Company::create([
+            $company = Company::create([
                 'uuid' => self::uuid(),
                 'name' => self::strUCWord($request->name),
                 'contact_no' => $request->contact_no,
@@ -126,13 +151,20 @@ class CompanyController extends Controller
                 'country_id' => $request->country_id,
             ]);
 
+            $r = self::insertAddress($request,$company);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
+
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
-
+        $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('company.index');
     }
 
     /**
@@ -152,13 +184,14 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['countries'] = Country::OrderByName()->get();
+        $data['permission'] = self::Constants()['edit'];
+
         if(Company::where('uuid',$id)->exists()){
 
             $data['current'] = Company::where('uuid',$id)->first();
@@ -166,7 +199,12 @@ class CompanyController extends Controller
         }else{
             abort('404');
         }
-
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
+        }
         return view('setting.company.edit', compact('data'));
     }
 
@@ -184,8 +222,12 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'country_id' => 'required'
+        ]
+        ,[
+            
+            'name.required'=>'name is required',
         ]);
-
+       
         if ($validator->fails()) {
             $data['validator_errors'] = $validator->errors();
             $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
@@ -194,7 +236,9 @@ class CompanyController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            
         }
+
 
         DB::beginTransaction();
         try {
@@ -203,18 +247,23 @@ class CompanyController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'contact_no' => $request->contact_no,
-                    'address' => $request->address,
-                    'country_id' => $request->country_id,
                 ]);
+            $company = Company::where('uuid',$id)->first();
+            $r = self::insertAddress($request,$company);
+
+            if(isset($r['status']) && $r['status'] == 'error'){
+                return $this->jsonErrorResponse($data, $r['message']);
+            }
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('company.index');
     }
 
     /**
@@ -233,7 +282,7 @@ class CompanyController extends Controller
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);

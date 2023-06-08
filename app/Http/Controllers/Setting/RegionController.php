@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Setting;
 
+use App\Models\City;
 use App\Models\Country;
+use App\Models\Address;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Validation\Rule;
 use Validator;
 
 class RegionController extends Controller
@@ -16,9 +19,16 @@ class RegionController extends Controller
 
     private static function Constants()
     {
+        $name = 'region';
+
         return [
             'title' => 'Region',
             'list_url' => route('setting.region.index'),
+            'list' => "$name-list",
+            'create' => "$name-create",
+            'edit' => "$name-edit",
+            'delete' => "$name-delete",
+            'view' => "$name-view",
         ];
     }
 
@@ -31,6 +41,8 @@ class RegionController extends Controller
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
+        $data['permission_list'] = self::Constants()['list'];
+        $data['permission_create'] = self::Constants()['create'];
         if ($request->ajax()) {
             $draw = 'all';
 
@@ -41,19 +53,31 @@ class RegionController extends Controller
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
+            $delete_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['delete'])){
+                $delete_per = true;
+            }
+            $edit_per = false;
+            if(auth()->user()->isAbleTo(self::Constants()['edit'])){
+                $edit_per = true;
+            }
             $entries = [];
             foreach ($allData as $row) {
                 $urlEdit = route('setting.region.edit',$row->uuid);
                 $urlDel = route('setting.region.destroy',$row->uuid);
 
                 $actions = '<div class="text-end">';
-                $actions .= '<div class="d-inline-flex">';
-                $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
-                $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-                $actions .= '</div>'; // end dropdown-menu
-                $actions .= '</div>'; // end d-inline-flex
-                $actions .= '<a href="'.$urlEdit.'" class="item-edit"><i data-feather="edit"></i></a>';
+                if($delete_per) {
+                    $actions .= '<div class="d-inline-flex">';
+                    $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
+                    $actions .= '<div class="dropdown-menu dropdown-menu-end">';
+                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
+                    $actions .= '</div>'; // end dropdown-menu
+                    $actions .= '</div>'; // end d-inline-flex
+                }
+                if($edit_per) {
+                    $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
+                }
                 $actions .= '</div>'; //end main div
 
                 $entries[] = [
@@ -84,6 +108,7 @@ class RegionController extends Controller
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['create'];
         $data['countries'] = Country::OrderByName()->get();
         return view('setting.region.create', compact('data'));
     }
@@ -99,8 +124,13 @@ class RegionController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'country_id' => 'required'
+            'name' => 'required|unique:regions,name,NULL,id,deleted_at,NULL',
+            'country_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name already exists',
+            'country_id.required' => 'Country is required',
+            'country_id.not_in' => 'Country is required',
         ]);
 
         if ($validator->fails()) {
@@ -111,24 +141,35 @@ class RegionController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
+            
         }
 
         DB::beginTransaction();
         try {
-
-            Region::create([
-                'uuid' => self::uuid(),
-                'name' => self::strUCWord($request->name),
-                'country_id' => $request->country_id,
-            ]);
-
+            $region = Region::withTrashed()->where('name', $request->name)->first();
+    
+            if ($region && $region->trashed()) {
+                $region->restore();
+            } else {
+                Region::create([
+                    'uuid' => self::uuid(),
+                    'name' => self::strUCWord($request->name),
+                    'country_id' => $request->country_id,
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
+                ]);
+            }
+    
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
-
-        return $this->jsonSuccessResponse($data, 'Successfully created');
+        
+        $data['redirect'] = self::Constants()['list_url'];
+        return $this->jsonSuccessResponse($data, 'Region Successfully updated');
+        return $this->redirect()->route('setting.region.index');
     }
 
     /**
@@ -148,12 +189,13 @@ class RegionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $data = [];
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['edit'];
         $data['countries'] = Country::OrderByName()->get();
         if(Region::where('uuid',$id)->exists()){
 
@@ -163,6 +205,12 @@ class RegionController extends Controller
             abort('404');
         }
 
+        $data['view'] = false;
+        if(isset($request->view)){
+            $data['view'] = true;
+            $data['permission'] = self::Constants()['view'];
+            $data['permission_edit'] = self::Constants()['edit'];
+        }
         return view('setting.region.edit', compact('data'));
     }
 
@@ -176,10 +224,16 @@ class RegionController extends Controller
 
     public function update(Request $request, $id)
     {
+        $ignoreId = Region::where('uuid',$id)->first();
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'country_id' => 'required'
+            'name' => ["required",Rule::unique('regions')->ignore($ignoreId->id)],
+            'country_id' => ['required',Rule::notIn([0,'0'])]
+        ],[
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name already exists',
+            'country_id.required' => 'Country is required',
+            'country_id.not_in' => 'Country is required',
         ]);
 
         if ($validator->fails()) {
@@ -199,16 +253,20 @@ class RegionController extends Controller
                 ->update([
                     'name' => self::strUCWord($request->name),
                     'country_id' => $request->country_id,
+                    'company_id' => auth()->user()->company_id,
+                    'project_id' => auth()->user()->project_id,
+                    'user_id' => auth()->user()->id,
                 ]);
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
 
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
+        return $this->redirect()->route('setting.region.index');
     }
 
     /**
@@ -222,15 +280,36 @@ class RegionController extends Controller
         $data = [];
         DB::beginTransaction();
         try{
+            $region = Region::where('uuid',$id)->first();
 
+            $addresses = Address::where('region_id', $region->id)->get();
+            if ($addresses->count() > 0 ) {
+                throw new Exception('The region cannot be deleted as it is assigned to an address.');
+            }
             Region::where('uuid',$id)->delete();
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage(), 200);
+            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
         }
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
+    }
+
+    public function getRegionsByCountry(Request $request)
+    {
+        $data = [];
+        DB::beginTransaction();
+        try{
+
+            $data['regions'] = Region::where('country_id',$request->country_id)->get();
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, '', 200);
     }
 
 }
