@@ -25,7 +25,7 @@
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
             <li class="nav-item me-auto"><a class="navbar-brand navbar-brand mx-4 mt-0" href="javascript:;">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="logo" style="height:100px;">
+            <img src="{{ asset('/assets/KSD-Black.svg') }}" alt="logo" style="height:100px;">
                 <!-- <span class="brand-logo">
                             <svg viewbox="0 0 139 95" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">

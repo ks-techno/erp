@@ -41,9 +41,37 @@
 
     @yield('style')
 </head>
+
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
+
+<script>
+		window.onload=function(){
+			document.getElementById('loader').style.display="none";
+			document.getElementById('content').style.display="block";
+		};
+        
+		</script>
+
+		<style>
+
+		#content{display:none;}
+		#content img{width:100%;}
+		#loader{
+			position: absolute;
+			margin: auto;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			width: 400px;
+			height: 400px;
+		}
+		#loader img{width:400px;}
+ 
+
+		</style>
 
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
 
@@ -59,7 +87,30 @@
 </div>
 <!-- END: Content-->
 
+    <div id="loader">
+			<img
+            src="{{ asset('/assets/2cOP.gif') }}" />
 
+        <!--  
+			<div class="loading-page">
+
+				<svg width="300" height="300" alt="SVG Image">
+					<image src="{{ asset('/assets/KSD-Black.svg') }}" width="300"
+						height="300" />
+				</svg>
+
+				<div class="name-container">
+					<div class="logo-name">KSD</div>
+				</div>
+			</div> -->
+
+		</div>
+
+	
+    
+        <div id="content">
+		
+        	
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('assets/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
@@ -89,6 +140,8 @@
         }
     })
 </script>
+
+          </div>
 </body>
 <!-- END: Body-->
 
