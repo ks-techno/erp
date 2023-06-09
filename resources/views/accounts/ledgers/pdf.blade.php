@@ -49,8 +49,8 @@
         <th class="text-left">Date</th>
         <th class="text-left ">Debit</th>
         <th class="text-left">Credit</th>
-        <th class="text-left">Total Amount</th>
-        <th class="text-left">Total Amount (In words)</th>
+        <th class="cell-fit">Closing Balance</th>
+        <th class="cell-fit">Closing Balance (In words)</th>
         </tr>
     </thead>
     <tbody>

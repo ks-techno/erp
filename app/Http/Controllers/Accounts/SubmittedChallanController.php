@@ -100,7 +100,7 @@ class SubmittedChallanController extends Controller
                 }
                 if($edit_per){
                     if($row->vouchers != null){
-                        $actions .= '<a href="' . $urlPrint . '" target="_blank" class="item-edit"><i data-feather="eye" class="me-50"></i></a>';
+                        $actions .= '<a href="' . $urlEdit . '" target="_blank" class="item-edit"><i data-feather="eye" class="me-50"></i></a>';
                     }
                     else{
                     $actions .= '<a href="'.$urlAdd.'" class="item-edit"><i data-feather="plus"></i></a>';

@@ -56,24 +56,27 @@ class LedgerController extends Controller
         $data['chart'] =  $chart;
        
         if ($request->ajax()) {
+            $draw = 'all'; 
             $chartCode = $request->input('chart_code');
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
-            if($chartCode){
-                $dataSql = Ledgers::with('voucher')
-                ->where('COAID', $chartCode)
-                ->whereBetween('created_at', [$startDate, $endDate])
-                ->orderBy('created_at', 'desc'); 
-            } 
+            $dataSql = Ledgers::with('voucher')->orderBy('created_at', 'desc');
+            if ($chartCode && $startDate && $endDate) {
+                $dataSql = $dataSql->where('COAID', $chartCode)
+                    ->whereBetween('created_at', [$startDate, $endDate]);
+            } elseif ($chartCode) {
+                $dataSql = $dataSql->where('COAID', $chartCode);
+            } elseif ($startDate && $endDate) {
+                $dataSql = $dataSql->whereBetween('created_at', [$startDate, $endDate]);
+            }
             else{
-               
                 $dataSql = Ledgers::with('voucher')
                 ->where('created_at', '>=', now()->subDays(15))
                 ->orderBy('created_at', 'desc');
             }
-            
-            $draw = 'all'; 
+           
             $allData = $dataSql->get();
+            
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
             $delete_per = false;
@@ -148,10 +151,26 @@ class LedgerController extends Controller
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
-        $ledgers = Ledgers::with('voucher')
-                ->where('created_at', '>=', now()->subDays(15))
-                ->orderBy('created_at', 'desc')->get();
-         $data['results'] = $ledgers;
+        $chartCode = $request->input('chart_code');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $dataSql = Ledgers::with('voucher')->orderBy('created_at', 'desc');
+        if ($chartCode && $startDate && $endDate) {
+            $dataSql = $dataSql->where('COAID', $chartCode)
+                ->whereBetween('created_at', [$startDate, $endDate]);
+        } elseif ($chartCode) {
+            $dataSql = $dataSql->where('COAID', $chartCode);
+        } elseif ($startDate && $endDate) {
+            $dataSql = $dataSql->whereBetween('created_at', [$startDate, $endDate]);
+        }
+        else{
+            $dataSql = Ledgers::with('voucher')
+            ->where('created_at', '>=', now()->subDays(15))
+            ->orderBy('created_at', 'desc');
+        }
+       
+        $allData = $dataSql->get();
+         $data['results'] = $allData;
          
          $pdf = PDF::loadView('accounts.ledgers.pdf', compact('data'));
          return $pdf->download('pdf_file.pdf');

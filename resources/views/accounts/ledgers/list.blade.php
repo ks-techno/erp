@@ -40,8 +40,7 @@
                             <h4 class="card-title">{{$data['title']}}</h4>
                         </div>
                         <div class="card-link">
-                            <a href="{{route('exportPDF')}}" class="btn btn-danger btn-sm waves-effect waves-float waves-light">Export to PDF</a>
-                           
+                        <a href="{{ route('exportPDF') }}" class="btn btn-danger btn-sm waves-effect waves-float waves-light export-pdf-button">Export to PDF</a>  
                         </div>
                        
                     </div>
@@ -83,10 +82,11 @@
                                     <th class="cell-fit">Date</th>
                                     <th class="cell-fit ">Debit</th>
                                     <th class="cell-fit text-center">Credit</th>
-                                    <th class="cell-fit">Total Amount</th>
-                                    <th class="cell-fit">Total Amount (In words)</th>
+                                    <th class="cell-fit">Closing Balance</th>
+                                    <th class="cell-fit">Closing Balance (In words)</th>
                                 </tr>
                                 </thead>
+                                <tbody></tbody>
                             </table>
                             @endpermission
                         </div>
@@ -126,26 +126,20 @@
 <script>
 $(document).ready(function() {
   $('#ledger_create').submit(function(e) {
-    e.preventDefault(); // Prevent the form from submitting normally
-    
-    // Get the form data
+    e.preventDefault();
     var formData = $(this).serialize();
-    
-    // Send the AJAX request
+
+    // Send the AJAX request to retrieve the selected results
     $.ajax({
       url: $(this).attr('action'),
       type: 'GET',
       data: formData,
       dataType: 'json',
       success: function(response) {
-        // Handle the response from the server
         console.log(response);
-        
-        // Clear the existing table body
         var tableBody = $('.datatables-ajax tbody');
         tableBody.empty();
-        
-        // Populate the table body with the received data
+
         $.each(response.data, function(index, row) {
           var newRow = $('<tr>');
           newRow.append('<td>' + row[0] + '</td>');
@@ -157,9 +151,11 @@ $(document).ready(function() {
           newRow.append('<td>' + row[6] + '</td>');
           tableBody.append(newRow);
         });
+
+        var exportUrl = "{{ route('exportPDF') }}?" + formData;
+        $('.export-pdf-button').attr('href', exportUrl);
       },
       error: function(xhr, status, error) {
-        // Handle the error
         console.log(error);
       }
     });
