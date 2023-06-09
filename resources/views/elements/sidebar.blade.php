@@ -233,6 +233,11 @@
                         </a>
                     </li>
                     @endpermission
+                    <li class="{{ ($path == 'queries')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('queries.index') }}">
+                            <span class="menu-item text-truncate">Queries</span>
+                        </a>
+                    </li>
           </ul>
          </li>
 
@@ -307,6 +312,7 @@
                         </a>
                     </li>
                     @endpermission
+
                 </ul>
             </li>
             <li id="sale_nav" class="nav-item has-sub {{ ($prefix == '/sale')?'open':'' }} ">
@@ -368,7 +374,7 @@
                             <i data-feather="file"></i>
                             <span class="menu-title text-truncate">Reports</span>
                         </a>
-                        
+
                         <ul class="menu-content" id="setting_nav_ul">
                             @permission('user'.$sidebar_menu)
                             <li class="{{ ($path == 'reports/day-book')?'active':'' }}">

@@ -34,6 +34,7 @@ use App\Http\Controllers\Purchase\ProductPropertyController;
 use App\Http\Controllers\Purchase\BuyableTypeController;
 use App\Http\Controllers\Purchase\ProductVariationController;
 use App\Http\Controllers\Purchase\PurchaseDemandController;
+use App\Http\Controllers\Purchase\QueriesController;
 use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
 use App\Http\Controllers\Sale\SaleInvoiceController;
@@ -197,12 +198,14 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
             Route::get('print/{id}', 'printView')->name('print');
         });
+
         Route::prefix('purchase')->name('purchase.')->group(function () {
             Route::prefix('category_types')->resource('category_types', CategoryTypeController::class);
             Route::prefix('category')->resource('category', CategoryController::class);
             Route::prefix('category')->name('category.')->controller(CategoryController::class)->group(function(){
                 Route::post('get-child-by-parent', 'getChildByParentCategory')->name('getChildByParentCategory');
             });
+
             Route::prefix('brand')->resource('brand', BrandController::class);
             Route::prefix('manufacturer')->resource('manufacturer', ManufacturerController::class);
             Route::prefix('supplier')->resource('supplier', SupplierController::class);
@@ -214,6 +217,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('product-variation')->name('product-variation.')->controller(ProductVariationController::class)->group(function(){
                 Route::post('get-product-variation-by-buyable-type', 'getProductVariations')->name('getProductVariations');
             });
+  });
+  Route::prefix('queries')->resource('queries', QueriesController::class);
+  Route::prefix('queries')->name('queries.')->controller(QueriesController::class)->group(function(){
+      Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+      Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+      Route::get('print/{id}', 'printView')->name('print');
   });
        Route::prefix('customer')->resource('customer', CustomerController::class);
 
