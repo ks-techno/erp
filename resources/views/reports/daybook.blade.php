@@ -26,64 +26,71 @@
 @endsection
 
 @section('content')
-    <div class="datatable">
-        <!-- Datatable -->
-        <section id="ajax-datatable">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header border-bottom">
-                            <div class="card-left-side">
-                                <h4 class="card-title">{{ $data['title'] }}</h4>
-                            </div>
 
-                            <div class="card-link">
+    <section id="ajax-datatable">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header border-bottom">
+                        <div class="card-left-side">
+                            <h4 class="card-title">{{ $data['title'] }}</h4>
+                        </div>
 
-                                <button type="submit"
-                                    class="btn btn-success btn-sm waves-effect waves-float waves-dark">Today</button>
-                                <a href="#"
-                                    class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Yesterday</a>
+                        <div class="card-link">
+
+                            <div class="dropdown">
+                                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Export
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" >
+                                    <li><a class="dropdown-item" href="#">PDF</a></li>
+                                    <li><a class="dropdown-item" href="#">Excel</a></li>
+                                </ul>
                             </div>
 
                         </div>
-
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="mt-2 row">
-                                    <div class="col-sm-5">
-                                        <label class="col-form-label">Select Date <span class="required">*</span></label>
-                                    </div>
-                                    <div class=" col-sm-9">
-                                        <input type="text" id="date" name="date"
-                                            class="form-control form-control-sm flatpickr-basic flatpickr-input"
-                                            placeholder="YYYY-MM-DD" value="{{ date('Y-m-d') }}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- <div class="card-body">
-                            <div class="card-datatable">
-                                <table class="datatables-ajax table table-responsive"
-                                    data-url="{{ route('customer.index') }}">
-                                    <thead>
-                                        <tr>
-                                            <th class="cell-fit">Name</th>
-                                            <th class="cell-fit">Contact No</th>
-                                            <th class="cell-fit">Membership No.</th>
-                                            <th class="cell-fit text-center">Status</th>
-                                            <th class="cell-fit"></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
-        </section>
-        <!--/ Datatable -->
-    </div>
+        </div>
+
+
+        <div class="card" style="height: 300px;">
+
+            <div class="row">
+
+                <div class="offset-1 col-sm-3 mt-1">
+                    <label class="col-form-label">Select Date <span class="required">*</span></label>
+                    <input type="text" id="date" name="date"
+                        class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD"
+                        value="{{ date('Y-m-d') }}" />
+                </div>
+
+                <div class="col-sm-3 mt-1">
+                    <label class="col-form-label">Select Account <span class="required">*</span></label>
+                    <select id="account" name="account" class="form-control form-control-sm">
+                        <option value="account1">Level 3</option>
+                        <option value="account2">Level 4</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4 mt-4">
+                    <button type="submit" class="btn btn-warning btn-sm waves-effect waves-float waves-dark">Today</button>
+                    <button type="submit" class="btn btn-dark btn-sm waves-effect waves-float waves-dark">Yesterday</button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+    </section>
+
+
 @endsection
 
 @section('pageJs')
