@@ -99,14 +99,14 @@
                 <div class="card-header border-bottom">
                     <div class="card-left-side">
                         <h4 class="card-title">{{$data['title']}}</h4>
-                        
+
                     </div>
                     <div class="card-link">
                     <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
-                    <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>   
+                    <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                 </div>
                 </div>
-               
+
                 <div class="card-body mt-2 new_member_and_nominee">
                     <div class="row">
                         <div class="col-sm-4">
@@ -159,7 +159,7 @@
                                     <div class="col-sm-12">
                                     <input type="radio" id="cancel" name="refund_type" value="Cancel">
                                     <label for="cancel">Cancel</label><br>
-                                    <input type="radio" id="withdrawal" name="refund_type" value="Withdrawal"> 
+                                    <input type="radio" id="withdrawal" name="refund_type" value="Withdrawal">
                                     <label for="withdrawal">Withdrawal</label><br>
                                     </div>
                                 </div>
@@ -178,7 +178,6 @@
                             </div>
                         </div>
                     </div>
-                  
                 </div>
                 <hr>
                 <div class="card-body transfer_process">
@@ -294,7 +293,7 @@
                                         <input type="text" class="form-control form-control-sm text-left sellerList" id="booking_name" name="booking_name">
                                         <input type="hidden" id="booking_id" name="booking_id">
                                         <div id="sellerTable"></div>
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -306,14 +305,14 @@
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_booking_code_input" name="booking_code" />
                                         <p class="col-form-label om_booking_code p-0 txt_color"></p>
                                     </div>
-                                    
+
                                     <div class="col-sm-6">
                                         <label class="col-form-label p-0">Plot Number </label>
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_product_name_input_id" name="product_id" />
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_product_name_input_name" name="product_name" />
                                         <p class="col-form-label om_product_name p-0 txt_color"></p>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="mb-1 row">
                                 <div class="col-sm-6">
@@ -354,7 +353,7 @@
                                         <input type="hidden" class="form-control form-control-sm" value="" id="om_currency_note_no_input_name" name="currency_note_no" />
                                         <p class="col-form-label om_currency_note_no p-0 txt_color"></p>
                                     </div>
-                                    
+
                             </div>
                         </div>
                     </div>{{--end row--}}
@@ -536,18 +535,18 @@
                             var options = "<option value='0' selected>Select</option>";
                             var length = customer.length;
                             var sales_length = customer.sales.length;
-                            
+
                             table = "<div class='table-wrapper'><table><thead><tr><th>Plot No.</th><th>Block</th></tr></thead><tbody>";
                             for(var i=0;i<sales_length;i++){
                                 var products = sales[i].product;
                                 var product_length = sales[i].product.length;
                             table += '<tr data-id="'+customer.sales[i]['id']+'" data-name="'+customer.sales[i]['code']+'"><td><b>'+sales[i].product.name+'</b></td><td><b>'+sales[i].product.block+'</b></td></tr>';
                                    // options += '<option value="'+customer.sales[i]['id']+'">'+customer.sales[i]['code']+''+customer.product[i]['block']+'</option>';
-                                }   
-                            
+                                }
+
                                 table += "</tbody></table>";
                                 $('#sellerTable').html(table);
-                            
+
                             $('form').find('.bookingList').html(options);
 
                             $('form').find('.om_membership_no').html(customer.membership_no);
@@ -708,7 +707,7 @@
                             $('form').find('.om_currency_note_no').html(sales.currency_note_no);
                             $('form').find('#om_currency_note_no_input_id').val(sales.currency_note_no);
                             $('form').find('#om_currency_note_no_input_name').val(sales.currency_note_no);
-                            
+
                             $('form').find('.om_file_status').html(sales.file_status.name);
                             $('form').find('#om_file_status_input_id').val(sales.file_status.id);
 
@@ -726,7 +725,7 @@
     <script>
         //  $(document).ready(function() {
         //     $('#om_customer_name').on('change', function() {
-                
+
         //     });
         // });
         //Reset Image on Cross Click
@@ -752,7 +751,7 @@
         var name = $(this).attr('data-name');
         $('#booking_id').val(id);
         $('#booking_name').val(name);
-        
+
         if ($('#booking_name').val() == '') {
             $('#sellerTable').show();
         } else {
@@ -791,7 +790,7 @@
         });
         $(document).on('keydown', function(e) {
     if ($('.table-wrapper').length) {
-        
+
         var inLineHelp = $('.table-wrapper');
         var scrollHeight = inLineHelp.prop('scrollHeight');
         var scrollTop = inLineHelp.scrollTop();
@@ -823,8 +822,8 @@
                 selectedRow.next().addClass('selected');
             }
         }
-        
-        
+
+
     }
 });
 $(document).on('change','#file_type',function(){
