@@ -105,7 +105,7 @@
                     <span class="menu-title text-truncate" data-i18n="Dashboards">Home</span>
                 </a>
             </li>
-            
+
             @endpermission
             @permission('company'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'company/')?'active':'' }}">
@@ -232,7 +232,7 @@
                         </a>
                     </li>
                     @endpermission
-     
+
             @permission('refund-file'.$sidebar_menu)
                     <li class="{{ ($path == 'sale/refund-file')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.refund-file.index') }}">
@@ -240,6 +240,11 @@
                         </a>
                     </li>
                     @endpermission
+                    <li class="{{ ($path == 'queries')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('queries.index') }}">
+                            <span class="menu-item text-truncate">Queries</span>
+                        </a>
+                    </li>
           </ul>
          </li>
 
@@ -250,7 +255,7 @@
                     <span class="menu-title text-truncate">Purchase</span>
                 </a>
                 <ul class="menu-content" id="purchase_nav_ul">
-                
+
                     @permission('supplier'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/supplier')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.supplier.index') }}">
@@ -314,6 +319,7 @@
                         </a>
                     </li>
                     @endpermission
+
                 </ul>
             </li>
             <li id="sale_nav" class="nav-item has-sub {{ ($prefix == '/sale')?'open':'' }} ">
@@ -343,7 +349,7 @@
                         </a>
                     </li>
                     @endpermission
-                    
+
                 </ul>
             </li>
 
@@ -369,6 +375,24 @@
                     @endpermission
                     </ul>
                     </li>
+
+                    <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/reports')?'open':'' }}">
+                        <a class="d-flex align-items-center" href="#">
+                            <i data-feather="file"></i>
+                            <span class="menu-title text-truncate">Reports</span>
+                        </a>
+
+                        <ul class="menu-content" id="setting_nav_ul">
+                            @permission('user'.$sidebar_menu)
+                            <li class="{{ ($path == 'reports/day-book')?'active':'' }}">
+                                <a class="d-flex align-items-center" href="{{ route('reports.day-book') }}">
+                                    <span class="menu-item text-truncate">Day Book</span>
+                                </a>
+                            </li>
+                            @endpermission
+                        </ul>
+                    </li>
+
             <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>

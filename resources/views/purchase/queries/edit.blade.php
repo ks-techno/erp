@@ -26,9 +26,6 @@
         .right.fade.in .modal-dialog {
             right: 0;
         }
-        .table-scroll{
-    overflow: visible !important;
-}
     </style>
 @endsection
 
@@ -37,10 +34,10 @@
     @php
         $current = $data['current'];
         if(!$data['view']){
-            $url = route('accounts.cash-payment.update',$data['id']);
+            $url = route('accounts.journal.update',$data['id']);
         }
     @endphp
-    <form id="cash_payment_edit" class="cash_payment_edit" action="{{isset($url)?$url:""}}"  method="post" enctype="multipart/form-data" autocomplete="off">
+    <form id="journal_edit" class="journal_edit" action="{{isset($url)?$url:""}}"  method="post" enctype="multipart/form-data" autocomplete="off">
         @if(!$data['view'])
             @csrf
             @method('patch')
@@ -52,36 +49,34 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                             </div>
-                        <div class="card-link">
+                              <div class="card-link">  
                             @if($data['view'])
-                                @if(!$data['posted'])
+                               @if(!$data['posted'])
                                 @permission($data['permission_edit'])
-                                <a href="{{route('accounts.cash-payment.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
+                                <a href="{{route('accounts.journal.edit',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Edit</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                                 @endpermission
-                                @endif
-                                 @else
-
-                        <button type="submit" name="current_action_id" value="update" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
-                                <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
-                        <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
-                       @endif
-                        </div>
+                               @endif
+                               @else
+                          
+                              <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Update</button>
+                              <button type="submit" name="current_action_id" value="post" class="btn btn-warning btn-sm waves-effect waves-float waves-light">Post</button>
+                              <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
+                         @endif
                     </div>
+                  </div>
                     <div class="card-body mt-2">
                         <div class="mb-1 row">
                             <div class="col-sm-12">
                                 <h6>{{$current->voucher_no}}</h6>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Date <span class="required">*</span></label>
                                     </div>
-
                                     <div class="col-sm-9">
                                         <input type="text" id="date" name="date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="{{date('Y-m-d')}}" />
                                     </div>
@@ -90,7 +85,6 @@
                             <div class="col-sm-4">
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-lg-12 text-end">
                                 <div class="data_entry_header">
@@ -136,12 +130,7 @@
                                                         <input id="chart_id" type="hidden" class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                    <select class="select2 form-select" id="egt_chart_code" name="egt_chart_code">
-                                                    <option value="">Select Value</option>
-                                                    @foreach($data['chart'] as $chart)
-                                                    <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="({{$chart->name}})" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
-                                                    @endforeach
-                                                    </select>
+                                                        <input id="egt_chart_code" type="text" class="chart_code form-control form-control-sm text-left" placeholder="Press F2">
                                                     </td>
                                                     <td>
                                                         <input id="egt_chart_name" type="text" class="chart_name form-control form-control-sm" readonly>
@@ -161,7 +150,6 @@
                                                         </button>
                                                     </td>
                                                 </tr>
-
                                                 </thead>
                                                 <tbody class="egt_form_body">
                                                 @if(isset( $data['dtl']) && count( $data['dtl']) > 0)
@@ -247,11 +235,11 @@
     @endpermission
 @endsection
 @section('pageJs')
-
+    
 @endsection
 
 @section('script')
-<script src="{{ asset('/pages/accounts/cash_payment/edit.js') }}"></script>
+<script src="{{ asset('/pages/accounts/journal/edit.js') }}"></script>
     <script>
         var var_egt_fields = [
 
