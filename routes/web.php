@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Accounts\ChartOfAccountTreeController;
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Accounts\BankPaymentController;
+use App\Http\Controllers\Accounts\LedgerController;
 use App\Http\Controllers\Accounts\BankReceiveController;
 use App\Http\Controllers\Accounts\CashPaymentController;
 use App\Http\Controllers\Accounts\CashReceiveController;
@@ -110,6 +111,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('revert/{id}', 'revert')->name('revert');
             });
             Route::prefix('bank-payment')->resource('bank-payment', BankPaymentController::class);
+            Route::prefix('ledgers')->name('ledgers.')->controller(LedgerController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
+            Route::prefix('ledgers')->resource('ledgers', LedgerController::class);
 
             Route::prefix('bank-receive')->name('bank-receive.')->controller(BankReceiveController::class)->group(function(){
                 Route::get('print/{id}', 'printView')->name('print');
@@ -175,6 +182,7 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         Route::prefix('product-property')->resource('product-property', ProductPropertyController::class);
+        Route::get('exportPDF', [LedgerController::class, 'exportPDF'])->name('exportPDF');
         Route::get('product-property-print', [ProductPropertyController::class, 'printView'])->name('product-property-print');
         Route::get('refund-file-print', [RefundFileController::class, 'printResults'])->name('refund-file-print');
         Route::get('booked-proprty-print', [BookedPropertyController::class, 'printResults'])->name('booked-proprty-print');

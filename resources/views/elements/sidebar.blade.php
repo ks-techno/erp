@@ -188,6 +188,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('ledgers'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/ledgers')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.ledgers.index') }}">
+                            <span class="menu-item text-truncate">Ledgers</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
 

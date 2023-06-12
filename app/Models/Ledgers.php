@@ -20,4 +20,7 @@ class Ledgers extends Model
         'company_id',
         'user_id',
     ];
+    public function voucher(){
+        return $this->belongsTo(Voucher::class,'payment_id','id');
+    }
 }

@@ -29,22 +29,6 @@ $(document).on('click','#egt_add',function(){
     add_row(thix);
     formClear();
     grid_fun();
-    console.log(add_row());
-});
-$(document).on('click','#egt_add',function(){
-    var thix = $(this);
-    for(var i=0;i < egt_required_fields.length; i++){
-        var rf_val = $('#'+egt_required_fields[i].id).val();
-        if(rf_val == ""){
-            alert(egt_required_fields[i].message);
-            return false;
-        }
-    }
-    add_row(thix);
-    formClear();
-    grid_fun();
-    console.log(add_row());
-    
 });
 $(document).on('click','.egt_del',function(){
     $(this).parents("tr").remove();
@@ -93,7 +77,6 @@ function add_row(thix, num_rows = 2){
                 if(childEle.nodeName == "SELECT"){
                     var val =  tr.find('select#'+childEle.id).val();
                     childEle.value = val;
-                    selectElement.val(val).prop('disabled', false);
                 }
                 if(childEle.nodeName == "INPUT"){
 
@@ -116,12 +99,19 @@ function add_row(thix, num_rows = 2){
                 sel_field.attr('data-url',egt_fields[i].data_url);
             }
         }
-        
+        for(var i=0;i < egt_readonly_fields.length; i++){
+            var sel_field = lastTr.find('input[data-id='+egt_readonly_fields[i]+']');
+            sel_field.attr('',true);
+        }
 
         trLength++;
 
         if(n == 1){
-          
+            var lastTr = $('.egt_form_body>tr:last-child');
+            var lastTrInputs = lastTr.find('input');
+            var lastTrSelects = lastTr.find('select');
+            lastTrInputs.val('');
+            lastTrSelects.val('');
         }
     }
 }
@@ -146,7 +136,6 @@ function updateKeys(){
                 var data_id = $(this).attr('data-id');
                 $(this).attr('name',nameAttrPrefix+'['+j+'][action]');
             });
-           
             $($(td).find('select')).each(function(){
                 var data_id = $(this).attr('data-id');
                 $(this).attr('name',nameAttrPrefix+'['+j+']['+data_id+']');
@@ -162,15 +151,12 @@ function table_td_sortable(){
             updateKeys();
         }
     });
-    
+    $( ".egt_form_body>tr" ).disableSelection();
 }
 function formClear(){
     $('.egt_form_table .egt_form_header').find('input').val("");
     $('.egt_form_table .egt_form_header').find('input[type="radio"]').prop('checked', false);
-    $('.egt_form_table .egt_form_header').find('select').each(function() {
-        $(this).val(null).trigger('change');
-      });
-      
+    $('.egt_form_table .egt_form_header').find('select').prop('selectedIndex',0);
 }
 
 function grid_fun(){
