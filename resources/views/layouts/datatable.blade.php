@@ -138,6 +138,16 @@
             }
         }
     })
+    $(document).on('click','.datatables-ajax>tbody>tr>td',function(){
+        var thix = $(this);
+        if(thix.find('a.item-view').length == 0){
+            var tr = thix.parents('tr');
+            var edit_url = tr.find('a.item-view').attr('href');
+            if(!valueEmpty(edit_url)){
+                location.href = edit_url+'?view=true'
+            }
+        }
+    })
 </script>
 </body>
 <!-- END: Body-->

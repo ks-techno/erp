@@ -27,8 +27,8 @@
                                         <th class="cell-fit">Property Type</th>
                                         <th class="cell-fit">Paymnet Mode</th>
                                         <th class="cell-fit">Customer</th>
-                                        <th class="cell-fit">File Status</th>
-                                        <th class="cell-fit"></th>
+                                        <th class="cell-fit">Status</th>
+                                        <th class="cell-fit">Actions</th>
                                     </tr>
                                     </thead>
                                 </table>

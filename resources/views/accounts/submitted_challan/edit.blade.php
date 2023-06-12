@@ -83,9 +83,8 @@
                     </div>
                     <div class="card-link">
                             @if($data['view'])
-                                @if(!$data['posted'])
+                                @if(!$data['current']->vouchers)
                                 @permission($data['permission_edit'])
-                           
                                 <a href="{{route('accounts.submitted-challan.voucherCreate',$data['id'])}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create Voucher</a>
                                 <a href="{{$data['list_url']}}" class="btn btn-secondary btn-sm waves-effect waves-float waves-light">Back</a>
                                
