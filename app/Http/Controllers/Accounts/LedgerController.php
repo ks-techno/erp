@@ -51,10 +51,12 @@ class LedgerController extends Controller
             $chart = $chart->where('code','like',"%$val%");
             $chart = $chart->orWhere('name','like',"%$val%");
         }
-
+        
         $chart = $chart->select('id','code','name')->get();
         $data['chart'] =  $chart;
-       
+        $total_debit = 0;
+        $total_credit = 0;
+        $balance = 0;
         if ($request->ajax()) {
             $draw = 'all'; 
             $chartCode = $request->input('chart_code');
@@ -117,15 +119,17 @@ class LedgerController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-
+                $total_credit += $row->voucher->credit;
+                $total_debit += $row->voucher->debit;
+                $balance = $total_credit - $total_debit;
                 $entries[] = [
                     $row->voucher->chart_account_name,
                     $row->voucher->chart_account_code,
                     $row->voucher->date,
                     format_number($row->voucher->debit),
                     format_number($row->voucher->credit),
-                    format_number($row->voucher->total_credit),
-                    numberToWords($row->voucher->total_credit).' rupees only',
+                    format_number($balance),
+                    numberToWords($balance).' rupees only',
                    
                 ];
             }
@@ -170,6 +174,7 @@ class LedgerController extends Controller
         }
        
         $allData = $dataSql->get();
+       
          $data['results'] = $allData;
          
          $pdf = PDF::loadView('accounts.ledgers.pdf', compact('data'));
