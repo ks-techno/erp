@@ -183,6 +183,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::prefix('product-property')->resource('product-property', ProductPropertyController::class);
         Route::get('exportPDF', [LedgerController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('exportExcel', [LedgerController::class, 'exportExcel'])->name('exportExcel');
         Route::get('product-property-print', [ProductPropertyController::class, 'printView'])->name('product-property-print');
         Route::get('refund-file-print', [RefundFileController::class, 'printResults'])->name('refund-file-print');
         Route::get('booked-proprty-print', [BookedPropertyController::class, 'printResults'])->name('booked-proprty-print');
