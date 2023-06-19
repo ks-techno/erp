@@ -91,7 +91,7 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                           
+
                         </div>
                         <div class="card-link">
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
@@ -131,6 +131,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Customer <span class="required">*</span></label>
@@ -153,7 +154,7 @@
                                         <option value="dealer">Dealer</option>
                                         <option value="staff">Staff</option>
                                         </select>
-                                      
+
                                     </div>
                                     </div>
                                 <div class="mb-1 row">
@@ -171,7 +172,7 @@
                                 </div>
                                 </div>
                             <div class="col-sm-6">
-                                
+
                                 <div class="mb-1 row">
                                     <div class="col-sm-3 pr-0">
                                         <label class="col-form-label p-0">Payment Mode</label>
@@ -184,6 +185,7 @@
                                         </select>
                                     </div>
                                 </div>
+                                
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Sale Price</label>
@@ -373,7 +375,7 @@
           if(response.status == 'success'){
             var seller = response.data['seller'];
             var departments = response.data['departments'];
-            console.log(seller); 
+            console.log(seller);
             var length = seller.length;
             var lengthd = departments ? departments.length : 0;
             if(val== 'dealer'){
@@ -420,7 +422,7 @@
   var name = $(this).attr('data-name');
   $('#seller_id').val(id);
   $('#seller_name').val(name);
-  
+
   if ($('#seller_name').val() == '') {
     $('#sellerTable').show();
   } else {
@@ -490,7 +492,7 @@ $(document).on('change keyup','#seller_name',function(){
 
         $(document).on('keydown', function(e) {
     if ($('.table-wrapper').length) {
-        
+
         var inLineHelp = $('.table-wrapper');
         var scrollHeight = inLineHelp.prop('scrollHeight');
         var scrollTop = inLineHelp.scrollTop();
@@ -522,8 +524,8 @@ $(document).on('change keyup','#seller_name',function(){
                 selectedRow.next().addClass('selected');
             }
         }
-        
-        
+
+
     }
 });
     </script>
