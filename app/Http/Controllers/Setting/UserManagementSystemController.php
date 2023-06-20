@@ -268,6 +268,11 @@ class UserManagementSystemController extends Controller
                         'name' => 'user',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
+                    [
+                        'dname' => 'Scp',
+                        'name' => 'scp',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
                 ]
             ],
         ];

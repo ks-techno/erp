@@ -91,11 +91,14 @@ function funcGetProductDetail(product_id) {
             success: function(response,data) {
                 if(response.status == 'success'){
                     var product = response.data['product'];
+                    console.log(product);
                     const salePrice = product.default_sale_price;
                     const supplierID = product.supplier_id;
+                    const BuyableTypeID = product.buyable_type_id;
                     
                     $('form').find('#sale_price').val(salePrice);
                     $('form').find('#supplier_id').val(supplierID);
+                    $('form').find('#BuyableType_id').val(BuyableTypeID);
                 }else{
                     ntoastr.error(response.message);
                 }

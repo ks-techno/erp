@@ -24,6 +24,7 @@ use App\Http\Controllers\Setting\ProjectController;
 use App\Http\Controllers\Setting\DepartmentController;
 use App\Http\Controllers\Setting\StaffController;
 use App\Http\Controllers\Setting\ProfileController;
+use App\Http\Controllers\Setting\ScpController;
 use App\Http\Controllers\Setting\UserManagementSystemController;
 use App\Http\Controllers\Setting\UserController;
 use App\Http\Controllers\Purchase\CategoryTypeController;
@@ -88,6 +89,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('edit', 'edit')->name('edit');
             Route::post('update','update')->name('update');
         });
+        
         Route::prefix('help')->name('help.')->group(function () {
             Route::get('chart/{str?}', [HelpController::class, 'chart'])->name('chart');
             Route::get('customer/{str?}', [HelpController::class, 'customer'])->name('customer');
@@ -171,7 +173,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('staff')->resource('staff', StaffController::class);
 
         Route::prefix('setting')->name('setting.')->group(function () {
-           
+            Route::prefix('scp')->resource('scp', ScpController::class);
+            Route::prefix('scp')->name('scp.')->controller(ScpController::class)->group(function () {
+                Route::get('edit', 'edit')->name('edit');
+                Route::post('update','update')->name('update');
+            });
             Route::prefix('country')->resource('country', CountryController::class);
             Route::prefix('region')->resource('region', RegionController::class);
             Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){
@@ -241,6 +247,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('installment-plan')->name('installment-plan.')->controller(InstallmentPlanController::class)->group(function(){
              Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
              Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+             Route::post('plan-details', 'planDetails')->name('planDetails');
              Route::get('print/{id}', 'printView')->name('print');
          });
             Route::prefix('challan-form')->resource('challan-form', ChallanFormController::class);
