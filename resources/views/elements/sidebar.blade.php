@@ -385,7 +385,22 @@
                             @endpermission
                         </ul>
                     </li>
+                    <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/marketing')?'open':'' }}">
+                        <a class="d-flex align-items-center" href="#">
+                            <i data-feather="pdf"></i>
+                            <span class="menu-title text-truncate">Marketing</span>
+                        </a>
 
+                        <ul class="menu-content" id="setting_nav_ul">
+                            @permission('user'.$sidebar_menu)
+                            <li class="{{ ($path == 'marketing/lms')?'active':'' }}">
+                                <a class="d-flex align-items-center" href="{{ route('marketing.lms.index') }}">
+                                    <span class="menu-item text-truncate">Lead Management</span>
+                                </a>
+                            </li>
+                            @endpermission
+                        </ul>
+                    </li>
             <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>

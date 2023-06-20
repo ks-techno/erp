@@ -48,6 +48,7 @@ use App\Http\Controllers\Purchase\BookedPropertyController;
 use App\Http\Controllers\Sale\ChallanFormController;
 use App\Http\Controllers\Accounts\SubmittedChallanController;
 use App\Http\Controllers\Reports\DayBookController;
+use App\Http\Controllers\Marketing\LmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -185,6 +186,16 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::prefix('reports')->name('reports.')->group(function(){
             Route::get('day-book', [DayBookController::class, 'index'])->name('day-book');
+
+        });
+        Route::prefix('marketing')->name('marketing.')->group(function(){
+
+            Route::prefix('lms')->resource('lms', LmsController::class);
+        Route::prefix('lms')->name('lms.')->controller(LmsController::class)->group(function(){
+            Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+            Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+            Route::get('print/{id}', 'printView')->name('print');
+        });
 
         });
 
