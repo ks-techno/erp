@@ -8,10 +8,12 @@ use App\Models\Customer;
 use App\Models\Dealer;
 use App\Models\Product;
 use App\Models\Department;
+use App\Models\BuyableType;
+use App\Models\ProductVariationDtl;
 use App\Models\Project;
+use App\Models\PropertyVariation;
 use App\Models\PropertyPaymentMode;
 use App\Models\InstallmentPlan;
-use App\Models\Sale;
 use App\Models\SaleSeller;
 use App\Models\Staff;
 use Illuminate\Http\Request;
@@ -21,14 +23,14 @@ use Exception;
 use Illuminate\Validation\Rule;
 use Validator;
 
-class SaleInvoiceController extends Controller
+class InstallmentPlanController extends Controller
 {
     private static function Constants()
     {
-        $name = 'sale-invoice';
+        $name = 'installment-plan';
         return [
-            'title' => 'Booking',
-            'list_url' => route('sale.sale-invoice.index'),
+            'title' => 'Installment Plan',
+            'list_url' => route('sale.installment-plan.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -53,9 +55,9 @@ class SaleInvoiceController extends Controller
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Sale::with('customer','project','property_payment_mode','product','file_status')->where(Utilities::CompanyId())->orderby('created_at','desc')->distinct();
+            $dataSql = InstallmentPlan::with('buyable_type','product_variation')->orderby('created_at','desc');
             $allData = $dataSql->get();
-            
+           
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
 
@@ -74,9 +76,9 @@ class SaleInvoiceController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('sale.sale-invoice.edit',$row->uuid);
-                $urlDel = route('sale.sale-invoice.destroy',$row->uuid);
-                $urlPrint = route('sale.sale-invoice.print',$row->uuid);
+                $urlEdit = route('sale.installment-plan.edit',$row->uuid);
+                $urlDel = route('sale.installment-plan.destroy',$row->uuid);
+                $urlPrint = route('sale.installment-plan.print',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -101,13 +103,11 @@ class SaleInvoiceController extends Controller
                     $get_fileType = 'Booked';
                 }
                 $entries[] = [
-                    $row->product->name,
-                    $row->product->block,
-                    $row->product->buyable_type->name ?? null,
-                    $row->file_status->name ?? null,
-                    $get_fileType,
-                    $row->customer->name,
-                    $row->property_payment_mode->name ?? null,
+                    $row->installemnt_plan_name,
+                    $row->buyable_type->name,
+                    $row->product_variation->display_title,
+                   $row->installment_bi_annual,
+                   $row->installment_monthly,
                     $actions,
                 ];
             }
@@ -120,7 +120,7 @@ class SaleInvoiceController extends Controller
             return response()->json($result);
         }
 
-        return view('sale.sale_invoice.list', compact('data'));
+        return view('sale.installment_plan.list', compact('data'));
     }
 
     /**
@@ -134,19 +134,8 @@ class SaleInvoiceController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['create'];
-        $doc_data = [
-            'model'             => 'Sale',
-            'code_field'        => 'code',
-            'code_prefix'       => strtoupper('pd'),
-        ];
-        $data['code'] = Utilities::documentCode($doc_data);
-        $data['customer'] = Customer::get();
-        $data['file_status'] = BookingFileStatus::where('status',1)->get();
-   //     $data['project'] = Project::get();
-        $data['property'] = Product::ProductProperty()->get();
-        $data['installment_plan'] = InstallmentPlan::get();
-        $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
-        return view('sale.sale_invoice.create', compact('data'));
+        $data['buyable'] = BuyableType::OrderByName()->where('status', 1)->get();
+        return view('sale.installment_plan.create', compact('data'));
     }
 
     /**
@@ -159,28 +148,14 @@ class SaleInvoiceController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-           // 'project_id' => ['required',Rule::notIn([0,'0'])],
-            'product_id' => ['required',Rule::notIn([0,'0'])],
-            'customer_id' => ['required',Rule::notIn([0,'0'])],
-            'seller_type' => ['required',Rule::in(['dealer','staff'])],
-            'seller_id' => ['required',Rule::notIn([0,'0'])],
-            'currency_note_no'=>'required',
-            'sale_discount'=>'required',
+            'installemnt_plan_name' => 'required',
             'down_payment'=>'required',
             'on_possession'=>'required',
         ],[
 //            'project_id.required' => 'Project is required',
 //            'project_id.not_in' => 'Project is required',
-            'product_id.required' => 'Product is required',
-            'product_id.not_in' => 'Product is required',
-            'customer_id.required' => 'Customer is required',
-            'customer_id.not_in' => 'Customer is required',
-            'seller_type.required' => 'Seller type is required',
-            'seller_type.in' => 'Seller type is required',
-            'seller_id.required' => 'Seller is required',
-            'seller_id.not_in' => 'Seller is required',
-            'currency_note_no.required' => 'currency is required',
-            'sale_discount.required' => 'Sale Discount is required',
+            'installemnt_plan_name.required' => 'Plan Name is required',
+            
             'down_payment.required' => 'Down Payment is required',
             'on_possession.required' => 'On Possession is required',
         ]);
@@ -197,78 +172,28 @@ class SaleInvoiceController extends Controller
 
         DB::beginTransaction();
         try{
-            $doc_data = [
-                'model'             => 'Sale',
-                'code_field'        => 'code',
-                'code_prefix'       => strtoupper('si'),
-            ];
-            $code = Utilities::documentCode($doc_data);
-            if($request->seller_type == 'staff'){
-                $modal = Staff::where('id',$request->seller_id)->first();
-                $sellarable_type = 'App\Models\Staff';
-            }
-            if($request->seller_type == 'dealer'){
-                $modal = Dealer::where('id',$request->seller_id)->first();
-                $sellarable_type = 'App\Models\Dealer';
-            }
+            if(isset($request->pv) && !empty($request->pv)){
+                foreach ($request->pv as $pvId=>$pvVal){
+                     $keyValue = $pvVal[0];;
             $requestdata = 
                 [
                     'uuid' => self::uuid(),
-                    'code' => $code,
-                    'customer_id' => $request->customer_id,
-                    'sale_by_staff' => ($request->seller_type == 'staff')?1:0,
-                    'project_id' => auth()->user()->project_id,
-                    'product_id' => $request->product_id,
-                    'property_payment_mode_id' => $request->property_payment_mode_id,
-                    'is_installment' => isset($request->is_installment)?1:0,
-                    'is_booked' => isset($request->is_booked)?1:0,
-                    'is_purchased' => isset($request->is_purchased)?1:0,
-                    'sale_price'=> str_replace(',', '',((!is_null($request->sale_price))) ? $request->sale_price: ""),
-                    'currency_note_no' => empty($request->currency_note_no)?0:$request->currency_note_no,
-                    'booked_price' => str_replace(',', '',($request->input('booked_price'))),
-                    'down_payment' => str_replace(',', '',($request->down_payment)),
+                    'installemnt_plan_name' => $request->installemnt_plan_name,
+                    'product_variation_id' => $pvId,
+                    'product_variation_value' => $keyValue,
+                    'property_typeID' => $request->buyable_type_id,
+                    'total_payment' => $request->total_payment,
+                    'down_payment' => $request->down_payment,
                     'on_balloting' => $request->on_balloting,
-                    'no_of_bi_annual' => $request->no_of_bi_annual,
+                    'allocation_amount' => $request->allocation_amount,
                     'installment_bi_annual' => $request->installment_bi_annual,
-                    'no_of_month' => $request->no_of_month,
-                    'installment_amount_monthly' => $request->installment_amount_monthly,
-                    'on_possession' => str_replace(',', '',($request->on_possession)),
-                    'file_status_id' => $request->file_status_id ? $request->file_status_id :1,
-                    'sale_discount' => str_replace(',', '',($request->sale_discount)),
-                    'seller_commission_perc' => isset($modal->commission) ? $modal->commission : 0,
-                    'company_id' => auth()->user()->company_id,
-                    'user_id' => auth()->user()->id,
-                    'file_type' => NULL,
-                    'installment_start_time' => $request->installment_start_time,
-                    'installment_end_time' => $request->installment_end_time,
-                    'installment_type' => $request->installment_type,
+                    'installment_monthly' => $request->installment_monthly,
+                    'on_possession' => $request->on_possession,
                 ];
-            $prod_id = Sale::where('product_id', $request->product_id)->first();
-            
-            if($prod_id){
-                
-                $update = Sale::where('product_id',$request->product_id)
-                ->update($requestdata);
-                $modelarray = [
-                    'sale_sellerable_id' => $request->seller_id,
-                    'sale_sellerable_type' => $sellarable_type
-                ];
+              
+                $sale = InstallmentPlan::create($requestdata);
             }
-            else{
-                $sale = Sale::create($requestdata);
-               
-                $saleSeller = new SaleSeller();
-                $saleSeller->sale_id = $sale->id;
-                $responsemodel = $modal->sale_seller()->save($saleSeller);
-                $modelarray = [
-                    'sale_sellerable_id' => $responsemodel->sale_sellerable_id,
-                    'sale_sellerable_type' => $responsemodel->sale_sellerable_type
-                ];
-
-            }
-            $mergarray = array_merge($requestdata,$modelarray);
-            createSaleHistory( $mergarray);
-            
+        }
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, $e->getMessage());
@@ -276,7 +201,7 @@ class SaleInvoiceController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('sale.sale-invoice.index');
+        return $this->redirect()->route('sale.installment-plan.index');
 }
 
     /**
@@ -303,13 +228,22 @@ class SaleInvoiceController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
-    //    $data['project'] = Project::get();
-        $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
-        $data['file_status'] = BookingFileStatus::where('status',1)->get();
-        if(Sale::where('uuid',$id)->exists()){
-
-            $data['current'] = Sale::with('product','customer','dealer','staff')->where('uuid',$id)->first();
-           
+        $data['buyable'] = BuyableType::OrderByName()->where('status', 1)->get();
+        if(InstallmentPlan::where('uuid',$id)->exists()){
+            $data['current'] = InstallmentPlan::with('buyable_type','product_variation')->where('uuid',$id)->first();
+            // $data['property_values'] = [];
+            // if(!empty($data['current']->product_variation)){
+               
+            //     foreach ($data['current']->product_variation as $property_variation){
+                   
+            //         $data['property_values'][$property_variation->id] = $property_variation->key_name;
+            //     }
+            //     $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
+            //     $data['prod_var'] = [];
+            //     foreach ($pvdtls as $pvdtl ){
+            //         $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
+            //     }
+            // }
         }else{
             abort('404');
         }
@@ -320,7 +254,7 @@ class SaleInvoiceController extends Controller
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('sale.sale_invoice.edit', compact('data'));
+        return view('sale.installment_plan.edit', compact('data'));
     }
 
     /**
@@ -362,7 +296,7 @@ class SaleInvoiceController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('sale.sale-invoice.index');
+            return $this->redirect()->route('sale.installment-plan.index');
         }
 
         DB::beginTransaction();
@@ -428,7 +362,7 @@ class SaleInvoiceController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
          return $this->jsonSuccessResponse($data, 'Successfully updated');
-         return $this->redirect()->route('sale.sale-invoice.index');
+         return $this->redirect()->route('sale.installment-plan.index');
         }
 
     /**
@@ -457,7 +391,7 @@ class SaleInvoiceController extends Controller
             abort('404');
         }
  //       dd($data['current']->product->toArray());
-        return view('sale.sale_invoice.print', compact('data'));
+        return view('sale.installment_plan.print', compact('data'));
     }
 
     public function getSellerList(Request $request)

@@ -11,6 +11,7 @@ use App\Http\Controllers\Accounts\ChartOfAccountTreeController;
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Accounts\BankPaymentController;
 use App\Http\Controllers\Accounts\LedgerController;
+use App\Http\Controllers\Accounts\DayBookController;
 use App\Http\Controllers\Accounts\BankReceiveController;
 use App\Http\Controllers\Accounts\CashPaymentController;
 use App\Http\Controllers\Accounts\CashReceiveController;
@@ -42,6 +43,7 @@ use App\Http\Controllers\Purchase\QueriesController;
 use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
 use App\Http\Controllers\Sale\SaleInvoiceController;
+use App\Http\Controllers\Sale\InstallmentPlanController;
 use App\Http\Controllers\Sale\BookingTransferController;
 use App\Http\Controllers\Sale\OpenFileController;
 use App\Http\Controllers\Sale\RefundFileController;
@@ -122,6 +124,13 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('revert/{id}', 'revert')->name('revert');
             });
             Route::prefix('ledgers')->resource('ledgers', LedgerController::class);
+
+            Route::prefix('day-book')->name('day-book.')->controller(DayBookController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
+            Route::prefix('day-book')->resource('day-book', DayBookController::class);
 
             Route::prefix('bank-receive')->name('bank-receive.')->controller(BankReceiveController::class)->group(function(){
                 Route::get('print/{id}', 'printView')->name('print');
@@ -248,6 +257,18 @@ Route::group(['middleware' => 'auth'], function () {
                Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
                 Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
                 Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+                Route::get('print/{id}', 'printView')->name('print');
+            });
+            Route::prefix('installment-plan')->resource('installment-plan', InstallmentPlanController::class);
+            Route::prefix('installment-plan')->name('installment-plan.')->controller(InstallmentPlanController::class)->group(function(){
+             Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+             Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+             Route::get('print/{id}', 'printView')->name('print');
+         });
+            Route::prefix('challan-form')->resource('challan-form', ChallanFormController::class);
+            Route::prefix('challan-form')->name('challan-form.')->controller(ChallanFormController::class)->group(function(){
+                Route::post('get-customer-list', 'getCustomerList')->name('getCustomerList');
+                Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
             });
             Route::prefix('challan-form')->resource('challan-form', ChallanFormController::class);

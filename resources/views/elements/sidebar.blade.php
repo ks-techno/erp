@@ -195,6 +195,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('ledgers'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/day-book')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.day-book.index') }}">
+                            <span class="menu-item text-truncate">Day Book</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
 
@@ -339,6 +346,13 @@
                     <li class="{{ ($path == 'sale/sale-invoice')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.sale-invoice.index') }}">
                             <span class="menu-item text-truncate">Booking</span>
+                        </a>
+                    </li>
+                    @endpermission
+                    @permission('installment-plan'.$sidebar_menu)
+                    <li class="{{ ($path == 'sale/installment-plan')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.installment-plan.index') }}">
+                            <span class="menu-item text-truncate">Installment Plan</span>
                         </a>
                     </li>
                     @endpermission

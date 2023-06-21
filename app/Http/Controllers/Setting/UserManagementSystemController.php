@@ -205,6 +205,11 @@ class UserManagementSystemController extends Controller
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
                     ],
                     [
+                        'dname' => 'Installment Plan',
+                        'name' => 'installment-plan',
+                        'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
+                    ],
+                    [
                         'dname' => 'Transfer',
                         'name' => 'booking-transfer',
                         'action' => [ $smenu,$list,$create,$edit,$view,$delete,$print ]
