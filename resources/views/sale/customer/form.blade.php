@@ -1,4 +1,4 @@
-@permission($data['permission'])
+{{-- @permission($data['permission']) --}}
 <form id="customer_create" class="customer_create" action="{{route('customer.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
     @csrf
     <div class="row">
@@ -61,7 +61,7 @@
                                     <label class="col-form-label">Email</label>
                                 </div>
                                 <div class="col-sm-9">
-                                    
+
                                     <input type="text" class="form-control form-control-sm" value="" id="email" name="email" />
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                     <h3>Nominee Info</h3>
                     <div class="row">
                         <div class="col-sm-6">
-                           
+
                             <div class="mb-1 row">
                                 <div class="col-sm-3">
                                     <label class="col-form-label p-0">Nominee Name</label>
@@ -149,7 +149,7 @@
         </div>
     </div>
 </form>
-@endpermission
+{{-- @endpermission --}}
 
 @section('pageJsScript')
     <script src="{{ asset('/pages/sale/customer/create.js') }}"></script>
