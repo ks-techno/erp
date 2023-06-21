@@ -434,6 +434,21 @@
                         </a>
                     </li>
                     @endpermission
+                    <li class="{{ ($path == 'setting/scp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.scp.create') }}">
+                            <span class="menu-item text-truncate">SCP</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($path == 'setting/lcp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.lcp.create') }}">
+                            <span class="menu-item text-truncate">LCP</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($path == 'setting/miscellaneous_charges')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.miscellaneous-charges.create') }}">
+                            <span class="menu-item text-truncate">Miscellaneous Charges</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>
