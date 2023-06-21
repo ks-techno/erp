@@ -455,18 +455,6 @@
         },
         {
             "name": "doctrine/dbal",
-<<<<<<< HEAD
-            "version": "3.6.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/dbal.git",
-                "reference": "b4bd1cfbd2b916951696d82e57d054394d84864c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/b4bd1cfbd2b916951696d82e57d054394d84864c",
-                "reference": "b4bd1cfbd2b916951696d82e57d054394d84864c",
-=======
             "version": "3.6.3",
             "source": {
                 "type": "git",
@@ -477,7 +465,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/dbal/zipball/9a747d29e7e6b39509b8f1847e37a23a0163ea6a",
                 "reference": "9a747d29e7e6b39509b8f1847e37a23a0163ea6a",
->>>>>>> 95076271f4dd652788a8dbaa1265f0ce08dab9a5
                 "shasum": ""
             },
             "require": {
@@ -490,21 +477,12 @@
                 "psr/log": "^1|^2|^3"
             },
             "require-dev": {
-<<<<<<< HEAD
-                "doctrine/coding-standard": "11.1.0",
-                "fig/log-test": "^1",
-                "jetbrains/phpstorm-stubs": "2022.3",
-                "phpstan/phpstan": "1.10.9",
-                "phpstan/phpstan-strict-rules": "^1.5",
-                "phpunit/phpunit": "9.6.6",
-=======
                 "doctrine/coding-standard": "12.0.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2022.3",
                 "phpstan/phpstan": "1.10.14",
                 "phpstan/phpstan-strict-rules": "^1.5",
                 "phpunit/phpunit": "9.6.7",
->>>>>>> 95076271f4dd652788a8dbaa1265f0ce08dab9a5
                 "psalm/plugin-phpunit": "0.18.4",
                 "squizlabs/php_codesniffer": "3.7.2",
                 "symfony/cache": "^5.4|^6.0",
@@ -569,11 +547,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/doctrine/dbal/tree/3.6.2"
-=======
                 "source": "https://github.com/doctrine/dbal/tree/3.6.3"
->>>>>>> 95076271f4dd652788a8dbaa1265f0ce08dab9a5
             },
             "funding": [
                 {
@@ -589,22 +563,6 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2023-04-14T07:25:38+00:00"
-        },
-        {
-            "name": "doctrine/deprecations",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "8cffffb2218e01f3b370bf763e00e81697725259"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/8cffffb2218e01f3b370bf763e00e81697725259",
-                "reference": "8cffffb2218e01f3b370bf763e00e81697725259",
-=======
             "time": "2023-06-01T05:46:46+00:00"
         },
         {
@@ -619,7 +577,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/deprecations/zipball/612a3ee5ab0d5dd97b7cf3874a6efe24325efac3",
                 "reference": "612a3ee5ab0d5dd97b7cf3874a6efe24325efac3",
->>>>>>> 95076271f4dd652788a8dbaa1265f0ce08dab9a5
                 "shasum": ""
             },
             "require": {
@@ -651,15 +608,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/doctrine/deprecations/tree/v1.1.0"
-            },
-            "time": "2023-05-29T18:55:17+00:00"
-=======
                 "source": "https://github.com/doctrine/deprecations/tree/v1.1.1"
             },
             "time": "2023-06-03T09:27:29+00:00"
->>>>>>> 95076271f4dd652788a8dbaa1265f0ce08dab9a5
         },
         {
             "name": "doctrine/event-manager",
@@ -10393,18 +10344,6 @@
         },
         {
             "name": "spatie/ignition",
-<<<<<<< HEAD
-            "version": "1.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/ignition.git",
-                "reference": "ad13a6792992411e05d3d3b293e26bdf9f9a7321"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/ad13a6792992411e05d3d3b293e26bdf9f9a7321",
-                "reference": "ad13a6792992411e05d3d3b293e26bdf9f9a7321",
-=======
             "version": "1.8.1",
             "source": {
                 "type": "git",
@@ -10415,7 +10354,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/spatie/ignition/zipball/d8eb8ea1ed27f48a694405cff363746ffd37f13e",
                 "reference": "d8eb8ea1ed27f48a694405cff363746ffd37f13e",
->>>>>>> 95076271f4dd652788a8dbaa1265f0ce08dab9a5
                 "shasum": ""
             },
             "require": {
@@ -10485,11 +10423,7 @@
                     "type": "github"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2023-05-25T10:19:32+00:00"
-=======
             "time": "2023-06-06T14:14:58+00:00"
->>>>>>> 95076271f4dd652788a8dbaa1265f0ce08dab9a5
         },
         {
             "name": "spatie/laravel-ignition",
