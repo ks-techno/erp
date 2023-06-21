@@ -13,7 +13,7 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                           
+
                         </div>
                         <div class="card-link">
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
@@ -33,6 +33,7 @@
                                                 <input type="text" class="form-control form-control-sm" value="" id="name" name="name" />
                                             </div>
                                         </div>
+
                                         <div class="mb-1 row">
                                             <div class="col-sm-3">
                                                 <label class="col-form-label">Email <span class="required">*</span></label>
@@ -41,6 +42,7 @@
                                                 <input type="text" class="form-control form-control-sm" value="" id="email" name="email" />
                                             </div>
                                         </div>
+                                        
                                         <div class="mb-1 row">
                                             <div class="col-sm-3">
                                                 <label class="col-form-label">Default Project <span class="required">*</span></label>

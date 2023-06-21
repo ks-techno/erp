@@ -251,7 +251,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-8">
                                 <div class="row">
                                     <label class="col-form-label col-lg-2">Remarks:</label>
                                     <div class="col-lg-10">

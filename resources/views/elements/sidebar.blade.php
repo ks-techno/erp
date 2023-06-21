@@ -81,7 +81,7 @@
                     <!-- <h2 class="brand-text">KSD</h2> -->
                     </a>
                 </li>
-            <li class="nav-item nav-toggle">
+            <!-- <li class="nav-item nav-toggle">
                 <a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse">
                     <i class="d-block d-xl-none text-primary toggle-icon font-medium-4"
                      data-feather="x"></i>
@@ -89,7 +89,7 @@
                      data-feather="disc" data-ticon="disc">
                     </i>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
     <div class="shadow-bottom"></div>
@@ -105,28 +105,32 @@
                     <span class="menu-title text-truncate" data-i18n="Dashboards">Home</span>
                 </a>
             </li>
+
             @endpermission
             @permission('company'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'company/')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('company.index') }}">
                     <i data-feather='briefcase'></i>
-                    <span class="menu-item text-truncate">Company</span>
+                    <span class="menu-title text-truncate">Company</span>
                 </a>
             </li>
+
             @endpermission
             @permission('project'.$sidebar_menu)
             <li class="nav-item {{ ($path == 'project/')?'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('project.index') }}">
                     <i data-feather='aperture'></i>
-                    <span class="menu-item text-truncate">Project</span>
+                    <span class="menu-title text-truncate">Project</span>
                 </a>
             </li>
+
             @endpermission
             <li id="accounts_nav" class="nav-item has-sub {{ ($prefix == '/accounts')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='book-open'></i>
                     <span class="menu-title text-truncate">Accounts</span>
                 </a>
+
                 <ul class="menu-content" id="accounts_nav_ul">
                     @permission('chart-of-account-tree'.$sidebar_menu)
                     <li class="{{ ($path == 'accounts/chart-of-account-tree')?'active':'' }}">
@@ -235,7 +239,7 @@
                         </a>
                     </li>
                     @endpermission
-     
+
             @permission('refund-file'.$sidebar_menu)
                     <li class="{{ ($path == 'sale/refund-file')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.refund-file.index') }}">
@@ -243,6 +247,11 @@
                         </a>
                     </li>
                     @endpermission
+                    <li class="{{ ($path == 'queries')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('queries.index') }}">
+                            <span class="menu-item text-truncate">Queries</span>
+                        </a>
+                    </li>
           </ul>
          </li>
 
@@ -253,7 +262,7 @@
                     <span class="menu-title text-truncate">Purchase</span>
                 </a>
                 <ul class="menu-content" id="purchase_nav_ul">
-                
+
                     @permission('supplier'.$sidebar_menu)
                     <li class="{{ ($path == 'purchase/supplier')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('purchase.supplier.index') }}">
@@ -317,12 +326,13 @@
                         </a>
                     </li>
                     @endpermission
+
                 </ul>
             </li>
             <li id="sale_nav" class="nav-item has-sub {{ ($prefix == '/sale')?'open':'' }} ">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='shopping-cart'></i>
-                    <span class="menu-title text-truncate">Sale</span>
+                    <span class="menu-title text-truncate">Sales</span>
                 </a>
                 <ul class="menu-content" id="sale_nav_ul">
                     @permission('dealer'.$sidebar_menu)
@@ -353,7 +363,7 @@
                         </a>
                     </li>
                     @endpermission
-                    
+
                 </ul>
             </li>
 
@@ -379,10 +389,43 @@
                     @endpermission
                     </ul>
                     </li>
+
+                    <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/reports')?'open':'' }}">
+                        <a class="d-flex align-items-center" href="#">
+                            <i data-feather="file"></i>
+                            <span class="menu-title text-truncate">Reports</span>
+                        </a>
+
+                        <ul class="menu-content" id="setting_nav_ul">
+                            @permission('user'.$sidebar_menu)
+                            <li class="{{ ($path == 'reports/day-book')?'active':'' }}">
+                                <a class="d-flex align-items-center" href="{{ route('reports.day-book') }}">
+                                    <span class="menu-item text-truncate">Day Book</span>
+                                </a>
+                            </li>
+                            @endpermission
+                        </ul>
+                    </li>
+                    <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/marketing')?'open':'' }}">
+                        <a class="d-flex align-items-center" href="#">
+                            <i data-feather="pdf"></i>
+                            <span class="menu-title text-truncate">Marketing</span>
+                        </a>
+
+                        <ul class="menu-content" id="setting_nav_ul">
+                            @permission('user'.$sidebar_menu)
+                            <li class="{{ ($path == 'marketing/lms')?'active':'' }}">
+                                <a class="d-flex align-items-center" href="{{ route('marketing.lms.index') }}">
+                                    <span class="menu-item text-truncate">Lead Management</span>
+                                </a>
+                            </li>
+                            @endpermission
+                        </ul>
+                    </li>
             <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>
-                    <span class="menu-title text-truncate">Setting</span>
+                    <span class="menu-title text-truncate">Settings</span>
                 </a>
                 <ul class="menu-content" id="setting_nav_ul">
                 @permission('scp'.$sidebar_menu)
@@ -395,7 +438,7 @@
                     @permission('user'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/user')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user.index') }}">
-                            <span class="menu-item text-truncate">User</span>
+                            <span class="menu-item text-truncate">Users</span>
                         </a>
                     </li>
                     @endpermission
@@ -423,10 +466,25 @@
                     @permission('user-management'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/user-management')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user-management.create') }}">
-                            <span class="menu-item text-truncate">User Permission</span>
+                            <span class="menu-item text-truncate">User Permissions</span>
                         </a>
                     </li>
                     @endpermission
+                    <li class="{{ ($path == 'setting/scp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.scp.create') }}">
+                            <span class="menu-item text-truncate">SCP</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($path == 'setting/lcp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.lcp.create') }}">
+                            <span class="menu-item text-truncate">LCP</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($path == 'setting/miscellaneous_charges')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.miscellaneous-charges.create') }}">
+                            <span class="menu-item text-truncate">Miscellaneous Charges</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>

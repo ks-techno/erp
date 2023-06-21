@@ -10,8 +10,9 @@
                     $variationQry = App\Models\ProductVariation::get();
                 @endphp
                     <tr>
+
                         <th width="100%" class="dtl-head text-center" align="center" colspan="7" style="background-color:#90EE90;">Product Detail</th>
-                        <!--<th width="70%" class="dtl-head text-center" align="center" colspan="6" rowspan="2" style="background-color:#FFA500;">Property Detail</th> -->
+
                     </tr>
                     <tr>
                         <th width="6%" class="dtl-head text-center" align="center">Sr#</th>

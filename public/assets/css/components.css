@@ -760,7 +760,7 @@ footer.footer-border {
 
 .main-menu.menu-light .navigation > li.open:not(.menu-item-closing) > a, .main-menu.menu-light .navigation > li.sidebar-group-active > a {
   color: #565360;
-  background: whitesmoke;
+  background: rgb(206, 204, 204);
   border-radius: 6px; }
 
 .main-menu.menu-light .navigation > li:not(.open) > ul {
