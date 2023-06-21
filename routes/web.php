@@ -24,7 +24,6 @@ use App\Http\Controllers\Setting\ProjectController;
 use App\Http\Controllers\Setting\DepartmentController;
 use App\Http\Controllers\Setting\StaffController;
 use App\Http\Controllers\Setting\ProfileController;
-use App\Http\Controllers\Setting\ScpController;
 use App\Http\Controllers\Setting\UserManagementSystemController;
 use App\Http\Controllers\Setting\UserController;
 use App\Http\Controllers\Setting\ScpController;
@@ -199,7 +198,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('form/{id?}', [UserManagementSystemController::class, 'create'])->name('create');
                 Route::post('form/{id?}', [UserManagementSystemController::class, 'store'])->name('store');
             });
-            Route::prefix('scp')->resource('scp', ScpController::class);
+           
             Route::prefix('lcp')->resource('lcp', LcpController::class);
             Route::prefix('miscellaneous-charges')->resource('miscellaneous-charges', MiscellaneouschargesController::class);
 
