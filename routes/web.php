@@ -50,7 +50,6 @@ use App\Http\Controllers\Sale\RefundFileController;
 use App\Http\Controllers\Purchase\BookedPropertyController;
 use App\Http\Controllers\Sale\ChallanFormController;
 use App\Http\Controllers\Accounts\SubmittedChallanController;
-use App\Http\Controllers\Reports\DayBookController;
 use App\Http\Controllers\Marketing\LmsController;
 
 /*
@@ -132,7 +131,6 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('revert-list', 'revertList')->name('revertList');
                 Route::post('revert/{id}', 'revert')->name('revert');
             });
-            Route::prefix('day-book')->resource('day-book', DayBookController::class);
 
             Route::prefix('bank-receive')->name('bank-receive.')->controller(BankReceiveController::class)->group(function(){
                 Route::get('print/{id}', 'printView')->name('print');
