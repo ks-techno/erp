@@ -166,9 +166,9 @@
                                                         <input id="egt_credit" type="text"
                                                          class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
-                                                    <!-- <td><button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
+                                                    <td><button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
                                                             <i data-feather='plus'></i>
-                                                        </button></td> -->
+                                                        </button></td>
                                                 </tr>
                                                 <tr class="egt_form_header_input_2nd">
                                                     <td>
@@ -212,8 +212,9 @@
                                                          class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);" >
                                                     </td>
                                                     <td class="text-center">
-                                                    <button type="button" id="egt_add" class="egt_add btn btn-primary btn-sm">
-                                                            <i data-feather='plus'></i>
+                                                        <button type="button" id="egt_del"
+                                                         class="btn btn-danger btn-sm egt_del">
+                                                            <i data-feather='trash-2'></i>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -248,7 +249,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-lg-8">
+                            <div class="col-lg-6">
                                 <div class="row">
                                     <label class="col-form-label col-lg-2">Remarks:</label>
                                     <div class="col-lg-10">

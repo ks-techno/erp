@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Accounts\ChartOfAccountTreeController;
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Accounts\BankPaymentController;
+use App\Http\Controllers\Accounts\LedgerController;
 use App\Http\Controllers\Accounts\BankReceiveController;
 use App\Http\Controllers\Accounts\CashPaymentController;
 use App\Http\Controllers\Accounts\CashReceiveController;
@@ -34,6 +35,7 @@ use App\Http\Controllers\Purchase\ProductPropertyController;
 use App\Http\Controllers\Purchase\BuyableTypeController;
 use App\Http\Controllers\Purchase\ProductVariationController;
 use App\Http\Controllers\Purchase\PurchaseDemandController;
+use App\Http\Controllers\Purchase\QueriesController;
 use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
 use App\Http\Controllers\Sale\SaleInvoiceController;
@@ -43,6 +45,7 @@ use App\Http\Controllers\Sale\RefundFileController;
 use App\Http\Controllers\Purchase\BookedPropertyController;
 use App\Http\Controllers\Sale\ChallanFormController;
 use App\Http\Controllers\Accounts\SubmittedChallanController;
+use App\Http\Controllers\Reports\DayBookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +113,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('revert/{id}', 'revert')->name('revert');
             });
             Route::prefix('bank-payment')->resource('bank-payment', BankPaymentController::class);
+            Route::prefix('ledgers')->name('ledgers.')->controller(LedgerController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
+            Route::prefix('ledgers')->resource('ledgers', LedgerController::class);
 
             Route::prefix('bank-receive')->name('bank-receive.')->controller(BankReceiveController::class)->group(function(){
                 Route::get('print/{id}', 'printView')->name('print');
@@ -148,14 +157,14 @@ Route::group(['middleware' => 'auth'], function () {
             });
             Route::prefix('submitted-challan')->resource('submitted-challan', SubmittedChallanController::class);
         });
-            
+
         Route::prefix('company')->resource('company', CompanyController::class);
         Route::prefix('project')->resource('project', ProjectController::class);
         Route::prefix('department')->resource('department', DepartmentController::class);
         Route::prefix('staff')->resource('staff', StaffController::class);
 
         Route::prefix('setting')->name('setting.')->group(function () {
-           
+
             Route::prefix('country')->resource('country', CountryController::class);
             Route::prefix('region')->resource('region', RegionController::class);
             Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){
@@ -165,7 +174,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('city')->name('city.')->controller(CityController::class)->group(function(){
                 Route::post('get-city-by-region', 'getCityByRegion')->name('getCityByRegion');
             });
-           
+
             Route::prefix('user')->resource('user', UserController::class);
                 Route::prefix('user-management')->name('user-management.')->group(function () {
                 Route::get('form/{id?}', [UserManagementSystemController::class, 'create'])->name('create');
@@ -174,7 +183,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
+        Route::prefix('reports')->name('reports.')->group(function(){
+            Route::get('day-book', [DayBookController::class, 'index'])->name('day-book');
+
+        });
+
         Route::prefix('product-property')->resource('product-property', ProductPropertyController::class);
+        Route::get('exportPDF', [LedgerController::class, 'exportPDF'])->name('exportPDF');
         Route::get('product-property-print', [ProductPropertyController::class, 'printView'])->name('product-property-print');
         Route::get('refund-file-print', [RefundFileController::class, 'printResults'])->name('refund-file-print');
         Route::get('booked-proprty-print', [BookedPropertyController::class, 'printResults'])->name('booked-proprty-print');
@@ -191,23 +206,31 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
             Route::get('print/{id}', 'printView')->name('print');
         });
+
         Route::prefix('purchase')->name('purchase.')->group(function () {
             Route::prefix('category_types')->resource('category_types', CategoryTypeController::class);
             Route::prefix('category')->resource('category', CategoryController::class);
             Route::prefix('category')->name('category.')->controller(CategoryController::class)->group(function(){
                 Route::post('get-child-by-parent', 'getChildByParentCategory')->name('getChildByParentCategory');
             });
+
             Route::prefix('brand')->resource('brand', BrandController::class);
             Route::prefix('manufacturer')->resource('manufacturer', ManufacturerController::class);
             Route::prefix('supplier')->resource('supplier', SupplierController::class);
             Route::prefix('inventory')->resource('inventory', InventoryController::class);
             Route::prefix('purchase-demand')->resource('purchase-demand', PurchaseDemandController::class);
-          
+
             Route::prefix('property-type')->resource('property-type', BuyableTypeController::class);
             Route::prefix('product-variation')->resource('product-variation', ProductVariationController::class);
             Route::prefix('product-variation')->name('product-variation.')->controller(ProductVariationController::class)->group(function(){
                 Route::post('get-product-variation-by-buyable-type', 'getProductVariations')->name('getProductVariations');
             });
+  });
+  Route::prefix('queries')->resource('queries', QueriesController::class);
+  Route::prefix('queries')->name('queries.')->controller(QueriesController::class)->group(function(){
+      Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+      Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+      Route::get('print/{id}', 'printView')->name('print');
   });
        Route::prefix('customer')->resource('customer', CustomerController::class);
 

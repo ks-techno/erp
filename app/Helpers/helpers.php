@@ -184,3 +184,13 @@ function createSaleHistory(array $requestdata)
             '16' => 'Other Charges',
         ];
     }
+
+    function getvoucherTypes() {
+        return [
+            'bpv' => 'Bank Payment Voucher',
+            'cpv' => 'Cash Payment Voucher',
+            'brv' => 'Bank Recieve Voucher',
+            'crv' => 'Cash Recieve Voucher',
+            'jv' => 'Journal Voucher',
+        ];
+    }

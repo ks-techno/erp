@@ -77,13 +77,14 @@ class SubmittedChallanController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-               
+                $link = $row->vouchers->voucher_id ?? $row->uuid;
                 $posted = $this->getPostedTitle()[$row->status];
                 $urlAdd = route('accounts.submitted-challan.voucherCreate',$row->uuid);
                 $urlEdit = route('accounts.submitted-challan.edit',$row->uuid);
                 $urlDel = route('accounts.submitted-challan.destroy',$row->uuid);
                 $urlPrint = route('accounts.submitted-challan.print',$row->uuid);
-
+                $urlBRV = route('accounts.bank-receive.print',$link);
+                $urlCRV = route('accounts.cash-receive.print',$link);
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
                     $actions .= '<div class="d-inline-flex" style="margin-left:-15px;">';
@@ -95,19 +96,26 @@ class SubmittedChallanController extends Controller
                     if($delete_per) {
                         $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
                     }
-                    $actions .= '</div>'; // end dropdown-menu
-                    $actions .= '</div>'; // end d-inline-flex
+                    $actions .= '</div>'; 
+                    $actions .= '</div>';
                 }
                 if($edit_per){
                     if($row->vouchers != null){
-                        $actions .= '<a href="' . $urlPrint . '" target="_blank" class="item-edit"><i data-feather="eye" class="me-50"></i></a>';
+                        if($row->vouchers->type == "BRV"){
+                        $actions .= '<a href="' . $urlBRV . '" target="_blank" class="item-edit"><i data-feather="eye" class="me-50"></i></a>';
+                        }
+                        else{
+                            $actions .= '<a href="' . $urlCRV . '" target="_blank" class="item-edit"><i data-feather="eye" class="me-50"></i></a>';
+                        }
+                        $actions .= '<a href="' . $urlEdit . '" target="_blank" class="item-view"></a>';
                     }
                     else{
-                    $actions .= '<a href="'.$urlAdd.'" class="item-edit"><i data-feather="plus"></i></a>';
+                    $actions .= '<a href="'.$urlAdd.'" class="item-edit"><i data-feather="plus" class="me-50"></i></a>';
+                    $actions .= '<a href="' . $urlEdit . '" target="_blank" class="item-view"></a>';
 
                     }
                 }
-                $actions .= '</div>'; //end main div
+                $actions .= '</div>';
 
                 $entries[] = [
                     $row->challan_no,
@@ -277,7 +285,7 @@ class SubmittedChallanController extends Controller
         $data['file_status'] = BookingFileStatus::where('status',1)->get();
         
         if(ChallanForm::where('uuid',$id)->exists()){
-            $data['current'] = ChallanForm::with('challan_particluar','customer','project','product','file_status')->where('uuid',$id)->first();
+            $data['current'] = ChallanForm::with('vouchers','challan_particluar','customer','project','product','file_status')->where('uuid',$id)->first();
           
             $data['particulars'] = ChallanParticular::with('particular')->where('challan_id',$data['current']->id)->get();
             $data['particular'] = Particulars::where('is_Active',1)->get();
@@ -285,6 +293,7 @@ class SubmittedChallanController extends Controller
         }else{
             abort('404');
         }
+        
         $data['view'] = false;
         $data['posted'] = false;
         if($data['current']->posted == 1){

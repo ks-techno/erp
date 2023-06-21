@@ -71,8 +71,6 @@ class BankPaymentController extends Controller
                 $urlEdit = route('accounts.bank-payment.edit',$row->voucher_id);
                 $urlDel = route('accounts.bank-payment.destroy',$row->voucher_id);
                 $urlPrint = route('accounts.bank-payment.print',$row->voucher_id);
-
-
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
                     $actions .= '<div class="d-inline-flex">';
@@ -183,8 +181,8 @@ class BankPaymentController extends Controller
             $sr = 1;
             foreach ($request->pd as $pd){
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
-                if(!empty($account)){
-                    
+                if(!empty($account))
+                {
                 $form_create = Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),

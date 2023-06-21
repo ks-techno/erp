@@ -1,29 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Accounts;
+namespace App\Http\Controllers\Purchase;
 
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Library\Utilities;
-use App\Models\ChartOfAccount;
-use App\Models\PaymentMode;
-use App\Models\Voucher;
-use App\Models\Ledgers;
+use App\Models\Staff;
+// use App\Models\Queries;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Exception;
 use Validator;
-use PDF;
-class LedgerController extends Controller
+
+class QueriesController extends Controller
 {
     private static function Constants()
     {
-        $name = 'ledgers';
+        $name = 'queries';
         return [
-            'type' => "BPV",
-            'title' => 'Ledgers',
-            'list_url' => route('accounts.ledgers.index'),
+            'type' => "PD",
+            'title' => 'Queries',
+            'list_url' => route('queries.index'),
             'list' => "$name-list",
             'create' => "$name-create",
             'edit' => "$name-edit",
@@ -32,55 +30,26 @@ class LedgerController extends Controller
             'print' => "$name-print",
         ];
     }
-    
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['permission_list'] = self::Constants()['list'];
         $data['permission_create'] = self::Constants()['create'];
-        $chart = ChartOfAccount::Wherein('level', [3,4]);
-        if(!empty($val)){
-            $val = (string)$val;
-            $chart = $chart->where('code','like',"%$val%");
-            $chart = $chart->orWhere('name','like',"%$val%");
-        }
-        
-        $chart = $chart->select('id','code','name')->get();
-        $data['chart'] =  $chart;
-        $total_debit = 0;
-        $total_credit = 0;
-        $balance = 0;
         if ($request->ajax()) {
-            $draw = 'all'; 
-            $chartCode = $request->input('chart_code');
-            $startDate = $request->input('start_date');
-            $endDate = $request->input('end_date');
-            $dataSql = Ledgers::with('voucher')->orderBy('created_at', 'desc');
-            if ($chartCode && $startDate && $endDate) {
-                $dataSql = $dataSql->where('COAID', $chartCode)
-                    ->whereBetween('created_at', [$startDate, $endDate]);
-            } elseif ($chartCode) {
-                $dataSql = $dataSql->where('COAID', $chartCode);
-            } elseif ($startDate && $endDate) {
-                $dataSql = $dataSql->whereBetween('created_at', [$startDate, $endDate]);
-            }
-            else{
-                $dataSql = Ledgers::with('voucher')
-                ->where('created_at', '>=', now()->subDays(15))
-                ->orderBy('created_at', 'desc');
-            }
-           
+            $draw = 'all';
+            $dataSql = Queries::Orderby('date','desc');
+
             $allData = $dataSql->get();
-            
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
+
             $delete_per = false;
             if(auth()->user()->isAbleTo(self::Constants()['delete'])){
                 $delete_per = true;
@@ -94,12 +63,11 @@ class LedgerController extends Controller
                 $print_per = true;
             }
             $entries = [];
-            foreach ($allData as $row) {
-                $posted = $this->getPostedTitle()[$row->voucher->posted];
-                $urlEdit = route('accounts.ledgers.edit',$row->voucher->voucher_id);
-                $urlDel = route('accounts.ledgers.destroy',$row->voucher->voucher_id);
-                $urlPrint = route('accounts.ledgers.print',$row->voucher->voucher_id);
 
+            foreach ($allData as $row) {
+                $urlEdit = route('purchase.purchase-demand.edit',$row->Queries_id);
+                $urlDel = route('purchase.purchase-demand.destroy',$row->Queries_id);
+                $urlPrint = route('purchase.purchase-demand.edit',$row->Queries_id);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -119,18 +87,12 @@ class LedgerController extends Controller
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-                $total_credit += $row->voucher->credit;
-                $total_debit += $row->voucher->debit;
-                $balance = $total_credit - $total_debit;
                 $entries[] = [
-                    $row->voucher->chart_account_name,
-                    $row->voucher->chart_account_code,
-                    $row->voucher->date,
-                    format_number($row->voucher->debit),
-                    format_number($row->voucher->credit),
-                    format_number($balance),
-                    numberToWords($balance).' rupees only',
-                   
+                    $row->date,
+                    $row->Queries_id,
+                    Str::limit($row->notes, 20, '....'),
+                    $row->Queries_id,
+                    $actions,
                 ];
             }
             $result = [
@@ -140,9 +102,9 @@ class LedgerController extends Controller
                 'data' => $entries,
             ];
             return response()->json($result);
-        }
 
-        return view('accounts.ledgers.list', compact('data'));
+        }
+        return view('purchase.purchase_demand.list', compact('data'));
     }
 
     /**
@@ -150,56 +112,20 @@ class LedgerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function exportPDF(Request $request)
-    {
-        $data = [];
-        $data['title'] = self::Constants()['title'];
-        $chartCode = $request->input('chart_code');
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $dataSql = Ledgers::with('voucher')->orderBy('created_at', 'desc');
-        if ($chartCode && $startDate && $endDate) {
-            $dataSql = $dataSql->where('COAID', $chartCode)
-                ->whereBetween('created_at', [$startDate, $endDate]);
-        } elseif ($chartCode) {
-            $dataSql = $dataSql->where('COAID', $chartCode);
-        } elseif ($startDate && $endDate) {
-            $dataSql = $dataSql->whereBetween('created_at', [$startDate, $endDate]);
-        }
-        else{
-            $dataSql = Ledgers::with('voucher')
-            ->where('created_at', '>=', now()->subDays(15))
-            ->orderBy('created_at', 'desc');
-        }
-       
-        $allData = $dataSql->get();
-       
-         $data['results'] = $allData;
-         
-         $pdf = PDF::loadView('accounts.ledgers.pdf', compact('data'));
-         return $pdf->download('pdf_file.pdf');
-    }
-
     public function create()
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['permission'] = self::Constants()['create'];
-        $max = Voucher::withTrashed()->where('type',self::Constants()['type'])->max('voucher_no');
-        $data['voucher_no'] = self::documentCode(self::Constants()['type'],$max);
-        $chart = ChartOfAccount::Wherein('level', [3,4]);
-        if(!empty($val)){
-            $val = (string)$val;
-            $chart = $chart->where('code','like',"%$val%");
-            $chart = $chart->orWhere('name','like',"%$val%");
-        }
-
-        $chart = $chart->select('id','code','name')->get();
-        $data['chart'] =  $chart;
-      //  $data['payment_mode'] = PaymentMode::where('status',1)->get();
-        return view('accounts.ledgers.create', compact('data'));
+        // $data['permission'] = self::Constants()['create'];
+        // $data['staff'] = Staff::OrderByName()->get();
+        // $doc_data = [
+        //     'model'             => 'Queries',
+        //     'code_field'        => 'Queries_id',
+        //     'code_prefix'       => strtoupper('pd'),
+        // ];
+        // $data['code'] = Utilities::demandCode($doc_data);
+        return view('purchase.queries.create', compact('data'));
     }
 
     /**
@@ -208,8 +134,69 @@ class LedgerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function store(Request $request)
+    {
+        $data = [];
+        $validator = Validator::make($request->all(), [
+            'demandBy_id' => 'required',
+        ],
+        [
+            'demandBy_id.required' => 'Demand by is required',
+        ]);
 
-    
+        if ($validator->fails()) {
+            $data['validator_errors'] = $validator->errors();
+            $validator_errors = $data['validator_errors']->getMessageBag()->toArray();
+            $err = 'Fields are required';
+            foreach ($validator_errors as $key=>$valid_error){
+                $err = $valid_error[0];
+            }
+            return $this->jsonErrorResponse($data, $err);
+        }
+        if(!isset($request->pd) || empty($request->pd)){
+            return $this->jsonErrorResponse($data, 'Grid must be include one row');
+        }
+        DB::beginTransaction();
+        try {
+            $doc_data = [
+                'model'             => 'Queries',
+                'code_field'        => 'Queries_id',
+                'code_prefix'       => strtoupper('pd'),
+            ];
+            $data['code'] = Utilities::demandCode($doc_data);
+            $sr = 1;
+            foreach ($request->pd as $pd){
+                Queries::create([
+                        'Queries_id' => $data['code'],
+                        'uuid' => self::uuid(),
+                        'date' => date('Y-m-d', strtotime($request->date)),
+                        'sr_no' => $sr,
+                        'uom' => $pd['uom'],
+                        'packing' => $pd['packing'],
+                        'supplier_id' => $request->supplier_id,
+                        'demandBy_id' => $request->demandBy_id,
+                        'product_id' => $request->product_id,
+                        'physical_stock' => $pd['physical_stock'],
+                        'store_stock' => $pd['store_stock'],
+                        'reorder' => $pd['reorder'],
+                        'consumption' => $pd['consumption'],
+                        'quantity' => $pd['quantity'],
+                        'lpo_stock' => $pd['lpo_stock'],
+                        'notes' => $request->notes,
+                    ]);
+                    $sr = $sr + 1;
+
+            }
+
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, $e->getMessage());
+        }
+        DB::commit();
+        $data['redirect'] = self::Constants()['list_url'];
+        return $this->jsonSuccessResponse($data, 'Successfully created');
+        return $this->redirect()->route('purchase.purchase_demand.index');
+    }
 
     /**
      * Display the specified resource.
@@ -235,16 +222,7 @@ class LedgerController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission'] = self::Constants()['edit'];
-        $data['payment_mode'] = PaymentMode::where('status',1)->get();
-        $chart = ChartOfAccount::Wherein('level', [3,4]);
-        if(!empty($val)){
-            $val = (string)$val;
-            $chart = $chart->where('code','like',"%$val%");
-            $chart = $chart->orWhere('name','like',"%$val%");
-        }
 
-        $chart = $chart->select('id','code','name')->get();
-        $data['chart'] =  $chart;
         if(Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->exists()){
 
             $data['current'] = Voucher::where('type',self::Constants()['type'])->where(['voucher_id'=>$id,'sr_no'=>1])->first();
@@ -265,7 +243,7 @@ class LedgerController extends Controller
             $data['permission_edit'] = self::Constants()['edit'];
         }
 
-        return view('accounts.ledgers.edit', compact('data'));
+        return view('purchase.purchase_demand.edit', compact('data'));
     }
 
     /**
@@ -280,7 +258,7 @@ class LedgerController extends Controller
 
         $data = [];
         $validator = Validator::make($request->all(), [
-           // 'payment_mode' => ['required',Rule::notIn([0,'0'])],
+
         ]);
 
         if ($validator->fails()) {
@@ -291,13 +269,10 @@ class LedgerController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            
         }
         if(!isset($request->pd) || empty($request->pd)){
             return $this->jsonErrorResponse($data, 'Grid must be include one row');
         }
-
-
         $total_debit = 0;
         $total_credit = 0;
         foreach ($request->pd as $pd) {
@@ -315,7 +290,6 @@ class LedgerController extends Controller
             if($firstVoucher->posted == 1){
                 return $this->jsonErrorResponse($data, 'This voucher have been already posted');
             }
-
             $voucher_no = $firstVoucher->voucher_no;
             $voucher_id = $id;
             DB::select("delete FROM `vouchers` where voucher_id = '$voucher_id'");
@@ -323,10 +297,9 @@ class LedgerController extends Controller
             $posted = $request->current_action_id == 'post'?1:0;
             $sr = 1;
             foreach ($request->pd as $pd){
-                
                 $account = ChartOfAccount::where('id',$pd['chart_id'])->first();
                 if(!empty($account)){
-                $form_create = Voucher::create([
+                    Voucher::create([
                         'voucher_id' => $voucher_id,
                         'uuid' => self::uuid(),
                         'date' => date('Y-m-d', strtotime($request->date)),
@@ -336,8 +309,6 @@ class LedgerController extends Controller
                         'chart_account_id' => $account->id,
                         'chart_account_name' => $account->name,
                         'chart_account_code' => $account->code,
-                        'cheque_no' => $pd['egt_cheque_no'],
-                        'cheque_date' => $pd['egt_cheque_date'],
                         'debit' =>str_replace(',', '',($pd['egt_debit'])),
                         'credit' =>str_replace(',', '',($pd['egt_credit'])),
                         'description' => $pd['egt_description'],
@@ -346,29 +317,19 @@ class LedgerController extends Controller
                         'project_id' => auth()->user()->project_id,
                         'user_id' => auth()->user()->id,
                         'posted' => $posted,
-                        'total_debit' => $total_debit,
-                        'total_credit' => $total_credit,
                     ]);
                     $sr = $sr + 1;
                 }
-                $req = [
-                    'payment_id' => $form_create->id,
-                    'COAID' => $account->id,
-                    'voucher_id' => $voucher_id,
-                ];
-            
-                $reqArray[] = $req;
             }
-            Utilities::UpdateLedger($reqArray);
+
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, $e->getMessage());
+            return $this->jsonErrorResponse($data, 'Something went wrong');
         }
         DB::commit();
-
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully updated');
-        return $this->redirect()->route('accounts.ledgers.index');
+        return $this->redirect()->route('purchase.purchase_demand.index');
     }
 
     /**
@@ -393,6 +354,8 @@ class LedgerController extends Controller
         return $this->jsonSuccessResponse($data, 'Successfully deleted', 200);
     }
 
+
+
     public function printView($id)
     {
         $data = [];
@@ -406,14 +369,13 @@ class LedgerController extends Controller
             $data['dtl'] = Voucher::where('type',self::Constants()['type'])->where('voucher_id',$id)->get();
 
         }else{
-
             abort('404');
         }
 
-        return view('accounts.ledgers.print', compact('data'));
+        return view('purchase.purchase_demand.print', compact('data'));
     }
 
-    public function revertList(Request $request)
+       public function revertList(Request $request)
     {
         $data = [];
         $data['title'] = self::Constants()['title'];
@@ -431,11 +393,12 @@ class LedgerController extends Controller
             $entries = [];
             foreach ($allData as $row) {
                 $posted = $this->getPostedTitle()[$row->posted];
-                $urlRevert = route('accounts.ledgers.revert',$row->voucher_id);
+                $urlRevert = route('accounts.journal.revert',$row->voucher_id);
 
                 $actions = '<div class="text-end">';
                 $actions .= '<a href="javascript:;" data-url="' . $urlRevert . '" class="revert-record">Revert</a>';
                 $actions .= '</div>'; //end main div
+
                 $entries[] = [
                     $row->date,
                     $row->voucher_no,
@@ -453,7 +416,7 @@ class LedgerController extends Controller
             return response()->json($result);
         }
 
-        return view('accounts.ledgers.revert_list', compact('data'));
+        return view('purchase.purchase_demand.revert_list', compact('data'));
     }
 
     public function revert($id){
@@ -470,5 +433,4 @@ class LedgerController extends Controller
         DB::commit();
         return $this->jsonSuccessResponse($data, 'Successfully revert', 200);
     }
-
 }
