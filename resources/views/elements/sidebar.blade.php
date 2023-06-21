@@ -402,7 +402,7 @@
                     </li>
                     <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/marketing')?'open':'' }}">
                         <a class="d-flex align-items-center" href="#">
-                            <i data-feather="pdf"></i>
+                            <i data-feather="bar-chart-2"></i>
                             <span class="menu-title text-truncate">Marketing</span>
                         </a>
 
