@@ -11,6 +11,7 @@ use App\Http\Controllers\Accounts\ChartOfAccountTreeController;
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Accounts\BankPaymentController;
 use App\Http\Controllers\Accounts\LedgerController;
+use App\Http\Controllers\Accounts\DayBookController;
 use App\Http\Controllers\Accounts\BankReceiveController;
 use App\Http\Controllers\Accounts\CashPaymentController;
 use App\Http\Controllers\Accounts\CashReceiveController;
@@ -23,8 +24,12 @@ use App\Http\Controllers\Setting\ProjectController;
 use App\Http\Controllers\Setting\DepartmentController;
 use App\Http\Controllers\Setting\StaffController;
 use App\Http\Controllers\Setting\ProfileController;
+use App\Http\Controllers\Setting\ScpController;
 use App\Http\Controllers\Setting\UserManagementSystemController;
 use App\Http\Controllers\Setting\UserController;
+use App\Http\Controllers\Setting\ScpController;
+use App\Http\Controllers\Setting\LcpController;
+use App\Http\Controllers\Setting\MiscellaneouschargesController;
 use App\Http\Controllers\Purchase\CategoryTypeController;
 use App\Http\Controllers\Purchase\CategoryController;
 use App\Http\Controllers\Purchase\BrandController;
@@ -39,6 +44,7 @@ use App\Http\Controllers\Purchase\QueriesController;
 use App\Http\Controllers\Sale\DealerController;
 use App\Http\Controllers\Sale\CustomerController;
 use App\Http\Controllers\Sale\SaleInvoiceController;
+use App\Http\Controllers\Sale\InstallmentPlanController;
 use App\Http\Controllers\Sale\BookingTransferController;
 use App\Http\Controllers\Sale\OpenFileController;
 use App\Http\Controllers\Sale\RefundFileController;
@@ -46,6 +52,7 @@ use App\Http\Controllers\Purchase\BookedPropertyController;
 use App\Http\Controllers\Sale\ChallanFormController;
 use App\Http\Controllers\Accounts\SubmittedChallanController;
 use App\Http\Controllers\Reports\DayBookController;
+use App\Http\Controllers\Marketing\LmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('edit', 'edit')->name('edit');
             Route::post('update','update')->name('update');
         });
+        
         Route::prefix('help')->name('help.')->group(function () {
             Route::get('chart/{str?}', [HelpController::class, 'chart'])->name('chart');
             Route::get('customer/{str?}', [HelpController::class, 'customer'])->name('customer');
@@ -119,6 +127,13 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('revert/{id}', 'revert')->name('revert');
             });
             Route::prefix('ledgers')->resource('ledgers', LedgerController::class);
+
+            Route::prefix('day-book')->name('day-book.')->controller(DayBookController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
+            Route::prefix('day-book')->resource('day-book', DayBookController::class);
 
             Route::prefix('bank-receive')->name('bank-receive.')->controller(BankReceiveController::class)->group(function(){
                 Route::get('print/{id}', 'printView')->name('print');
@@ -164,7 +179,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('staff')->resource('staff', StaffController::class);
 
         Route::prefix('setting')->name('setting.')->group(function () {
-
+   Route::prefix('scp')->resource('scp', ScpController::class);
+            Route::prefix('scp')->name('scp.')->controller(ScpController::class)->group(function () {
+                Route::get('edit', 'edit')->name('edit');
+                Route::post('update','update')->name('update');
+            });
             Route::prefix('country')->resource('country', CountryController::class);
             Route::prefix('region')->resource('region', RegionController::class);
             Route::prefix('region')->name('region.')->controller(RegionController::class)->group(function(){
@@ -180,6 +199,10 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('form/{id?}', [UserManagementSystemController::class, 'create'])->name('create');
                 Route::post('form/{id?}', [UserManagementSystemController::class, 'store'])->name('store');
             });
+            Route::prefix('scp')->resource('scp', ScpController::class);
+            Route::prefix('lcp')->resource('lcp', LcpController::class);
+            Route::prefix('miscellaneous-charges')->resource('miscellaneous-charges', MiscellaneouschargesController::class);
+
 
         });
 
@@ -187,9 +210,20 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('day-book', [DayBookController::class, 'index'])->name('day-book');
 
         });
+        Route::prefix('marketing')->name('marketing.')->group(function(){
+
+            Route::prefix('lms')->resource('lms', LmsController::class);
+        Route::prefix('lms')->name('lms.')->controller(LmsController::class)->group(function(){
+            Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+            Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+            Route::get('print/{id}', 'printView')->name('print');
+        });
+
+        });
 
         Route::prefix('product-property')->resource('product-property', ProductPropertyController::class);
         Route::get('exportPDF', [LedgerController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('exportExcel', [LedgerController::class, 'exportExcel'])->name('exportExcel');
         Route::get('product-property-print', [ProductPropertyController::class, 'printView'])->name('product-property-print');
         Route::get('refund-file-print', [RefundFileController::class, 'printResults'])->name('refund-file-print');
         Route::get('booked-proprty-print', [BookedPropertyController::class, 'printResults'])->name('booked-proprty-print');
@@ -240,6 +274,19 @@ Route::group(['middleware' => 'auth'], function () {
                Route::prefix('sale-invoice')->name('sale-invoice.')->controller(SaleInvoiceController::class)->group(function(){
                 Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
                 Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+                Route::get('print/{id}', 'printView')->name('print');
+            });
+            Route::prefix('installment-plan')->resource('installment-plan', InstallmentPlanController::class);
+            Route::prefix('installment-plan')->name('installment-plan.')->controller(InstallmentPlanController::class)->group(function(){
+             Route::post('get-seller-list', 'getSellerList')->name('getSellerList');
+             Route::post('get-product-detail', 'getProductDetail')->name('getProductDetail');
+             Route::post('plan-details', 'planDetails')->name('planDetails');
+             Route::get('print/{id}', 'printView')->name('print');
+         });
+            Route::prefix('challan-form')->resource('challan-form', ChallanFormController::class);
+            Route::prefix('challan-form')->name('challan-form.')->controller(ChallanFormController::class)->group(function(){
+                Route::post('get-customer-list', 'getCustomerList')->name('getCustomerList');
+                Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
             });
             Route::prefix('challan-form')->resource('challan-form', ChallanFormController::class);

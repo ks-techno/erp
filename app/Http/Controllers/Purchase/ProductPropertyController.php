@@ -282,7 +282,9 @@ class ProductPropertyController extends Controller
             $data['current'] = Product::with('property_variation')->where('uuid',$id)->first();
             $data['property_values'] = [];
             if(!empty($data['current']->property_variation)){
+                
                 foreach ($data['current']->property_variation as $property_variation){
+                   
                     $data['property_values'][$property_variation->product_variation_id][$property_variation->sr_no] = $property_variation->value;
                 }
                 $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();

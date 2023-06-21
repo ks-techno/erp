@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Department;
 use App\Models\Project;
 use App\Models\PropertyPaymentMode;
+use App\Models\InstallmentPlan;
 use App\Models\Sale;
 use App\Models\SaleSeller;
 use App\Models\Staff;
@@ -143,6 +144,7 @@ class SaleInvoiceController extends Controller
         $data['file_status'] = BookingFileStatus::where('status',1)->get();
    //     $data['project'] = Project::get();
         $data['property'] = Product::ProductProperty()->get();
+        $data['installment_plan'] = InstallmentPlan::get();
         $data['property_payment_mode'] = PropertyPaymentMode::where('status',1)->get();
         return view('sale.sale_invoice.create', compact('data'));
     }

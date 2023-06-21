@@ -104,7 +104,7 @@ class QueriesController extends Controller
             return response()->json($result);
 
         }
-        return view('purchase.purchase_demand.list', compact('data'));
+        return view('purchase.queries.list', compact('data'));
     }
 
     /**

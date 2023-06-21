@@ -195,6 +195,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('ledgers'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/day-book')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.day-book.index') }}">
+                            <span class="menu-item text-truncate">Day Book</span>
+                        </a>
+                    </li>
+                    @endpermission
                 </ul>
             </li>
 
@@ -342,6 +349,13 @@
                         </a>
                     </li>
                     @endpermission
+                    @permission('installment-plan'.$sidebar_menu)
+                    <li class="{{ ($path == 'sale/installment-plan')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.installment-plan.index') }}">
+                            <span class="menu-item text-truncate">Installment Plan</span>
+                        </a>
+                    </li>
+                    @endpermission
                     @permission('challan-form'.$sidebar_menu)
                     <li class="{{ ($path == 'sale/challan-form')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.challan-form.index') }}">
@@ -392,13 +406,35 @@
                             @endpermission
                         </ul>
                     </li>
+                    <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/marketing')?'open':'' }}">
+                        <a class="d-flex align-items-center" href="#">
+                            <i data-feather="pdf"></i>
+                            <span class="menu-title text-truncate">Marketing</span>
+                        </a>
 
+                        <ul class="menu-content" id="setting_nav_ul">
+                            @permission('user'.$sidebar_menu)
+                            <li class="{{ ($path == 'marketing/lms')?'active':'' }}">
+                                <a class="d-flex align-items-center" href="{{ route('marketing.lms.index') }}">
+                                    <span class="menu-item text-truncate">Lead Management</span>
+                                </a>
+                            </li>
+                            @endpermission
+                        </ul>
+                    </li>
             <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/setting')?'open':'' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="settings"></i>
                     <span class="menu-title text-truncate">Settings</span>
                 </a>
                 <ul class="menu-content" id="setting_nav_ul">
+                @permission('scp'.$sidebar_menu)
+                    <li class="{{ ($path == 'setting/scp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.scp.index') }}">
+                            <span class="menu-item text-truncate">SCP</span>
+                        </a>
+                    </li>
+                    @endpermission
                     @permission('user'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/user')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user.index') }}">
@@ -434,6 +470,21 @@
                         </a>
                     </li>
                     @endpermission
+                    <li class="{{ ($path == 'setting/scp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.scp.create') }}">
+                            <span class="menu-item text-truncate">SCP</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($path == 'setting/lcp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.lcp.create') }}">
+                            <span class="menu-item text-truncate">LCP</span>
+                        </a>
+                    </li>
+                    <li class="{{ ($path == 'setting/miscellaneous_charges')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.miscellaneous-charges.create') }}">
+                            <span class="menu-item text-truncate">Miscellaneous Charges</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>

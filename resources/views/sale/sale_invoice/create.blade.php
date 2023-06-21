@@ -91,7 +91,7 @@
                     <div class="card-header border-bottom">
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
-                           
+
                         </div>
                         <div class="card-link">
                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-float waves-light">Save</button>
@@ -131,6 +131,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Customer <span class="required">*</span></label>
@@ -153,7 +154,7 @@
                                         <option value="dealer">Dealer</option>
                                         <option value="staff">Staff</option>
                                         </select>
-                                      
+
                                     </div>
                                     </div>
                                 <div class="mb-1 row">
@@ -171,7 +172,7 @@
                                 </div>
                                 </div>
                             <div class="col-sm-6">
-                                
+
                                 <div class="mb-1 row">
                                     <div class="col-sm-3 pr-0">
                                         <label class="col-form-label p-0">Payment Mode</label>
@@ -184,6 +185,7 @@
                                         </select>
                                     </div>
                                 </div>
+                                
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Sale Price</label>
@@ -200,6 +202,21 @@
                                         <input type="text" class="form-control form-control-sm FloatValidate" id="sale_discount" name="sale_discount">
                                     </div>
                                 </div>
+                                <div id="installments_list" style="display: none">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3 pr-0">
+                                        <label class="col-form-label p-0">Installment Plan</label>
+                                </div>
+                                    <div class="col-sm-9">
+                                        <select class="select2 form-select" id="installment_plan" name="installment_plan">
+                                        <option value="">Select Installment Plan</option>
+                                            @foreach($data['installment_plan'] as $installment_plan)
+                                                <option value="{{$installment_plan->id}}" data-slug="{{$installment_plan->id}}"> {{$installment_plan->installemnt_plan_name}} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    </div>
+                                </div>
                                 <div class="mb-1 row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Booking Price<span class="required">*</span></label>
@@ -213,7 +230,7 @@
                                         <label class="col-form-label p-0">Down Payment<span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" id="down_payment" name="down_payment" aria-invalid="false">
+                                        <input type="text" class="form-control form-control-sm FloatValidate down_payment" id="down_payment" name="down_payment" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div id="installments_block" style="display: none">
@@ -222,7 +239,7 @@
                                             <label class="col-form-label p-0">On Balloting</label>
                                         </div>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control form-control-sm FloatValidate" id="on_balloting" name="on_balloting" aria-invalid="false">
+                                            <input type="text" class="form-control form-control-sm FloatValidate on_balloting" id="on_balloting" name="on_balloting" aria-invalid="false">
                                         </div>
                                     </div>
                                     <div class="mb-1 row">
@@ -244,7 +261,7 @@
                                                     <label class="col-form-label p-0">No. Of Bi-Annual</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm FloatValidate" id="no_of_bi_annual" name="no_of_bi_annual" aria-invalid="false">
+                                                    <input type="text" class="form-control form-control-sm FloatValidate no_of_bi_annual" id="no_of_bi_annual" name="no_of_bi_annual" aria-invalid="false">
                                                 </div>
                                             </div>
                                         </div>
@@ -265,7 +282,7 @@
                                                     <label class="col-form-label p-0">No. of Month</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-sm FloatValidate" id="no_of_month" name="no_of_month" aria-invalid="false"> </div>
+                                                    <input type="text" class="form-control form-control-sm FloatValidate no_of_month" id="no_of_month" name="no_of_month" aria-invalid="false"> </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -304,7 +321,15 @@
                                         <label class="col-form-label">On Possession<span class="required">*</span></label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control form-control-sm FloatValidate" id="on_possession" name="on_possession" aria-invalid="false">
+                                        <input type="text" class="form-control form-control-sm FloatValidate on_possession" id="on_possession" name="on_possession" aria-invalid="false">
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Allocation Amount<span class="required">*</span></label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control form-control-sm FloatValidate allocation_amount" id="allocation_amount" name="allocation_amount" aria-invalid="false">
                                     </div>
                                 </div>
                                 <div class="mb-1 row">
@@ -373,7 +398,7 @@
           if(response.status == 'success'){
             var seller = response.data['seller'];
             var departments = response.data['departments'];
-            console.log(seller); 
+            console.log(seller);
             var length = seller.length;
             var lengthd = departments ? departments.length : 0;
             if(val== 'dealer'){
@@ -420,7 +445,7 @@
   var name = $(this).attr('data-name');
   $('#seller_id').val(id);
   $('#seller_name').val(name);
-  
+
   if ($('#seller_name').val() == '') {
     $('#sellerTable').show();
   } else {
@@ -443,9 +468,12 @@ $(document).on('change keyup','#seller_name',function(){
         $(document).on('change','#property_payment_mode_id',function(){
            var slug = $(this).find('option:selected').attr('data-slug');
             $('#installments_block').hide();
+            $('#installments_list').hide();
             $('#installments_block').find('input').val("");
            if(slug == 'installment'){
-                $('#installments_block').show()
+                $('#installments_block').show();
+                $('#installments_list').show();
+                
            }
         })
         $(document).on('change','#installment_type',function(){
@@ -490,7 +518,7 @@ $(document).on('change keyup','#seller_name',function(){
 
         $(document).on('keydown', function(e) {
     if ($('.table-wrapper').length) {
-        
+
         var inLineHelp = $('.table-wrapper');
         var scrollHeight = inLineHelp.prop('scrollHeight');
         var scrollTop = inLineHelp.scrollTop();
@@ -522,8 +550,8 @@ $(document).on('change keyup','#seller_name',function(){
                 selectedRow.next().addClass('selected');
             }
         }
-        
-        
+
+
     }
 });
     </script>
@@ -556,6 +584,68 @@ $(document).on('change keyup','#seller_name',function(){
     }
 });
 </script>
+<script>
+    //Booking Data
+    $(document).on('change','#installment_plan',function(){
+            var validate = true;
+            var thix = $(this);
+            var val = $(this).find('option:selected').attr('data-slug');
+         
+            //var val = $('#booking_id').val();
+           // var val = thix.find('option:selected').val();
+            if(valueEmpty(val)){
+                ntoastr.error("Select New Booking");
+                validate = false;
+                return false;
+            }
+            if(validate){
+                var formData = {
+                    sale_id : val
+                };
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "POST",
+                    url: '{{ route('sale.installment-plan.planDetails') }}',
+                    dataType	: 'json',
+                    data        : formData,
+                    success: function(response,data) {
+                        if(response.status == 'success'){
+                            var plans = response.data['plans'];
+                           
+                            var length = plans.length;
+                            console.log(plans);
+                            $('form').find('.down_payment').html(plans.down_payment);
+                            $('form').find('#down_payment').val(plans.down_payment);
 
+                            $('form').find('.on_possession').html(plans.on_possession);
+                            $('form').find('#on_possession').val(plans.on_possession);
+
+                            $('form').find('.on_balloting').html(plans.on_balloting);
+                            $('form').find('#on_balloting').val(plans.on_balloting);
+                            
+                            $('form').find('.no_of_bi_annual').html(plans.installment_bi_annual);
+                            $('form').find('#no_of_bi_annual').val(plans.installment_bi_annual);
+
+                            $('form').find('.no_of_month').html(plans.installment_monthly);
+                            $('form').find('#no_of_month').val(plans.installment_monthly);
+                            
+
+                            $('form').find('.allocation_amount').html(plans.allocation_amount);
+                            $('form').find('#allocation_amount').val(plans.allocation_amount);
+                            
+                            
+                        }else{
+                            ntoastr.error(response.message);
+                        }
+                    },
+                    error: function(response,status) {
+                        ntoastr.error('server error..404');
+                    }
+                });
+            }
+        });
+</script>
     @yield('scriptCustom')
 @endsection
