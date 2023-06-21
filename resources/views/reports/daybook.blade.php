@@ -182,10 +182,12 @@
                                 <option value="account2">Level 4</option>
                             </select>
                             </div>
+
                             <div class="col-sm-3">
                             <label class="col-form-label p-0">Select Date: <span class="required">*</span></label>
                             <input type="text" id="start_date" name="start_date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="" />
                             </div>
+                            
                             {{-- <div class="col-sm-3">
                             <label class="col-form-label p-0">End Date: <span class="required">*</span></label>
                             <input type="text" id="end_date" name="end_date" class="form-control form-control-sm flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" value="" />

@@ -349,7 +349,7 @@
             <li id="hr_nav" class="nav-item has-sub {{ (strpos(request()->path(), 'hr') === 0) ? 'open' : '' }}">
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather='users'></i>
-                    <span class="menu-title text-truncate">HR</span>
+                    <span class="menu-title text-truncate">HRM</span>
                 </a>
                 <ul class="menu-content" id="hr_nav_ul" style="{{ (strpos(request()->path(), 'hr') === 0) ? 'display:block' : '' }}">
                 @permission('inventory'.$sidebar_menu)
@@ -387,7 +387,7 @@
                     </li>
                     <li id="setting_nav" class="nav-item has-sub {{ ($prefix == '/marketing')?'open':'' }}">
                         <a class="d-flex align-items-center" href="#">
-                            <i data-feather="pdf"></i>
+                            <i data-feather="bar-chart-2"></i>
                             <span class="menu-title text-truncate">Marketing</span>
                         </a>
 
