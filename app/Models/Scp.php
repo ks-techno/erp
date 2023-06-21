@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\ProductVariation;
 use App\Models\PropertyVariation;
 use App\Models\ProductVariationDtl;
+use App\Models\Department;
 
 class Scp extends Model
 {
@@ -17,11 +18,15 @@ class Scp extends Model
     protected $table = 'scp';
     protected $fillable = [
         'id',
+        'uuid',
         'property_typeID',
         'department_id',
         'percentage',
     ];
     public function buyable_type(){
         return $this->belongsTo(BuyableType::class,'property_typeID','id');
+    }
+    public function department(){
+        return $this->belongsTo(Department::class,'department_id','id');
     }
 }

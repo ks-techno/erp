@@ -60,7 +60,7 @@ class DepartmentController extends Controller
             foreach ($allData as $row) {
                 $urlEdit = route('department.edit',$row->uuid);
                 $urlDel = route('department.destroy',$row->uuid);
-
+                
                 $actions = '<div class="text-end">';
                 if($delete_per) {
                     $actions .= '<div class="d-inline-flex">';

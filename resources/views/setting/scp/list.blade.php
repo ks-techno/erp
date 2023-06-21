@@ -14,23 +14,22 @@
                         <div class="card-left-side">
                             <h4 class="card-title">{{$data['title']}}</h4>
                         </div>
-                        {{--<div class="card-link">
+                        <div class="card-link">
                             @permission($data['permission_create'])
-                            <a href="{{route('company.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
+                            <a href="{{route('setting.scp.create')}}" class="btn btn-primary btn-sm waves-effect waves-float waves-light">Create</a>
                             @endpermission
-                        </div>--}}
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="card-datatable">
                             @permission($data['permission_list'])
-                            <table class="datatables-ajax table table-responsive" data-url="{{route('company.index')}}">
+                            <table class="datatables-ajax table table-responsive" data-url="{{route('setting.scp.index')}}">
                                 <thead>
                                 <tr>
-                                    <th class="cell-fit">Name</th>
-                                    <th class="cell-fit">Contact No</th>
-                                    <th class="cell-fit">Country</th>
-                                    <th class="cell-fit">Address</th>
-                                    <th class="cell-fit"></th>
+                                    <th class="cell-fit">Property Type</th>
+                                    <th class="cell-fit">department</th>
+                                    <th class="cell-fit">Percentage</th>
+                                    <th class="cell-fit">Actions</th>
                                 </tr>
                                 </thead>
                             </table>

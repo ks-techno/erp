@@ -13,6 +13,7 @@ use App\Models\ProductVariationDtl;
 use App\Models\Project;
 use App\Models\PropertyVariation;
 use App\Models\PropertyPaymentMode;
+use App\Models\Scp;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
@@ -25,7 +26,7 @@ class ScpController extends Controller
 
     private static function Constants()
     {
-        $name = 'Scp';
+        $name = 'scp';
         return [
             'title' => 'Staff Comission Policy',
             'list_url' => route('setting.scp.index'),
@@ -48,13 +49,14 @@ class ScpController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['permission_list'] = self::Constants()['list'];
         $data['permission_create'] = self::Constants()['create'];
+       
         if ($request->ajax()) {
             $draw = 'all';
 
-            $dataSql = Company::with('addresses')->where('id','<>',0)->orderByName();
+            $dataSql = Scp::with('buyable_type','department')->orderby('created_at','desc');
 
             $allData = $dataSql->get();
-
+            
             $recordsTotal = count($allData);
             $recordsFiltered = count($allData);
             $delete_per = false;
@@ -68,9 +70,9 @@ class ScpController extends Controller
 
             $entries = [];
             foreach ($allData as $row) {
-                $urlEdit = route('company.edit',$row->uuid);
-                $urlDel = route('company.destroy',$row->uuid);
-
+                $urlEdit = route('setting.scp.edit',$row->uuid);
+                $urlDel = route('setting.scp.destroy',$row->uuid);
+                
                 $actions = '<div class="text-end">';
                 if($delete_per) {
                     $actions .= '<div class="d-inline-flex">';
@@ -78,22 +80,18 @@ class ScpController extends Controller
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
                     $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
                     $actions .= '</div>'; // end dropdown-menu
-                    //test
                     $actions .= '</div>'; // end d-inline-flex
                 }
                 if($edit_per) {
                     $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
                 }
                 $actions .= '</div>'; //end main div
-                $country = "";
-                if(!empty($row->addresses) && isset($row->addresses->country->name)) {
-                    $country = $row->addresses->country->name;
-                }
+               
+               
                 $entries[] = [
-                    $row->name,
-                    $row->contact_no,
-                    $country,
-                    $row->addresses->address ?? "",
+                    $row->buyable_type->name,
+                    $row->department->name,
+                    $row->percentage,
                     $actions,
                 ];
             }
@@ -120,8 +118,8 @@ class ScpController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
         $data['permission_create'] = self::Constants()['create'];
-        
         $data['buyable'] = BuyableType::OrderByName()->where('status', 1)->get();
+        $data['department'] = Department::OrderByName()->get();
         return view('setting.scp.create', compact('data'));
     }
 
@@ -136,8 +134,10 @@ class ScpController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'country_id' => ['required',Rule::notIn([0,'0'])]
+           
+            'property_typeID' => 'required',
+            'department_id' => 'required',
+            'percentage' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -148,26 +148,17 @@ class ScpController extends Controller
                 $err = $valid_error[0];
             }
             return $this->jsonErrorResponse($data, $err);
-            return $this->redirect()->route('company.index');
+            return $this->redirect()->route('setting.scp.index');
         }
 
         DB::beginTransaction();
         try {
-
-            $company = Company::create([
+            $scp = Scp::create([
                 'uuid' => self::uuid(),
-                'name' => self::strUCWord($request->name),
-                'contact_no' => $request->contact_no,
-                'address' => $request->address,
-                'country_id' => $request->country_id,
+                'property_typeID' => $request->property_typeID,
+                'department_id' => $request->department_id,
+                'percentage' => $request->percentage,
             ]);
-
-            $r = self::insertAddress($request,$company);
-
-            if(isset($r['status']) && $r['status'] == 'error'){
-                return $this->jsonErrorResponse($data, $r['message']);
-            }
-
         }catch (Exception $e) {
             DB::rollback();
             return $this->jsonErrorResponse($data, 'Something went wrong');
@@ -175,7 +166,7 @@ class ScpController extends Controller
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('company.index');
+        return $this->redirect()->route('setting.scp.index');
     }
 
     /**
@@ -196,17 +187,20 @@ class ScpController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request,$id)
-    {
+    {;
         $data = [];
         $data['id'] = $id;
         $data['title'] = self::Constants()['title'];
         $data['list_url'] = self::Constants()['list_url'];
-        $data['permission'] = self::Constants()['edit'];
+        $data[''] = self::Constants()['edit'];
+        
 
-        if(Company::where('uuid',$id)->exists()){
+        if(Scp::where('uuid',$id)->exists()){
 
-            $data['current'] = Company::where('uuid',$id)->first();
-
+            $data['current'] = Scp::where('uuid',$id)->first();
+            $data['buyable'] = BuyableType::OrderByName()->where('status', 1)->get();
+            $data['department'] = Department::OrderByName()->get();
+           
         }else{
             abort('404');
         }
@@ -216,7 +210,8 @@ class ScpController extends Controller
             $data['permission'] = self::Constants()['view'];
             $data['permission_edit'] = self::Constants()['edit'];
         }
-        return view('setting.company.edit', compact('data'));
+        
+        return view('setting.scp.edit', compact('data'));
     }
 
     /**
