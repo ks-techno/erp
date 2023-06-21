@@ -27,6 +27,11 @@
 
 <!-- BEGIN: Body-->
 <body>
+@php
+        $sum_debit = 0;
+        $sum_credit = 0;
+        $balance = 0;
+@endphp
 <table class="head" width="100%" >
     <tbody>
     <tr>
@@ -49,23 +54,54 @@
         <th class="text-left">Date</th>
         <th class="text-left ">Debit</th>
         <th class="text-left">Credit</th>
-        <th class="cell-fit">Closing Balance</th>
-        <th class="cell-fit">Closing Balance (In words)</th>
+        <th class="text-left">Balance</th>
+       
         </tr>
     </thead>
     <tbody>
     @foreach($data['results'] as $result)
-    
+   
     <tr>
     <td class="text-left">{{isset($result->voucher->chart_account_name) ? $result->voucher->chart_account_name : ""}}</td>
         <td class="text-left">{{isset($result->voucher->chart_account_code) ? $result->voucher->chart_account_code : ""}}</td>
         <td class="text-left">{{isset($result->voucher->date) ? $result->voucher->date : ""}}</td>
         <td class="text-left">{{format_number($result->voucher->debit)}}</td>
         <td class="text-left">{{ format_number($result->voucher->credit)}}</td>
-        <td class="text-left">{{format_number($result->voucher->total_credit)}}</td>
-        <td class="text-left">{{numberToWords($result->voucher->total_credit)}}</td>
+        <td class="text-left">
+        @php
+        
+        $sum_debit += $result->voucher->debit;
+        $sum_credit += $result->voucher->credit;
+        $balance = $sum_credit - $sum_debit;
+    @endphp
+    {{format_number($balance)}}
+        </td>
     </tr>
+   
 @endforeach
+<tfoot>
+        <tr>
+            <td colspan="5" class="border-right"><b>Total Debit:</b></td>
+            <td class="text-right border-right">
+            {{format_number($sum_debit)}}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" class="border-right"><b>Total Credit:</b></td>
+            <td class="text-right border-right">
+            {{format_number($sum_credit)}}
+            </td>
+           
+        </tr>
+        <tr>
+            <td colspan="5" class="border-right"><b>Balance:</b></td>
+            <td class="text-right border-right">
+            {{format_number($balance)}}
+            </td>
+           
+        </tr>
+        
+        </tfoot>
 
     </tbody>
 </table>

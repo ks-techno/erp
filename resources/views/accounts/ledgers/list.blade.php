@@ -41,6 +41,7 @@
                         </div>
                         <div class="card-link">
                         <a href="{{ route('exportPDF') }}" class="btn btn-danger btn-sm waves-effect waves-float waves-light export-pdf-button">Export to PDF</a>  
+                        <a href="{{ route('exportExcel') }}" class="btn btn-success btn-sm waves-effect waves-float waves-light export-excel-button">Export to Excel</a>  
                         </div>
                        
                     </div>
@@ -154,6 +155,8 @@ $(document).ready(function() {
 
         var exportUrl = "{{ route('exportPDF') }}?" + formData;
         $('.export-pdf-button').attr('href', exportUrl);
+        var exportUrlE = "{{ route('exportExcel') }}?" + formData;
+        $('.export-excel-button').attr('href', exportUrlE);
       },
       error: function(xhr, status, error) {
         console.log(error);

@@ -15,6 +15,9 @@ use Illuminate\Validation\Rule;
 use Exception;
 use Validator;
 use PDF;
+use App\Exports\LedgerDataExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class LedgerController extends Controller
 {
     private static function Constants()
@@ -180,6 +183,33 @@ class LedgerController extends Controller
          $pdf = PDF::loadView('accounts.ledgers.pdf', compact('data'));
          return $pdf->download('pdf_file.pdf');
     }
+
+    public function exportExcel(Request $request)
+{
+    $data = [];
+    $data['title'] = self::Constants()['title'];
+    $chartCode = $request->input('chart_code');
+    $startDate = $request->input('start_date');
+    $endDate = $request->input('end_date');
+    $dataSql = Ledgers::with('voucher')->orderBy('created_at', 'desc');
+    
+    if ($chartCode && $startDate && $endDate) {
+        $dataSql->where('COAID', $chartCode)
+            ->whereBetween('created_at', [$startDate, $endDate]);
+    } elseif ($chartCode) {
+        $dataSql->where('COAID', $chartCode);
+    } elseif ($startDate && $endDate) {
+        $dataSql->whereBetween('created_at', [$startDate, $endDate]);
+    } else {
+        $dataSql->where('created_at', '>=', now()->subDays(15));
+    }
+
+    $allData = $dataSql->get();
+    
+    $data['results'] = $allData;
+    
+    return Excel::download(new LedgerDataExport($data), 'ledgers.xlsx');
+}
 
     public function create()
     {
