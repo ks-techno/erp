@@ -161,7 +161,7 @@
                                                         <input id="egt_description" type="text" class="form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm" onblur="formatAmount(this);" >
+                                                        <input id="egt_debit" type="text" class="FloatValidate debit form-control form-control-sm" onblur="formatAmount(this);">
                                                     </td>
                                                     <td>
                                                         <input id="egt_credit" type="text" class="FloatValidate credit form-control form-control-sm" onblur="formatAmount(this);">
@@ -199,7 +199,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-8">
                                 <div class="row">
                                     <label class="col-form-label col-lg-2">Remarks:</label>
                                     <div class="col-lg-10">
