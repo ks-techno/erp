@@ -195,13 +195,7 @@
                         </a>
                     </li>
                     @endpermission
-                    @permission('ledgers'.$sidebar_menu)
-                    <li class="{{ ($path == 'accounts/day-book')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('accounts.day-book.index') }}">
-                            <span class="menu-item text-truncate">Day Book</span>
-                        </a>
-                    </li>
-                    @endpermission
+                    
                 </ul>
             </li>
 
@@ -399,7 +393,7 @@
                         <ul class="menu-content" id="setting_nav_ul">
                             @permission('user'.$sidebar_menu)
                             <li class="{{ ($path == 'reports/day-book')?'active':'' }}">
-                                <a class="d-flex align-items-center" href="{{ route('reports.day-book') }}">
+                                <a class="d-flex align-items-center" href="{{ route('reports.day-book.index') }}">
                                     <span class="menu-item text-truncate">Day Book</span>
                                 </a>
                             </li>
@@ -470,11 +464,7 @@
                         </a>
                     </li>
                     @endpermission
-                    <li class="{{ ($path == 'setting/scp')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.scp.create') }}">
-                            <span class="menu-item text-truncate">SCP</span>
-                        </a>
-                    </li>
+                   
                     <li class="{{ ($path == 'setting/lcp')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.lcp.create') }}">
                             <span class="menu-item text-truncate">LCP</span>

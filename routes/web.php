@@ -11,7 +11,6 @@ use App\Http\Controllers\Accounts\ChartOfAccountTreeController;
 use App\Http\Controllers\Accounts\ChartOfAccountController;
 use App\Http\Controllers\Accounts\BankPaymentController;
 use App\Http\Controllers\Accounts\LedgerController;
-use App\Http\Controllers\Accounts\DayBookController;
 use App\Http\Controllers\Accounts\BankReceiveController;
 use App\Http\Controllers\Accounts\CashPaymentController;
 use App\Http\Controllers\Accounts\CashReceiveController;
@@ -51,7 +50,7 @@ use App\Http\Controllers\Purchase\BookedPropertyController;
 use App\Http\Controllers\Sale\ChallanFormController;
 use App\Http\Controllers\Accounts\SubmittedChallanController;
 use App\Http\Controllers\Marketing\LmsController;
-
+use App\Http\Controllers\Reports\DayBookController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -126,11 +125,7 @@ Route::group(['middleware' => 'auth'], function () {
             });
             Route::prefix('ledgers')->resource('ledgers', LedgerController::class);
 
-            Route::prefix('day-book')->name('day-book.')->controller(DayBookController::class)->group(function(){
-                Route::get('print/{id}', 'printView')->name('print');
-                Route::get('revert-list', 'revertList')->name('revertList');
-                Route::post('revert/{id}', 'revert')->name('revert');
-            });
+           
 
             Route::prefix('bank-receive')->name('bank-receive.')->controller(BankReceiveController::class)->group(function(){
                 Route::get('print/{id}', 'printView')->name('print');
@@ -204,7 +199,13 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         Route::prefix('reports')->name('reports.')->group(function(){
-            Route::get('day-book', [DayBookController::class, 'index'])->name('day-book');
+            
+            Route::prefix('day-book')->resource('day-book', DayBookController::class);
+            Route::prefix('day-book')->name('day-book.')->controller(DayBookController::class)->group(function(){
+                Route::get('print/{id}', 'printView')->name('print');
+                Route::get('revert-list', 'revertList')->name('revertList');
+                Route::post('revert/{id}', 'revert')->name('revert');
+            });
 
         });
         Route::prefix('marketing')->name('marketing.')->group(function(){

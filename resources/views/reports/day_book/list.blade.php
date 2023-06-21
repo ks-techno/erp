@@ -45,7 +45,7 @@
                         </div>
                        
                     </div>
-                    <form id ="ledger_create" action="{{route('accounts.day-book.index')}}"
+                    <form id ="ledger_create" action="{{route('reports.day-book.index')}}"
                         method="get" enctype="multipart/form-data" autocomplete="off">
                             @csrf
                     <div class="row mb-1 mt-2 mx-3">
@@ -75,7 +75,7 @@
                     <div class="card-body">
                         <div class="card-datatable">
                             
-                            <table class="datatables-ajax table table-responsive" data-url="{{route('accounts.day-book.index')}}">
+                            <table class="datatables-ajax table table-responsive" data-url="{{route('reports.day-book.index')}}">
                                 <thead>
                                 <tr>
                                     <th class="cell-fit">Account Name</th>
