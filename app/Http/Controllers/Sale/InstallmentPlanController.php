@@ -214,7 +214,21 @@ class InstallmentPlanController extends Controller
     {
         //
     }
-
+    public function planDetails(Request $request){
+        $data = [];
+        $sale_id = isset($request->sale_id)?$request->sale_id:"";
+        DB::beginTransaction();
+        try{
+            
+            $data['plans'] = InstallmentPlan::with('buyable_type','product_variation')->where('id',$sale_id)->first();
+        }catch (Exception $e) {
+            DB::rollback();
+            return $this->jsonErrorResponse($data, 'Something went wrong', 200);
+        }
+        DB::commit();
+        return $this->jsonSuccessResponse($data, 'Successfully get Customer', 200);
+        return $this->redirect()->route('sale.installment-plan.index');
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -231,19 +245,19 @@ class InstallmentPlanController extends Controller
         $data['buyable'] = BuyableType::OrderByName()->where('status', 1)->get();
         if(InstallmentPlan::where('uuid',$id)->exists()){
             $data['current'] = InstallmentPlan::with('buyable_type','product_variation')->where('uuid',$id)->first();
-            // $data['property_values'] = [];
-            // if(!empty($data['current']->product_variation)){
+            $data['property_values'] = [];
+            if(!empty($data['current']->product_variation)){
                
-            //     foreach ($data['current']->product_variation as $property_variation){
+                foreach ($data['current']->product_variation as $property_variation){
                    
-            //         $data['property_values'][$property_variation->id] = $property_variation->key_name;
-            //     }
-            //     $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
-            //     $data['prod_var'] = [];
-            //     foreach ($pvdtls as $pvdtl ){
-            //         $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
-            //     }
-            // }
+                    $data['property_values'][$property_variation->id] = $property_variation->key_name;
+                }
+                $pvdtls = ProductVariationDtl::with('product_variation')->where('buyable_type_id',$data['current']->buyable_type_id)->get()->toArray();
+                $data['prod_var'] = [];
+                foreach ($pvdtls as $pvdtl ){
+                    $data['prod_var'][$pvdtl['value_type']][$pvdtl['product_variation_id']][] = $pvdtl;
+                }
+            }
         }else{
             abort('404');
         }

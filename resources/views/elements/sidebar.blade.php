@@ -428,6 +428,13 @@
                     <span class="menu-title text-truncate">Settings</span>
                 </a>
                 <ul class="menu-content" id="setting_nav_ul">
+                @permission('scp'.$sidebar_menu)
+                    <li class="{{ ($path == 'setting/scp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.scp.index') }}">
+                            <span class="menu-item text-truncate">SCP</span>
+                        </a>
+                    </li>
+                    @endpermission
                     @permission('user'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/user')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user.index') }}">
