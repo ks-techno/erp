@@ -188,13 +188,7 @@
                         </a>
                     </li>
                     @endpermission
-                    @permission('ledgers'.$sidebar_menu)
-                    <li class="{{ ($path == 'accounts/ledgers')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('accounts.ledgers.index') }}">
-                            <span class="menu-item text-truncate">Ledgers</span>
-                        </a>
-                    </li>
-                    @endpermission
+                   
                     
                 </ul>
             </li>
@@ -343,13 +337,7 @@
                         </a>
                     </li>
                     @endpermission
-                    @permission('installment-plan'.$sidebar_menu)
-                    <li class="{{ ($path == 'sale/installment-plan')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('sale.installment-plan.index') }}">
-                            <span class="menu-item text-truncate">Installment Plan</span>
-                        </a>
-                    </li>
-                    @endpermission
+                    
                     @permission('challan-form'.$sidebar_menu)
                     <li class="{{ ($path == 'sale/challan-form')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('sale.challan-form.index') }}">
@@ -391,6 +379,13 @@
                         </a>
 
                         <ul class="menu-content" id="setting_nav_ul">
+                        @permission('ledgers'.$sidebar_menu)
+                    <li class="{{ ($path == 'accounts/ledgers')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('accounts.ledgers.index') }}">
+                            <span class="menu-item text-truncate">Ledgers</span>
+                        </a>
+                    </li>
+                    @endpermission
                             @permission('user'.$sidebar_menu)
                             <li class="{{ ($path == 'reports/day-book')?'active':'' }}">
                                 <a class="d-flex align-items-center" href="{{ route('reports.day-book.index') }}">
@@ -428,7 +423,25 @@
                             <span class="menu-item text-truncate">SCP</span>
                         </a>
                     </li>
+                    <li class="{{ ($path == 'setting/lcp')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.lcp.create') }}">
+                            <span class="menu-item text-truncate">LCP</span>
+                        </a>
+                    </li>
                     @endpermission
+                    @permission('installment-plan'.$sidebar_menu)
+                    <li class="{{ ($path == 'sale/installment-plan')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('sale.installment-plan.index') }}">
+                            <span class="menu-item text-truncate">Installment Plan</span>
+                        </a>
+                    </li>
+                    @endpermission
+                    <li class="{{ ($path == 'setting/miscellaneous_charges')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.miscellaneous-charges.create') }}">
+                            <span class="menu-item text-truncate">Miscellaneous Charges</span>
+                        </a>
+                    </li>
+                   
                     @permission('user'.$sidebar_menu)
                     <li class="{{ ($path == 'setting/user')?'active':'' }}">
                         <a class="d-flex align-items-center" href="{{ route('setting.user.index') }}">
@@ -465,16 +478,7 @@
                     </li>
                     @endpermission
                    
-                    <li class="{{ ($path == 'setting/lcp')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.lcp.create') }}">
-                            <span class="menu-item text-truncate">LCP</span>
-                        </a>
-                    </li>
-                    <li class="{{ ($path == 'setting/miscellaneous_charges')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.miscellaneous-charges.create') }}">
-                            <span class="menu-item text-truncate">Miscellaneous Charges</span>
-                        </a>
-                    </li>
+                  
                 </ul>
             </li>
         </ul>
