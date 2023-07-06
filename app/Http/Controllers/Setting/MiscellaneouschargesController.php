@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Setting;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Particulars;
+use App\Models\Miscellaneouscharges;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -40,61 +42,10 @@ class MiscellaneouschargesController extends Controller
         $data['title'] = self::Constants()['title'];
         $data['permission_list'] = self::Constants()['list'];
         $data['permission_create'] = self::Constants()['create'];
-        if ($request->ajax()) {
-            $draw = 'all';
-
-            $dataSql = User::where('id','<>',0);
-
-            $allData = $dataSql->get();
-
-            $recordsTotal = count($allData);
-            $recordsFiltered = count($allData);
-
-            $delete_per = false;
-            if(auth()->user()->isAbleTo(self::Constants()['delete'])){
-                $delete_per = true;
-            }
-            $edit_per = false;
-            if(auth()->user()->isAbleTo(self::Constants()['edit'])){
-                $edit_per = true;
-            }
-            $entries = [];
-            foreach ($allData as $row) {
-                $entry_status = $this->getStatusTitle()[$row->user_status];
-                $urlEdit = route('setting.miscellaneous-charges.edit',$row->uuid);
-                $urlDel = route('setting.miscellaneous-charges.destroy',$row->uuid);
-
-                $actions = '<div class="text-end">';
-                if($delete_per) {
-                    /*$actions .= '<div class="d-inline-flex">';
-                    $actions .= '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown"><i data-feather="more-vertical"></i></a>';
-                    $actions .= '<div class="dropdown-menu dropdown-menu-end">';
-                    $actions .= '<a href="javascript:;" data-url="' . $urlDel . '" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
-                    $actions .= '</div>'; // end dropdown-menu
-                    $actions .= '</div>'; // end d-inline-flex*/
-                }
-                if($edit_per) {
-                    $actions .= '<a href="' . $urlEdit . '" class="item-edit"><i data-feather="edit"></i></a>';
-                }
-                $actions .= '</div>'; //end main div
-
-                $entries[] = [
-                    $row->name,
-                    $row->email,
-                    '<div class="text-center"><span class="badge rounded-pill ' . $entry_status['class'] . '">' . $entry_status['title'] . '</span></div>',
-                    $actions,
-                ];
-            }
-            $result = [
-                'draw' => $draw,
-                'recordsTotal' => $recordsTotal,
-                'recordsFiltered' => $recordsFiltered,
-                'data' => $entries,
-            ];
-            return response()->json($result);
-        }
-
-        return view('setting.miscellaneous_charges.list', compact('data'));
+        $data['list_url'] = self::Constants()['list_url'];
+        $data['projects'] = Project::OrderByName()->get();
+        $data['charges'] = Miscellaneouscharges::with('project')->first();
+        return view('setting.miscellaneous_charges.create', compact('data'));
     }
 
     /**
@@ -123,21 +74,17 @@ class MiscellaneouschargesController extends Controller
     {
         $data = [];
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
             'project_id' => ['required',Rule::notIn([0,'0'])],
-            'password' => ['required'],
-            'confirm_password' => 'required|same:password'
+            'surcharge' => 'required',
+            'monthly_maintainance_fee' => 'required',
+            'utility_charges' => 'required',
+            'other_charges' => 'required',
         ],[
-            'name.required' => 'Name is required',
-            'email.required' => 'Email is required',
-            'email.email' => 'Email is required',
-            'email.unique' => 'Email already used',
             'project_id.required' => 'Project is required',
-            'project_id.not_in' => 'Project is required',
-            'password.required' => 'Password is required',
-            'confirm_password.required' => 'Confirm Password is required',
-            'confirm_password.same' => 'Confirm Password must be same as password',
+            'surcharge.required' => 'Surcharge is required',
+            'monthly_maintainance_fee.required' => 'Monthly Maintainance Fee is required',
+            'utility_charges.required' => 'Utility Charges Fee is required',
+            'other_charges.required' => 'Other Charges Fee is required',
         ]);
 
         if ($validator->fails()) {
@@ -149,40 +96,53 @@ class MiscellaneouschargesController extends Controller
             }
             return $this->jsonErrorResponse($data, $err);
         }
-
+        $charges = Miscellaneouscharges::with('project')->first();
         DB::beginTransaction();
         try {
-
-            $user = User::create([
-                'uuid' => self::uuid(),
-                'name' => self::strUCWord($request->name),
-                'email' => $request->email,
-                'user_status' => isset($request->status)?1:0,
-                'project_id' => $request->project_id,
-                'password' => Hash::make($request->password),
-                'company_id' => auth()->user()->company_id,
-            ]);
-            if(isset($request->projects)){
-                $projects = $request->projects;
-            }else{
-                $projects = [];
+            if($charges){
+                $user= [
+                    'uuid' => self::uuid(),
+                    'surcharge' => $request->surcharge,
+                    'monthly_maintainance_fee' => $request->monthly_maintainance_fee,
+                    'other_charges' => $request->other_charges,
+                    'utility_charges' => $request->utility_charges,
+                    'project_id' => $request->project_id,
+                ];
+                $charge = Miscellaneouscharges::where('uuid',$charges->uuid)
+            ->update($user);
             }
-
-            if(!in_array($request->project_id,$projects)){
-                array_push($projects,$request->project_id);
+            else{
+                $user = Miscellaneouscharges::create([
+                    'uuid' => self::uuid(),
+                    'surcharge' => $request->surcharge,
+                    'monthly_maintainance_fee' => $request->monthly_maintainance_fee,
+                    'other_charges' => $request->other_charges,
+                    'utility_charges' => $request->utility_charges,
+                    'project_id' => $request->project_id,
+                ]);
             }
-
-            $userProject = User::find($user->id);
-            $userProject->projects()->attach($projects);
+           
+            $data = [
+                ['id' => 16, 'amount' => $request->other_charges],
+                ['id' => 17, 'amount' => $request->surcharge],
+                ['id' => 18, 'amount' => $request->monthly_maintainance_fee],
+                ['id' => 19, 'amount' => $request->utility_charges],
+            ];
+            foreach ($data as $row) {
+                $model = Particulars::find($row['id']);
+                $model->amount = $row['amount'];
+                $model->save();
+            }
+          
 
         }catch (Exception $e) {
             DB::rollback();
-            return $this->jsonErrorResponse($data, 'Something went wrong');
+            return $this->jsonErrorResponse($data, $e->getMessage());
         }
         DB::commit();
         $data['redirect'] = self::Constants()['list_url'];
         return $this->jsonSuccessResponse($data, 'Successfully created');
-        return $this->redirect()->route('setting.user.index');
+        return $this->redirect()->route('setting.miscellaneous_charges.create');
     }
 
     /**

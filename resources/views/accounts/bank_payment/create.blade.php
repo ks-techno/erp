@@ -130,7 +130,6 @@
                                                          class="chart_id form-control form-control-sm">
                                                     </td>
                                                     <td>
-                                                    
                                                     <select class="select2 egt_chart_code form-select" name="egt_chart_code" id="egt_chart_code">
                                                     <option value="">Select Value</option>
                                                     @foreach($data['chart'] as $chart)

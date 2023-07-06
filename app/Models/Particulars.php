@@ -15,6 +15,7 @@ class Particulars extends Model
     protected $fillable = [
         'id',
         'name',
+        'amount',
         'is_active',
     ];
 }

@@ -118,10 +118,22 @@
                             <input type="text" value="{{$data['code']}}" name="challan_code" hidden>
                         </div>
                     </div>
+
+                  
+
                     <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label p-0">Submitted Account</label>
+                        <select class="select2 egt_chart_code form-select" name="dr_coaid" id="dr_coaid">
+                            <option value="">Select Value</option>
+                            @foreach($data['chart'] as $chart)
+                            <option value="{{$chart->id}}" data-chart-id="{{$chart->id}}" data-chart-name="{{$chart->name}}" data-chart-code="{{$chart->code}}"> {{$chart->code}} - ({{$chart->name}})</option>
+                            @endforeach
+                            </select>
+                        </div>
                         <div class="col-sm-4">
                         <label class="col-form-label p-0">Payment Mode <span class="required">*</span></label>
-                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select">
+                        <select name="property_payment_mode_id" id="property_payment_mode_id" class="form-select select2">
                                     <option value="">Select payment Mode</option>
                                         @foreach (getpaymentModes() as $key => $value)
                                             <option value="{{ $key }}" data-slug="{{$key}}">{{ $value }}</option>
@@ -129,13 +141,13 @@
                                         </select>
                         </div>
                     </div>
-                    <div class="row" style="display:none" id="cheque_block" >
+                    <div class="row mt-1" style="display:none" id="cheque_block" >
                         <div class="col-sm-4">
                         <label class="col-form-label p-0">Cheque Number <span class="required">*</span></label>
                         <input type="text" class="form-control form-control-sm FloatValidate" id="cheque_no" name="cheque_no" aria-invalid="false">
                         </div>
                         <div class="col-sm-4">
-                        <label class="col-form-label p-0">Cheque Number <span class="required">*</span></label>
+                        <label class="col-form-label p-0">Cheque Date <span class="required">*</span></label>
                         <input type="text" id="cheque_date" name="cheque_date"
                         class="form-control form-control-sm flatpickr-basic flatpickr-input"
                         placeholder="YYYY-MM-DD" value="" />
@@ -346,7 +358,7 @@
                                                     <option value="">Select Value</option>
                                                     particulars
                                                     @foreach($data['particulars'] as $particular)
-                                                    <option value="{{$particular->id}}" data-chart-id="{{$particular->id}}" data-chart-name="({{$particular->name}})"> {{$particular->name}}</option>
+                                                    <option value="{{$particular->id}}" data-chart-id="{{$particular->id}}" data-chart-name="({{$particular->name}})" data-chart-amount="({{$particular->amount}})" > {{$particular->name}}</option>
                                                     @endforeach
                                                     </select>
                                                     </td>
@@ -938,5 +950,18 @@ $(document).on('change','#property_payment_mode_id',function(){
     </script>
     <script src="{{asset('/js/jquery-12.js')}}"></script>
     <script src="{{asset('/pages/common/challen_table.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+    $('#ch_chart_code').change(function() {
+        var selectedOption = $(this).find('option:selected');
+        var chartId = selectedOption.data('chart-id');
+        var chartName = selectedOption.data('chart-name');
+        var chartAmount = selectedOption.data('chart-amount');
+        chartAmount = parseFloat(chartAmount.replace(/[\(\)]/g, ''));
+        $('#egt_chart_amount').val(chartAmount || '');
+    });
+});
+
+    </script>
 @endsection
 

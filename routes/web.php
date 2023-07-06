@@ -218,7 +218,7 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         });
-
+        
         Route::prefix('product-property')->resource('product-property', ProductPropertyController::class);
         Route::get('exportPDF', [LedgerController::class, 'exportPDF'])->name('exportPDF');
         Route::get('exportExcel', [LedgerController::class, 'exportExcel'])->name('exportExcel');
@@ -305,6 +305,11 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
                 Route::get('formprint/{id}', 'formPrint')->name('formprint');
+                Route::get('affidavit_by_the_seller/{id}', 'sellerAffidavit')->name('affidavit_by_the_seller');
+                Route::get('refundform/{id}', 'refundForm')->name('refundform');
+                Route::get('merge_affidavit_saller/{id}', 'MergeAffidavitSeller')->name('merge_affidavit_saller');
+                Route::get('mergeform/{id}', 'mergeForm')->name('mergeform');
+
             });
             Route::prefix('booking-transfer')->resource('booking-transfer', BookingTransferController::class);
             Route::prefix('booking-transfer')->name('booking-transfer.')->controller(BookingTransferController::class)->group(function(){
@@ -312,6 +317,11 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('get-refund-customer-list', 'getRefundCustomerList')->name('getRefundCustomerList');
                 Route::post('get-booking-detail', 'getBookingDtl')->name('getBookingDtl');
                 Route::get('print/{id}', 'printView')->name('print');
+                Route::get('indemnity/{id}', 'indemnity')->name('indemnity');
+                Route::get('purchaserUndertaking/{id}', 'purchaserUndertaking')->name('purchaserUndertaking');
+                Route::get('sellerUndertaking/{id}', 'sellerUndertaking')->name('sellerUndertaking');
+                Route::get('intimationLetter/{id}', 'intimationLetter')->name('intimationLetter');
+                Route::get('transferReport/{id}', 'transferReport')->name('transferReport');
             });
         });
     });
