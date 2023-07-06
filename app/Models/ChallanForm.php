@@ -26,6 +26,7 @@ class ChallanForm extends Model
         'user_id',
         'status',
         'is_active',
+        'dr_coaid',
     ];
 
     public function project(){

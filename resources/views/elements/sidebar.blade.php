@@ -436,8 +436,8 @@
                         </a>
                     </li>
                     @endpermission
-                    <li class="{{ ($path == 'setting/miscellaneous_charges')?'active':'' }}">
-                        <a class="d-flex align-items-center" href="{{ route('setting.miscellaneous-charges.create') }}">
+                    <li class="{{ ($path == 'setting/miscellaneous-charges')?'active':'' }}">
+                        <a class="d-flex align-items-center" href="{{ route('setting.miscellaneous-charges.index') }}">
                             <span class="menu-item text-truncate">Miscellaneous Charges</span>
                         </a>
                     </li>

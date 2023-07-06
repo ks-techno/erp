@@ -317,16 +317,30 @@ class SubmittedChallanController extends Controller
         $data['list_url'] = self::Constants()['list_url'];
         if(ChallanForm::where('uuid',$id)->exists()){
             $challandata = ChallanForm::with('customer')->where('uuid',$id)->first();
-           
             $account = ChartOfAccount::where('id',$challandata->customer->COAID)->first();
+            if($challandata->dr_coaid){
+               
+            }
         }else{
             abort('404');
+        }
+        if($challandata->dr_coaid)
+        {
+            $accountDr = ChartOfAccount::where('id',$challandata->dr_coaid)->first();
+        }
+        elseif($challandata->property_payment_mode_id== 1)
+        {
+            $accountDr = ChartOfAccount::where('id','46')->first();
+        }
+        else{
+            $accountDr = ChartOfAccount::where('id','47')->first();
         }
         if($challandata->property_payment_mode_id== 1){
             $type = 'CRV';
         }
         else{
             $type = 'BRV';
+            
         }
         $max = Voucher::withTrashed()->where('type',$type)->max('voucher_no');
         $voucher_no = self::documentCode($type,$max);
@@ -353,13 +367,40 @@ class SubmittedChallanController extends Controller
                 'cheque_date' => $challandata->cheque_date,
                 'challan_id' => $challandata->id,
             ]);
-             $req = [
+            $form_create1 =  Voucher::create([
+                'voucher_id' => $voucher_id,
+                'uuid' => self::uuid(),
+                'date' => date('Y-m-d'),
+                'type' => $type,
+                'voucher_no' => $voucher_no,
+                'sr_no' => '1',
+                'chart_account_id' => $accountDr->id,
+                'chart_account_name' => $accountDr->name,
+                'chart_account_code' => $accountDr->code,
+                'debit' =>str_replace(',', '',($challandata->total_amount)),
+                'company_id' => auth()->user()->company_id,
+                'project_id' => auth()->user()->project_id,
+                'user_id' => auth()->user()->id,
+                'posted' => '1',
+                'total_debit' => $challandata->total_amount,
+                'cheque_no' => $challandata->cheque_no,
+                'cheque_date' => $challandata->cheque_date,
+                'challan_id' => $challandata->id,
+            ]);
+             $req = [ 
                     'payment_id' => $form_create->id,
                     'COAID' => $account->id,
                     'voucher_id' => $voucher_id,
                 ];
+                $req1 = [ 
+                    'payment_id' => $form_create1->id,
+                    'COAID' => $accountDr->id,
+                    'voucher_id' => $voucher_id,
+                ];
                 $reqArray[] = $req;
+                $reqArray1[] = $req1;
             Utilities::createLedger($reqArray);
+            Utilities::createLedger($reqArray1);
         }
         catch (Exception $e) {
             DB::rollback();

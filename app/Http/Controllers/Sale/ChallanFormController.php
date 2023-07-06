@@ -12,6 +12,7 @@ use App\Models\Project;
 use App\Models\PropertyPaymentMode;
 use App\Models\Sale;
 use App\Models\SaleSeller;
+use App\Models\ChartOfAccount;
 use App\Models\Staff;
 use App\Models\ChallanForm;
 use App\Models\Particulars;
@@ -143,6 +144,15 @@ class ChallanFormController extends Controller
         $data['file_status'] = BookingFileStatus::where('status',1)->get();
         $data['property'] = Product::ProductProperty()->get();
         $data['particulars'] = Particulars::where('is_Active',1)->get();
+        $chart = ChartOfAccount::Wherein('level', [3,4]);
+        if(!empty($val)){
+            $val = (string)$val;
+            $chart = $chart->where('code','like',"%$val%");
+            $chart = $chart->orWhere('name','like',"%$val%");
+        }
+
+        $chart = $chart->select('id','code','name')->get();
+        $data['chart'] =  $chart;
         return view('sale.challan_form.create', compact('data'));
     }
 
@@ -213,6 +223,7 @@ class ChallanFormController extends Controller
                     'property_payment_mode_id' => $request->property_payment_mode_id,
                     'cheque_no' => $request->cheque_no,
                     'cheque_date' => $request->cheque_date,
+                    'dr_coaid' => $request->dr_coaid,
                     'user_id' => auth()->user()->id,
                     'status' => $posted,
                     'is_active' => 1,

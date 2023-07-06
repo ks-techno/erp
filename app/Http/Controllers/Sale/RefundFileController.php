@@ -77,6 +77,10 @@ class RefundFileController extends Controller
                 $urlEdit = route('sale.refund-file.edit',$row->uuid);
                 $urlDel = route('sale.refund-file.destroy',$row->uuid);
                 $urlPrint = route('sale.refund-file.print',$row->uuid);
+                $urlseller = route('sale.refund-file.affidavit_by_the_seller',$row->uuid);
+                $urlmergeseller = route('sale.refund-file.merge_affidavit_saller',$row->uuid);
+                $refundform = route('sale.refund-file.refundform',$row->uuid);
+                $mergeform = route('sale.refund-file.mergeform',$row->uuid);
 
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -85,7 +89,15 @@ class RefundFileController extends Controller
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
                     if($print_per) {
                         $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
-                    }
+                        if($row->file_type=='Refund'){
+                            $actions .= '<a href="' . $urlseller . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Seller Affidavit</a>';
+                            $actions .= '<a href="' . $refundform . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Refund Form</a>';    
+                        }
+                        if($row->file_type=='Merge'){
+                            $actions .= '<a href="' . $urlmergeseller . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Merge Affidavit Seller</a>';
+                            $actions .= '<a href="' . $mergeform . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Merge Form</a>';    
+                        }
+                        }
                     if($delete_per) {
                         $actions .= '<a href="javascript:;" data-url="'.$urlDel.'" class="dropdown-item delete-record"><i data-feather="trash-2" class="me-50"></i>Delete</a>';
                     }
@@ -439,6 +451,74 @@ class RefundFileController extends Controller
         
         $data['property'] = Sale::with('customer','project','property_payment_mode','product','dealer','staff')->where(Utilities::CompanyId())->where('file_type','merge')->orwhere('file_type','refund')->orderby('created_at','desc')->get();
         return view('sale.refund_file.printResults',compact('data'));
+    }
+    public function sellerAffidavit($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['print'];
+
+        if(Sale::where('uuid',$id)->exists()){
+
+            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode','file_status')->where('uuid',$id)->first();
+            
+        }else{
+            abort('404');
+        }
+ //       dd($data['current']->product->toArray());
+        return view('sale.refund_file.sellerAffidavit', compact('data'));
+    }
+    public function refundForm($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['print'];
+
+        if(Sale::where('uuid',$id)->exists()){
+
+            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode','file_status')->where('uuid',$id)->first();
+            
+        }else{
+            abort('404');
+        }
+ //       dd($data['current']->product->toArray());
+        return view('sale.refund_file.refundForm', compact('data'));
+    }
+    public function MergeAffidavitSeller($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['print'];
+
+        if(Sale::where('uuid',$id)->exists()){
+
+            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode','file_status')->where('uuid',$id)->first();
+            
+        }else{
+            abort('404');
+        }
+ //       dd($data['current']->product->toArray());
+        return view('sale.refund_file.mergeAffidavitseller', compact('data'));
+    }
+    public function mergeForm($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['permission'] = self::Constants()['print'];
+
+        if(Sale::where('uuid',$id)->exists()){
+
+            $data['current'] = Sale::with('product','customer','dealer','staff','property_payment_mode','file_status')->where('uuid',$id)->first();
+            
+        }else{
+            abort('404');
+        }
+ //       dd($data['current']->product->toArray());
+        return view('sale.refund_file.mergeForm', compact('data'));
     }
     public function formprint($id)
     {

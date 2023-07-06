@@ -33,6 +33,9 @@ class ParticularsSeeder extends Seeder
                         [  'name' => 'Merging Fee',   ],
                         [  'name' => 'Transfer Fee',   ],
                         [  'name' => 'Other Charges',   ],
+                        [  'name' => 'Surcharge',   ],
+                        [  'name' => 'Monthly Maintainance Fee',   ],
+                        [  'name' => 'Utility Charges',   ],
                     ];
         DB::table('particulars')->insert($particulars);
     }

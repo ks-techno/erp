@@ -75,6 +75,11 @@ class BookingTransferController extends Controller
                 $urlEdit = route('sale.booking-transfer.edit',$row->uuid);
                 $urlDel = route('sale.booking-transfer.destroy',$row->uuid);
                 $urlPrint = route('sale.booking-transfer.print',$row->uuid);
+                $urlindemnity = route('sale.booking-transfer.indemnity',$row->uuid);
+                $urlpurchaserUndertaking = route('sale.booking-transfer.purchaserUndertaking',$row->uuid);
+                $sellerUndertaking = route('sale.booking-transfer.sellerUndertaking',$row->uuid);
+                $urlintimationLetter = route('sale.booking-transfer.intimationLetter',$row->uuid);
+                $urltransferReport = route('sale.booking-transfer.transferReport',$row->uuid);
                 // dd(route('sale.booking-transfer.edit'));
                 $actions = '<div class="text-end">';
                 if($delete_per || $print_per) {
@@ -83,6 +88,11 @@ class BookingTransferController extends Controller
                     $actions .= '<div class="dropdown-menu dropdown-menu-end">';
                     if($print_per) {
                         $actions .= '<a href="' . $urlPrint . '" target="_blank" class="dropdown-item"><i data-feather="printer" class="me-50"></i>Print</a>';
+                        $actions .= '<a href="' . $urlindemnity . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Indemnity</a>';
+                        $actions .= '<a href="' . $urlpurchaserUndertaking . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Purchaser Undertaking</a>';
+                        $actions .= '<a href="' . $sellerUndertaking . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Seller Undertaking</a>';
+                        $actions .= '<a href="' . $urlintimationLetter . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Intimation Letter</a>';
+                        $actions .= '<a href="' . $urltransferReport . '" target="_blank" class="dropdown-item"><i data-feather="file" class="me-50"></i>Transfer Report</a>';
                     }
 
                     if($delete_per) {
@@ -294,7 +304,86 @@ class BookingTransferController extends Controller
         return view('sale.booking_transfer.edit', compact('data'));
 
     }
+    public function indemnity($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['edit'];
+        if(BookingTransfer::where('uuid',$id)->exists()){
+            $data['current'] = BookingTransfer::where('uuid',$id)->with('nm_customer','om_customer','file_status','sales','product')->first();  
+            // $current = $data['current'];
+            // dd($current->sales->external_item_id );
+        }else{
+            abort('404');
+        }
+        return view('sale.booking_transfer.indemnity', compact('data'));
+    }
+    public function purchaserUndertaking($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['edit'];
+        if(BookingTransfer::where('uuid',$id)->exists()){
+            $data['current'] = BookingTransfer::where('uuid',$id)->with('nm_customer','om_customer','file_status','sales','product')->first();  
+            // $current = $data['current'];
+            // dd($current->sales->external_item_id );
+        }else{
+            abort('404');
+        }
+        return view('sale.booking_transfer.purchaserUndertaking', compact('data'));
+    }
 
+    public function sellerUndertaking($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['edit'];
+        if(BookingTransfer::where('uuid',$id)->exists()){
+            $data['current'] = BookingTransfer::where('uuid',$id)->with('nm_customer','om_customer','file_status','sales','product')->first();  
+        //    dd($data['current']);
+        }else{
+            abort('404');
+        }
+        return view('sale.booking_transfer.sellerUndertaking', compact('data'));
+    }
+
+    public function intimationLetter($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['edit'];
+        if(BookingTransfer::where('uuid',$id)->exists()){
+            $data['current'] = BookingTransfer::where('uuid',$id)->with('nm_customer','om_customer','file_status','sales','product')->first();  
+        //    dd($data['current']);
+        }else{
+            abort('404');
+        }
+        return view('sale.booking_transfer.intimationLetter', compact('data'));
+    }
+
+    public function transferReport($id)
+    {
+        $data = [];
+        $data['id'] = $id;
+        $data['title'] = self::Constants()['title'];
+        $data['list_url'] = self::Constants()['list_url'];
+        $data['permission'] = self::Constants()['edit'];
+        if(BookingTransfer::where('uuid',$id)->exists()){
+            $data['current'] = BookingTransfer::where('uuid',$id)->with('nm_customer','om_customer','file_status','sales','product')->first();  
+        //    dd($data['current']);
+        }else{
+            abort('404');
+        }
+        return view('sale.booking_transfer.transferReport', compact('data'));
+    }
     /**
      * Update the specified resource in storage.
      *
